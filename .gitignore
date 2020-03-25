@@ -5,6 +5,7 @@
 !.vscode/extensions.json
 *.code-workspace
 *.egg-info/
+commands.txt
 
 #Specific Files
 commands.txt
