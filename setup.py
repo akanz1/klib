@@ -4,11 +4,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="klib", # Replace with your own username
-    version="0.0.1",
+    name="klib",
+    version="0.0.3",
     author="Andreas Kanz",
     author_email="andreas@akanz.de",
-    description="Frequently used custom data science functions",
+    description="Frequently used data preprocessing functions",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/akanz1/klib",

@@ -6,5 +6,10 @@
 *.code-workspace
 *.egg-info/
 
+#Specific Files
+commands.txt
+
+#Folders
 build/
 dist/
+klib/__pycache__/
