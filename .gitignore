@@ -5,6 +5,7 @@
 !.vscode/extensions.json
 *.code-workspace
 *.egg-info/
+commands.txt
 
 #Specific Files
 commands.txt
@@ -12,4 +13,4 @@ commands.txt
 #Folders
 build/
 dist/
-klib/__pycache__/
+__pycache__/
