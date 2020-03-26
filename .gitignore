@@ -14,3 +14,4 @@ commands.txt
 build/
 dist/
 __pycache__/
+temp/
