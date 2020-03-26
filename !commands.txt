@@ -1,0 +1,6 @@
+build:
+# Update setup.py -> Version
+python setup.py sdist bdist_wheel
+
+upload:
+python -m twine upload dist/*
