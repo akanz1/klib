@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 
 # Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
+def corr_plot(data, split=None, threshold=0, dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
@@ -36,7 +36,7 @@ def corr_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
     dev: bool, default False
         Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for presentations.
 
-    **kwargs:
+    **kwargs: optional
         Additional elements to control the visualization of the plot, e.g.:
 
         * mask: bool, default True
@@ -53,7 +53,7 @@ def corr_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
         Controls the line-width inbetween the squares.
         * annot_kws: dict, default {'size' : 10}
         Controls the font size of the annotations. Only available when annot = True.
-        * cbar_kws: dict, default {'shrink': .8}
+        * cbar_kws: dict, default {'shrink': .95, 'aspect': 30}
         Controls the size of the colorbar.
         * Many more kwargs are available, i.e. 'alpha' to control blending, or options to adjust labels, ticks ...
 
@@ -65,10 +65,10 @@ def corr_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
     '''
 
     if split == 'pos':
-        corr = data.corr().where((data.corr() >= threshold) & (data.corr()>0))
+        corr = data.corr().where((data.corr() >= threshold) & (data.corr() > 0))
         threshold = '-'
     elif split == 'neg':
-        corr = data.corr().where((data.corr() <= threshold) & (data.corr()<0))
+        corr = data.corr().where((data.corr() <= threshold) & (data.corr() < 0))
         threshold = '-'
     elif split == 'high':
         corr = data.corr().where(np.abs(data.corr()) >= threshold)
@@ -92,12 +92,14 @@ def corr_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
         fsize = (8, 6)
     elif np.max(corr.shape) < 16:
         fsize = (10, 8)
-    else:
+    elif np.max(corr.shape) < 21:
         fsize = (12, 10)
+    else:
+        fsize = (14, 12)
     fig, ax = plt.subplots(figsize=fsize)
-    cmap = sns.color_palette("BrBG", 150)
+    cmap = sns.color_palette("BrBG", 250)
 
-    # Draw heatmap with mask and correct aspect ratio
+    # kwargs for the heatmap
     kwargs = {'mask': mask,
               'cmap': cmap,
               'annot': annot,
@@ -105,9 +107,10 @@ def corr_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
               'vmin': vmin,
               'linewidths': .5,
               'annot_kws': {'size': 10},
-              'cbar_kws': {'shrink': .8},
+              'cbar_kws': {'shrink': .95, 'aspect': 30},
               **kwargs}
 
+    # Draw heatmap with mask and correct aspect ratio
     sns.heatmap(corr,
                 center=0,
                 square=True,
@@ -122,9 +125,9 @@ def corr_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
     else:  # show settings
         fig.suptitle(f"\
             Settings (dev-mode): \n\
-            - Split-mode: {split} \n\
-            - Threshold: {threshold} \n\
-            - CBar: \n\
+            - split-mode: {split} \n\
+            - threshold: {threshold} \n\
+            - cbar: \n\
                 - vmax: {vmax} \n\
                 - vmin: {vmin} \n\
             - linewidths: {kwargs['linewidths']} \n\
@@ -132,6 +135,6 @@ def corr_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
             - cbar_kws: {kwargs['cbar_kws']}",
                      fontsize=12,
                      color='gray',
-                     x=0.5,
-                     y=0.75,
+                     x=0.35,
+                     y=0.8,
                      ha='left')
