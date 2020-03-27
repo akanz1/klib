@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 
 # Correlation matrix / heatmap
-def corr_mat_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
+def corr_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
@@ -25,10 +25,10 @@ def corr_mat_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
         Type of split to be performed.
 
         * None: visualize all correlations between the feature-columns.
-        * pos: visualize all positive correlations between the feature-columns.
-        * neg: visualize all negative correlations between the feature-columns.
-        * high: visualize all correlations between the feature-columns which are above the threshold.
-        * low: visualize all correlations between the feature-columns which are below the threshold.
+        * pos: visualize all positive correlations between the feature-columns above the threshold.
+        * neg: visualize all negative correlations between the feature-columns below the threshold.
+        * high: visualize all correlations between the feature-columns for which abs(corr) > threshold is True.
+        * low: visualize all correlations between the feature-columns for which abs(corr) < threshold is True.
 
     threshold: float, default 0.5
         Value between 0 <= threshold <= 1
@@ -58,13 +58,17 @@ def corr_mat_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
         * Many more kwargs are available, i.e. 'alpha' to control blending, or options to adjust labels, ticks ...
 
         Kwargs can be supplied through a dictionary of key-value pairs (see above).
+
+    Returns:
+    ------- 
+    ax: matplotlib Axes. Axes object with the heatmap.
     '''
 
     if split == 'pos':
-        corr = data.corr().where(data.corr() >= 0)
+        corr = data.corr().where((data.corr() >= threshold) & (data.corr()>0))
         threshold = '-'
     elif split == 'neg':
-        corr = data.corr().where(data.corr() <= 0)
+        corr = data.corr().where((data.corr() <= threshold) & (data.corr()<0))
         threshold = '-'
     elif split == 'high':
         corr = data.corr().where(np.abs(data.corr()) >= threshold)
@@ -80,8 +84,8 @@ def corr_mat_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
 
     # Compute dimensions and correlation range to adjust settings
     annot = True if np.max(corr.shape) < 21 else False
-    vmax = np.round(np.nanmax(data.corr().where(mask == False))-0.05, 2)
-    vmin = np.round(np.nanmin(data.corr().where(mask == False))+0.05, 2)
+    vmax = np.round(np.nanmax(corr.where(mask == False))-0.05, 2)
+    vmin = np.round(np.nanmin(corr.where(mask == False))+0.05, 2)
 
     # Set up the matplotlib figure and generate colormap
     if np.max(corr.shape) < 11:
