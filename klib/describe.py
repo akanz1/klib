@@ -1,18 +1,22 @@
-# correlation matrix
+'''
+Utilities for descriptive analytics.
+
+:author: Andreas Kanz
+
+'''
+
+# Imports
 
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Generate random dataset
-rs = np.random.RandomState(33)
-d = pd.DataFrame(data=rs.normal(size=(100, 16)))
 
-# Create the correlation matrix
+# Correlation matrix / heatmap
 
 
-def corr_mat_plot(data, split=None, threshold=0.5, dev=True, **kwargs):
+def corr_mat_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
@@ -32,8 +36,8 @@ def corr_mat_plot(data, split=None, threshold=0.5, dev=True, **kwargs):
     threshold: float, default 0.5
         Value between 0 <= threshold <= 1
 
-    dev: bool, default True
-        Display figure settings in the plot. If False, the settings are not displayed. Use for presentations.
+    dev: bool, default False
+        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for presentations.
 
     **kwargs:
         Additional elements to control the visualization of the plot, e.g.:
@@ -130,7 +134,6 @@ def corr_mat_plot(data, split=None, threshold=0.5, dev=True, **kwargs):
                      x=0.5,
                      y=0.75,
                      ha='left')
-
 
 
 # missing values
