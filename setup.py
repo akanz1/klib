@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="klib",
-    version="0.0.3",
+    version="0.0.4",
     author="Andreas Kanz",
     author_email="andreas@akanz.de",
     description="Frequently used data preprocessing functions",

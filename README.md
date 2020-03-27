@@ -4,7 +4,7 @@ klib is a Python library for importing, cleaning, analyzing and preprocessing da
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install klib.
 
 ```bash
 pip install klib

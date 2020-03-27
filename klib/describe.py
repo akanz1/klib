@@ -6,7 +6,6 @@ Utilities for descriptive analytics.
 '''
 
 # Imports
-
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -14,8 +13,6 @@ import matplotlib.pyplot as plt
 
 
 # Correlation matrix / heatmap
-
-
 def corr_mat_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
@@ -83,8 +80,8 @@ def corr_mat_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
 
     # Compute dimensions and correlation range to adjust settings
     annot = True if np.max(corr.shape) < 21 else False
-    vmax = np.round(np.nanmax(d.corr().where(mask == False))-0.05, 2)
-    vmin = np.round(np.nanmin(d.corr().where(mask == False))+0.05, 2)
+    vmax = np.round(np.nanmax(data.corr().where(mask == False))-0.05, 2)
+    vmin = np.round(np.nanmin(data.corr().where(mask == False))+0.05, 2)
 
     # Set up the matplotlib figure and generate colormap
     if np.max(corr.shape) < 11:
@@ -134,14 +131,3 @@ def corr_mat_plot(data, split=None, threshold=0.5, dev=False, **kwargs):
                      x=0.5,
                      y=0.75,
                      ha='left')
-
-
-# missing values
-
-# summary statistics
-
-# visualize distributions
-    # numerical
-    # categorical
-
-# export charts and summary statistics?
