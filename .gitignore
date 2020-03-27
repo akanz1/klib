@@ -7,7 +7,7 @@
 *.egg-info/
 
 #Specific Files
-commands.txt
+
 
 #Folders
 build/
