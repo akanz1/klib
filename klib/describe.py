@@ -110,7 +110,7 @@ def corr_plot(data, split=None, threshold=0, dev=False, **kwargs):
               'cbar_kws': {'shrink': .95, 'aspect': 30},
               **kwargs}
 
-    # Draw heatmap with mask and correct aspect ratio
+    # Draw heatmap with mask and some default settings
     sns.heatmap(corr,
                 center=0,
                 square=True,
