@@ -31,10 +31,6 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12)):
     figsize: tuple, default (20,12)
         Used to control the figure size.
 
-    # **kwargs: optional
-    #     Additional elements to control the visualization of the plot, e.g.:
-    #     Kwargs can be supplied through a dictionary of key-value pairs (see above).
-
     Returns:
     -------
     ax: matplotlib Axes. Axes object with the heatmap.
