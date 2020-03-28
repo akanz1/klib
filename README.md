@@ -16,7 +16,10 @@ pip install klib
 import klib
 
 # klib.ingest() # runs ...
-klib.describe.corr_plot # returns a color-encoded matrix, ideal for correlations
+
+klib.corr_plot() # returns a color-encoded matrix, ideal for correlations
+klib.missingval_plot() # returns a figure containing information about missing values
+
 # klib.clean() # does ...
 # klib.preprocess() # yields ...
 ```
