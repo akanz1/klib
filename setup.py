@@ -1,11 +1,12 @@
 import setuptools
+from klib import _version
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="klib",
-    version="0.0.4",
+    version=f"{_version.__version__}",
     author="Andreas Kanz",
     author_email="andreas@akanz.de",
     description="Frequently used data preprocessing functions",

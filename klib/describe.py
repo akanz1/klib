@@ -10,6 +10,116 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+
+from matplotlib import cm
+
+
+# Missing value plot
+def missingval_plot(data):
+    '''
+    Two-dimensional visualization of the missing values in a dataset.
+
+    Parameters:
+    ----------
+    data: 2D dataset that can be coerced into an ndarray. If a Pandas DataFrame is provided, the index/column information will be used to label the columns and rows.
+
+    # split: {'None', 'pos', 'neg', 'high', 'low'}, default 'None'
+    #     Type of split to be performed.
+
+    #     * None: visualize all correlations between the feature-columns.
+    #     * pos: visualize all positive correlations between the feature-columns above the threshold.
+    #     * neg: visualize all negative correlations between the feature-columns below the threshold.
+    #     * high: visualize all correlations between the feature-columns for which abs(corr) > threshold is True.
+    #     * low: visualize all correlations between the feature-columns for which abs(corr) < threshold is True.
+
+    # threshold: float, default 0.5
+    #     Value between 0 <= threshold <= 1
+
+    # dev: bool, default False
+    #     Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for presentations.
+
+    # **kwargs: optional
+    #     Additional elements to control the visualization of the plot, e.g.:
+    #     Kwargs can be supplied through a dictionary of key-value pairs (see above).
+
+    # Returns:
+    # -------
+    #FIX# ax: matplotlib Axes. Axes object with the heatmap.
+    '''
+
+    # Identify missing values
+    mv_cols = data.isna().sum(axis=0)
+    mv_rows = data.isna().sum(axis=1)
+
+    # Create figure and axes
+    fig = plt.figure(figsize=(20, 12))
+    grid = fig.add_gridspec(nrows=6, ncols=6, left=0.05, right=0.48, wspace=0.05)
+    ax1 = fig.add_subplot(grid[:1, :5])
+    ax2 = fig.add_subplot(grid[1:, :5])
+    ax3 = fig.add_subplot(grid[:1, 5:])
+    ax4 = fig.add_subplot(grid[1:, 5:])
+
+    # ax1 - Barplot
+    colors = cm.PuBuGn(mv_cols / float(max(mv_cols)))  # color bars by height
+    ax1.bar(range(len(mv_cols)), np.round(mv_cols/data.shape[0], 2)*100, color=colors)
+    ax1.get_xaxis().set_visible(False)
+    ax1.set(frame_on=False, xlim=(-.5, len(mv_cols)-0.5))
+    ax1.grid(linestyle=':', linewidth=1)
+    ax1.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=0))
+    ax1.tick_params(axis='y', colors='#111111', length=1)
+
+    # annotate values on top of the bars
+    for rect, label in zip(ax1.patches, mv_cols):
+        height = rect.get_height()
+        ax1.text(.1 + rect.get_x() + rect.get_width() / 2, height + 3, label,
+                 ha='center',
+                 va='bottom',
+                 rotation='90',
+                 alpha=0.5,
+                 fontsize='small')
+
+    # ax2 - Heatmap
+    sns.heatmap(data.isna(), cbar=False, cmap='binary', ax=ax2)
+    ax2.set_yticks(ax2.get_yticks()[::10])
+    ax2.set_xticklabels(
+        ax2.get_xticklabels(),
+        horizontalalignment='center',
+        fontweight='light',
+        fontsize='medium')
+    ax2.tick_params(length=1, colors='#111111')
+    for _, spine in ax2.spines.items():
+        spine.set_visible(True)
+    ax2.spines['right'].set_color('#EEEEEE')
+    ax2.spines['left'].set_color('#EEEEEE')
+    ax2.spines['top'].set_color('#EEEEEE')
+    ax2.spines['bottom'].set_color('#EEEEEE')
+
+    # ax3 - Summary
+    fontax3 = {'color':  '#111111',
+               'weight': 'normal',
+               'size': 12,
+               }
+    ax3.get_xaxis().set_visible(False)
+    ax3.get_yaxis().set_visible(False)
+    ax3.set(frame_on=False)
+    ax3.text(0.15, 0.9, f"Total: {data.shape[0]*data.shape[1]//1000}K", transform=ax3.transAxes, fontdict=fontax3)
+    ax3.text(0.15, 0.7, f"Missing: {mv_cols.sum()//1000}K", transform=ax3.transAxes, fontdict=fontax3)
+    ax3.text(0.15, 0.5, f"Relative: {np.round(mv_cols.sum()/(data.shape[0]*data.shape[1])*100,1)}%", transform=ax3.transAxes, fontdict=fontax3)
+    ax3.text(0.15, 0.3, f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%", transform=ax3.transAxes, fontdict=fontax3)
+    ax3.text(0.15, 0.1, f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%", transform=ax3.transAxes, fontdict=fontax3)
+
+    # ax4 - Sparkline
+    ax4.get_yaxis().set_visible(False)
+    ax4.spines['right'].set_color('#EEEEEE')
+    ax4.spines['left'].set_color('#EEEEEE')
+    ax4.spines['top'].set_color('#EEEEEE')
+    ax4.spines['bottom'].set_color('#EEEEEE')
+    ax4.tick_params(axis='x', colors='#111111', length=1)
+
+    ax4.scatter(mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap='PuBuGn', marker=".")
+    ax4.set_ylim(-0.5, len(mv_rows)-0.5)
+    ax4.grid(linestyle=':', linewidth=1)
 
 
 # Correlation matrix / heatmap
@@ -138,3 +248,17 @@ def corr_plot(data, split=None, threshold=0, dev=False, **kwargs):
                      x=0.35,
                      y=0.8,
                      ha='left')
+
+    return ax
+
+
+# TODO - summary statistics
+# TODO - visualize distributions
+    # numerical
+    # categorical
+# todo export charts and summary statistics?
+
+# FIXME something
+# FIX something else
+
+# BUG none known
