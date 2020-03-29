@@ -31,7 +31,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), spine_color='#EEEEEE'
         Use to control the figure size.
 
     spine_color: color-code, default '#EEEEEE'
-    Set to 'None' to hide the spines on all plots.
+    Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument.
 
     Returns:
     -------
@@ -124,7 +124,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), spine_color='#EEEEEE'
 
 
 # Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250), dev=False, **kwargs):
+def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250), figsize=(12, 10), dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
@@ -146,6 +146,9 @@ def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250)
 
     cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
         The mapping from data values to color space.
+
+    figsize: tuple, default (12, 10)
+        Use to control the figure size.
 
     dev: bool, default False
         Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for presentations.
@@ -202,15 +205,7 @@ def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250)
     vmin = np.round(np.nanmin(corr.where(mask == False))+0.05, 2)
 
     # Set up the matplotlib figure and generate colormap
-    if np.max(corr.shape) < 11:
-        fsize = (8, 6)
-    elif np.max(corr.shape) < 16:
-        fsize = (10, 8)
-    elif np.max(corr.shape) < 21:
-        fsize = (12, 10)
-    else:
-        fsize = (14, 12)
-    fig, ax = plt.subplots(figsize=fsize)
+    fig, ax = plt.subplots(figsize=figsize)
 
     # kwargs for the heatmap
     kwargs = {'mask': mask,
