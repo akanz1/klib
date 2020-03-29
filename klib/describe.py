@@ -110,14 +110,14 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12)):
         ax4.spines['bottom'].set_color('#EEEEEE')
         ax4.tick_params(axis='x', colors='#111111', length=1)
 
-        ax4.scatter(mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap='PuBuGn', marker=".")
+        ax4.scatter(mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap=cmap, marker=".")
         ax4.set_ylim(0, len(mv_rows))
         ax4.set_ylim(ax4.get_ylim()[::-1])  # invert y-axis
         ax4.grid(linestyle=':', linewidth=1)
 
 
 # Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0, dev=False, **kwargs):
+def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250), dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
@@ -136,6 +136,9 @@ def corr_plot(data, split=None, threshold=0, dev=False, **kwargs):
 
     threshold: float, default 0
         Value between 0 <= threshold <= 1
+
+    cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
+        The mapping from data values to color space.
 
     dev: bool, default False
         Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for presentations.
@@ -201,7 +204,6 @@ def corr_plot(data, split=None, threshold=0, dev=False, **kwargs):
     else:
         fsize = (14, 12)
     fig, ax = plt.subplots(figsize=fsize)
-    cmap = sns.color_palette("BrBG", 250)
 
     # kwargs for the heatmap
     kwargs = {'mask': mask,
