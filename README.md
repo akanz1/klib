@@ -16,6 +16,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install klib.
 
 ```bash
 pip install klib
+pip install --upgrade klib
 ```
 
 ## Usage
@@ -27,7 +28,7 @@ import klib
 klib.corr_plot() # returns a color-encoded matrix, ideal for correlations
 klib.missingval_plot() # returns a figure containing information about missing values
 
-# ToDo
+# Coming soon:
 # klib.ingest() # ...
 # klib.clean() # ...
 # klib.preprocess() # ...
