@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/pypi/dd/klib)](https://pypi.org/project/klib/)
 [![Language](https://img.shields.io/github/languages/top/akanz1/klib)](https://pypi.org/project/klib/)
 [![Last Commit](https://img.shields.io/github/last-commit/akanz1/klib)](https://pypi.org/project/klib/)
-[![Activity](https://img.shields.io/github/commit-activity/m/akanz1/klib)](https://pypi.org/project/klib/)
+[![Activity](https://img.shields.io/github/commit-activity/m/akanz1/klib)](https://github.com/akanz1/klib)
 
 
 klib is a Python library for importing, cleaning, analyzing and preprocessing data. Future versions will include model creation and optimization to provide an end-to-end solution.
