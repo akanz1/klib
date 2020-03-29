@@ -15,9 +15,17 @@ setuptools.setup(
     url="https://github.com/akanz1/klib",
     packages=setuptools.find_packages(),
     classifiers=[
-        "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8"
+    ],
+    install_requires=[
+    'matplotlib>=2.1.2',
+    'numpy>=1.13.3',
+    'pandas>=0.22.0',
+    'seaborn>=0.10.0'
     ],
     python_requires='>=3.6',
 )
