@@ -16,7 +16,7 @@ from matplotlib import cm
 
 
 # Missing value plot
-def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12)):
+def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), spine_color='#EEEEEE'):
     '''
     Two-dimensional visualization of the missing values in a dataset.
 
@@ -25,11 +25,13 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12)):
     data: 2D dataset that can be coerced into an ndarray. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
 
     cmap: colormap, default 'PuBuGn'
-        Any valid colormap can be used. E.g. 'Greys', 'RdPu', or any other sequential map is recommended.
-        More information can be found in the matplotlib documentation.
+        Any valid colormap can be used. E.g. 'Greys', 'RdPu'. More information can be found in the matplotlib documentation.
 
     figsize: tuple, default (20,12)
-        Used to control the figure size.
+        Use to control the figure size.
+
+    spine_color: color-code, default '#EEEEEE'
+    Set to 'None' to hide the spines on all plots.
 
     Returns:
     -------
@@ -39,8 +41,11 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12)):
     # Identify missing values
     mv_cols = data.isna().sum(axis=0)
     mv_rows = data.isna().sum(axis=1)
+    mv_total = mv_cols.sum()
+    mv_cols_rel = mv_cols / data.shape[0]
+    total_datapoints = data.shape[0]*data.shape[1]
 
-    if mv_cols.sum() == 0:
+    if mv_total == 0:
         print('No missing values found in the dataset.')
     else:
         # Create figure and axes
@@ -53,10 +58,10 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12)):
 
         # ax1 - Barplot
         colors = plt.get_cmap(cmap)(mv_cols / np.max(mv_cols))  # color bars by height
-        ax1.bar(range(len(mv_cols)), np.round((mv_cols/data.shape[0])*100, 2), color=colors)
+        ax1.bar(range(len(mv_cols)), np.round((mv_cols_rel)*100, 2), color=colors)
         ax1.get_xaxis().set_visible(False)
         ax1.set(frame_on=False, xlim=(-.5, len(mv_cols)-0.5))
-        ax1.set_ylim(0, np.max(mv_cols/data.shape[0])*100)
+        ax1.set_ylim(0, np.max(mv_cols_rel)*100)
         ax1.grid(linestyle=':', linewidth=1)
         ax1.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=0))
         ax1.tick_params(axis='y', colors='#111111', length=1)
@@ -71,6 +76,12 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12)):
                      alpha=0.5,
                      fontsize='small')
 
+        ax1.set_frame_on(True)
+        for _, spine in ax1.spines.items():
+            spine.set_visible(True)
+            spine.set_color(spine_color)
+        ax1.spines['top'].set_color(None)
+
         # ax2 - Heatmap
         sns.heatmap(data.isna(), cbar=False, cmap='binary', ax=ax2)
         ax2.set_yticks(np.round(ax2.get_yticks()[0::5], -1))
@@ -83,10 +94,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12)):
         ax2.tick_params(length=1, colors='#111111')
         for _, spine in ax2.spines.items():
             spine.set_visible(True)
-        ax2.spines['right'].set_color('#EEEEEE')
-        ax2.spines['left'].set_color('#EEEEEE')
-        ax2.spines['top'].set_color('#EEEEEE')
-        ax2.spines['bottom'].set_color('#EEEEEE')
+            spine.set_color(spine_color)
 
         # ax3 - Summary
         fontax3 = {'color':  '#111111',
@@ -96,18 +104,17 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12)):
         ax3.get_xaxis().set_visible(False)
         ax3.get_yaxis().set_visible(False)
         ax3.set(frame_on=False)
-        ax3.text(0.1, 0.9, f"Total: {np.round(data.shape[0]*data.shape[1]/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3)
-        ax3.text(0.1, 0.7, f"Missing: {np.round(mv_cols.sum()/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3)
-        ax3.text(0.1, 0.5, f"Relative: {np.round(mv_cols.sum()/(data.shape[0]*data.shape[1])*100,1)}%", transform=ax3.transAxes, fontdict=fontax3)
+
+        ax3.text(0.1, 0.9, f"Total: {np.round(total_datapoints/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3)
+        ax3.text(0.1, 0.7, f"Missing: {np.round(mv_total/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3)
+        ax3.text(0.1, 0.5, f"Relative: {np.round(mv_total/total_datapoints*100,1)}%", transform=ax3.transAxes, fontdict=fontax3)
         ax3.text(0.1, 0.3, f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%", transform=ax3.transAxes, fontdict=fontax3)
         ax3.text(0.1, 0.1, f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%", transform=ax3.transAxes, fontdict=fontax3)
 
-        # ax4 - Sparkline
+        # ax4 - Scatter plot
         ax4.get_yaxis().set_visible(False)
-        ax4.spines['right'].set_color('#EEEEEE')
-        ax4.spines['left'].set_color('#EEEEEE')
-        ax4.spines['top'].set_color('#EEEEEE')
-        ax4.spines['bottom'].set_color('#EEEEEE')
+        for _, spine in ax4.spines.items():
+            spine.set_color(spine_color)
         ax4.tick_params(axis='x', colors='#111111', length=1)
 
         ax4.scatter(mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap=cmap, marker=".")
