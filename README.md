@@ -25,7 +25,7 @@ pip install --upgrade klib
 import klib
 
 # klib.describe() # ...
-klib.corr_plot() # returns a color-encoded matrix, ideal for correlations
+klib.corr_plot() # returns a color-encoded heatmap, ideal for correlations
 klib.missingval_plot() # returns a figure containing information about missing values
 
 # Coming soon:
