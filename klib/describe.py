@@ -196,13 +196,17 @@ def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250)
     if split == 'pos':
         corr = data.corr().where((data.corr() >= threshold) & (data.corr() > 0))
         threshold = '-'
+        print('Displaying positive correlations. Use "threshold" to further limit the results.')
     elif split == 'neg':
         corr = data.corr().where((data.corr() <= threshold) & (data.corr() < 0))
         threshold = '-'
+        print('Displaying negative correlations. Use "threshold" to further limit the results.')
     elif split == 'high':
         corr = data.corr().where(np.abs(data.corr()) >= threshold)
+        print('Displaying absolute correlations above a chosen threshold.')
     elif split == 'low':
         corr = data.corr().where(np.abs(data.corr()) <= threshold)
+        print('Displaying absolute correlations below a chosen threshold.')
     else:
         corr = data.corr()
         split = "full"
