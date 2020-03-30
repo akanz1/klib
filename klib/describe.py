@@ -16,7 +16,7 @@ from matplotlib import cm
 
 
 # Missing value plot
-def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), spine_color='#EEEEEE'):
+def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_color='#EEEEEE'):
     '''
     Two-dimensional visualization of the missing values in a dataset.
 
@@ -30,6 +30,9 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), spine_color='#EEEEEE'
     figsize: tuple, default (20,12)
         Use to control the figure size.
 
+    sort: bool, default False
+        Sort columns based on missing values in descending order and drop columns without any missing values
+
     spine_color: color-code, default '#EEEEEE'
     Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument.
 
@@ -37,6 +40,12 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), spine_color='#EEEEEE'
     -------
     ax: matplotlib Axes. Axes object with the heatmap.
     '''
+
+    if sort:
+        mv_cols_sorted = data.isna().sum(axis=0).sort_values(ascending=False)
+        final_cols = mv_cols_sorted.drop(mv_cols_sorted[mv_cols_sorted.values == 0].keys().tolist()).keys().tolist()
+        data = data[final_cols]
+        print('Displaying only columns with missing values.')
 
     # Identify missing values
     mv_cols = data.isna().sum(axis=0)
@@ -124,7 +133,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), spine_color='#EEEEEE'
 
 
 # Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250), figsize=(12, 10), dev=False, **kwargs):
+def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250), figsize=(12, 10), annot=True, dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
@@ -149,6 +158,9 @@ def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250)
 
     figsize: tuple, default (12, 10)
         Use to control the figure size.
+
+    annot: bool, default True
+        Use to show or hide annotations.
 
     dev: bool, default False
         Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for presentations.
@@ -200,7 +212,6 @@ def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250)
     mask = np.triu(np.ones_like(corr, dtype=np.bool))
 
     # Compute dimensions and correlation range to adjust settings
-    annot = True if np.max(corr.shape) < 21 else False
     vmax = np.round(np.nanmax(corr.where(mask == False))-0.05, 2)
     vmin = np.round(np.nanmin(corr.where(mask == False))+0.05, 2)
 
