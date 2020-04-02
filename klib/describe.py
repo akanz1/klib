@@ -133,7 +133,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
 
 
 # Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250), figsize=(12, 10), annot=True, dev=False, **kwargs):
+def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), annot=True, dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
@@ -170,10 +170,6 @@ def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250)
 
         * mask: bool, default True
         If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this case to avoid overlap.
-        * cmap: matplotlib colormap name or object, or list of colors, optional
-        The mapping from data values to color space. If not provided, the
-        default is sns.color_palette("BrBG", 150).
-        * annot:bool, default True for 20 or less columns, False for more than 20 feature-columns.
         * vmax: float, default is calculated from the given correlation coefficients. 
         Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
         * vmin: float, default is calculated from the given correlation coefficients. 
