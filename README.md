@@ -2,7 +2,7 @@
 
 [![PyPI Version](https://img.shields.io/pypi/v/klib)](https://pypi.org/project/klib/)
 [![Language](https://img.shields.io/github/languages/top/akanz1/klib)](https://pypi.org/project/klib/)
-[![Downloads](https://img.shields.io/pypi/dd/klib)](https://pypi.org/project/klib/)
+[![Downloads](https://img.shields.io/pypi/dw/klib)](https://pypi.org/project/klib/)
 [![Last Commit](https://img.shields.io/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib)
 [![Build](https://scrutinizer-ci.com/g/akanz1/klib/badges/build.png?b=master)](https://github.com/akanz1/klib)
 [![Activity](https://img.shields.io/github/commit-activity/m/akanz1/klib)](https://github.com/akanz1/klib)

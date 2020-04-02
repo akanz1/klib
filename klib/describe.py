@@ -269,7 +269,7 @@ def corr_plot(data, split=None, threshold=0, cmap=sns.color_palette("BrBG", 250)
 # TODO - visualize distributions
     # numerical
     # categorical
-# todo export charts and summary statistics?
+# Todo export charts and summary statistics?
 
 # FIXME something
 # FIX something else
