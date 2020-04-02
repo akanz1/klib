@@ -260,7 +260,6 @@ def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), anno
 
     return ax
 
-
 # TODO - summary statistics
 # TODO - visualize distributions
     # numerical
