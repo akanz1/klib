@@ -9,10 +9,7 @@ Utilities for descriptive analytics.
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
-import pandas as pd
 import seaborn as sns
-
-from matplotlib import cm
 
 
 # Missing value plot
@@ -114,11 +111,21 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
         ax3.get_yaxis().set_visible(False)
         ax3.set(frame_on=False)
 
-        ax3.text(0.1, 0.9, f"Total: {np.round(total_datapoints/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3)
-        ax3.text(0.1, 0.7, f"Missing: {np.round(mv_total/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3)
-        ax3.text(0.1, 0.5, f"Relative: {np.round(mv_total/total_datapoints*100,1)}%", transform=ax3.transAxes, fontdict=fontax3)
-        ax3.text(0.1, 0.3, f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%", transform=ax3.transAxes, fontdict=fontax3)
-        ax3.text(0.1, 0.1, f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%", transform=ax3.transAxes, fontdict=fontax3)
+        ax3.text(0.1, 0.9, f"Total: {np.round(total_datapoints/1000,1)}K",
+                 transform=ax3.transAxes,
+                 fontdict=fontax3)
+        ax3.text(0.1, 0.7, f"Missing: {np.round(mv_total/1000,1)}K",
+                 transform=ax3.transAxes,
+                 fontdict=fontax3)
+        ax3.text(0.1, 0.5, f"Relative: {np.round(mv_total/total_datapoints*100,1)}%",
+                 transform=ax3.transAxes,
+                 fontdict=fontax3)
+        ax3.text(0.1, 0.3, f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%",
+                 transform=ax3.transAxes,
+                 fontdict=fontax3)
+        ax3.text(0.1, 0.1, f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%",
+                 transform=ax3.transAxes,
+                 fontdict=fontax3)
 
         # ax4 - Scatter plot
         ax4.get_yaxis().set_visible(False)
@@ -170,9 +177,9 @@ def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), anno
 
         * mask: bool, default True
         If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this case to avoid overlap.
-        * vmax: float, default is calculated from the given correlation coefficients. 
+        * vmax: float, default is calculated from the given correlation coefficients.
         Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
-        * vmin: float, default is calculated from the given correlation coefficients. 
+        * vmin: float, default is calculated from the given correlation coefficients.
         Value between -1 <= vmin <= 1 or vmax, limits the range of the colorbar.
         * linewidths: float, default 0.5
         Controls the line-width inbetween the squares.
@@ -185,17 +192,15 @@ def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), anno
         Kwargs can be supplied through a dictionary of key-value pairs (see above).
 
     Returns:
-    ------- 
+    -------
     ax: matplotlib Axes. Axes object with the heatmap.
     '''
 
     if split == 'pos':
         corr = data.corr().where((data.corr() >= threshold) & (data.corr() > 0))
-        threshold = '-'
         print('Displaying positive correlations. Use "threshold" to further limit the results.')
     elif split == 'neg':
         corr = data.corr().where((data.corr() <= threshold) & (data.corr() < 0))
-        threshold = '-'
         print('Displaying negative correlations. Use "threshold" to further limit the results.')
     elif split == 'high':
         corr = data.corr().where(np.abs(data.corr()) >= threshold)
@@ -239,13 +244,12 @@ def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), anno
 
     ax.set_title('Feature-correlation Matrix', fontdict={'fontsize': 18})
 
-    if dev == False:
-        pass
-    else:  # show settings
+    if dev:  # show settings
         fig.suptitle(f"\
             Settings (dev-mode): \n\
             - split-mode: {split} \n\
             - threshold: {threshold} \n\
+            - annotations: {annot} \n\
             - cbar: \n\
                 - vmax: {vmax} \n\
                 - vmin: {vmin} \n\
@@ -255,10 +259,9 @@ def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), anno
                      fontsize=12,
                      color='gray',
                      x=0.35,
-                     y=0.8,
+                     y=0.85,
                      ha='left')
 
-    return ax
 
 # TODO - summary statistics
 # TODO - visualize distributions
