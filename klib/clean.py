@@ -1,3 +1,15 @@
+'''
+Utilities for data cleaning.
+
+:author: Andreas Kanz
+
+'''
+
+# Imports
+import pandas as pd
+import statsmodels
+
+
 # function to drop empty rows and columns based on thresholds and reindex?
 # setting for row-wise or colum-wise or both to drop (i.e. might make little sense to drop rows in a time series)
 
@@ -108,10 +120,27 @@
 def convert_datatypes(data, category=True, cat_threshold=0.05, exclude=[]):
     '''
     Convert columns to best possible dtypes using dtypes supporting pd.NA.
-    
-    
+
+    Parameters:
+    ----------
+    data: Pandas DataFrame or numpy ndarray.
+
+    category: bool, default True
+        Change dtypes of columns to "category". Set threshold using cat_threshold.
+
+    cat_threshold: float, default 0.05
+        Ratio of unique values below which column dtype is changed to categorical.
+
+    exclude: default [] (empty list)
+        List of columns to exclude from categorical conversion.
+
+    Returns:
+    -------
+    Pandas DataFrame or numpy ndarray.
+
     '''
-    data = data.copy()
+
+    data = pd.DataFrame(data).copy()
     for col in data.columns:
         data[col] = data[col].convert_dtypes()
         unique_vals_ratio = data[col].nunique(dropna=False) / data.shape[0]
@@ -120,9 +149,73 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, exclude=[]):
     return data
 
 
-def memory_usage(data):
+def memory_usage(data): # --> describe.py & setup imports
     '''
-    Total memory usage in Kilobytes.
+    Total memory usage in kilobytes.
+
+    Parameters:
+    ----------
+    data: Pandas DataFrame or numpy ndarray.
+
+    Returns:
+    -------
+    memory_usage: float
+
     '''
+
+    data = pd.DataFrame(data)
     memory_usage = round(data.memory_usage(index=True, deep=True).sum()/1024, 2)
     return memory_usage
+
+
+def missing_vals(data): # --> describe.py & setup imports
+    '''
+    Total missing values in the dataset.
+
+    Parameters:
+    ----------
+
+    data: Pandas DataFrame or numpy ndarray.
+
+    Returns:
+    -------
+    missing_vals: float
+    '''
+
+    missing_vals = data.isna().sum().sum()
+    return missing_vals
+
+
+def summary_stats(data):
+    rows = data.shape[0]
+    cols = data.shape[1]
+    describe = data.describe().round(1)
+    # look for possible statistics (statsmodels)
+    # no visualizations here
+    # Shape
+    print('Summary statistics:\n___________________\n')
+    print(f'Number of rows: {rows}')
+    print(f'Number of columns: {cols}\n___________________\n')
+    return describe
+
+
+def data_cleaning(data, showall=True):
+    '''
+    initial data cleaning
+    '''
+    data_cleaned = convert_datatypes(data)
+
+    if showall:
+        print(f'Memory usage before data cleaning: {memory_usage(data)} kilobytes.')
+
+        print(f'Memory usage after data cleaning: {memory_usage(data_cleaned)} kilobytes.')
+
+    else:
+        pass
+
+    return data_cleaned
+
+#     before: number of columns, number of rows, memory usage, number of NAs
+#     cleaning empty columns etc.
+#     after: number of columns, number of rows, memory usage, number of NAs
+#     improvement / changes
