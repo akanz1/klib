@@ -210,7 +210,7 @@ def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), anno
         print('Displaying absolute correlations below a chosen threshold.')
     else:
         corr = data.corr()
-        split = "full"
+        split = 'None'
         threshold = 'None'
 
     # Generate mask for the upper triangle
