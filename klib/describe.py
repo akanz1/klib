@@ -263,7 +263,7 @@ def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), anno
                      ha='left')
 
 
-# TODO - summary statistics
+# TODO - summary statistics (mean, median, 1%, 5%, 25%, 75%, 95% 99%, std. dev., skew, kurtosis, value counts)
 # TODO - visualize distributions
     # numerical
     # categorical
