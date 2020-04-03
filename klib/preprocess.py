@@ -2,8 +2,6 @@
 
 # rounding
 
-# suggest datatypes
-
 # sampling methods default and optional settings
 
 # train-dev-test split
