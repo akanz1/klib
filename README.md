@@ -25,15 +25,15 @@ pip install --upgrade klib
 ```python
 import klib
 
-# klib.describe() # ...
-klib.corr_plot() # returns a color-encoded heatmap, ideal for correlations
-klib.missingval_plot() # returns a figure containing information about missing values
+klib.describe # tools for visualizing datasets
+- klib.corr_plot() # returns a color-encoded heatmap, ideal for correlations
+- klib.missingval_plot() # returns a figure containing information about missing values
 
-# Coming soon:
-# klib.ingest() # ...
-# klib.clean() # ...
-# klib.preprocess() # ...
-```
+klib.clean # tools for cleaning datasets
+- klib.convert_datatypes() # converts existing to more efficient dtypes
+- klib.drop_missing() # drops missing values
+- klib.data_cleaning() # perform initial datacleaning on a dataset
+
 
 ## Contributing
 
