@@ -149,7 +149,7 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, exclude=[]):
     return data
 
 
-def memory_usage(data): # --> describe.py & setup imports
+def memory_usage(data):  # --> describe.py & setup imports
     '''
     Total memory usage in kilobytes.
 
@@ -168,9 +168,9 @@ def memory_usage(data): # --> describe.py & setup imports
     return memory_usage
 
 
-def missing_vals(data): # --> describe.py & setup imports
+def missing_vals(data):  # --> describe.py & setup imports
     '''
-    Total missing values in the dataset.
+    Different representations of missing values in the dataset.
 
     Parameters:
     ----------
@@ -179,43 +179,75 @@ def missing_vals(data): # --> describe.py & setup imports
 
     Returns:
     -------
-    missing_vals: float
+    total_mv: float, number of missing values in the entire dataset
+    rows_mv: float, number of missing values in each row
+    cols_mv: float, number of missing values in each column
+    rows_mv_ratio: float, ratio of missing values for each row
+    cols_mv_ratio: float, ratio of missing values for each column
     '''
-
-    missing_vals = data.isna().sum().sum()
-    return missing_vals
-
-
-def summary_stats(data):
-    rows = data.shape[0]
-    cols = data.shape[1]
-    describe = data.describe().round(1)
-    # look for possible statistics (statsmodels)
-    # no visualizations here
-    # Shape
-    print('Summary statistics:\n___________________\n')
-    print(f'Number of rows: {rows}')
-    print(f'Number of columns: {cols}\n___________________\n')
-    return describe
+    rows_mv = data.isna().sum(axis=0)
+    cols_mv = data.isna().sum(axis=1)
+    total_mv = data.isna().sum().sum()
+    rows_mv_ratio = rows_mv/data.shape[0]
+    cols_mv_ratio = cols_mv/data.shape[1]
+    return total_mv, rows_mv, cols_mv, rows_mv_ratio, cols_mv_ratio
 
 
-def data_cleaning(data, showall=True):
+def drop_missing(data, drop_threshold_cols, drop_threshold_rows):
     '''
-    initial data cleaning
     '''
-    data_cleaned = convert_datatypes(data)
-
-    if showall:
-        print(f'Memory usage before data cleaning: {memory_usage(data)} kilobytes.')
-
-        print(f'Memory usage after data cleaning: {memory_usage(data_cleaned)} kilobytes.')
-
-    else:
-        pass
-
+    data = data.dropna(axis=0, how='all')
+    data = data.dropna(axis=1, how='all')
+    data = data.drop(columns=data.loc[:, missing_vals(data)[3] > drop_threshold_cols].columns)  # drop cols
+    data_cleaned = data.drop(index=data.loc[missing_vals(data)[4] > drop_threshold_rows, :].index)  # drop rows
     return data_cleaned
 
-#     before: number of columns, number of rows, memory usage, number of NAs
-#     cleaning empty columns etc.
-#     after: number of columns, number of rows, memory usage, number of NAs
-#     improvement / changes
+
+# def summary_stats(data):  # --> describe.py & setup imports --> focus on distribution of column(s)
+#     rows = data.shape[0]
+#     cols = data.shape[1]
+#     # look for possible statistics (statsmodels)
+#     # no visualizations here
+#     # Shape
+#     return rows, cols
+
+
+def data_cleaning(data, drop_threshold_cols=0.75, drop_threshold_rows=0.75, category=True, cat_threshold=0.05, exclude=[], show='all'):
+    '''
+    initial data cleaning
+
+
+    Note: The category dtype is not grouped in the summary, unless it contains exactly the same categories.
+    '''
+
+    print('Dropping empty rows / columns and subsequently rows and columns with missing values above the specified thresholds ...')
+
+    data_cleaned = drop_missing(data, drop_threshold_cols, drop_threshold_rows)
+
+    print('Adjusting dtypes ...')
+    print('Done.')
+    data_cleaned = convert_datatypes(data_cleaned, category=True, cat_threshold=0.05, exclude=exclude)  # change dtypes
+    if show == 'changes' or 'all':
+        if show == 'all':
+            print('\nBefore data cleaning:\n')
+            print(f'dtypes:\n{data.dtypes.value_counts()}')
+            print(f'\nNumber of rows: {data.shape[0]}')
+            print(f'Number of cols: {data.shape[1]}')
+            print(f'Missing values: {missing_vals(data)[0]}')
+            print(f'Memory usage: {memory_usage(data)} KB')
+            print('_______________________\n')
+            print('After data cleaning:\n')
+            print(f'dtypes:\n{data_cleaned.dtypes.value_counts()}')
+            print(f'\nNumber of rows: {data_cleaned.shape[0]}')
+            print(f'Number of cols: {data_cleaned.shape[1]}')
+            print(f'Missing values: {missing_vals(data_cleaned)[0]}')
+            print(f'Memory usage: {memory_usage(data_cleaned)} KB')
+        print('_______________________\n')
+        print(f'Changes:\n')
+        print(f'Dropped rows: {data.shape[0]-data_cleaned.shape[0]}')
+        print(f'Dropped columns: {data.shape[1]-data_cleaned.shape[1]}')
+        print(f'Dropped missing values: {missing_vals(data)[0]-missing_vals(data_cleaned)[0]}')
+        mem_change = memory_usage(data)-memory_usage(data_cleaned)
+        print(f'Reduced memory by: {mem_change} KB (-{round(100*mem_change/memory_usage(data),1)}%)')
+
+    return data_cleaned
