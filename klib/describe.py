@@ -9,6 +9,7 @@ Utilities for descriptive analytics.
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
+import pandas as pd
 import seaborn as sns
 
 
@@ -17,9 +18,9 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
     '''
     Two-dimensional visualization of the missing values in a dataset.
 
-    Parameters:
+    Parameters
     ----------
-    data: 2D dataset that can be coerced into an ndarray. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
 
     cmap: colormap, default 'PuBuGn'
         Any valid colormap can be used. E.g. 'Greys', 'RdPu'. More information can be found in the matplotlib documentation.
@@ -33,10 +34,12 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
     spine_color: color-code, default '#EEEEEE'
     Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument.
 
-    Returns:
+    Returns
     -------
     ax: matplotlib Axes. Axes object with the heatmap.
     '''
+
+    data = pd.DataFrame(data)
 
     if sort:
         mv_cols_sorted = data.isna().sum(axis=0).sort_values(ascending=False)
@@ -140,15 +143,15 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
 
 
 # Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), annot=True, dev=False, **kwargs):
+def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), annot=True, dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
-    Parameters:
+    Parameters
     ----------
-    data: 2D dataset that can be coerced into an ndarray. If a Pandas DataFrame is provided, the index/column information will be used to label the columns and rows.
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
 
-    split: {'None', 'pos', 'neg', 'high', 'low'}, default 'None'
+    split: {None, 'pos', 'neg', 'high', 'low'}, default None
         Type of split to be performed.
 
         * None: visualize all correlations between the feature-columns.
@@ -191,10 +194,12 @@ def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), anno
 
         Kwargs can be supplied through a dictionary of key-value pairs (see above).
 
-    Returns:
+    Returns
     -------
     ax: matplotlib Axes. Axes object with the heatmap.
     '''
+
+    data = pd.DataFrame(data)
 
     if split == 'pos':
         corr = data.corr().where((data.corr() >= threshold) & (data.corr() > 0))
@@ -263,13 +268,50 @@ def corr_plot(data, split=None, threshold=0, cmap="BrBG", figsize=(12, 10), anno
                      ha='left')
 
 
-# TODO - summary statistics (mean, median, 1%, 5%, 25%, 75%, 95% 99%, std. dev., skew, kurtosis, value counts)
-# TODO - visualize distributions
-    # numerical
-    # categorical
-# Todo export charts and summary statistics?
+# _functions
 
-# FIXME something
-# FIX something else
+def _memory_usage(data):
+    '''
+    Gives the total memory usage in kilobytes.
 
-# BUG none known
+    Parameters
+    ----------
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+
+    Returns
+    -------
+    memory_usage: float
+
+    '''
+
+    data = pd.DataFrame(data)
+    memory_usage = round(data.memory_usage(index=True, deep=True).sum()/1024, 2)
+
+    return memory_usage
+
+
+def _missing_vals(data):
+    '''
+    Gives metrics of missing values in the dataset.
+
+    Parameters
+    ----------
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+
+    Returns
+    -------
+    total_mv: float, number of missing values in the entire dataset
+    rows_mv: float, number of missing values in each row
+    cols_mv: float, number of missing values in each column
+    rows_mv_ratio: float, ratio of missing values for each row
+    cols_mv_ratio: float, ratio of missing values for each column
+    '''
+
+    data = pd.DataFrame(data)
+    rows_mv = data.isna().sum(axis=0)
+    cols_mv = data.isna().sum(axis=1)
+    total_mv = data.isna().sum().sum()
+    rows_mv_ratio = rows_mv/data.shape[0]
+    cols_mv_ratio = cols_mv/data.shape[1]
+
+    return total_mv, rows_mv, cols_mv, rows_mv_ratio, cols_mv_ratio
