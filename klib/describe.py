@@ -20,10 +20,12 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
 
     cmap: colormap, default 'PuBuGn'
-        Any valid colormap can be used. E.g. 'Greys', 'RdPu'. More information can be found in the matplotlib documentation.
+        Any valid colormap can be used. E.g. 'Greys', 'RdPu'. More information can be found in the matplotlib \
+        documentation.
 
     figsize: tuple, default (20,12)
         Use to control the figure size.
@@ -149,7 +151,8 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
 
     split: {None, 'pos', 'neg', 'high', 'low'}, default None
         Type of split to be performed.
@@ -173,13 +176,15 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
         Use to show or hide annotations.
 
     dev: bool, default False
-        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for presentations.
+        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for \
+        presentations.
 
     **kwargs: optional
         Additional elements to control the visualization of the plot, e.g.:
 
         * mask: bool, default True
-        If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this case to avoid overlap.
+        If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this \
+        case to avoid overlap.
         * vmax: float, default is calculated from the given correlation coefficients.
         Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
         * vmin: float, default is calculated from the given correlation coefficients.
@@ -222,8 +227,8 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
     mask = np.triu(np.ones_like(corr, dtype=np.bool))
 
     # Compute dimensions and correlation range to adjust settings
-    vmax = np.round(np.nanmax(corr.where(mask == False))-0.05, 2)
-    vmin = np.round(np.nanmin(corr.where(mask == False))+0.05, 2)
+    vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
+    vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
 
     # Set up the matplotlib figure and generate colormap
     fig, ax = plt.subplots(figsize=figsize)
@@ -276,7 +281,8 @@ def _memory_usage(data):
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
 
     Returns
     -------
@@ -296,7 +302,8 @@ def _missing_vals(data):
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
 
     Returns
     -------
