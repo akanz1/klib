@@ -9,7 +9,7 @@ setuptools.setup(
     version=f"{_version.__version__}",
     author="Andreas Kanz",
     author_email="andreas@akanz.de",
-    description="Frequently used data preprocessing functions",
+    description="Customized data preprocessing functions for frequent tasks.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/akanz1/klib",
@@ -22,10 +22,10 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8"
     ],
     install_requires=[
-    'matplotlib>=2.1.2',
-    'numpy>=1.13.3',
-    'pandas>=0.22.0',
-    'seaborn>=0.10.0'
+        'matplotlib >= 2.1.2',
+        'numpy >= 1.13.3',
+        'pandas >= 1.0.0',
+        'seaborn >= 0.1.0'
     ],
     python_requires='>=3.6',
 )
