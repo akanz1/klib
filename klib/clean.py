@@ -18,7 +18,8 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
 
     category: bool, default True
         Change dtypes of columns to "category". Set threshold using cat_threshold.
@@ -35,23 +36,29 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
 
     '''
 
-    data = pd.DataFrame(data)
+    data = pd.DataFrame(data).copy()
     for col in data.columns:
-        data[col] = data[col].convert_dtypes()
         unique_vals_ratio = data[col].nunique(dropna=False) / data.shape[0]
-        if category and unique_vals_ratio < cat_threshold and col not in cat_exclude:
+        if (category and
+           unique_vals_ratio < cat_threshold and
+           col not in cat_exclude and
+           data[col].dtype == 'object'):
             data[col] = data[col].astype('category')
+        data[col] = data[col].convert_dtypes()
 
     return data
 
 
 def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     '''
-    Drops entirely empty columns and rows by default and optionally provides flexibility to loosens restrictions to drop additional columns and rows based on the fraction of NA-values. Note: Columns are dropped first. Rows are dropped based on the remaining data.
+    Drops entirely empty columns and rows by default and optionally provides flexibility to loosens restrictions to \
+    drop additional columns and rows based on the fraction of NA-values. Note: Columns are dropped first. Rows are \
+    dropped based on the remaining data.
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
 
     drop_threshold_cols: float, default 1
         Drop columns with NA-ratio above the specified threshold.
@@ -74,13 +81,16 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     return data_cleaned
 
 
-def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, category=True, cat_threshold=0.05, cat_exclude=[], show='all'):
+def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, category=True,
+                  cat_threshold=0.05, cat_exclude=[], show='all'):
     '''
-    Perform initial data cleaning tasks on a dataset, such as dropping empty rows and columns and optimizing the datatypes.
+    Perform initial data cleaning tasks on a dataset, such as dropping empty rows and columns and optimizing the \
+    datatypes.
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
 
     drop_threshold_cols: float, default 1
     Drop columns with NA-ratio above the specified threshold.
@@ -123,7 +133,8 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, catego
 
     data = pd.DataFrame(data)
     data_cleaned = drop_missing(data, drop_threshold_cols, drop_threshold_rows)
-    data_cleaned = convert_datatypes(data_cleaned, category=True, cat_threshold=0.05, cat_exclude=cat_exclude)
+    data_cleaned = convert_datatypes(data_cleaned, category=category, cat_threshold=cat_threshold,
+                                     cat_exclude=cat_exclude)
 
     if show in ['changes', 'all']:
         if show == 'all':
