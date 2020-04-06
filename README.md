@@ -35,6 +35,12 @@ klib.clean # tools for cleaning datasets
 - klib.drop_missing() # drops missing values, also called in ".data_cleaning()"
 ```
 
+## Examples
+
+<img src="/images/example_corr_plot.png" alt="Corr Plot Example" class="center" width="600" height="500">
+
+<img src="/images/example_corr_plot.png" alt="Corr Plot Example" class="center" width="1000" height="600">>
+
 ## Contributing
 
 Pull requests and ideas are welcome. For major changes or feedback, please open an issue first to discuss what you would like to change.
