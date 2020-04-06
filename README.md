@@ -38,7 +38,7 @@ klib.clean # tools for cleaning datasets
 ## Examples
 
 <p align="center"><img src="/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="600"></p>
-<p align="center"><img src="/images/example_mv_plot.png" alt="Corr Plot Example" width="720" height="810"></p>
+<p align="center"><img src="/images/example_mv_plot.png" alt="Corr Plot Example" width="720" height="792"></p>
 
 ## Contributing
 
