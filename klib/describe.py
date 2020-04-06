@@ -38,7 +38,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
 
     Returns
     -------
-    ax: matplotlib Axes. Axes object with the heatmap.
+    figure
     '''
 
     data = pd.DataFrame(data)
@@ -143,6 +143,8 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
         ax4.set_ylim(ax4.get_ylim()[::-1])  # invert y-axis
         ax4.grid(linestyle=':', linewidth=1)
 
+        return fig
+
 
 # Correlation matrix / heatmap
 def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), annot=True, dev=False, **kwargs):
@@ -201,7 +203,7 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
 
     Returns
     -------
-    ax: matplotlib Axes. Axes object with the heatmap.
+    figure
     '''
 
     data = pd.DataFrame(data)
@@ -271,6 +273,8 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
                      x=0.35,
                      y=0.85,
                      ha='left')
+
+    return fig
 
 
 # _functions
