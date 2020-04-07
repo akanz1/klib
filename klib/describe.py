@@ -55,11 +55,11 @@ def _missing_vals(data):
     '''
 
     data = pd.DataFrame(data)
-    mv_rows = data.isna().sum(axis=0)
-    mv_cols = data.isna().sum(axis=1)
+    mv_rows = data.isna().sum(axis=1)
+    mv_cols = data.isna().sum(axis=0)
     mv_total = data.isna().sum().sum()
-    mv_rows_ratio = mv_rows/data.shape[0]
-    mv_cols_ratio = mv_cols/data.shape[1]
+    mv_rows_ratio = mv_rows/data.shape[1]
+    mv_cols_ratio = mv_cols/data.shape[0]
 
     return {'mv_total': mv_total,
             'mv_rows': mv_rows,
@@ -107,10 +107,10 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
         print('Displaying only columns with missing values.')
 
     # Identify missing values
-    mv_cols = data.isna().sum(axis=0)
-    mv_rows = data.isna().sum(axis=1)
-    mv_total = mv_cols.sum()
-    mv_cols_rel = mv_cols / data.shape[0]
+    mv_cols = _missing_vals(data)['mv_cols']  # data.isna().sum(axis=0)
+    mv_rows = _missing_vals(data)['mv_rows']  # data.isna().sum(axis=1)
+    mv_total = _missing_vals(data)['mv_total']
+    mv_cols_ratio = _missing_vals(data)['mv_cols_ratio']  # mv_cols / data.shape[0]
     total_datapoints = data.shape[0]*data.shape[1]
 
     if mv_total == 0:
@@ -126,10 +126,10 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
 
         # ax1 - Barplot
         colors = plt.get_cmap(cmap)(mv_cols / np.max(mv_cols))  # color bars by height
-        ax1.bar(range(len(mv_cols)), np.round((mv_cols_rel)*100, 2), color=colors)
+        ax1.bar(range(len(mv_cols)), np.round((mv_cols_ratio)*100, 2), color=colors)
         ax1.get_xaxis().set_visible(False)
         ax1.set(frame_on=False, xlim=(-.5, len(mv_cols)-0.5))
-        ax1.set_ylim(0, np.max(mv_cols_rel)*100)
+        ax1.set_ylim(0, np.max(mv_cols_ratio)*100)
         ax1.grid(linestyle=':', linewidth=1)
         ax1.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=0))
         ax1.tick_params(axis='y', colors='#111111', length=1)
