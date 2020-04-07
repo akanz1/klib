@@ -70,6 +70,34 @@ def _missing_vals(data):
 
 # Functions
 
+# Correlation Matrix
+def corr_mat(data, split=None, threshold=0):
+    def color_negative_red(val):
+        color = '#FF3344' if val < 0 else None
+        return 'color: %s' % color
+
+    data = pd.DataFrame(data)
+
+    if split == 'pos':
+        corr = data.corr().where((data.corr() >= threshold) & (data.corr() > 0))
+        print('Displaying positive correlations. Use "threshold" to further limit the results.')
+    elif split == 'neg':
+        corr = data.corr().where((data.corr() <= threshold) & (data.corr() < 0))
+        print('Displaying negative correlations. Use "threshold" to further limit the results.')
+    elif split == 'high':
+        corr = data.corr().where(np.abs(data.corr()) >= threshold)
+        print('Displaying absolute correlations above a chosen threshold.')
+    elif split == 'low':
+        corr = data.corr().where(np.abs(data.corr()) <= threshold)
+        print('Displaying absolute correlations below a chosen threshold.')
+    else:
+        corr = data.corr()
+        split = 'None'
+        threshold = 'None'
+
+    return corr.style.applymap(color_negative_red).format("{:.2f}", na_rep='-')
+
+
 # Missing value plot
 def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_color='#EEEEEE'):
     '''
@@ -266,22 +294,8 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
 
     data = pd.DataFrame(data)
 
-    if split == 'pos':
-        corr = data.corr().where((data.corr() >= threshold) & (data.corr() > 0))
-        print('Displaying positive correlations. Use "threshold" to further limit the results.')
-    elif split == 'neg':
-        corr = data.corr().where((data.corr() <= threshold) & (data.corr() < 0))
-        print('Displaying negative correlations. Use "threshold" to further limit the results.')
-    elif split == 'high':
-        corr = data.corr().where(np.abs(data.corr()) >= threshold)
-        print('Displaying absolute correlations above a chosen threshold.')
-    elif split == 'low':
-        corr = data.corr().where(np.abs(data.corr()) <= threshold)
-        print('Displaying absolute correlations below a chosen threshold.')
-    else:
-        corr = data.corr()
-        split = 'None'
-        threshold = 'None'
+    # Obtain correlation matrix
+    corr = corr_mat(data, split=split, threshold=threshold).data
 
     # Generate mask for the upper triangle
     mask = np.triu(np.ones_like(corr, dtype=np.bool))
@@ -293,7 +307,7 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
     # Set up the matplotlib figure and generate colormap
     fig, ax = plt.subplots(figsize=figsize)
 
-    # kwargs for the heatmap
+    # Specify kwargs for the heatmap
     kwargs = {'mask': mask,
               'cmap': cmap,
               'annot': annot,
@@ -314,7 +328,8 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
 
     ax.set_title('Feature-correlation Matrix', fontdict={'fontsize': 18})
 
-    if dev:  # show settings
+    # Display settings
+    if dev:
         fig.suptitle(f"\
             Settings (dev-mode): \n\
             - split-mode: {split} \n\
