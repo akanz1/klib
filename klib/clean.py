@@ -75,8 +75,8 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     data = pd.DataFrame(data)
     data = data.dropna(axis=0, how='all')
     data = data.dropna(axis=1, how='all')
-    data = data.drop(columns=data.loc[:, _missing_vals(data)['mv_rows_ratio'] > drop_threshold_cols].columns)
-    data_cleaned = data.drop(index=data.loc[_missing_vals(data)['mv_cols_ratio'] > drop_threshold_rows, :].index)
+    data = data.drop(columns=data.loc[:, _missing_vals(data)['mv_cols_ratio'] > drop_threshold_cols].columns)
+    data_cleaned = data.drop(index=data.loc[_missing_vals(data)['mv_rows_ratio'] > drop_threshold_rows, :].index)
 
     return data_cleaned
 
