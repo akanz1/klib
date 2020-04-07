@@ -1,7 +1,7 @@
 # This workflows will upload a Python Package using Twine when a release is created
 # For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
 
-name: Build and publish Python 🐍 distributions 📦 to PyPI
+name: Build and publish 🐍 package to PyPI
 
 on:
  push:
@@ -15,11 +15,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python
+    - name: Set up latest Python Version
       uses: actions/setup-python@v1
       with:
         python-version: '3.x'
-    - name: Install dependencies
+    - name: Install dependencies (incl. packages and setuptools ...)
       run: |
         python -m pip install --upgrade pip
         pip install setuptools wheel twine
