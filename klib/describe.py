@@ -13,6 +13,63 @@ import pandas as pd
 import seaborn as sns
 
 
+# _functions
+
+def _memory_usage(data):
+    '''
+    Gives the total memory usage in kilobytes.
+
+    Parameters
+    ----------
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
+
+    Returns
+    -------
+    memory_usage: float
+
+    '''
+
+    data = pd.DataFrame(data)
+    memory_usage = round(data.memory_usage(index=True, deep=True).sum()/1024, 2)
+
+    return memory_usage
+
+
+def _missing_vals(data):
+    '''
+    Gives metrics of missing values in the dataset.
+
+    Parameters
+    ----------
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
+
+    Returns
+    -------
+    mv_total: float, number of missing values in the entire dataset
+    mv_rows: float, number of missing values in each row
+    mv_cols: float, number of missing values in each column
+    mv_rows_ratio: float, ratio of missing values for each row
+    mv_cols_ratio: float, ratio of missing values for each column
+    '''
+
+    data = pd.DataFrame(data)
+    mv_rows = data.isna().sum(axis=0)
+    mv_cols = data.isna().sum(axis=1)
+    mv_total = data.isna().sum().sum()
+    mv_rows_ratio = mv_rows/data.shape[0]
+    mv_cols_ratio = mv_cols/data.shape[1]
+
+    return {'mv_total': mv_total,
+            'mv_rows': mv_rows,
+            'mv_cols': mv_cols,
+            'mv_rows_ratio': mv_rows_ratio,
+            'mv_cols_ratio': mv_cols_ratio}
+
+
+# Functions
+
 # Missing value plot
 def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_color='#EEEEEE'):
     '''
@@ -139,7 +196,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
         ax4.tick_params(axis='x', colors='#111111', length=1)
 
         ax4.scatter(mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap=cmap, marker=".", vmin=1)
-        ax4.set_ylim((0, len(mv_rows))[::-1]) # limit and invert y-axis
+        ax4.set_ylim((0, len(mv_rows))[::-1])  # limit and invert y-axis
         ax4.set_xlim(0, max(mv_rows))
         ax4.grid(linestyle=':', linewidth=1)
 
@@ -276,54 +333,3 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
                      ha='left')
 
     return ax
-
-
-# _functions
-
-def _memory_usage(data):
-    '''
-    Gives the total memory usage in kilobytes.
-
-    Parameters
-    ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
-
-    Returns
-    -------
-    memory_usage: float
-
-    '''
-
-    data = pd.DataFrame(data)
-    memory_usage = round(data.memory_usage(index=True, deep=True).sum()/1024, 2)
-
-    return memory_usage
-
-
-def _missing_vals(data):
-    '''
-    Gives metrics of missing values in the dataset.
-
-    Parameters
-    ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
-
-    Returns
-    -------
-    total_mv: float, number of missing values in the entire dataset
-    rows_mv: float, number of missing values in each row
-    cols_mv: float, number of missing values in each column
-    rows_mv_ratio: float, ratio of missing values for each row
-    cols_mv_ratio: float, ratio of missing values for each column
-    '''
-
-    data = pd.DataFrame(data)
-    rows_mv = data.isna().sum(axis=0)
-    cols_mv = data.isna().sum(axis=1)
-    total_mv = data.isna().sum().sum()
-    rows_mv_ratio = rows_mv/data.shape[0]
-    cols_mv_ratio = cols_mv/data.shape[1]
-
-    return total_mv, rows_mv, cols_mv, rows_mv_ratio, cols_mv_ratio

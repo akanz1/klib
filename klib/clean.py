@@ -40,9 +40,9 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
     for col in data.columns:
         unique_vals_ratio = data[col].nunique(dropna=False) / data.shape[0]
         if (category and
-           unique_vals_ratio < cat_threshold and
-           col not in cat_exclude and
-           data[col].dtype == 'object'):
+            unique_vals_ratio < cat_threshold and
+            col not in cat_exclude and
+                data[col].dtype == 'object'):
             data[col] = data[col].astype('category')
         data[col] = data[col].convert_dtypes()
 
@@ -75,8 +75,8 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     data = pd.DataFrame(data)
     data = data.dropna(axis=0, how='all')
     data = data.dropna(axis=1, how='all')
-    data = data.drop(columns=data.loc[:, _missing_vals(data)[3] > drop_threshold_cols].columns)  # drop cols
-    data_cleaned = data.drop(index=data.loc[_missing_vals(data)[4] > drop_threshold_rows, :].index)  # drop rows
+    data = data.drop(columns=data.loc[:, _missing_vals(data)['mv_rows_ratio'] > drop_threshold_cols].columns)
+    data_cleaned = data.drop(index=data.loc[_missing_vals(data)['mv_cols_ratio'] > drop_threshold_rows, :].index)
 
     return data_cleaned
 
@@ -142,22 +142,23 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, catego
             print(f'dtypes:\n{data.dtypes.value_counts()}')
             print(f'\nNumber of rows: {data.shape[0]}')
             print(f'Number of cols: {data.shape[1]}')
-            print(f'Missing values: {_missing_vals(data)[0]}')
+            print(f"Missing values: {_missing_vals(data)['mv_total']}")
             print(f'Memory usage: {_memory_usage(data)} KB')
             print('_______________________________________________________\n')
             print('After data cleaning:\n')
             print(f'dtypes:\n{data_cleaned.dtypes.value_counts()}')
             print(f'\nNumber of rows: {data_cleaned.shape[0]}')
             print(f'Number of cols: {data_cleaned.shape[1]}')
-            print(f'Missing values: {_missing_vals(data_cleaned)[0]}')
+            print(f"Missing values: {_missing_vals(data_cleaned)['mv_total']}")
             print(f'Memory usage: {_memory_usage(data_cleaned)} KB')
             print('_______________________________________________________\n')
 
-        print(f'Shape of cleaned dataset: {data_cleaned.shape} - Remaining NAs: {_missing_vals(data_cleaned)[0]}')
+        print(
+            f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {_missing_vals(data_cleaned)['mv_total']}")
         print(f'\nChanges:')
         print(f'Dropped rows: {data.shape[0]-data_cleaned.shape[0]}')
         print(f'Dropped columns: {data.shape[1]-data_cleaned.shape[1]}')
-        print(f'Dropped missing values: {_missing_vals(data)[0]-_missing_vals(data_cleaned)[0]}')
+        print(f"Dropped missing values: {_missing_vals(data)['mv_total']-_missing_vals(data_cleaned)['mv_total']}")
         mem_change = _memory_usage(data)-_memory_usage(data_cleaned)
         print(f'Reduced memory by: {mem_change} KB (-{round(100*mem_change/_memory_usage(data),1)}%)')
 
