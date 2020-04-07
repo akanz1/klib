@@ -51,9 +51,8 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
 
 def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     '''
-    Drops entirely empty columns and rows by default and optionally provides flexibility to loosens restrictions to \
-    drop additional columns and rows based on the fraction of NA-values. Note: Columns are dropped first. Rows are \
-    dropped based on the remaining data.
+    Drops entirely empty columns and rows by default and optionally provides flexibility to loosen restrictions to \
+    drop additional columns and rows based on the fraction of NA-values.
 
     Parameters
     ----------
@@ -70,6 +69,10 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     -------
     Pandas DataFrame.
 
+    Notes
+    -----
+    Columns are dropped first. Rows are dropped based on the remaining data.
+
     '''
 
     data = pd.DataFrame(data)
@@ -81,8 +84,8 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     return data_cleaned
 
 
-def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, category=True,
-                  cat_threshold=0.05, cat_exclude=[], show='all'):
+def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, category=True,
+                  cat_threshold=0.03, cat_exclude=[], show='changes'):
     '''
     Perform initial data cleaning tasks on a dataset, such as dropping empty rows and columns and optimizing the \
     datatypes.
@@ -92,16 +95,16 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, catego
     data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots.
 
-    drop_threshold_cols: float, default 1
+    drop_threshold_cols: float, default 0.95
     Drop columns with NA-ratio above the specified threshold.
 
-    drop_threshold_rows: float, default 1
+    drop_threshold_rows: float, default 0.95
     Drop rows with NA-ratio above the specified threshold.
 
     category: bool, default True
         Change dtypes of columns to "category". Set threshold using cat_threshold.
 
-    cat_threshold: float, default 0.05
+    cat_threshold: float, default 0.03
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical.
 
     cat_exclude: default [] (empty list)
@@ -160,6 +163,6 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, catego
         print(f'Dropped columns: {data.shape[1]-data_cleaned.shape[1]}')
         print(f"Dropped missing values: {_missing_vals(data)['mv_total']-_missing_vals(data_cleaned)['mv_total']}")
         mem_change = _memory_usage(data)-_memory_usage(data_cleaned)
-        print(f'Reduced memory by: {mem_change} KB (-{round(100*mem_change/_memory_usage(data),1)}%)')
+        print(f'Reduced memory by: {round(mem_change,2)} KB (-{round(100*mem_change/_memory_usage(data),1)}%)')
 
     return data_cleaned
