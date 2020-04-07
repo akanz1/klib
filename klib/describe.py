@@ -138,9 +138,9 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
             spine.set_color(spine_color)
         ax4.tick_params(axis='x', colors='#111111', length=1)
 
-        ax4.scatter(mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap=cmap, marker=".")
-        ax4.set_ylim(0, len(mv_rows))
-        ax4.set_ylim(ax4.get_ylim()[::-1])  # invert y-axis
+        ax4.scatter(mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap=cmap, marker=".", vmin=1)
+        ax4.set_ylim((0, len(mv_rows))[::-1]) # limit and invert y-axis
+        ax4.set_xlim(0, max(mv_rows))
         ax4.grid(linestyle=':', linewidth=1)
 
         ax1.set_title('Missing value plot', pad=40, fontdict={'fontsize': 18})

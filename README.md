@@ -37,7 +37,16 @@ klib.clean # tools for cleaning datasets
 
 ## Examples
 
+```python
+klib.corr_plot(df, split='pos') # displaying only positive correlations
+```
+
 <p align="center"><img src="/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="655"></p>
+
+```python
+klib.missingval_plot(df) # default representation of missing values in a DataFrame
+```
+
 <p align="center"><img src="/images/example_mv_plot.png" alt="Corr Plot Example" width="720" height="792"></p>
 
 ## Contributing
