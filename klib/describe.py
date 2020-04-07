@@ -143,6 +143,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
         ax4.set_ylim(ax4.get_ylim()[::-1])  # invert y-axis
         ax4.grid(linestyle=':', linewidth=1)
 
+        ax1.set_title('Missing value plot', pad=40, fontdict={'fontsize': 18})
         return grid
 
 
