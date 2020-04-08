@@ -26,13 +26,13 @@ pip install --upgrade klib
 import klib
 
 klib.describe # tools for visualizing datasets
-- klib.corr_mat() # returns acolor-encoded correlation matrix
+- klib.corr_mat() # returns a color-encoded correlation matrix
 - klib.corr_plot() # returns a color-encoded heatmap, ideal for correlations
 - klib.missingval_plot() # returns a figure containing information about missing values
 
 klib.clean # tools for cleaning datasets
 - klib.data_cleaning() # perform initial datacleaning on a dataset
-- klib.convert_datatypes() # converts existing to more efficient dtypes, also called in ".data_cleaning()"
+- klib.convert_datatypes() # converts existing to more efficient dtypes, also called inside ".data_cleaning()"
 - klib.drop_missing() # drops missing values, also called in ".data_cleaning()"
 ```
 
