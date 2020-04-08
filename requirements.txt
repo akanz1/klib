@@ -1,5 +1,7 @@
 matplotlib
 numpy
 pandas
-jinja2
 seaborn
+
+#Additionally for testing
+jinja2
