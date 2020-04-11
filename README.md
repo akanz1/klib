@@ -28,6 +28,7 @@ import klib
 klib.describe # tools for visualizing datasets
 - klib.corr_mat() # returns a color-encoded correlation matrix
 - klib.corr_plot() # returns a color-encoded heatmap, ideal for correlations
+- klib.dist_plot() # returns a distribution plot for every numeric feature
 - klib.missingval_plot() # returns a figure containing information about missing values
 
 klib.clean # tools for cleaning datasets
