@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
+import scipy
 import seaborn as sns
 
 from .utils import _missing_vals
@@ -43,6 +44,66 @@ def corr_mat(data, split=None, threshold=0):
         threshold = 'None'
 
     return corr.style.applymap(color_negative_red).format("{:.2f}", na_rep='-')
+
+
+# Distribution plot
+def dist_plot(data, color_mean='orange', kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
+    '''
+    Docstring
+    '''
+    for col in list(data.select_dtypes(include=['number']).columns):  # numeric cols
+        ax = sns.FacetGrid(data, height=2, aspect=6)
+
+        # Default settings
+        kde_kws = {'color': 'k', 'alpha': 0.6, 'linewidth': 1, **kde_kws}
+        rug_kws = {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04, **rug_kws}
+        fill_kws = {'color': 'brown', 'alpha': 0.1, **fill_kws}
+        font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11, **font_kws}
+
+        ax = sns.distplot(data[col], hist=False, rug=True, kde_kws=kde_kws, rug_kws=rug_kws)
+
+        # Vertical lines and fill
+        line = ax.lines[0]
+        x = line.get_xydata()[:, 0]
+        y = line.get_xydata()[:, 1]
+        ax.fill_between(x, y,
+                        where=(
+                            (x >= np.quantile(data[col], 0.05)) &
+                            (x <= np.quantile(data[col], 0.95))),
+                        label='5% - 95%',
+                        **fill_kws)
+
+        ax.vlines(x=np.mean(data[col]),
+                  ymin=0,
+                  ymax=np.interp(np.mean(data[col]), x, y),
+                  ls='dotted', color=color_mean, lw=2, label='mean')
+        ax.vlines(x=np.median(data[col]),
+                  ymin=0,
+                  ymax=np.interp(np.median(data[col]), x, y),
+                  ls=':', color='.4', label='median')
+        ax.vlines(x=np.quantile(data[col], 0.25),
+                  ymin=0,
+                  ymax=np.interp(np.quantile(data[col], 0.25), x, y), ls=':', color='.6', label='25%')
+        ax.vlines(x=np.quantile(data[col], 0.75),
+                  ymin=0,
+                  ymax=np.interp(np.quantile(data[col], 0.75), x, y), ls=':', color='.6', label='75%')
+
+        ax.set_ylim(0,)
+
+        # Annotations and legend
+        ax.text(0.01, 0.85, f'Mean: {np.round(np.mean(data[col]),2)}',
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.7, f'Std. dev: {np.round(scipy.stats.tstd(data[col]),2)}',
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.55, f'Skewness: {np.round(scipy.stats.skew(data[col]),2)}',
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.4, f'Ex. Kurtosis: {np.round(scipy.stats.kurtosis(data[col]),2)}',
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.25, f'Count: {np.round(len(data[col]))}',
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.legend(loc='upper right')
+
+    return ax
 
 
 # Missing value plot
