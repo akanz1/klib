@@ -12,6 +12,11 @@ from .describe import _memory_usage
 from .describe import _missing_vals
 
 
+def _validate_input_0_1(value, desc):
+    if value < 0 or value > 1:
+        raise ValueError(f'Input value for {desc} is {value} but should be a float in the range 0 <= {desc} <=1.')
+
+
 def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
     '''
     Converts columns to best possible dtypes using dtypes supporting pd.NA.
@@ -22,7 +27,8 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
     information is used to label the plots.
 
     category: bool, default True
-        Change dtypes of columns to "category". Set threshold using cat_threshold.
+        Change dtypes of columns with dtype "object" to "category". Set threshold using cat_threshold or exclude \
+        columns using cat_exclude.
 
     cat_threshold: float, default 0.05
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical.
@@ -35,6 +41,8 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
     Pandas DataFrame.
 
     '''
+
+    _validate_input_0_1(cat_threshold, 'cat_threshold')
 
     data = pd.DataFrame(data).copy()
     for col in data.columns:
@@ -51,7 +59,7 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
 
 def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     '''
-    Drops entirely empty columns and rows by default and optionally provides flexibility to loosen restrictions to \
+    Drops completely empty columns and rows by default and optionally provides flexibility to loosen restrictions to \
     drop additional columns and rows based on the fraction of NA-values.
 
     Parameters
@@ -74,6 +82,9 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     Columns are dropped first. Rows are dropped based on the remaining data.
 
     '''
+
+    _validate_input_0_1(drop_threshold_cols, 'drop_threshold_cols')
+    _validate_input_0_1(drop_threshold_rows, 'drop_threshold_rows')
 
     data = pd.DataFrame(data)
     data = data.dropna(axis=0, how='all')
