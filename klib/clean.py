@@ -1,5 +1,5 @@
 '''
-Utilities for data cleaning.
+Functions for data cleaning.
 
 :author: Andreas Kanz
 
@@ -8,13 +8,9 @@ Utilities for data cleaning.
 # Imports
 import pandas as pd
 
-from .describe import _memory_usage
-from .describe import _missing_vals
-
-
-def _validate_input_0_1(value, desc):
-    if value < 0 or value > 1:
-        raise ValueError(f'Input value for {desc} is {value} but should be a float in the range 0 <= {desc} <=1.')
+from .utils import _memory_usage
+from .utils import _missing_vals
+from .utils import _validate_input_0_1
 
 
 def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
