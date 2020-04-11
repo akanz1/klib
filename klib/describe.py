@@ -47,11 +47,18 @@ def corr_mat(data, split=None, threshold=0):
 
 
 # Distribution plot
-def dist_plot(data, color_mean='orange', kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
+def dist_plot(data, color_mean='orange', showall=False, kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
     '''
     Docstring
     '''
-    for col in list(data.select_dtypes(include=['number']).columns):  # numeric cols
+    data = pd.DataFrame(data).copy()
+    cols = list(data.select_dtypes(include=['number']).columns)
+    if len(cols) >= 20 and showall is False:
+        print(f'Note: The number of features is very large ({len(cols)}), please consider splitting the data.\
+                Showing plots for the first 20 numerical features. Override this by setting showall=True')
+        cols = cols[:20]
+
+    for col in cols:  # numeric cols
         ax = sns.FacetGrid(data, height=2, aspect=6)
 
         # Default settings
@@ -95,9 +102,9 @@ def dist_plot(data, color_mean='orange', kde_kws={}, rug_kws={}, fill_kws={}, fo
                 fontdict=font_kws, transform=ax.transAxes)
         ax.text(0.01, 0.7, f'Std. dev: {np.round(scipy.stats.tstd(data[col]),2)}',
                 fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.55, f'Skewness: {np.round(scipy.stats.skew(data[col]),2)}',
+        ax.text(0.01, 0.55, f'Skew: {np.round(scipy.stats.skew(data[col]),2)}',
                 fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.4, f'Ex. Kurtosis: {np.round(scipy.stats.kurtosis(data[col]),2)}',
+        ax.text(0.01, 0.4, f'Ex. Kurt: {np.round(scipy.stats.kurtosis(data[col]),2)}',
                 fontdict=font_kws, transform=ax.transAxes)
         ax.text(0.01, 0.25, f'Count: {np.round(len(data[col]))}',
                 fontdict=font_kws, transform=ax.transAxes)
