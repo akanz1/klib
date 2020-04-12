@@ -47,26 +47,63 @@ def corr_mat(data, split=None, threshold=0):
 
 
 # Distribution plot
-def dist_plot(data, color_mean='orange', showall=False, kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
+def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.05, 0.95), showall=False,
+              kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
     '''
-    Docstring
+    Two-dimensional visualization of the missing values in a dataset.
+
+    Parameters
+    ----------
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
+
+    mean_color: any valid color, default 'orange'
+        Color of the vertical line indicating the mean of the data.
+
+    figsize: tuple, default (14, 2)
+        Use to control the figure size.
+
+    fill_range: tuple, default (0.05, 0.95)
+        Use to control set the quantiles for shading.
+
+    showall: bool, default False
+        Set to True to remove the output limit of 20 plots.
+
+    kdw_kws: dict, optional
+        Keyword arguments for kdeplot().
+
+    rug_kws: dict, optional
+        Keyword arguments for rugplot().
+
+    fill_kws:
+        Keyword arguments to control the fill.
+
+    font_kws:
+        Keyword arguments to control the font.
+
+    Returns
+    -------
+    ax: matplotlib Axes
+        Returns the Axes object with the plot for further tweaking.
     '''
+
     data = pd.DataFrame(data).copy()
-    cols = list(data.select_dtypes(include=['number']).columns)
+    cols = list(data.select_dtypes(include=['number']).columns)  # numeric cols
+
     if len(cols) >= 20 and showall is False:
-        print(f'Note: The number of features is very large ({len(cols)}), please consider splitting the data.\
-                Showing plots for the first 20 numerical features. Override this by setting showall=True')
+        print(
+            f'Note: The number of features is very large ({len(cols)}), please consider splitting the data. Showing\
+              plots for the first 20 numerical features. Override this by setting showall=True.')
         cols = cols[:20]
 
-    for col in cols:  # numeric cols
-        ax = sns.FacetGrid(data, height=2, aspect=6)
+    # Default settings
+    kde_kws = {'color': 'k', 'alpha': 0.6, 'linewidth': 1, **kde_kws}
+    rug_kws = {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04, **rug_kws}
+    fill_kws = {'color': 'brown', 'alpha': 0.1, **fill_kws}
+    font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11, **font_kws}
 
-        # Default settings
-        kde_kws = {'color': 'k', 'alpha': 0.6, 'linewidth': 1, **kde_kws}
-        rug_kws = {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04, **rug_kws}
-        fill_kws = {'color': 'brown', 'alpha': 0.1, **fill_kws}
-        font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11, **font_kws}
-
+    for col in cols:
+        fig, ax = plt.subplots(figsize=figsize)
         ax = sns.distplot(data[col], hist=False, rug=True, kde_kws=kde_kws, rug_kws=rug_kws)
 
         # Vertical lines and fill
@@ -75,15 +112,15 @@ def dist_plot(data, color_mean='orange', showall=False, kde_kws={}, rug_kws={}, 
         y = line.get_xydata()[:, 1]
         ax.fill_between(x, y,
                         where=(
-                            (x >= np.quantile(data[col], 0.05)) &
-                            (x <= np.quantile(data[col], 0.95))),
+                            (x >= np.quantile(data[col], fill_range[0])) &
+                            (x <= np.quantile(data[col], fill_range[1]))),
                         label='5% - 95%',
                         **fill_kws)
 
         ax.vlines(x=np.mean(data[col]),
                   ymin=0,
                   ymax=np.interp(np.mean(data[col]), x, y),
-                  ls='dotted', color=color_mean, lw=2, label='mean')
+                  ls='dotted', color=mean_color, lw=2, label='mean')
         ax.vlines(x=np.median(data[col]),
                   ymin=0,
                   ymax=np.interp(np.median(data[col]), x, y),
@@ -104,7 +141,7 @@ def dist_plot(data, color_mean='orange', showall=False, kde_kws={}, rug_kws={}, 
                 fontdict=font_kws, transform=ax.transAxes)
         ax.text(0.01, 0.55, f'Skew: {np.round(scipy.stats.skew(data[col]),2)}',
                 fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.4, f'Ex. Kurt: {np.round(scipy.stats.kurtosis(data[col]),2)}',
+        ax.text(0.01, 0.4, f'Kurtosis: {np.round(scipy.stats.kurtosis(data[col]),2)}',  # Excess Kurtosis
                 fontdict=font_kws, transform=ax.transAxes)
         ax.text(0.01, 0.25, f'Count: {np.round(len(data[col]))}',
                 fontdict=font_kws, transform=ax.transAxes)
@@ -127,14 +164,14 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
         Any valid colormap can be used. E.g. 'Greys', 'RdPu'. More information can be found in the matplotlib \
         documentation.
 
-    figsize: tuple, default (20,12)
+    figsize: tuple, default (20, 12)
         Use to control the figure size.
 
     sort: bool, default False
         Sort columns based on missing values in descending order and drop columns without any missing values
 
     spine_color: color-code, default '#EEEEEE'
-    Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument.
+        Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument.
 
     Returns
     -------
@@ -304,7 +341,8 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
 
     Returns
     -------
-    figure
+    ax: matplotlib Axes
+        Returns the Axes object with the plot for further tweaking.
     '''
 
     data = pd.DataFrame(data)
