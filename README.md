@@ -40,16 +40,14 @@ klib.clean # tools for cleaning datasets
 ## Examples
 
 ```python
-klib.corr_plot(df) # providing a pd.DataFrame is sufficient
-klib.corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), annot=True, dev=False, **kwargs) # however, plently of settings and options are available
-klib.corr_plot(df, split='pos') # e.g. displaying only positive correlations
+klib.corr_plot(df) # providing a pd.DataFrame is sufficient, however, plently of settings and options are available
+klib.corr_plot(df, split='pos') # displaying only positive correlations
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="655"></p>
 
 ```python
-klib.missingval_plot(df) # default representation of missing values in a DataFrame
-klib.missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_color='#EEEEEE') # plenty of settings and options are available
+klib.missingval_plot(df) # default representation of missing values in a DataFrame, use the settings to adjust to your needs
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/images/example_mv_plot.png" alt="Corr Plot Example" width="720" height="792"></p>
