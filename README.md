@@ -54,7 +54,7 @@ klib.missingval_plot(df) # default representation of missing values in a DataFra
 
 ## Contributing
 
-Pull requests and ideas are welcome. For major changes or feedback, please open an issue first to discuss what you would like to change.
+Pull requests and ideas, especially for further functions are welcome. For major changes or feedback, please open an issue first to discuss what you would like to change.
 
 ## License
 
