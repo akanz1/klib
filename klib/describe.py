@@ -19,7 +19,31 @@ from .utils import _missing_vals
 # Functions
 
 # Correlation Matrix
-def corr_mat(data, split=None, threshold=0):
+def corr_mat(data, split=None, threshold=0, method='pearson'):
+    '''
+    Parameters
+    ----------
+
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
+
+    split: {None, 'pos', 'neg', 'high', 'low'}, default None
+        Type of split to be performed.
+
+    threshold: float, default 0
+        Value between 0 <= threshold <= 1
+
+    method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
+        * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
+        * spearman: ranked/ordinal correlation, measures monotonic relationships.
+        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but
+                    more robus in smaller dataets than 'spearman'.
+
+    Returns
+    -------
+    returns a Pandas Styler object
+    '''
+
     def color_negative_red(val):
         color = '#FF3344' if val < 0 else None
         return 'color: %s' % color
@@ -27,19 +51,19 @@ def corr_mat(data, split=None, threshold=0):
     data = pd.DataFrame(data)
 
     if split == 'pos':
-        corr = data.corr().where((data.corr() >= threshold) & (data.corr() > 0))
+        corr = data.corr(method=method).where((data.corr(method=method) >= threshold) & (data.corr(method=method) > 0))
         print('Displaying positive correlations. Use "threshold" to further limit the results.')
     elif split == 'neg':
-        corr = data.corr().where((data.corr() <= threshold) & (data.corr() < 0))
+        corr = data.corr(method=method).where((data.corr(method=method) <= threshold) & (data.corr(method=method) < 0))
         print('Displaying negative correlations. Use "threshold" to further limit the results.')
     elif split == 'high':
-        corr = data.corr().where(np.abs(data.corr()) >= threshold)
+        corr = data.corr(method=method).where(np.abs(data.corr(method=method)) >= threshold)
         print('Displaying absolute correlations above a chosen threshold.')
     elif split == 'low':
-        corr = data.corr().where(np.abs(data.corr()) <= threshold)
+        corr = data.corr(method=method).where(np.abs(data.corr(method=method)) <= threshold)
         print('Displaying absolute correlations below a chosen threshold.')
     else:
-        corr = data.corr()
+        corr = data.corr(method=method)
         split = 'None'
         threshold = 'None'
 
@@ -285,7 +309,8 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
 
 
 # Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), annot=True, dev=False, **kwargs):
+def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figsize=(12, 10), annot=True,
+              dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
@@ -305,6 +330,12 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
 
     threshold: float, default 0
         Value between 0 <= threshold <= 1
+
+    method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
+        * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
+        * spearman: ranked/ordinal correlation, measures monotonic relationships.
+        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but
+                   more robus in smaller dataets than 'spearman'.
 
     cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
         The mapping from data values to color space.
@@ -348,7 +379,7 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
     data = pd.DataFrame(data)
 
     # Obtain correlation matrix
-    corr = corr_mat(data, split=split, threshold=threshold).data
+    corr = corr_mat(data, split=split, threshold=threshold, method=method).data
 
     # Generate mask for the upper triangle
     mask = np.triu(np.ones_like(corr, dtype=np.bool))
@@ -379,7 +410,7 @@ def corr_plot(data, split=None, threshold=0, cmap='BrBG', figsize=(12, 10), anno
                 **kwargs
                 )
 
-    ax.set_title('Feature-correlation Matrix', fontdict={'fontsize': 18})
+    ax.set_title(f'Feature-correlation Matrix - {method} correlation coefficient', fontdict={'fontsize': 18})
 
     # Display settings
     if dev:
