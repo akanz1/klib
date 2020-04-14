@@ -70,6 +70,133 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
     return corr.style.applymap(color_negative_red).format("{:.2f}", na_rep='-')
 
 
+# Correlation matrix / heatmap
+def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figsize=(12, 10), annot=True,
+              dev=False, **kwargs):
+    '''
+    Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
+
+    Parameters
+    ----------
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
+
+    split: {None, 'pos', 'neg', 'high', 'low'}, default None
+        Type of split to be performed.
+
+        * None: visualize all correlations between the feature-columns.
+        * pos: visualize all positive correlations between the feature-columns above the threshold.
+        * neg: visualize all negative correlations between the feature-columns below the threshold.
+        * high: visualize all correlations between the feature-columns for which abs(corr) > threshold is True.
+        * low: visualize all correlations between the feature-columns for which abs(corr) < threshold is True.
+
+    threshold: float, default 0
+        Value between 0 <= threshold <= 1
+
+    method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
+        * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
+        * spearman: ranked/ordinal correlation, measures monotonic relationships.
+        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but
+                   more robus in smaller dataets than 'spearman'.
+
+    cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
+        The mapping from data values to color space.
+
+    figsize: tuple, default (12, 10)
+        Use to control the figure size.
+
+    annot: bool, default True
+        Use to show or hide annotations.
+
+    dev: bool, default False
+        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for \
+        presentations.
+
+    **kwargs: optional
+        Additional elements to control the visualization of the plot, e.g.:
+
+        * mask: bool, default True
+        If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this \
+        case to avoid overlap.
+        * vmax: float, default is calculated from the given correlation coefficients.
+        Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
+        * vmin: float, default is calculated from the given correlation coefficients.
+        Value between -1 <= vmin <= 1 or vmax, limits the range of the colorbar.
+        * linewidths: float, default 0.5
+        Controls the line-width inbetween the squares.
+        * annot_kws: dict, default {'size' : 10}
+        Controls the font size of the annotations. Only available when annot = True.
+        * cbar_kws: dict, default {'shrink': .95, 'aspect': 30}
+        Controls the size of the colorbar.
+        * Many more kwargs are available, i.e. 'alpha' to control blending, or options to adjust labels, ticks ...
+
+        Kwargs can be supplied through a dictionary of key-value pairs (see above).
+
+    Returns
+    -------
+    ax: matplotlib Axes
+        Returns the Axes object with the plot for further tweaking.
+    '''
+
+    data = pd.DataFrame(data)
+
+    # Obtain correlation matrix
+    corr = corr_mat(data, split=split, threshold=threshold, method=method).data
+
+    # Generate mask for the upper triangle
+    mask = np.triu(np.ones_like(corr, dtype=np.bool))
+
+    # Compute dimensions and correlation range to adjust settings
+    vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
+    vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
+
+    # Set up the matplotlib figure and generate colormap
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # Specify kwargs for the heatmap
+    kwargs = {'mask': mask,
+              'cmap': cmap,
+              'annot': annot,
+              'vmax': vmax,
+              'vmin': vmin,
+              'linewidths': .5,
+              'annot_kws': {'size': 10},
+              'cbar_kws': {'shrink': .95, 'aspect': 30},
+              **kwargs}
+
+    # Draw heatmap with mask and some default settings
+    sns.heatmap(corr,
+                center=0,
+                square=True,
+                fmt='.2f',
+                **kwargs
+                )
+
+    ax.set_title(f'Feature-correlation Matrix - {method} correlation coefficient', fontdict={'fontsize': 18})
+
+    # Display settings
+    if dev:
+        fig.suptitle(f"\
+            Settings (dev-mode): \n\
+            - split-mode: {split} \n\
+            - threshold: {threshold} \n\
+            - method: {method} \n\
+            - annotations: {annot} \n\
+            - cbar: \n\
+                - vmax: {vmax} \n\
+                - vmin: {vmin} \n\
+            - linewidths: {kwargs['linewidths']} \n\
+            - annot_kws: {kwargs['annot_kws']} \n\
+            - cbar_kws: {kwargs['cbar_kws']}",
+                     fontsize=12,
+                     color='gray',
+                     x=0.35,
+                     y=0.85,
+                     ha='left')
+
+    return ax
+
+
 # Distribution plot
 def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.05, 0.95), showall=False,
               kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
@@ -309,130 +436,3 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
 
         ax1.set_title('Missing value plot', pad=40, fontdict={'fontsize': 18})
         return grid
-
-
-# Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figsize=(12, 10), annot=True,
-              dev=False, **kwargs):
-    '''
-    Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
-
-    Parameters
-    ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
-
-    split: {None, 'pos', 'neg', 'high', 'low'}, default None
-        Type of split to be performed.
-
-        * None: visualize all correlations between the feature-columns.
-        * pos: visualize all positive correlations between the feature-columns above the threshold.
-        * neg: visualize all negative correlations between the feature-columns below the threshold.
-        * high: visualize all correlations between the feature-columns for which abs(corr) > threshold is True.
-        * low: visualize all correlations between the feature-columns for which abs(corr) < threshold is True.
-
-    threshold: float, default 0
-        Value between 0 <= threshold <= 1
-
-    method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
-        * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
-        * spearman: ranked/ordinal correlation, measures monotonic relationships.
-        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but
-                   more robus in smaller dataets than 'spearman'.
-
-    cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
-        The mapping from data values to color space.
-
-    figsize: tuple, default (12, 10)
-        Use to control the figure size.
-
-    annot: bool, default True
-        Use to show or hide annotations.
-
-    dev: bool, default False
-        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for \
-        presentations.
-
-    **kwargs: optional
-        Additional elements to control the visualization of the plot, e.g.:
-
-        * mask: bool, default True
-        If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this \
-        case to avoid overlap.
-        * vmax: float, default is calculated from the given correlation coefficients.
-        Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
-        * vmin: float, default is calculated from the given correlation coefficients.
-        Value between -1 <= vmin <= 1 or vmax, limits the range of the colorbar.
-        * linewidths: float, default 0.5
-        Controls the line-width inbetween the squares.
-        * annot_kws: dict, default {'size' : 10}
-        Controls the font size of the annotations. Only available when annot = True.
-        * cbar_kws: dict, default {'shrink': .95, 'aspect': 30}
-        Controls the size of the colorbar.
-        * Many more kwargs are available, i.e. 'alpha' to control blending, or options to adjust labels, ticks ...
-
-        Kwargs can be supplied through a dictionary of key-value pairs (see above).
-
-    Returns
-    -------
-    ax: matplotlib Axes
-        Returns the Axes object with the plot for further tweaking.
-    '''
-
-    data = pd.DataFrame(data)
-
-    # Obtain correlation matrix
-    corr = corr_mat(data, split=split, threshold=threshold, method=method).data
-
-    # Generate mask for the upper triangle
-    mask = np.triu(np.ones_like(corr, dtype=np.bool))
-
-    # Compute dimensions and correlation range to adjust settings
-    vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
-    vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
-
-    # Set up the matplotlib figure and generate colormap
-    fig, ax = plt.subplots(figsize=figsize)
-
-    # Specify kwargs for the heatmap
-    kwargs = {'mask': mask,
-              'cmap': cmap,
-              'annot': annot,
-              'vmax': vmax,
-              'vmin': vmin,
-              'linewidths': .5,
-              'annot_kws': {'size': 10},
-              'cbar_kws': {'shrink': .95, 'aspect': 30},
-              **kwargs}
-
-    # Draw heatmap with mask and some default settings
-    sns.heatmap(corr,
-                center=0,
-                square=True,
-                fmt='.2f',
-                **kwargs
-                )
-
-    ax.set_title(f'Feature-correlation Matrix - {method} correlation coefficient', fontdict={'fontsize': 18})
-
-    # Display settings
-    if dev:
-        fig.suptitle(f"\
-            Settings (dev-mode): \n\
-            - split-mode: {split} \n\
-            - threshold: {threshold} \n\
-            - method: {method} \n\
-            - annotations: {annot} \n\
-            - cbar: \n\
-                - vmax: {vmax} \n\
-                - vmin: {vmin} \n\
-            - linewidths: {kwargs['linewidths']} \n\
-            - annot_kws: {kwargs['annot_kws']} \n\
-            - cbar_kws: {kwargs['cbar_kws']}",
-                     fontsize=12,
-                     color='gray',
-                     x=0.35,
-                     y=0.85,
-                     ha='left')
-
-    return ax
