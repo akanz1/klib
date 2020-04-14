@@ -305,7 +305,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.05, 0.95
 
 
 # Missing value plot
-def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_color='#EEEEEE'):
+def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_color='#EEEEEE'):
     '''
     Two-dimensional visualization of the missing values in a dataset.
 
@@ -352,11 +352,11 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
     else:
         # Create figure and axes
         fig = plt.figure(figsize=figsize)
-        grid = fig.add_gridspec(nrows=6, ncols=6, left=0.05, right=0.48, wspace=0.05)
-        ax1 = fig.add_subplot(grid[:1, :5])
-        ax2 = fig.add_subplot(grid[1:, :5])
-        ax3 = fig.add_subplot(grid[:1, 5:])
-        ax4 = fig.add_subplot(grid[1:, 5:])
+        gs = fig.add_gridspec(nrows=6, ncols=6, left=0.05, wspace=0.05)
+        ax1 = fig.add_subplot(gs[:1, :5])
+        ax2 = fig.add_subplot(gs[1:, :5])
+        ax3 = fig.add_subplot(gs[:1, 5:])
+        ax4 = fig.add_subplot(gs[1:, 5:])
 
         # ax1 - Barplot
         colors = plt.get_cmap(cmap)(mv_cols / np.max(mv_cols))  # color bars by height
@@ -434,5 +434,6 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 12), sort=False, spine_col
         ax4.set_xlim(0, max(mv_rows)+0.5)
         ax4.grid(linestyle=':', linewidth=1)
 
-        ax1.set_title('Missing value plot', pad=40, fontdict={'fontsize': 18})
-        return grid
+        gs.figure.suptitle('Missing value plot', x=0.45, y=0.94, fontsize=18, color='#111111')
+
+        return gs
