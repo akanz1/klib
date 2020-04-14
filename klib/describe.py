@@ -114,10 +114,12 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.05, 0.95
     data = pd.DataFrame(data).copy()
     cols = list(data.select_dtypes(include=['number']).columns)  # numeric cols
 
-    if len(cols) >= 20 and showall is False:
+    if len(cols) == 0:
+        print('No columns with numeric data were detected.')
+    elif len(cols) >= 20 and showall is False:
         print(
-            f'Note: The number of features is very large ({len(cols)}), please consider splitting the data. Showing\
-              plots for the first 20 numerical features. Override this by setting showall=True.')
+            f'Note: The number of features is very large ({len(cols)}), please consider splitting the data.\
+            Showing plots for the first 20 numerical features. Override this by setting showall=True.')
         cols = cols[:20]
 
     # Default settings
@@ -126,6 +128,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.05, 0.95
     fill_kws = {'color': 'brown', 'alpha': 0.1, **fill_kws}
     font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11, **font_kws}
 
+    ax = []
     for col in cols:
         fig, ax = plt.subplots(figsize=figsize)
         ax = sns.distplot(data[col], hist=False, rug=True, kde_kws=kde_kws, rug_kws=rug_kws)
@@ -138,7 +141,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.05, 0.95
                         where=(
                             (x >= np.quantile(data[col], fill_range[0])) &
                             (x <= np.quantile(data[col], fill_range[1]))),
-                        label='5% - 95%',
+                        label=f'{fill_range[0]*100:.0f}% - {fill_range[1]*100:.0f}%',
                         **fill_kws)
 
         ax.vlines(x=np.mean(data[col]),
@@ -418,6 +421,7 @@ def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figs
             Settings (dev-mode): \n\
             - split-mode: {split} \n\
             - threshold: {threshold} \n\
+            - method: {method} \n\
             - annotations: {annot} \n\
             - cbar: \n\
                 - vmax: {vmax} \n\
