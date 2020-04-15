@@ -198,7 +198,7 @@ def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figs
 
 
 # Distribution plot
-def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.05, 0.95), showall=False,
+def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.975), hist=False, showall=False,
               kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
     '''
     Two-dimensional visualization of the missing values in a dataset.
@@ -214,8 +214,12 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.05, 0.95
     figsize: tuple, default (14, 2)
         Use to control the figure size.
 
-    fill_range: tuple, default (0.05, 0.95)
-        Use to control set the quantiles for shading.
+    fill_range: tuple, default (0.025, 0.975)
+        Use to control set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations\
+        above and below the mean.
+
+    hist: bool, default False
+        Set to True to display histogram bars in the plot.
 
     showall: bool, default False
         Set to True to remove the output limit of 20 plots.
@@ -258,7 +262,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.05, 0.95
     ax = []
     for col in cols:
         fig, ax = plt.subplots(figsize=figsize)
-        ax = sns.distplot(data[col], hist=False, rug=True, kde_kws=kde_kws, rug_kws=rug_kws)
+        ax = sns.distplot(data[col], hist=hist, rug=True, kde_kws=kde_kws, rug_kws=rug_kws)
 
         # Vertical lines and fill
         line = ax.lines[0]
