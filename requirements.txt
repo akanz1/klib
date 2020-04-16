@@ -3,5 +3,5 @@ numpy
 pandas
 seaborn
 
-#Additionally for testing
+# Additional requirements for testing
 jinja2

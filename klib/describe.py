@@ -97,7 +97,7 @@ def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figs
         * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
         * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but
-                   more robus in smaller dataets than 'spearman'.
+                   more robust in smaller dataets than 'spearman'.
 
     cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
         The mapping from data values to color space.
