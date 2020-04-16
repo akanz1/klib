@@ -151,7 +151,9 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
             target_data = pd.Series(target)
 
         corr = pd.DataFrame(data.corrwith(target_data))
+        corr.rename_axis(target, axis=1, inplace=True)
         corr = _corr_selector(corr, split=split, threshold=threshold)
+        corr = corr.sort_values(corr.columns[0], ascending=False)
         vmax = np.round(np.nanmax(corr)-0.05, 2)
         vmin = np.round(np.nanmin(corr)+0.05, 2)
         mask = False

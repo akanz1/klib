@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import unittest
 from klib.describe import corr_mat
-# from klib.utils import _missing_vals
 
 if __name__ == '__main__':
     unittest.main()
