@@ -76,7 +76,7 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
 
 
 # Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figsize=(12, 10), annot=True,
+def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap='BrBG', figsize=(12, 10), annot=True,
               dev=False, **kwargs):
     '''
     Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
@@ -98,6 +98,10 @@ def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figs
     threshold: float, default 0
         Value between 0 <= threshold <= 1
 
+    target: string, list, np.array or pd.Series, default None
+        Specify target for correlation. E.g. label column to generate only the correlations between each feature\
+        and the label.
+
     method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
         * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
@@ -114,8 +118,7 @@ def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figs
         Use to show or hide annotations.
 
     dev: bool, default False
-        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed. Use for \
-        presentations.
+        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed.s
 
     **kwargs: optional
         Additional elements to control the visualization of the plot, e.g.:
@@ -149,18 +152,32 @@ def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figs
     _validate_input_bool(dev, 'dev')
 
     data = pd.DataFrame(data)
+    mask = False
+    square = False
 
-    # Obtain correlation matrix
-    corr = corr_mat(data, split=split, threshold=threshold, method=method).data
+    # Obtain correlations
+    if isinstance(target, str):
+        target_data = data[target]
+        data = data.drop(target, axis=1)
+        corr = pd.DataFrame(data.corrwith(target_data))
+        vmax = np.round(np.nanmax(corr)-0.05, 2)
+        vmin = np.round(np.nanmin(corr)+0.05, 2)
 
-    # Generate mask for the upper triangle
-    mask = np.triu(np.ones_like(corr, dtype=np.bool))
+    elif isinstance(target, (list, pd.Series, np.ndarray)):
+        target_data = pd.Series(target)
+        corr = pd.DataFrame(data.corrwith(target_data))
+        vmax = np.round(np.nanmax(corr)-0.05, 2)
+        vmin = np.round(np.nanmin(corr)+0.05, 2)
 
-    # Compute dimensions and correlation range to adjust settings
-    vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
-    vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
+    else:
+        corr = corr_mat(data, split=split, threshold=threshold, method=method).data
 
-    # Set up the matplotlib figure and generate colormap
+        mask = np.triu(np.ones_like(corr, dtype=np.bool))  # Generate mask for the upper triangle
+        square = True
+
+        vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
+        vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
+
     fig, ax = plt.subplots(figsize=figsize)
 
     # Specify kwargs for the heatmap
@@ -177,12 +194,12 @@ def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figs
     # Draw heatmap with mask and some default settings
     sns.heatmap(corr,
                 center=0,
-                square=True,
+                square=square,
                 fmt='.2f',
                 **kwargs
                 )
 
-    ax.set_title(f'Feature-correlation Matrix - {method} correlation coefficient', fontdict={'fontsize': 18})
+    ax.set_title(f'Feature-correlation ({method})', fontdict={'fontsize': 18})
 
     # Display settings
     if dev:
