@@ -142,6 +142,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
 
     # Obtain correlations
     if isinstance(target, (str, list, pd.Series, np.ndarray)):
+        target_data = []
         if isinstance(target, str):
             target_data = data[target]
             data = data.drop(target, axis=1)
