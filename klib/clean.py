@@ -19,8 +19,7 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame.
 
     category: bool, default True
         Change dtypes of columns with dtype "object" to "category". Set threshold using cat_threshold or exclude \
@@ -60,8 +59,7 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame.
 
     drop_threshold_cols: float, default 1
         Drop columns with NA-ratio above the specified threshold.
@@ -99,8 +97,7 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, cate
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame.
 
     drop_threshold_cols: float, default 0.95
     Drop columns with NA-ratio above the specified threshold.

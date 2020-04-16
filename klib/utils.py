@@ -15,8 +15,7 @@ def _memory_usage(data):
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame.
 
     Returns
     -------
@@ -36,8 +35,7 @@ def _missing_vals(data):
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
+    data: 2D dataset that can be coerced into Pandas DataFrame.
 
     Returns
     -------
