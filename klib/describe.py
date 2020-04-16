@@ -13,6 +13,7 @@ import pandas as pd
 import scipy
 import seaborn as sns
 
+from .utils import _corr_selector
 from .utils import _missing_vals
 from .utils import _validate_input_0_1
 from .utils import _validate_input_bool
@@ -56,22 +57,7 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
     data = pd.DataFrame(data)
     corr = data.corr(method=method)
 
-    if split == 'pos':
-        corr = corr.where((corr >= threshold) & (corr > 0))
-        print('Displaying positive correlations. Use "threshold" to further limit the results.')
-    elif split == 'neg':
-        corr = corr.where((corr <= threshold) & (corr < 0))
-        print('Displaying negative correlations. Use "threshold" to further limit the results.')
-    elif split == 'high':
-        corr = corr.where(np.abs(corr) >= threshold)
-        print('Displaying absolute correlations above a chosen threshold.')
-    elif split == 'low':
-        corr = corr.where(np.abs(corr) <= threshold)
-        print('Displaying absolute correlations below a chosen threshold.')
-    else:
-        corr = corr
-        split = 'None'
-        threshold = 'None'
+    corr = _corr_selector(corr, split=split, threshold=threshold)
 
     return corr.style.applymap(color_negative_red).format("{:.2f}", na_rep='-')
 
@@ -157,16 +143,16 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     square = False
 
     # Obtain correlations
-    if isinstance(target, str):
-        target_data = data[target]
-        data = data.drop(target, axis=1)
-        corr = pd.DataFrame(data.corrwith(target_data))
-        vmax = np.round(np.nanmax(corr)-0.05, 2)
-        vmin = np.round(np.nanmin(corr)+0.05, 2)
+    if isinstance(target, (str, list, pd.Series, np.ndarray)):
+        if isinstance(target, str):
+            target_data = data[target]
+            data = data.drop(target, axis=1)
 
-    elif isinstance(target, (list, pd.Series, np.ndarray)):
-        target_data = pd.Series(target)
+        elif isinstance(target, (list, pd.Series, np.ndarray)):
+            target_data = pd.Series(target)
+
         corr = pd.DataFrame(data.corrwith(target_data))
+        corr = _corr_selector(corr, split=split, threshold=threshold)
         vmax = np.round(np.nanmax(corr)-0.05, 2)
         vmin = np.round(np.nanmin(corr)+0.05, 2)
 
