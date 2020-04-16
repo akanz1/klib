@@ -216,7 +216,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
 def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.975), hist=False, showall=False,
               kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
     '''
-    Two-dimensional visualization of the missing values in a dataset.
+    Two-dimensional visualization of the distribution of numerical features.
 
     Parameters
     ----------
@@ -268,7 +268,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
         print('No columns with numeric data were detected.')
     elif len(cols) >= 20 and showall is False:
         print(
-            f'Note: The number of features is very large ({len(cols)}), please consider splitting the data.\
+            f'Note: The number of numerical features is very large ({len(cols)}), please consider splitting the data.\
             Showing plots for the first 20 numerical features. Override this by setting showall=True.')
         cols = cols[:20]
 
