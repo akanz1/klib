@@ -14,6 +14,8 @@ import scipy
 import seaborn as sns
 
 from .utils import _missing_vals
+from .utils import _validate_input_0_1
+from .utils import _validate_input_bool
 
 
 # Functions
@@ -43,6 +45,9 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
     -------
     returns a Pandas Styler object
     '''
+
+    # Validate Inputs
+    _validate_input_0_1(threshold, 'threshold')
 
     def color_negative_red(val):
         color = '#FF3344' if val < 0 else None
@@ -137,6 +142,11 @@ def corr_plot(data, split=None, threshold=0, method='pearson', cmap='BrBG', figs
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
     '''
+
+    # Validate Inputs
+    _validate_input_0_1(threshold, 'threshold')
+    _validate_input_bool(annot, 'annot')
+    _validate_input_bool(dev, 'dev')
 
     data = pd.DataFrame(data)
 
@@ -241,6 +251,10 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
     '''
+
+    # Validate Inputs
+    _validate_input_bool(hist, 'hist')
+    _validate_input_bool(showall, 'showall')
 
     data = pd.DataFrame(data).copy()
     cols = list(data.select_dtypes(include=['number']).columns)  # numeric cols
