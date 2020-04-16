@@ -6,7 +6,42 @@ Utilities and auxiliary functions.
 '''
 
 # Imports
+import numpy as np
 import pandas as pd
+
+
+def _corr_selector(corr, split=None, threshold=0):
+    '''
+    Parameters
+    ----------
+    corr: List or matrix of correlations.
+
+    split: {None, 'pos', 'neg', 'high', 'low'}, default None
+        Type of split to be performed.
+
+    threshold: float, default 0
+        Value between 0 <= threshold <= 1
+
+    Returns:
+    -------
+    corr: List or matrix of (filtered) correlations.
+    '''
+    if split == 'pos':
+        corr = corr.where((corr >= threshold) & (corr > 0))
+        print('Displaying positive correlations. Use "threshold" to further limit the results.')
+    elif split == 'neg':
+        corr = corr.where((corr <= threshold) & (corr < 0))
+        print('Displaying negative correlations. Use "threshold" to further limit the results.')
+    elif split == 'high':
+        corr = corr.where(np.abs(corr) >= threshold)
+        print('Displaying absolute correlations above a chosen threshold.')
+    elif split == 'low':
+        corr = corr.where(np.abs(corr) <= threshold)
+        print('Displaying absolute correlations below a chosen threshold.')
+    else:
+        corr = corr
+
+    return corr
 
 
 def _drop_duplicates(data):
