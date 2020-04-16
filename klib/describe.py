@@ -54,21 +54,22 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
         return 'color: %s' % color
 
     data = pd.DataFrame(data)
+    corr = data.corr(method=method)
 
     if split == 'pos':
-        corr = data.corr(method=method).where((data.corr(method=method) >= threshold) & (data.corr(method=method) > 0))
+        corr = corr.where((corr >= threshold) & (corr > 0))
         print('Displaying positive correlations. Use "threshold" to further limit the results.')
     elif split == 'neg':
-        corr = data.corr(method=method).where((data.corr(method=method) <= threshold) & (data.corr(method=method) < 0))
+        corr = corr.where((corr <= threshold) & (corr < 0))
         print('Displaying negative correlations. Use "threshold" to further limit the results.')
     elif split == 'high':
-        corr = data.corr(method=method).where(np.abs(data.corr(method=method)) >= threshold)
+        corr = corr.where(np.abs(corr) >= threshold)
         print('Displaying absolute correlations above a chosen threshold.')
     elif split == 'low':
-        corr = data.corr(method=method).where(np.abs(data.corr(method=method)) <= threshold)
+        corr = corr.where(np.abs(corr) <= threshold)
         print('Displaying absolute correlations below a chosen threshold.')
     else:
-        corr = data.corr(method=method)
+        corr = corr
         split = 'None'
         threshold = 'None'
 
