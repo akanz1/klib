@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import unittest
+from klib.utils import _corr_selector
 from klib.utils import _drop_duplicates
 from klib.utils import _missing_vals
 from klib.utils import _validate_input_0_1
@@ -8,6 +9,40 @@ from klib.utils import _validate_input_bool
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class Test__corr_selector(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.df_data_corr = pd.DataFrame([[1, 7, 2, 2, 4, 7],
+                                         [3, 8, 3, 3, 7, 1],
+                                         [5, 7, 9, 5, 1, 4],
+                                         [1, 7, 8, 6, 1, 8],
+                                         [1, 7, 5, 6, 2, 6],
+                                         [2, 7, 3, 3, 5, 3]])
+
+        cls.target = pd.Series([1, 2, 4, 7, 4, 2])
+
+    def test__corr_selector_matrix(self):
+        self.assertEqual(_corr_selector(self.df_data_corr.corr()).shape, (6, 6))
+        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='pos').isna().sum().sum(), 18)
+        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='pos', threshold=0.5).isna().sum().sum(), 26)
+        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='neg', threshold=-0.75).isna().sum().sum(), 32)
+        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='high', threshold=0.15).isna().sum().sum(), 4)
+        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='low', threshold=0.85).isna().sum().sum(), 6)
+
+    def test__corr_selector_label(self):
+        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target)).shape, (6, ))
+        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target), split='pos').isna().sum(), 3)
+        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(
+            self.target), split='pos', threshold=0.8).isna().sum(), 4)
+        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(
+            self.target), split='neg', threshold=-0.7).isna().sum(), 5)
+        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(
+            self.target), split='high', threshold=0.2).isna().sum(), 1)
+        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(
+            self.target), split='low', threshold=0.8).isna().sum(), 2)
 
 
 class Test__drop_duplicates(unittest.TestCase):
@@ -22,7 +57,7 @@ class Test__drop_duplicates(unittest.TestCase):
                                          [1, 2, 3, pd.NA],
                                          [pd.NA, pd.NA, pd.NA, pd.NA]])
 
-    def test_drop_dupl(self):
+    def test__drop_dupl(self):
         # Test dropping of duplicate rows
         self.assertAlmostEqual(_drop_duplicates(self.data_dupl_df)[0].shape, (4, 4))
         # Test if the resulting DataFrame is equal to using the pandas method
