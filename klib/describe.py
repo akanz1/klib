@@ -139,8 +139,6 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     _validate_input_bool(dev, 'dev')
 
     data = pd.DataFrame(data)
-    mask = False
-    square = False
 
     # Obtain correlations
     if isinstance(target, (str, list, pd.Series, np.ndarray)):
@@ -155,6 +153,8 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
         corr = _corr_selector(corr, split=split, threshold=threshold)
         vmax = np.round(np.nanmax(corr)-0.05, 2)
         vmin = np.round(np.nanmin(corr)+0.05, 2)
+        mask = False
+        square = False
 
     else:
         corr = corr_mat(data, split=split, threshold=threshold, method=method).data
