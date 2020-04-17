@@ -215,8 +215,8 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
 
 
 # Distribution plot
-def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.975), hist=False, showall=False,
-              kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
+def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.975), hist=False, bins=None,
+              showall=False, kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
     '''
     Two-dimensional visualization of the distribution of numerical features.
 
@@ -237,6 +237,9 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
 
     hist: bool, default False
         Set to True to display histogram bars in the plot.
+
+    bins: integer, default None
+        Specification of the number of hist bins. Requires hist = True
 
     showall: bool, default False
         Set to True to remove the output limit of 20 plots.
@@ -275,7 +278,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
         cols = cols[:20]
 
     # Default settings
-    kde_kws = {'color': 'k', 'alpha': 0.6, 'linewidth': 1, **kde_kws}
+    kde_kws = {'color': 'k', 'alpha': 0.7, 'linewidth': 1, **kde_kws}
     rug_kws = {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04, **rug_kws}
     fill_kws = {'color': 'brown', 'alpha': 0.1, **fill_kws}
     font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11, **font_kws}
@@ -283,7 +286,8 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     ax = []
     for col in cols:
         fig, ax = plt.subplots(figsize=figsize)
-        ax = sns.distplot(data[col], hist=hist, rug=True, kde_kws=kde_kws, rug_kws=rug_kws)
+        ax = sns.distplot(data[col], bins=bins, hist=hist, rug=True, kde_kws=kde_kws,
+                          rug_kws=rug_kws, hist_kws={'alpha': 0.5, 'histtype': 'step'})
 
         # Vertical lines and fill
         line = ax.lines[0]
@@ -303,15 +307,16 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
         ax.vlines(x=np.median(data[col]),
                   ymin=0,
                   ymax=np.interp(np.median(data[col]), x, y),
-                  ls=':', color='.4', label='median')
+                  ls=':', color='.3', label='median')
         ax.vlines(x=np.quantile(data[col], 0.25),
                   ymin=0,
-                  ymax=np.interp(np.quantile(data[col], 0.25), x, y), ls=':', color='.6', label='25%')
+                  ymax=np.interp(np.quantile(data[col], 0.25), x, y), ls=':', color='.5', label='25%')
         ax.vlines(x=np.quantile(data[col], 0.75),
                   ymin=0,
-                  ymax=np.interp(np.quantile(data[col], 0.75), x, y), ls=':', color='.6', label='75%')
+                  ymax=np.interp(np.quantile(data[col], 0.75), x, y), ls=':', color='.5', label='75%')
 
         ax.set_ylim(0,)
+        ax.set_xlim(ax.get_xlim()[0]*1.1, ax.get_xlim()[1]*1.1)
 
         # Annotations and legend
         ax.text(0.01, 0.85, f'Mean: {np.round(np.mean(data[col]),2)}',
