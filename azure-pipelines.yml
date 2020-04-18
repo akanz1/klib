@@ -10,12 +10,23 @@ strategy:
   matrix:
     linux:
       imageName: 'ubuntu-16.04'
-      Python36:
-        python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-      Python38:
-        python.version: '3.8'
+      python.version3.6: '3.6'
+      python.version3.7: '3.7'
+      python.version3.8: '3.8'
+    mac:
+      imageName: 'macos-10.14'
+    windows:
+      imageName: 'vs2017-win2016'
+
+pool:
+  vmImage: $(imageName)
+  matrix:
+    Python36:
+      python.version: '3.6'
+    Python37:
+      python.version: '3.7'
+    Python38:
+      python.version: '3.8'
 
 steps:
 - task: UsePythonVersion@0
