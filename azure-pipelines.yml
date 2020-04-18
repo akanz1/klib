@@ -17,13 +17,18 @@ strategy:
 
 pool:
   vmImage: $(imageName)
+  matrix:
+    Python27:
+      python.version: '2.7'
+    Python35:
+      python.version: '3.5'
+    Python36:
+      python.version: '3.6'
 
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.7'
-    addToPath: true
-    architecture: 'x64'
+    versionSpec: '$(python.version)'
 
 - script: |
     python -m pip install --upgrade pip
