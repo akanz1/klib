@@ -6,23 +6,16 @@
 trigger:
 - master
 
-parameters:
-  image: ['ubuntu-16.04','macos-10.14','vs2017-win2016']
-  python.version: ['3.6','3.7', '3.8']
-
-jobs:
-  - ${{ each platform in parameters.platform }}:
-    - ${{ each test in parameters.test }}:
-      - ${{ each testlevel2 in parameters.testlevel2 }}:
-        - job: 
-          displayName: ${{ platform }}_${{ test }}
-          steps:
-          - task: Powershell@2
-            displayName: '${{ platform }}-${{ test }}'
-            inputs:
-              targettype: inline
-              script: echo '${{ platform }}-${{ test }}'
-
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-16.04'
+      Python36:
+        python.version: '3.6'
+      Python37:
+        python.version: '3.7'
+      Python38:
+        python.version: '3.8'
 
 steps:
 - task: UsePythonVersion@0
