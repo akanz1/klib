@@ -32,7 +32,7 @@ klib.describe # tools for visualizing datasets
 - klib.missingval_plot() # returns a figure containing information about missing values
 
 klib.clean # tools for cleaning datasets
-- klib.data_cleaning() # perform initial datacleaning on a dataset
+- klib.data_cleaning() # perform datacleaning (drop duplicates & empty rows/columns, adjust dtypes,...) on a dataset
 - klib.convert_datatypes() # converts existing to more efficient dtypes, also called inside ".data_cleaning()"
 - klib.drop_missing() # drops missing values, also called in ".data_cleaning()"
 ```
