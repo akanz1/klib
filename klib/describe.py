@@ -45,6 +45,7 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
     Returns
     -------
     returns a Pandas Styler object
+
     '''
 
     # Validate Inputs
@@ -131,6 +132,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     -------
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
+
     '''
 
     # Validate Inputs
@@ -260,6 +262,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     -------
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
+
     '''
 
     # Validate Inputs
@@ -366,6 +369,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
     Returns
     -------
     figure
+
     '''
 
     data = pd.DataFrame(data)
