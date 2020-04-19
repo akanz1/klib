@@ -216,7 +216,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
 
 # Distribution plot
 def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.975), hist=False, bins=None,
-              showall=False, kde_kws={}, rug_kws={}, fill_kws={}, font_kws={}):
+              showall=False, kde_kws=None, rug_kws=None, fill_kws=None, font_kws=None):
     '''
     Two-dimensional visualization of the distribution of numerical features.
 
@@ -244,16 +244,16 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     showall: bool, default False
         Set to True to remove the output limit of 20 plots.
 
-    kdw_kws: dict, optional
+    kdw_kws: dict, default None
         Keyword arguments for kdeplot().
 
-    rug_kws: dict, optional
+    rug_kws: dict, default None
         Keyword arguments for rugplot().
 
-    fill_kws:
+    fill_kws: dict, default None
         Keyword arguments to control the fill.
 
-    font_kws:
+    font_kws: dict, default None
         Keyword arguments to control the font.
 
     Returns
@@ -265,6 +265,12 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     # Validate Inputs
     _validate_input_bool(hist, 'hist')
     _validate_input_bool(showall, 'showall')
+
+    # Handle dictionary defaults
+    kde_kws = {} if kde_kws is None else kde_kws.copy()
+    rug_kws = {} if rug_kws is None else rug_kws.copy()
+    fill_kws = {} if fill_kws is None else fill_kws.copy()
+    font_kws = {} if font_kws is None else font_kws.copy()
 
     data = pd.DataFrame(data).copy()
     cols = list(data.select_dtypes(include=['number']).columns)  # numeric cols

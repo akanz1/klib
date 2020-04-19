@@ -15,7 +15,7 @@ from .utils import _validate_input_0_1
 from .utils import _validate_input_bool
 
 
-def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
+def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None):
     '''
     Converts columns to best possible dtypes using dtypes supporting pd.NA.
 
@@ -30,7 +30,7 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
     cat_threshold: float, default 0.05
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical.
 
-    cat_exclude: default [] (empty list)
+    cat_exclude: list, default None
         List of columns to exclude from categorical conversion.
 
     Returns
@@ -42,6 +42,8 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=[]):
     # Validate Inputs
     _validate_input_bool(category, 'Category')
     _validate_input_0_1(cat_threshold, 'cat_threshold')
+
+    cat_exclude = [] if cat_exclude is None else cat_exclude.copy()
 
     data = pd.DataFrame(data).copy()
     for col in data.columns:
@@ -95,7 +97,7 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
 
 
 def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop_duplicates=True, category=True,
-                  cat_threshold=0.03, cat_exclude=[], show='changes'):
+                  cat_threshold=0.03, cat_exclude=None, show='changes'):
     '''
     Perform initial data cleaning tasks on a dataset, such as dropping empty rows and columns and optimizing the \
     datatypes.
@@ -119,7 +121,7 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
     cat_threshold: float, default 0.03
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical.
 
-    cat_exclude: default [] (empty list)
+    cat_exclude: list, default None
         List of columns to exclude from categorical conversion.
 
     show: {'all', 'changes', None} default 'all'
