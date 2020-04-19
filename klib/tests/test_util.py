@@ -70,20 +70,14 @@ class Test__missing_vals(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.data_mv_df = pd.DataFrame([[1, np.nan, 3, 4],
-                                       [None, 4, 5, None],
-                                       ['a', 'b', pd.NA, 'd'],
-                                       [True, False, 7, pd.NaT]])
-
-        cls.data_mv_array = np.array([[1, np.nan, 3, 4],
-                                      [None, 4, 5, None],
-                                      ['a', 'b', pd.NA, 'd'],
-                                      [True, False, 7, pd.NaT]])
-
         cls.data_mv_list = [[1, np.nan, 3, 4],
                             [None, 4, 5, None],
                             ['a', 'b', pd.NA, 'd'],
                             [True, False, 7, pd.NaT]]
+
+        cls.data_mv_df = pd.DataFrame(cls.data_mv_list)
+
+        cls.data_mv_array = np.array(cls.data_mv_list)
 
     def test_mv_total(self):
         # Test total missing values
