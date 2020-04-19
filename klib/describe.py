@@ -291,7 +291,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
 
     ax = []
     for col in cols:
-        fig, ax = plt.subplots(figsize=figsize)
+        _, ax = plt.subplots(figsize=figsize)
         ax = sns.distplot(data[col], bins=bins, hist=hist, rug=True, kde_kws=kde_kws,
                           rug_kws=rug_kws, hist_kws={'alpha': 0.5, 'histtype': 'step'})
 

@@ -1,8 +1,6 @@
-"""
-Data Science Module for Python
-==================================
-klib is an easy to use Python library of customized functions for cleaning and analyzing data.
-"""
+# Data Science Module for Python
+# ==================================
+# klib is an easy to use Python library of customized functions for cleaning and analyzing data.
 
 __author__ = """Andreas Kanz"""
 
