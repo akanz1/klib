@@ -96,8 +96,8 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     return data_cleaned
 
 
-def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop_duplicates=True, category=True,
-                  cat_threshold=0.03, cat_exclude=None, show='changes'):
+def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop_duplicates=True,
+                  convert_dtypes=True, category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
     '''
     Perform initial data cleaning tasks on a dataset, such as dropping empty rows and columns and optimizing the \
     datatypes.
@@ -115,8 +115,11 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
     drop_duplicates: bool, default True
         Drops duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.
 
+    convert_dtypes: bool, default True
+        Convert dtypes using pd.convert_dtypes().
+
     category: bool, default True
-        Change dtypes of columns to "category". Set threshold using cat_threshold.
+        Change dtypes of columns to "category". Set threshold using cat_threshold. Requires convert_dtypes=True
 
     cat_threshold: float, default 0.03
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical.
@@ -156,10 +159,12 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
 
     data = pd.DataFrame(data).copy()
 
-    data = drop_missing(data, drop_threshold_cols, drop_threshold_rows)
-    data, dupl_idx = _drop_duplicates(data)
-    data_cleaned = convert_datatypes(data, category=category, cat_threshold=cat_threshold,
-                                     cat_exclude=cat_exclude)
+    data_cleaned = drop_missing(data, drop_threshold_cols, drop_threshold_rows)
+    if drop_duplicates:
+        data_cleaned, dupl_idx = _drop_duplicates(data_cleaned)
+    if convert_dtypes:
+        data_cleaned = convert_datatypes(data_cleaned, category=category, cat_threshold=cat_threshold,
+                                         cat_exclude=cat_exclude)
 
     if show in ['changes', 'all']:
         data_mem = _memory_usage(data)
