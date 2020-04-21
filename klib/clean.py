@@ -61,7 +61,7 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None)
 def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     '''
     Drops completely empty columns and rows by default and optionally provides flexibility to loosen restrictions to \
-    drop additional columns and rows based on the fraction of NA-values.
+    drop additional columns and rows based on the fraction of remaining NA-values.
 
     Parameters
     ----------
