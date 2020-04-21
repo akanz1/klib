@@ -13,6 +13,7 @@ import pandas as pd
 import scipy
 import seaborn as sns
 
+from .clean import drop_missing
 from .utils import _corr_selector
 from .utils import _missing_vals
 from .utils import _validate_input_0_1
@@ -20,7 +21,6 @@ from .utils import _validate_input_bool
 
 
 # Functions
-
 # Correlation Matrix
 def corr_mat(data, split=None, threshold=0, method='pearson'):
     '''
@@ -275,16 +275,9 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     fill_kws = {} if fill_kws is None else fill_kws.copy()
     font_kws = {} if font_kws is None else font_kws.copy()
 
-    data = pd.DataFrame(data).copy()
+    data = drop_missing(pd.DataFrame(data).copy())
     cols = list(data.select_dtypes(include=['number']).columns)  # numeric cols
-
-    if len(cols) == 0:
-        print('No columns with numeric data were detected.')
-    elif len(cols) >= 20 and showall is False:
-        print(
-            f'Note: The number of numerical features is very large ({len(cols)}), please consider splitting the data.\
-            Showing plots for the first 20 numerical features. Override this by setting showall=True.')
-        cols = cols[:20]
+    data = data[cols]
 
     # Default settings
     kde_kws = {'color': 'k', 'alpha': 0.7, 'linewidth': 1, **kde_kws}
@@ -292,53 +285,71 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     fill_kws = {'color': 'brown', 'alpha': 0.1, **fill_kws}
     font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11, **font_kws}
 
-    ax = []
-    for col in cols:
-        _, ax = plt.subplots(figsize=figsize)
-        ax = sns.distplot(data[col], bins=bins, hist=hist, rug=True, kde_kws=kde_kws,
-                          rug_kws=rug_kws, hist_kws={'alpha': 0.5, 'histtype': 'step'})
+    if len(cols) == 0:
+        print('No columns with numeric data were detected.')
+        ax = None
 
-        # Vertical lines and fill
-        line = ax.lines[0]
-        x = line.get_xydata()[:, 0]
-        y = line.get_xydata()[:, 1]
-        ax.fill_between(x, y,
-                        where=(
-                            (x >= np.quantile(data[col], fill_range[0])) &
-                            (x <= np.quantile(data[col], fill_range[1]))),
-                        label=f'{fill_range[0]*100:.0f}% - {fill_range[1]*100:.0f}%',
-                        **fill_kws)
+    else:
+        if len(cols) >= 20 and showall is False:
+            print(f'Note: The number of numerical features is very large ({len(cols)}), please consider splitting the data.\
+            Showing plots for the first 20 numerical features. Override this by setting showall=True.')
+            cols = cols[:20]
 
-        ax.vlines(x=np.mean(data[col]),
-                  ymin=0,
-                  ymax=np.interp(np.mean(data[col]), x, y),
-                  ls='dotted', color=mean_color, lw=2, label='mean')
-        ax.vlines(x=np.median(data[col]),
-                  ymin=0,
-                  ymax=np.interp(np.median(data[col]), x, y),
-                  ls=':', color='.3', label='median')
-        ax.vlines(x=np.quantile(data[col], 0.25),
-                  ymin=0,
-                  ymax=np.interp(np.quantile(data[col], 0.25), x, y), ls=':', color='.5', label='25%')
-        ax.vlines(x=np.quantile(data[col], 0.75),
-                  ymin=0,
-                  ymax=np.interp(np.quantile(data[col], 0.75), x, y), ls=':', color='.5', label='75%')
+        ax = []
+        for col in cols:
+            # Drop missing values
+            dropped_values = data[col].isna().sum()
+            if dropped_values > 0:
+                print(f'Dropped {dropped_values} missing values from column {col}.')
+                col_data = data[col].dropna(axis=0)
+            else:
+                col_data = data[col]
 
-        ax.set_ylim(0,)
-        ax.set_xlim(ax.get_xlim()[0]*1.1, ax.get_xlim()[1]*1.1)
+            _, ax = plt.subplots(figsize=figsize)
+            ax = sns.distplot(col_data, bins=bins, hist=hist, rug=True, kde_kws=kde_kws,
+                              rug_kws=rug_kws, hist_kws={'alpha': 0.5, 'histtype': 'step'})
 
-        # Annotations and legend
-        ax.text(0.01, 0.85, f'Mean: {np.round(np.mean(data[col]),2)}',
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.7, f'Std. dev: {np.round(scipy.stats.tstd(data[col]),2)}',
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.55, f'Skew: {np.round(scipy.stats.skew(data[col]),2)}',
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.4, f'Kurtosis: {np.round(scipy.stats.kurtosis(data[col]),2)}',  # Excess Kurtosis
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.25, f'Count: {np.round(len(data[col]))}',
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.legend(loc='upper right')
+            # Vertical lines and fill
+            line = ax.lines[0]
+            x = line.get_xydata()[:, 0]
+            y = line.get_xydata()[:, 1]
+            ax.fill_between(x, y,
+                            where=(
+                                (x >= np.quantile(col_data, fill_range[0])) &
+                                (x <= np.quantile(col_data, fill_range[1]))),
+                            label=f'{fill_range[0]*100:.0f}% - {fill_range[1]*100:.0f}%',
+                            **fill_kws)
+
+            ax.vlines(x=np.mean(col_data),
+                      ymin=0,
+                      ymax=np.interp(np.mean(col_data), x, y),
+                      ls='dotted', color=mean_color, lw=2, label='mean')
+            ax.vlines(x=np.median(col_data),
+                      ymin=0,
+                      ymax=np.interp(np.median(col_data), x, y),
+                      ls=':', color='.3', label='median')
+            ax.vlines(x=np.quantile(col_data, 0.25),
+                      ymin=0,
+                      ymax=np.interp(np.quantile(col_data, 0.25), x, y), ls=':', color='.5', label='25%')
+            ax.vlines(x=np.quantile(col_data, 0.75),
+                      ymin=0,
+                      ymax=np.interp(np.quantile(col_data, 0.75), x, y), ls=':', color='.5', label='75%')
+
+            ax.set_ylim(0,)
+            ax.set_xlim(ax.get_xlim()[0]*1.1, ax.get_xlim()[1]*1.1)
+
+            # Annotations and legend
+            ax.text(0.01, 0.85, f'Mean: {np.round(np.mean(col_data),2)}',
+                    fontdict=font_kws, transform=ax.transAxes)
+            ax.text(0.01, 0.7, f'Std. dev: {np.round(scipy.stats.tstd(col_data),2)}',
+                    fontdict=font_kws, transform=ax.transAxes)
+            ax.text(0.01, 0.55, f'Skew: {np.round(scipy.stats.skew(col_data),2)}',
+                    fontdict=font_kws, transform=ax.transAxes)
+            ax.text(0.01, 0.4, f'Kurtosis: {np.round(scipy.stats.kurtosis(col_data),2)}',  # Excess Kurtosis
+                    fontdict=font_kws, transform=ax.transAxes)
+            ax.text(0.01, 0.25, f'Count: {np.round(len(col_data))}',
+                    fontdict=font_kws, transform=ax.transAxes)
+            ax.legend(loc='upper right')
 
     return ax
 
