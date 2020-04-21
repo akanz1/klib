@@ -21,6 +21,112 @@ from .utils import _validate_input_bool
 
 
 # Functions
+
+# Categorical Plot
+def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', bar_color_bottom='#d8b365'):
+    '''
+    Parameters
+    ----------
+
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
+
+    figsize: tuple, default (10, 14)
+        Use to control the figure size.
+
+    top: int, default 3
+        Show the "top" most frequent values in a column.
+
+    bottom: int, default 3
+        Show the "bottom" most frequent values in a column.
+
+    bar_color_top: color, default '#5ab4ac'
+        Use to control the color of the bars indicating the most common values.
+
+    bar_color_bottom: color, default '#d8b365'
+        Use to control the color of the bars indicating the least common values.
+
+    Returns
+    -------
+    figure
+
+    '''
+
+    data = pd.DataFrame(data).copy()
+    cols = list(data.select_dtypes(exclude=['number']).columns)  # categorical cols
+    data = data[cols].applymap(str)
+
+    if len(cols) == 0:
+        print('No columns with categorical data were detected.')
+
+    else:
+        fig = plt.figure(figsize=figsize)
+        gs = fig.add_gridspec(nrows=6, ncols=len(cols), wspace=0.2)
+
+        for count, col in enumerate(cols):
+
+            n_unique = data[col].nunique(dropna=False)
+
+            if n_unique <= min(2, top+bottom):
+                vals = int(n_unique//2)
+                value_counts_top = data[col].value_counts(sort=True)[0:vals]
+                value_counts_idx_top = list(map(str, data[col].value_counts()[0:vals].index.tolist()))
+                value_counts_bot = data[col].value_counts(sort=True)[-vals:]
+                value_counts_idx_bot = list(map(str, data[col].value_counts()[-vals:].index.tolist()))
+
+                data[col][data[col].isin(value_counts_idx_top)] = 2
+                data[col][data[col].isin(value_counts_idx_bot)] = -2
+                data[col][~((data[col] == 2) | (data[col] == -2))] = 0
+
+            else:
+                value_counts_top = data[col].value_counts(sort=True)[0:top]
+                value_counts_idx_top = list(map(str, data[col].value_counts()[0:top].index.tolist()))
+                if bottom == 0:
+                    value_counts_bot = []
+                    value_counts_idx_bot = []
+                else:
+                    value_counts_bot = data[col].value_counts(sort=True)[-bottom:]
+                    value_counts_idx_bot = list(map(str, data[col].value_counts()[-bottom:].index.tolist()))
+
+                data[col][data[col].isin(value_counts_idx_top)] = 2
+                data[col][data[col].isin(value_counts_idx_bot)] = -2
+                data[col][~((data[col] == 2) | (data[col] == -2))] = 0
+
+            # Barcharts
+            ax_top = fig.add_subplot(gs[:1, count:count+1])
+            ax_top.bar(value_counts_idx_top, value_counts_top, color=bar_color_top, width=0.85)
+            ax_top.bar(value_counts_idx_bot, value_counts_bot, color=bar_color_bottom, width=0.85)
+            ax_top.set(frame_on=False)
+            ax_top.tick_params(axis='x', labelrotation=90)
+
+            # Summary stats
+            ax_bottom = fig.add_subplot(gs[1:2, count:count+1])
+            ax_bottom.get_yaxis().set_visible(False)
+            ax_bottom.get_xaxis().set_visible(False)
+            ax_bottom.set(frame_on=False)
+            ax_bottom.text(0, 0, f'Unique values: {n_unique}\n\n\
+                        Top {top}vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n\
+                        Bottom {bottom} vals: {sum(value_counts_bot)} ({sum(value_counts_bot)/data.shape[0]*100:.1f}%)',
+                           transform=ax_bottom.transAxes, color='#111111', fontsize=11)
+
+        data = data.astype('int')
+
+        # Heatmap
+        ax_hm = fig.add_subplot(gs[2:, :])
+        sns.heatmap(data, cmap='BrBG', cbar=False, vmin=-4.25, vmax=4.25, ax=ax_hm)
+        ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
+        ax_hm.set_yticklabels(ax_hm.get_yticks())
+        ax_hm.set_xticklabels(ax_hm.get_xticklabels(),
+                              horizontalalignment='center',
+                              fontweight='light',
+                              fontsize='medium')
+        ax_hm.tick_params(length=1, colors='#111111')
+
+        gs.figure.suptitle('Categorical data plot', x=0.47, y=0.925, fontsize=18, color='#111111')
+
+        return fig
+
+
 # Correlation Matrix
 def corr_mat(data, split=None, threshold=0, method='pearson'):
     '''
@@ -44,7 +150,7 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
 
     Returns
     -------
-    returns a Pandas Styler object
+    Pandas Styler object
 
     '''
 
@@ -227,7 +333,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots.
 
-    mean_color: any valid color, default 'orange'
+    mean_color: color, default 'orange'
         Color of the vertical line indicating the mean of the data.
 
     figsize: tuple, default (14, 2)
@@ -275,7 +381,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     fill_kws = {} if fill_kws is None else fill_kws.copy()
     font_kws = {} if font_kws is None else font_kws.copy()
 
-    data = drop_missing(pd.DataFrame(data).copy())
+    data = drop_missing(pd.DataFrame(data).copy())  # drop empty columns and rows
     cols = list(data.select_dtypes(include=['number']).columns)  # numeric cols
     data = data[cols]
 
@@ -374,7 +480,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
     sort: bool, default False
         Sort columns based on missing values in descending order and drop columns without any missing values
 
-    spine_color: color-code, default '#EEEEEE'
+    spine_color: color, default '#EEEEEE'
         Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument.
 
     Returns
@@ -487,4 +593,4 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
 
         gs.figure.suptitle('Missing value plot', x=0.45, y=0.94, fontsize=18, color='#111111')
 
-        return gs
+        return fig
