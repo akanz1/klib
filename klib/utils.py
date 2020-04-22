@@ -131,4 +131,4 @@ def _validate_input_int(value, desc):
 
 def _validate_input_bool(value, desc):
     if not(isinstance(value, bool)):
-        raise ValueError(f'Input value for {desc} is {value} but should be boolean.')
+        raise TypeError(f'Input value for {desc} is {type(value)} but should be a boolean.')

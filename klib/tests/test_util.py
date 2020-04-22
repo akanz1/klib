@@ -4,8 +4,10 @@ import unittest
 from klib.utils import _corr_selector
 from klib.utils import _drop_duplicates
 from klib.utils import _missing_vals
-from klib.utils import _validate_input_0_1
 from klib.utils import _validate_input_bool
+from klib.utils import _validate_input_int
+from klib.utils import _validate_input_range
+
 
 if __name__ == '__main__':
     unittest.main()
@@ -120,18 +122,32 @@ class Test__missing_vals(unittest.TestCase):
 
 class Test__validate_input(unittest.TestCase):
 
-    def test__validate_input_0_1(self):
-        with self.assertRaises(ValueError):
-            _validate_input_0_1(-0.1, '-0.1')
-
-        with self.assertRaises(ValueError):
-            _validate_input_0_1(1.1, '1.1')
-
     def test__validate_input_bool(self):
         # Raises an exception if the input is not boolean
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             _validate_input_bool('True', None)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             _validate_input_bool(None, None)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             _validate_input_bool(1, None)
+
+    def test__validate_input_int(self):
+        # Raises an exception if the input is not an integer
+        with self.assertRaises(TypeError):
+            _validate_input_int(1.1, None)
+        with self.assertRaises(TypeError):
+            _validate_input_int(True, None)
+        with self.assertRaises(TypeError):
+            _validate_input_int([1], None)
+        with self.assertRaises(TypeError):
+            _validate_input_int('1', None)
+
+    def test__validate_input_range(self):
+        with self.assertRaises(ValueError):
+            _validate_input_range(-0.1, 'value -0.1', 0, 1)
+
+        with self.assertRaises(ValueError):
+            _validate_input_range(1.1, 'value 1.1', 0, 1)
+
+        with self.assertRaises(TypeError):
+            _validate_input_range('1', 'value string', 0, 1)
