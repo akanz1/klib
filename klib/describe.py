@@ -48,7 +48,7 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
 
     Returns
     -------
-    figure
+    gs: Figure with array of Axes objects.
 
     '''
 
@@ -74,10 +74,6 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
                 value_counts_bot = data[col].value_counts(sort=True)[-vals:]
                 value_counts_idx_bot = list(map(str, data[col].value_counts()[-vals:].index.tolist()))
 
-                data[col][data[col].isin(value_counts_idx_top)] = 2
-                data[col][data[col].isin(value_counts_idx_bot)] = -2
-                data[col][~((data[col] == 2) | (data[col] == -2))] = 0
-
             else:
                 value_counts_top = data[col].value_counts(sort=True)[0:top]
                 value_counts_idx_top = list(map(str, data[col].value_counts()[0:top].index.tolist()))
@@ -88,9 +84,9 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
                     value_counts_bot = data[col].value_counts(sort=True)[-bottom:]
                     value_counts_idx_bot = list(map(str, data[col].value_counts()[-bottom:].index.tolist()))
 
-                data[col][data[col].isin(value_counts_idx_top)] = 2
-                data[col][data[col].isin(value_counts_idx_bot)] = -2
-                data[col][~((data[col] == 2) | (data[col] == -2))] = 0
+            data[col][data[col].isin(value_counts_idx_top)] = 2
+            data[col][data[col].isin(value_counts_idx_bot)] = -2
+            data[col][~((data[col] == 2) | (data[col] == -2))] = 0
 
             # Barcharts
             ax_top = fig.add_subplot(gs[:1, count:count+1])
@@ -104,14 +100,14 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
             ax_bottom.get_yaxis().set_visible(False)
             ax_bottom.get_xaxis().set_visible(False)
             ax_bottom.set(frame_on=False)
-            ax_bottom.text(0, 0, f'Unique values: {n_unique}\n\n\
-                        Top {top}vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n\
-                        Bottom {bottom} vals: {sum(value_counts_bot)} ({sum(value_counts_bot)/data.shape[0]*100:.1f}%)',
+            ax_bottom.text(0, 0, f'Unique values: {n_unique}\n\n'
+                           f'Top {top}vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n'
+                           f'Bottom {bottom} vals: {sum(value_counts_bot)}' +
+                           f'({sum(value_counts_bot)/data.shape[0]*100:.1f}%)',
                            transform=ax_bottom.transAxes, color='#111111', fontsize=11)
 
-        data = data.astype('int')
-
         # Heatmap
+        data = data.astype('int')
         ax_hm = fig.add_subplot(gs[2:, :])
         sns.heatmap(data, cmap='BrBG', cbar=False, vmin=-4.25, vmax=4.25, ax=ax_hm)
         ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
@@ -124,7 +120,7 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
 
         gs.figure.suptitle('Categorical data plot', x=0.47, y=0.925, fontsize=18, color='#111111')
 
-        return fig
+        return gs
 
 
 # Correlation Matrix
@@ -485,7 +481,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
 
     Returns
     -------
-    figure
+    gs: Figure with array of Axes objects.
 
     '''
 
@@ -593,4 +589,4 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
 
         gs.figure.suptitle('Missing value plot', x=0.45, y=0.94, fontsize=18, color='#111111')
 
-        return fig
+        return gs
