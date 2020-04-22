@@ -28,6 +28,7 @@ def _corr_selector(corr, split=None, threshold=0):
     -------
     corr: List or matrix of (filtered) correlations.
     '''
+
     if split == 'pos':
         corr = corr.where((corr >= threshold) & (corr > 0))
         print('Displaying positive correlations. Use "threshold" to further limit the results.')
@@ -117,9 +118,15 @@ def _missing_vals(data):
             'mv_cols_ratio': mv_cols_ratio}
 
 
-def _validate_input_0_1(value, desc):
-    if value < 0 or value > 1:
-        raise ValueError(f'Input value for {desc} is {value} but should be a float in the range 0 <= {desc} <=1.')
+def _validate_input_range(value, desc, lower, upper):
+    if value < lower or value > upper:
+        raise ValueError(
+            f'Input value for {desc} is {value} but should be in the range {lower} <= {desc} <= {upper}.')
+
+
+def _validate_input_int(value, desc):
+    if type(value) != int:
+        raise TypeError(f'Input value for {desc} is {type(value)} but should be an integer.')
 
 
 def _validate_input_bool(value, desc):

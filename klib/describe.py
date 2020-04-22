@@ -16,8 +16,9 @@ import seaborn as sns
 from .clean import drop_missing
 from .utils import _corr_selector
 from .utils import _missing_vals
-from .utils import _validate_input_0_1
 from .utils import _validate_input_bool
+from .utils import _validate_input_int
+from .utils import _validate_input_range
 
 
 # Functions
@@ -53,6 +54,12 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
     gs: Figure with array of Axes objects.
 
     '''
+
+    # Validate Inputs
+    _validate_input_int(top, 'top')
+    _validate_input_int(bottom, 'bottom')
+    _validate_input_range(top, 'top', 0, data.shape[1])
+    _validate_input_range(bottom, 'bottom', 0, data.shape[1])
 
     data = pd.DataFrame(data).copy()
     cols = list(data.select_dtypes(exclude=['number']).columns)  # categorical cols
@@ -155,7 +162,7 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
     '''
 
     # Validate Inputs
-    _validate_input_0_1(threshold, 'threshold')
+    _validate_input_range(threshold, 'threshold', -1, 1)
 
     def color_negative_red(val):
         color = '#FF3344' if val < 0 else None
@@ -242,7 +249,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     '''
 
     # Validate Inputs
-    _validate_input_0_1(threshold, 'threshold')
+    _validate_input_range(threshold, 'threshold', -1, 1)
     _validate_input_bool(annot, 'annot')
     _validate_input_bool(dev, 'dev')
 
@@ -372,6 +379,10 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     '''
 
     # Validate Inputs
+    _validate_input_range(fill_range[0], 'fill_range_lower', 0, 1)
+    _validate_input_range(fill_range[1], 'fill_range_upper', 0, 1)
+    if fill_range[0] >= fill_range[1]:
+        raise ValueError('Start value for fill_range must be lower than upper value.')
     _validate_input_bool(hist, 'hist')
     _validate_input_bool(showall, 'showall')
 
@@ -488,6 +499,9 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
     gs: Figure with array of Axes objects.
 
     '''
+
+    # Validate Inputs
+    _validate_input_bool(sort, 'sort')
 
     data = pd.DataFrame(data)
 

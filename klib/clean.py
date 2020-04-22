@@ -11,7 +11,7 @@ import pandas as pd
 from .utils import _drop_duplicates
 from .utils import _memory_usage
 from .utils import _missing_vals
-from .utils import _validate_input_0_1
+from .utils import _validate_input_range
 from .utils import _validate_input_bool
 
 
@@ -41,7 +41,7 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None)
 
     # Validate Inputs
     _validate_input_bool(category, 'Category')
-    _validate_input_0_1(cat_threshold, 'cat_threshold')
+    _validate_input_range(cat_threshold, 'cat_threshold', 0, 1)
 
     cat_exclude = [] if cat_exclude is None else cat_exclude.copy()
 
@@ -84,8 +84,8 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     '''
 
     # Validate Inputs
-    _validate_input_0_1(drop_threshold_cols, 'drop_threshold_cols')
-    _validate_input_0_1(drop_threshold_rows, 'drop_threshold_rows')
+    _validate_input_range(drop_threshold_cols, 'drop_threshold_cols', 0, 1)
+    _validate_input_range(drop_threshold_rows, 'drop_threshold_rows', 0, 1)
 
     data = pd.DataFrame(data).copy()
     data = data.dropna(axis=0, how='all')
@@ -151,11 +151,12 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
     '''
 
     # Validate Inputs
-    _validate_input_0_1(drop_threshold_cols, 'drop_threshold_cols')
-    _validate_input_0_1(drop_threshold_rows, 'drop_threshold_rows')
+    _validate_input_range(drop_threshold_cols, 'drop_threshold_cols', 0, 1)
+    _validate_input_range(drop_threshold_rows, 'drop_threshold_rows', 0, 1)
     _validate_input_bool(drop_duplicates, 'drop_duplicates')
+    _validate_input_bool(convert_datatypes, 'convert_datatypes')
     _validate_input_bool(category, 'category')
-    _validate_input_0_1(cat_threshold, 'cat_threshold')
+    _validate_input_range(cat_threshold, 'cat_threshold', 0, 1)
 
     data = pd.DataFrame(data).copy()
 
