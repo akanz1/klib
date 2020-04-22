@@ -359,16 +359,16 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     showall: bool, default False
         Set to True to remove the output limit of 20 plots.
 
-    kdw_kws: dict, default None
+    kdw_kws: dict, default {'color': 'k', 'alpha': 0.7, 'linewidth': 1}
         Keyword arguments for kdeplot().
 
-    rug_kws: dict, default None
+    rug_kws: dict, default {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04}
         Keyword arguments for rugplot().
 
-    fill_kws: dict, default None
+    fill_kws: dict, default {'color': 'brown', 'alpha': 0.1}
         Keyword arguments to control the fill.
 
-    font_kws: dict, default None
+    font_kws: dict, default {'color':  '#111111', 'weight': 'normal', 'size': 11}
         Keyword arguments to control the font.
 
     Returns
@@ -387,20 +387,14 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     _validate_input_bool(showall, 'showall')
 
     # Handle dictionary defaults
-    kde_kws = {} if kde_kws is None else kde_kws.copy()
-    rug_kws = {} if rug_kws is None else rug_kws.copy()
-    fill_kws = {} if fill_kws is None else fill_kws.copy()
-    font_kws = {} if font_kws is None else font_kws.copy()
+    kde_kws = {'color': 'k', 'alpha': 0.7, 'linewidth': 1} if kde_kws is None else kde_kws.copy()
+    rug_kws = {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04} if rug_kws is None else rug_kws.copy()
+    fill_kws = {'color': 'brown', 'alpha': 0.1} if fill_kws is None else fill_kws.copy()
+    font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11} if font_kws is None else font_kws.copy()
 
     data = drop_missing(pd.DataFrame(data).copy())  # drop empty columns and rows
     cols = list(data.select_dtypes(include=['number']).columns)  # numeric cols
     data = data[cols]
-
-    # Default settings
-    kde_kws = {'color': 'k', 'alpha': 0.7, 'linewidth': 1, **kde_kws}
-    rug_kws = {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04, **rug_kws}
-    fill_kws = {'color': 'brown', 'alpha': 0.1, **fill_kws}
-    font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11, **font_kws}
 
     if len(cols) == 0:
         print('No columns with numeric data were detected.')
