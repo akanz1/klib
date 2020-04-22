@@ -25,6 +25,8 @@ from .utils import _validate_input_bool
 # Categorical Plot
 def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', bar_color_bottom='#d8b365'):
     '''
+    Two-dimensional visualization of the number and frequency of categorical features.
+
     Parameters
     ----------
 
@@ -101,8 +103,8 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
             ax_bottom.get_xaxis().set_visible(False)
             ax_bottom.set(frame_on=False)
             ax_bottom.text(0, 0, f'Unique values: {n_unique}\n\n'
-                           f'Top {top}vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n'
-                           f'Bottom {bottom} vals: {sum(value_counts_bot)}' +
+                           f'Top {top} vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n'
+                           f'Bottom {bottom} vals: {sum(value_counts_bot)} ' +
                            f'({sum(value_counts_bot)/data.shape[0]*100:.1f}%)',
                            transform=ax_bottom.transAxes, color='#111111', fontsize=11)
 
@@ -126,6 +128,8 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
 # Correlation Matrix
 def corr_mat(data, split=None, threshold=0, method='pearson'):
     '''
+    Returns a color-encoded correlation matrix.
+
     Parameters
     ----------
 

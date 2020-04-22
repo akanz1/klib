@@ -25,13 +25,14 @@ pip install --upgrade klib
 ```python
 import klib
 
-klib.describe # tools for visualizing datasets
+klib.describe # functions for visualizing datasets
+- klib.cat_plot() # returns a visualization of the number and frequency of categorical features.
 - klib.corr_mat() # returns a color-encoded correlation matrix
 - klib.corr_plot() # returns a color-encoded heatmap, ideal for correlations
 - klib.dist_plot() # returns a distribution plot for every numeric feature
 - klib.missingval_plot() # returns a figure containing information about missing values
 
-klib.clean # tools for cleaning datasets
+klib.clean # functions for cleaning datasets
 - klib.data_cleaning() # perform datacleaning (drop duplicates & empty rows/columns, adjust dtypes,...) on a dataset
 - klib.convert_datatypes() # converts existing to more efficient dtypes, also called inside ".data_cleaning()"
 - klib.drop_missing() # drops missing values, also called in ".data_cleaning()"

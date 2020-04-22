@@ -12,6 +12,8 @@ import pandas as pd
 
 def _corr_selector(corr, split=None, threshold=0):
     '''
+    Select correlations based on the provided parameters.
+
     Parameters
     ----------
     corr: List or matrix of correlations.
