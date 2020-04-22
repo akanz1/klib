@@ -1,8 +1,6 @@
 # klib
 
 [![Python package](https://github.com/akanz1/klib/workflows/Python%20package/badge.svg)](https://github.com/akanz1/klib)
-[![PyPI Version](https://badgen.net/pypi/v/klib)](https://pypi.org/project/klib/)
-[![Conda Version](https://img.shields.io/conda/vn/conda-forge/klib)](https://anaconda.org/conda-forge/klib)
 [![Language](https://img.shields.io/github/languages/top/akanz1/klib)](https://pypi.org/project/klib/)
 [![Downloads](https://img.shields.io/pypi/dm/klib)](https://pypi.org/project/klib/)
 [![Last Commit](https://badgen.net/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib/commits/master)
@@ -13,14 +11,14 @@ klib is a Python library for importing, cleaning, analyzing and preprocessing da
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install klib.
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install klib. [![PyPI Version](https://badgen.net/pypi/v/klib)](https://pypi.org/project/klib/)
 
 ```bash
 pip install klib
 pip install --upgrade klib
 ```
 
-Alternatively, to install this package with conda run:
+Alternatively, to install this package with conda run: [![Conda Version](https://img.shields.io/conda/vn/conda-forge/klib)](https://anaconda.org/conda-forge/klib)
 
 ```bash
 conda install -c conda-forge klib
