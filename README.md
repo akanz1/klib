@@ -2,11 +2,11 @@
 
 [![Python package](https://github.com/akanz1/klib/workflows/Python%20package/badge.svg)](https://github.com/akanz1/klib)
 [![PyPI Version](https://img.shields.io/pypi/v/klib)](https://pypi.org/project/klib/)
+[![Conda Version](https://img.shields.io/conda/v/conda-forge/klib)](https://anaconda.org/conda-forge/klib)
 [![Language](https://img.shields.io/github/languages/top/akanz1/klib)](https://pypi.org/project/klib/)
 [![Downloads](https://img.shields.io/pypi/dm/klib)](https://pypi.org/project/klib/)
-[![Last Commit](https://img.shields.io/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib)
-[![Activity](https://img.shields.io/github/commit-activity/m/akanz1/klib)](https://github.com/akanz1/klib)
-[![Code Quality](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=master)](https://github.com/akanz1/klib)
+[![Last Commit](https://img.shields.io/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib/commits/master)
+[![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=master)](https://github.com/akanz1/klib)
 [![License](https://img.shields.io/pypi/l/klib)](https://github.com/akanz1/klib/blob/master/LICENSE)
 
 klib is a Python library for importing, cleaning, analyzing and preprocessing data. Future versions will include model creation and optimization to provide an end-to-end solution.
@@ -18,6 +18,12 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install klib.
 ```bash
 pip install klib
 pip install --upgrade klib
+```
+
+Alternatively, to install this package with conda run:
+
+```bash
+conda install -c conda-forge klib
 ```
 
 ## Usage
