@@ -11,14 +11,18 @@ klib is a Python library for importing, cleaning, analyzing and preprocessing da
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install klib. [![PyPI Version](https://badgen.net/pypi/v/klib)](https://pypi.org/project/klib/)
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install klib.
+
+[![PyPI Version](https://badgen.net/pypi/v/klib)](https://pypi.org/project/klib/)
 
 ```bash
 pip install klib
 pip install --upgrade klib
 ```
 
-Alternatively, to install this package with conda run: [![Conda Version](https://img.shields.io/conda/vn/conda-forge/klib)](https://anaconda.org/conda-forge/klib)
+Alternatively, to install this package with conda run:
+
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/klib)](https://anaconda.org/conda-forge/klib)
 
 ```bash
 conda install -c conda-forge klib
