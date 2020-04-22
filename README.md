@@ -2,7 +2,7 @@
 
 [![Python package](https://github.com/akanz1/klib/workflows/Python%20package/badge.svg)](https://github.com/akanz1/klib)
 [![PyPI Version](https://badgen.net/pypi/v/klib)](https://pypi.org/project/klib/)
-[![Conda Version](https://img.shields.io/conda/v/conda-forge/klib)](https://anaconda.org/conda-forge/klib)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/klib)](https://anaconda.org/conda-forge/klib)
 [![Language](https://img.shields.io/github/languages/top/akanz1/klib)](https://pypi.org/project/klib/)
 [![Downloads](https://img.shields.io/pypi/dm/klib)](https://pypi.org/project/klib/)
 [![Last Commit](https://badgen.net/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib/commits/master)
