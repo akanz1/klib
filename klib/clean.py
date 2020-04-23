@@ -160,8 +160,8 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
 
     data = pd.DataFrame(data).copy()
     data_cleaned = drop_missing(data, drop_threshold_cols, drop_threshold_rows)
-    single_val_cols = data.columns[data.nunique() == 1].tolist()
-    data_cleaned = data.drop(columns=single_val_cols)
+    single_val_cols = data_cleaned.columns[data_cleaned.nunique() == 1].tolist()
+    data_cleaned = data_cleaned.drop(columns=single_val_cols)
 
     if drop_duplicates:
         data_cleaned, dupl_idx = _drop_duplicates(data_cleaned)
@@ -195,7 +195,7 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
             f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}")
         print(f'\nChanges:')
         print(f'Dropped rows: {data.shape[0]-data_cleaned.shape[0]}')
-        print(f'    of which {len(dupl_idx)} were duplicates. (Rows: {dupl_idx})')
+        print(f'    of which {len(dupl_idx)} were duplicates. (Rows: {dupl_idx.tolist()})')
         print(f'Dropped columns: {data.shape[1]-data_cleaned.shape[1]}')
         print(f'    of which {len(single_val_cols)} were single valued. (Columns: {single_val_cols})')
         print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
