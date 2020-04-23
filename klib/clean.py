@@ -99,8 +99,8 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
 def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop_duplicates=True,
                   convert_dtypes=True, category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
     '''
-    Perform initial data cleaning tasks on a dataset, such as dropping empty rows and columns and optimizing the \
-    datatypes.
+    Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty \
+        columns as well as optimizing the datatypes.
 
     Parameters
     ----------
@@ -154,13 +154,15 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
     _validate_input_range(drop_threshold_cols, 'drop_threshold_cols', 0, 1)
     _validate_input_range(drop_threshold_rows, 'drop_threshold_rows', 0, 1)
     _validate_input_bool(drop_duplicates, 'drop_duplicates')
-    _validate_input_bool(convert_datatypes, 'convert_datatypes')
+    _validate_input_bool(convert_dtypes, 'convert_datatypes')
     _validate_input_bool(category, 'category')
     _validate_input_range(cat_threshold, 'cat_threshold', 0, 1)
 
     data = pd.DataFrame(data).copy()
-
     data_cleaned = drop_missing(data, drop_threshold_cols, drop_threshold_rows)
+    single_val_cols = data.columns[data.nunique() == 1].tolist()
+    data_cleaned = data.drop(columns=single_val_cols)
+
     if drop_duplicates:
         data_cleaned, dupl_idx = _drop_duplicates(data_cleaned)
     if convert_dtypes:
@@ -193,8 +195,9 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
             f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}")
         print(f'\nChanges:')
         print(f'Dropped rows: {data.shape[0]-data_cleaned.shape[0]}')
-        print(f'    of which {len(dupl_idx)} were duplicates. (Rows with index: {dupl_idx})')
+        print(f'    of which {len(dupl_idx)} were duplicates. (Rows: {dupl_idx})')
         print(f'Dropped columns: {data.shape[1]-data_cleaned.shape[1]}')
+        print(f'    of which {len(single_val_cols)} were single valued. (Columns: {single_val_cols})')
         print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
         mem_change = data_mem-data_cl_mem
         print(f'Reduced memory by: {round(mem_change,2)} KB (-{round(100*mem_change/data_mem,1)}%)')
