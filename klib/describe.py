@@ -24,7 +24,7 @@ from .utils import _validate_input_range
 # Functions
 
 # Categorical Plot
-def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', bar_color_bottom='#d8b365'):
+def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', bar_color_bottom='#d8b365', cmap='BrBG'):
     '''
     Two-dimensional visualization of the number and frequency of categorical features.
 
@@ -48,6 +48,9 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
 
     bar_color_bottom: color, default '#d8b365'
         Use to control the color of the bars indicating the least common values.
+
+    cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
+        The mapping from data values to color space.
 
     Returns
     -------
@@ -118,7 +121,7 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
         # Heatmap
         data = data.astype('int')
         ax_hm = fig.add_subplot(gs[2:, :])
-        sns.heatmap(data, cmap='BrBG', cbar=False, vmin=-4.25, vmax=4.25, ax=ax_hm)
+        sns.heatmap(data, cmap=cmap, cbar=False, vmin=-4.25, vmax=4.25, ax=ax_hm)
         ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
         ax_hm.set_yticklabels(ax_hm.get_yticks())
         ax_hm.set_xticklabels(ax_hm.get_xticklabels(),
