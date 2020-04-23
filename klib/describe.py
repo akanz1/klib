@@ -383,20 +383,19 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     _validate_input_range(fill_range[0], 'fill_range_lower', 0, 1)
     _validate_input_range(fill_range[1], 'fill_range_upper', 0, 1)
     if fill_range[0] >= fill_range[1]:
-        raise ValueError('Start value for fill_range must be lower than upper value.')
+        raise ValueError('Start value for fill_range must be lower than end value.')
     _validate_input_bool(hist, 'hist')
     _validate_input_bool(showall, 'showall')
 
     # Handle dictionary defaults
-    kde_kws = {'color': 'k', 'alpha': 0.7, 'linewidth': 1} if kde_kws is None else kde_kws.copy()
+    kde_kws = {'alpha': 0.7, 'linewidth': 1.5} if kde_kws is None else kde_kws.copy()
     rug_kws = {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04} if rug_kws is None else rug_kws.copy()
     fill_kws = {'color': 'brown', 'alpha': 0.1} if fill_kws is None else fill_kws.copy()
     font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11} if font_kws is None else font_kws.copy()
 
-    data = drop_missing(pd.DataFrame(data).copy())  # drop empty columns and rows
-    cols = list(data.select_dtypes(include=['number']).columns)  # numeric cols
+    data = drop_missing(pd.DataFrame(data).copy())  # remove empty columns / rows
+    cols = list(data.select_dtypes(include=['number']).columns)
     data = data[cols]
-    ax = None
 
     if len(cols) == 0:
         print('No columns with numeric data were detected.')
