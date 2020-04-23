@@ -71,68 +71,66 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
     if len(cols) == 0:
         print('No columns with categorical data were detected.')
 
-    else:
-        fig = plt.figure(figsize=figsize)
-        gs = fig.add_gridspec(nrows=6, ncols=len(cols), wspace=0.2)
+    fig = plt.figure(figsize=figsize)
+    gs = fig.add_gridspec(nrows=6, ncols=len(cols), wspace=0.2)
 
-        for count, col in enumerate(cols):
+    for count, col in enumerate(cols):
 
-            n_unique = data[col].nunique(dropna=False)
+        n_unique = data[col].nunique(dropna=False)
+        value_counts = data[col].value_counts()
+        lim_top, lim_bot = top, bottom
 
-            if n_unique <= min(2, top+bottom):
-                vals = int(n_unique//2)
-                value_counts_top = data[col].value_counts(sort=True)[0:vals]
-                value_counts_idx_top = list(map(str, data[col].value_counts()[0:vals].index.tolist()))
-                value_counts_bot = data[col].value_counts(sort=True)[-vals:]
-                value_counts_idx_bot = list(map(str, data[col].value_counts()[-vals:].index.tolist()))
+        if n_unique < top+bottom:
+            lim_top = lim_bot = int(n_unique//2)
 
-            else:
-                value_counts_top = data[col].value_counts(sort=True)[0:top]
-                value_counts_idx_top = list(map(str, data[col].value_counts()[0:top].index.tolist()))
-                if bottom == 0:
-                    value_counts_bot = []
-                    value_counts_idx_bot = []
-                else:
-                    value_counts_bot = data[col].value_counts(sort=True)[-bottom:]
-                    value_counts_idx_bot = list(map(str, data[col].value_counts()[-bottom:].index.tolist()))
+        value_counts_top = value_counts[0:lim_top]
+        value_counts_idx_top = list(map(str, value_counts_top.index.tolist()))
+        value_counts_bot = value_counts[-lim_bot:]
+        value_counts_idx_bot = list(map(str, value_counts_bot.index.tolist()))
 
-            data[col][data[col].isin(value_counts_idx_top)] = 2
-            data[col][data[col].isin(value_counts_idx_bot)] = -2
-            data[col][~((data[col] == 2) | (data[col] == -2))] = 0
+        if top == 0:
+            value_counts_top = value_counts_idx_top = []
 
-            # Barcharts
-            ax_top = fig.add_subplot(gs[:1, count:count+1])
-            ax_top.bar(value_counts_idx_top, value_counts_top, color=bar_color_top, width=0.85)
-            ax_top.bar(value_counts_idx_bot, value_counts_bot, color=bar_color_bottom, width=0.85)
-            ax_top.set(frame_on=False)
-            ax_top.tick_params(axis='x', labelrotation=90)
+        elif bottom == 0:
+            value_counts_bot = value_counts_idx_bot = []
 
-            # Summary stats
-            ax_bottom = fig.add_subplot(gs[1:2, count:count+1])
-            ax_bottom.get_yaxis().set_visible(False)
-            ax_bottom.get_xaxis().set_visible(False)
-            ax_bottom.set(frame_on=False)
-            ax_bottom.text(0, 0, f'Unique values: {n_unique}\n\n'
-                           f'Top {top} vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n'
-                           f'Bottom {bottom} vals: {sum(value_counts_bot)} ' +
-                           f'({sum(value_counts_bot)/data.shape[0]*100:.1f}%)',
-                           transform=ax_bottom.transAxes, color='#111111', fontsize=11)
+        data[col][data[col].isin(value_counts_idx_top)] = 2
+        data[col][data[col].isin(value_counts_idx_bot)] = -2
+        data[col][~((data[col] == 2) | (data[col] == -2))] = 0
 
-        # Heatmap
-        data = data.astype('int')
-        ax_hm = fig.add_subplot(gs[2:, :])
-        sns.heatmap(data, cmap=cmap, cbar=False, vmin=-4.25, vmax=4.25, ax=ax_hm)
-        ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
-        ax_hm.set_yticklabels(ax_hm.get_yticks())
-        ax_hm.set_xticklabels(ax_hm.get_xticklabels(),
-                              horizontalalignment='center',
-                              fontweight='light',
-                              fontsize='medium')
-        ax_hm.tick_params(length=1, colors='#111111')
+        # Barcharts
+        ax_top = fig.add_subplot(gs[:1, count:count+1])
+        ax_top.bar(value_counts_idx_top, value_counts_top, color=bar_color_top, width=0.85)
+        ax_top.bar(value_counts_idx_bot, value_counts_bot, color=bar_color_bottom, width=0.85)
+        ax_top.set(frame_on=False)
+        ax_top.tick_params(axis='x', labelrotation=90)
 
-        gs.figure.suptitle('Categorical data plot', x=0.47, y=0.925, fontsize=18, color='#111111')
+        # Summary stats
+        ax_bottom = fig.add_subplot(gs[1:2, count:count+1])
+        ax_bottom.get_yaxis().set_visible(False)
+        ax_bottom.get_xaxis().set_visible(False)
+        ax_bottom.set(frame_on=False)
+        ax_bottom.text(0, 0, f'Unique values: {n_unique}\n\n'
+                       f'Top {top} vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n'
+                       f'Bottom {bottom} vals: {sum(value_counts_bot)} ' +
+                       f'({sum(value_counts_bot)/data.shape[0]*100:.1f}%)',
+                       transform=ax_bottom.transAxes, color='#111111', fontsize=11)
 
-        return gs
+    # Heatmap
+    data = data.astype('int')
+    ax_hm = fig.add_subplot(gs[2:, :])
+    sns.heatmap(data, cmap=cmap, cbar=False, vmin=-4.25, vmax=4.25, ax=ax_hm)
+    ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
+    ax_hm.set_yticklabels(ax_hm.get_yticks())
+    ax_hm.set_xticklabels(ax_hm.get_xticklabels(),
+                          horizontalalignment='center',
+                          fontweight='light',
+                          fontsize='medium')
+    ax_hm.tick_params(length=1, colors='#111111')
+
+    gs.figure.suptitle('Categorical data plot', x=0.47, y=0.925, fontsize=18, color='#111111')
+
+    return gs
 
 
 # Correlation Matrix
@@ -403,64 +401,63 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     if len(cols) == 0:
         print('No columns with numeric data were detected.')
 
-    else:
-        if len(cols) >= 20 and showall is False:
-            print(f'Note: The number of numerical features is very large ({len(cols)}), please consider splitting the data.\
-            Showing plots for the first 20 numerical features. Override this by setting showall=True.')
-            cols = cols[:20]
+    elif len(cols) >= 20 and showall is False:
+        print(
+            f'Note: The number of numerical features is very large ({len(cols)}), please consider splitting the data. '
+            'Showing plots for the first 20 numerical features. Override this by setting showall=True.')
+        cols = cols[:20]
 
-        for col in cols:
-            # Drop missing values
-            dropped_values = data[col].isna().sum()
-            if dropped_values > 0:
-                print(f'Dropped {dropped_values} missing values from column {col}.')
-                col_data = data[col].dropna(axis=0)
-            else:
-                col_data = data[col]
+    for col in cols:
+        dropped_values = data[col].isna().sum()
+        if dropped_values > 0:
+            print(f'Dropped {dropped_values} missing values from column {col}.')
+            col_data = data[col].dropna(axis=0)
+        else:
+            col_data = data[col]
 
-            _, ax = plt.subplots(figsize=figsize)
-            ax = sns.distplot(col_data, bins=bins, hist=hist, rug=True, kde_kws=kde_kws,
-                              rug_kws=rug_kws, hist_kws={'alpha': 0.5, 'histtype': 'step'})
+        _, ax = plt.subplots(figsize=figsize)
+        ax = sns.distplot(col_data, bins=bins, hist=hist, rug=True, kde_kws=kde_kws,
+                          rug_kws=rug_kws, hist_kws={'alpha': 0.5, 'histtype': 'step'})
 
-            # Vertical lines and fill
-            x, y = ax.lines[0].get_xydata().T
-            ax.fill_between(x, y,
-                            where=(
-                                (x >= np.quantile(col_data, fill_range[0])) &
-                                (x <= np.quantile(col_data, fill_range[1]))),
-                            label=f'{fill_range[0]*100:.1f}% - {fill_range[1]*100:.1f}%',
-                            **fill_kws)
+        # Vertical lines and fill
+        x, y = ax.lines[0].get_xydata().T
+        ax.fill_between(x, y,
+                        where=(
+                            (x >= np.quantile(col_data, fill_range[0])) &
+                            (x <= np.quantile(col_data, fill_range[1]))),
+                        label=f'{fill_range[0]*100:.1f}% - {fill_range[1]*100:.1f}%',
+                        **fill_kws)
 
-            mean = np.mean(col_data)
-            std = scipy.stats.tstd(col_data)
-            ax.vlines(x=mean,
-                      ymin=0,
-                      ymax=np.interp(mean, x, y),
-                      ls='dotted', color=mean_color, lw=2, label='mean')
-            ax.vlines(x=np.median(col_data),
-                      ymin=0,
-                      ymax=np.interp(np.median(col_data), x, y),
-                      ls=':', color='.3', label='median')
-            ax.vlines(x=[mean-std, mean+std],
-                      ymin=0,
-                      ymax=[np.interp(mean-std, x, y), np.interp(mean+std, x, y)], ls=':', color='.5',
-                      label='\u03BC \u00B1 \u03C3')
+        mean = np.mean(col_data)
+        std = scipy.stats.tstd(col_data)
+        ax.vlines(x=mean,
+                  ymin=0,
+                  ymax=np.interp(mean, x, y),
+                  ls='dotted', color=mean_color, lw=2, label='mean')
+        ax.vlines(x=np.median(col_data),
+                  ymin=0,
+                  ymax=np.interp(np.median(col_data), x, y),
+                  ls=':', color='.3', label='median')
+        ax.vlines(x=[mean-std, mean+std],
+                  ymin=0,
+                  ymax=[np.interp(mean-std, x, y), np.interp(mean+std, x, y)], ls=':', color='.5',
+                  label='\u03BC \u00B1 \u03C3')
 
-            ax.set_ylim(0,)
-            ax.set_xlim(ax.get_xlim()[0]*1.15, ax.get_xlim()[1]*1.15)
+        ax.set_ylim(0,)
+        ax.set_xlim(ax.get_xlim()[0]*1.15, ax.get_xlim()[1]*1.15)
 
-            # Annotations and legend
-            ax.text(0.01, 0.85, f'Mean: {np.round(mean,2)}',
-                    fontdict=font_kws, transform=ax.transAxes)
-            ax.text(0.01, 0.7, f'Std. dev: {np.round(std,2)}',
-                    fontdict=font_kws, transform=ax.transAxes)
-            ax.text(0.01, 0.55, f'Skew: {np.round(scipy.stats.skew(col_data),2)}',
-                    fontdict=font_kws, transform=ax.transAxes)
-            ax.text(0.01, 0.4, f'Kurtosis: {np.round(scipy.stats.kurtosis(col_data),2)}',  # Excess Kurtosis
-                    fontdict=font_kws, transform=ax.transAxes)
-            ax.text(0.01, 0.25, f'Count: {np.round(len(col_data))}',
-                    fontdict=font_kws, transform=ax.transAxes)
-            ax.legend(loc='upper right')
+        # Annotations and legend
+        ax.text(0.01, 0.85, f'Mean: {np.round(mean,2)}',
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.7, f'Std. dev: {np.round(std,2)}',
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.55, f'Skew: {np.round(scipy.stats.skew(col_data),2)}',
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.4, f'Kurtosis: {np.round(scipy.stats.kurtosis(col_data),2)}',  # Excess Kurtosis
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.25, f'Count: {np.round(len(col_data))}',
+                fontdict=font_kws, transform=ax.transAxes)
+        ax.legend(loc='upper right')
 
     return ax
 
