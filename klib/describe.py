@@ -502,10 +502,10 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
         print('Displaying only columns with missing values.')
 
     # Identify missing values
-    mv_cols = _missing_vals(data)['mv_cols']  # data.isna().sum(axis=0)
-    mv_rows = _missing_vals(data)['mv_rows']  # data.isna().sum(axis=1)
+    mv_cols = _missing_vals(data)['mv_cols']
+    mv_rows = _missing_vals(data)['mv_rows']
     mv_total = _missing_vals(data)['mv_total']
-    mv_cols_ratio = _missing_vals(data)['mv_cols_ratio']  # mv_cols / data.shape[0]
+    mv_cols_ratio = _missing_vals(data)['mv_cols_ratio']
     total_datapoints = data.shape[0]*data.shape[1]
 
     if mv_total == 0:
