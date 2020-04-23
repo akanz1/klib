@@ -428,7 +428,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
                             where=(
                                 (x >= np.quantile(col_data, fill_range[0])) &
                                 (x <= np.quantile(col_data, fill_range[1]))),
-                            label=f'{fill_range[0]*100:.0f}% - {fill_range[1]*100:.0f}%',
+                            label=f'{fill_range[0]*100:.1f}% - {fill_range[1]*100:.1f}%',
                             **fill_kws)
 
             ax.vlines(x=np.mean(col_data),
@@ -439,15 +439,18 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
                       ymin=0,
                       ymax=np.interp(np.median(col_data), x, y),
                       ls=':', color='.3', label='median')
-            ax.vlines(x=np.quantile(col_data, 0.25),
+            ax.vlines(x=np.mean(col_data)-scipy.stats.tstd(col_data),
                       ymin=0,
-                      ymax=np.interp(np.quantile(col_data, 0.25), x, y), ls=':', color='.5', label='25%')
-            ax.vlines(x=np.quantile(col_data, 0.75),
+                      ymax=np.interp(np.mean(col_data)-scipy.stats.tstd(col_data), x, y), ls=':', color='.5',
+                      label='\u03BC + \u03C3')
+            ax.vlines(x=np.mean(col_data)+scipy.stats.tstd(col_data),
                       ymin=0,
-                      ymax=np.interp(np.quantile(col_data, 0.75), x, y), ls=':', color='.5', label='75%')
+                      ymax=np.interp(np.mean(col_data)+scipy.stats.tstd(col_data), x, y), ls=':', color='.5',
+                      label='\u03BC \u2212 \u03C3')
 
             ax.set_ylim(0,)
-            ax.set_xlim(ax.get_xlim()[0]*1.1, ax.get_xlim()[1]*1.1)
+            # squish the distplot to make space for the labels
+            ax.set_xlim(ax.get_xlim()[0]*1.15, ax.get_xlim()[1]*1.15)
 
             # Annotations and legend
             ax.text(0.01, 0.85, f'Mean: {np.round(np.mean(col_data),2)}',
