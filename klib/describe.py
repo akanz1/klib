@@ -395,10 +395,10 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     data = drop_missing(pd.DataFrame(data).copy())  # drop empty columns and rows
     cols = list(data.select_dtypes(include=['number']).columns)  # numeric cols
     data = data[cols]
+    ax = None
 
     if len(cols) == 0:
         print('No columns with numeric data were detected.')
-        ax = None
 
     else:
         if len(cols) >= 20 and showall is False:
@@ -406,7 +406,6 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
             Showing plots for the first 20 numerical features. Override this by setting showall=True.')
             cols = cols[:20]
 
-        ax = []
         for col in cols:
             # Drop missing values
             dropped_values = data[col].isna().sum()
@@ -421,9 +420,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
                               rug_kws=rug_kws, hist_kws={'alpha': 0.5, 'histtype': 'step'})
 
             # Vertical lines and fill
-            line = ax.lines[0]
-            x = line.get_xydata()[:, 0]
-            y = line.get_xydata()[:, 1]
+            x, y = ax.lines[0].get_xydata().T
             ax.fill_between(x, y,
                             where=(
                                 (x >= np.quantile(col_data, fill_range[0])) &
@@ -431,31 +428,28 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
                             label=f'{fill_range[0]*100:.1f}% - {fill_range[1]*100:.1f}%',
                             **fill_kws)
 
-            ax.vlines(x=np.mean(col_data),
+            mean = np.mean(col_data)
+            std = scipy.stats.tstd(col_data)
+            ax.vlines(x=mean,
                       ymin=0,
-                      ymax=np.interp(np.mean(col_data), x, y),
+                      ymax=np.interp(mean, x, y),
                       ls='dotted', color=mean_color, lw=2, label='mean')
             ax.vlines(x=np.median(col_data),
                       ymin=0,
                       ymax=np.interp(np.median(col_data), x, y),
                       ls=':', color='.3', label='median')
-            ax.vlines(x=np.mean(col_data)-scipy.stats.tstd(col_data),
+            ax.vlines(x=[mean-std, mean+std],
                       ymin=0,
-                      ymax=np.interp(np.mean(col_data)-scipy.stats.tstd(col_data), x, y), ls=':', color='.5',
-                      label='\u03BC + \u03C3')
-            ax.vlines(x=np.mean(col_data)+scipy.stats.tstd(col_data),
-                      ymin=0,
-                      ymax=np.interp(np.mean(col_data)+scipy.stats.tstd(col_data), x, y), ls=':', color='.5',
-                      label='\u03BC \u2212 \u03C3')
+                      ymax=[np.interp(mean-std, x, y), np.interp(mean+std, x, y)], ls=':', color='.5',
+                      label='\u03BC \u00B1 \u03C3')
 
             ax.set_ylim(0,)
-            # squish the distplot to make space for the labels
             ax.set_xlim(ax.get_xlim()[0]*1.15, ax.get_xlim()[1]*1.15)
 
             # Annotations and legend
-            ax.text(0.01, 0.85, f'Mean: {np.round(np.mean(col_data),2)}',
+            ax.text(0.01, 0.85, f'Mean: {np.round(mean,2)}',
                     fontdict=font_kws, transform=ax.transAxes)
-            ax.text(0.01, 0.7, f'Std. dev: {np.round(scipy.stats.tstd(col_data),2)}',
+            ax.text(0.01, 0.7, f'Std. dev: {np.round(std,2)}',
                     fontdict=font_kws, transform=ax.transAxes)
             ax.text(0.01, 0.55, f'Skew: {np.round(scipy.stats.skew(col_data),2)}',
                     fontdict=font_kws, transform=ax.transAxes)
