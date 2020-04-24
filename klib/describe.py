@@ -266,8 +266,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
         elif isinstance(target, (list, pd.Series, np.ndarray)):
             target_data = pd.Series(target)
 
-        corr = pd.DataFrame(data.corrwith(target_data))
-        corr.rename_axis(target, axis=1, inplace=True)
+        corr = pd.DataFrame(data.corrwith(target_data)).rename_axis(target, axis=1)
         corr = _corr_selector(corr, split=split, threshold=threshold)
         corr = corr.sort_values(corr.columns[0], ascending=False)
         vmax = np.round(np.nanmax(corr)-0.05, 2)
@@ -280,7 +279,6 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
 
         mask = np.triu(np.ones_like(corr, dtype=np.bool))  # Generate mask for the upper triangle
         square = True
-
         vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
         vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
 
@@ -502,10 +500,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
         print('Displaying only columns with missing values.')
 
     # Identify missing values
-    mv_cols = _missing_vals(data)['mv_cols']
-    mv_rows = _missing_vals(data)['mv_rows']
-    mv_total = _missing_vals(data)['mv_total']
-    mv_cols_ratio = _missing_vals(data)['mv_cols_ratio']
+    mv_total, mv_rows, mv_cols, _, mv_cols_ratio = _missing_vals(data).values()
     total_datapoints = data.shape[0]*data.shape[1]
 
     if mv_total == 0:
