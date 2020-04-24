@@ -88,8 +88,7 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     _validate_input_range(drop_threshold_rows, 'drop_threshold_rows', 0, 1)
 
     data = pd.DataFrame(data).copy()
-    data = data.dropna(axis=0, how='all')
-    data = data.dropna(axis=1, how='all')
+    data = data.dropna(axis=0, how='all').dropna(axis=1, how='all')
     data = data.drop(columns=data.loc[:, _missing_vals(data)['mv_cols_ratio'] > drop_threshold_cols].columns)
     data_cleaned = data.drop(index=data.loc[_missing_vals(data)['mv_rows_ratio'] > drop_threshold_rows, :].index)
 
