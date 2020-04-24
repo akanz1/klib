@@ -201,7 +201,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
         Value between 0 <= threshold <= 1
 
     target: string, list, np.array or pd.Series, default None
-        Specify target for correlation. E.g. label column to generate only the correlations between each feature\
+        Specify target for correlation. E.g. label column to generate only the correlations between each feature \
         and the label.
 
     method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
@@ -220,7 +220,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
         Use to show or hide annotations.
 
     dev: bool, default False
-        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed.s
+        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed.
 
     **kwargs: optional
         Additional elements to control the visualization of the plot, e.g.:
