@@ -47,6 +47,73 @@ def _corr_selector(corr, split=None, threshold=0):
     return corr
 
 
+def _diff_report(data, data_cleaned, dupl_rows=None, single_val_cols=None, show='changes'):
+    '''
+    Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty \
+        columns as well as optimizing the datatypes.
+
+    Parameters
+    ----------
+    data: 2D dataset that can be coerced into Pandas DataFrame.
+        Input the initial dataset here.
+
+    data_cleaned: 2D dataset that can be coerced into Pandas DataFrame.
+        Input the cleaned / updated dataset here.
+
+    dupl_rows: list, default None
+        List of duplicate row indices.
+
+    single_val_cols: list, default None
+        List of single-valued column indices. I.e. columns where all cells contain the same value. \
+        NaNs count as a separate value.
+
+    show: {'all', 'changes', None} default 'all'
+        Specify verbosity of the output.
+        * 'all': Print information about the data before and after cleaning as well as information about changes.
+        * 'changes': Print out differences in the data before and after cleaning.
+        * None: No information about the data and the data cleaning is printed.
+
+    Returns:
+    -------
+    Print statement highlighting the datasets or changes between the two datasets.
+
+    '''
+
+    if show in ['changes', 'all']:
+        dupl_rows = [] if dupl_rows is None else dupl_rows.copy()
+        single_val_cols = [] if single_val_cols is None else single_val_cols.copy()
+        data_mem = _memory_usage(data)
+        data_cl_mem = _memory_usage(data_cleaned)
+        data_mv_tot = _missing_vals(data)['mv_total']
+        data_cl_mv_tot = _missing_vals(data_cleaned)['mv_total']
+
+        if show == 'all':
+            print('Before data cleaning:\n')
+            print(f'dtypes:\n{data.dtypes.value_counts()}')
+            print(f'\nNumber of rows: {data.shape[0]}')
+            print(f'Number of cols: {data.shape[1]}')
+            print(f"Missing values: {data_mv_tot}")
+            print(f'Memory usage: {data_mem} KB')
+            print('_______________________________________________________\n')
+            print('After data cleaning:\n')
+            print(f'dtypes:\n{data_cleaned.dtypes.value_counts()}')
+            print(f'\nNumber of rows: {data_cleaned.shape[0]}')
+            print(f'Number of cols: {data_cleaned.shape[1]}')
+            print(f"Missing values: {data_cl_mv_tot}")
+            print(f'Memory usage: {data_cl_mem} KB')
+            print('_______________________________________________________\n')
+
+        print(f'Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}')
+        print(f'\nChanges:')
+        print(f'Dropped rows: {data.shape[0]-data_cleaned.shape[0]}')
+        print(f'     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows})')
+        print(f'Dropped columns: {data.shape[1]-data_cleaned.shape[1]}')
+        print(f'     of which {len(single_val_cols)} single valued. (Columns: {single_val_cols})')
+        print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
+        mem_change = data_mem-data_cl_mem
+        print(f'Reduced memory by: {round(mem_change,2)} KB (-{round(100*mem_change/data_mem,1)}%)')
+
+
 def _drop_duplicates(data):
     '''
     Provides information and drops duplicate rows.
@@ -62,10 +129,10 @@ def _drop_duplicates(data):
     '''
 
     data = pd.DataFrame(data).copy()
-    rows_dropped = data[data.duplicated()].index
-    data = data.drop_duplicates()
+    dupl_rows = data[data.duplicated()].index.tolist()
+    data = data.drop(dupl_rows, axis='index')
 
-    return data, rows_dropped
+    return data, dupl_rows
 
 
 def _memory_usage(data):
