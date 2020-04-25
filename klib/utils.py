@@ -18,7 +18,7 @@ def _corr_selector(corr, split=None, threshold=0):
     ----------
     corr: List or matrix of correlations.
 
-    split: {None, 'pos', 'neg', 'high', 'low'}, default None
+    split: {None, 'pos', 'neg', 'above', 'below'}, default None
         Type of split to be performed.
 
     threshold: float, default 0
@@ -35,10 +35,10 @@ def _corr_selector(corr, split=None, threshold=0):
     elif split == 'neg':
         corr = corr.where((corr <= threshold) & (corr < 0))
         print('Displaying negative correlations. Use "threshold" to further limit the results.')
-    elif split == 'high':
+    elif split == 'above':
         corr = corr.where(np.abs(corr) >= threshold)
         print(f'Displaying absolute correlations above the threshold ({threshold}).')
-    elif split == 'low':
+    elif split == 'below':
         corr = corr.where(np.abs(corr) <= threshold)
         print(f'Displaying absolute correlations below the threshold ({threshold}).')
     else:

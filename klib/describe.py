@@ -135,7 +135,7 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
 
 
 # Correlation Matrix
-def corr_mat(data, split=None, threshold=0, method='pearson', colored=True):
+def corr_mat(data, split=None, threshold=0, target=None, method='pearson', colored=True):
     '''
     Returns a color-encoded correlation matrix.
 
@@ -145,7 +145,7 @@ def corr_mat(data, split=None, threshold=0, method='pearson', colored=True):
     data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots.
 
-    split: {None, 'pos', 'neg', 'high', 'low'}, default None
+    split: {None, 'pos', 'neg', 'above', 'below'}, default None
         Type of split to be performed.
 
     threshold: float, default 0
@@ -175,7 +175,22 @@ def corr_mat(data, split=None, threshold=0, method='pearson', colored=True):
         return 'color: %s' % color
 
     data = pd.DataFrame(data)
-    corr = data.corr(method=method)
+
+    if isinstance(target, (str, list, pd.Series, np.ndarray)):
+        target_data = []
+        if isinstance(target, str):
+            target_data = data[target]
+            data = data.drop(target, axis=1)
+
+        elif isinstance(target, (list, pd.Series, np.ndarray)):
+            target_data = pd.Series(target)
+            target = target.name
+
+        corr = pd.DataFrame(data.corrwith(target_data)).rename_axis(target, axis=1)
+        corr = corr.sort_values(corr.columns[0], ascending=False)
+
+    else:
+        corr = data.corr(method=method)
 
     corr = _corr_selector(corr, split=split, threshold=threshold)
 
@@ -196,14 +211,14 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots.
 
-    split: {None, 'pos', 'neg', 'high', 'low'}, default None
+    split: {None, 'pos', 'neg', 'above', 'below'}, default None
         Type of split to be performed.
 
         * None: visualize all correlations between the feature-columns.
         * pos: visualize all positive correlations between the feature-columns above the threshold.
         * neg: visualize all negative correlations between the feature-columns below the threshold.
-        * high: visualize all correlations between the feature-columns for which abs(corr) > threshold is True.
-        * low: visualize all correlations between the feature-columns for which abs(corr) < threshold is True.
+        * above: visualize all correlations between the feature-columns for which abs(corr) > threshold is True.
+        * below: visualize all correlations between the feature-columns for which abs(corr) < threshold is True.
 
     threshold: float, default 0
         Value between 0 <= threshold <= 1
@@ -264,32 +279,11 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
 
     data = pd.DataFrame(data)
 
-    # Obtain correlations
-    if isinstance(target, (str, list, pd.Series, np.ndarray)):
-        target_data = []
-        if isinstance(target, str):
-            target_data = data[target]
-            data = data.drop(target, axis=1)
+    corr = corr_mat(data, split=split, threshold=threshold, target=target, method=method, colored=False)
 
-        elif isinstance(target, (list, pd.Series, np.ndarray)):
-            target_data = pd.Series(target)
-            target = target.name
-
-        corr = pd.DataFrame(data.corrwith(target_data)).rename_axis(target, axis=1)
-        corr = _corr_selector(corr, split=split, threshold=threshold)
-        corr = corr.sort_values(corr.columns[0], ascending=False)
-        vmax = np.round(np.nanmax(corr)-0.05, 2)
-        vmin = np.round(np.nanmin(corr)+0.05, 2)
-        mask = False
-        square = False
-
-    else:
-        corr = corr_mat(data, split=split, threshold=threshold, method=method, colored=False)
-
-        mask = np.triu(np.ones_like(corr, dtype=np.bool))
-        square = True
-        vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
-        vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
+    mask = np.triu(np.ones_like(corr, dtype=np.bool))
+    vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
+    vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
 
     fig, ax = plt.subplots(figsize=figsize)
 
@@ -305,11 +299,11 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
               **kwargs}
 
     # Draw heatmap with mask and default settings
-    sns.heatmap(corr, center=0, square=square, fmt='.2f', **kwargs)
+    sns.heatmap(corr, center=0, fmt='.2f', **kwargs)
 
     ax.set_title(f'Feature-correlation ({method})', fontdict={'fontsize': 18})
 
-    # Display settings
+    # Settings
     if dev:
         fig.suptitle(f"\
             Settings (dev-mode): \n\
