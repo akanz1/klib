@@ -273,6 +273,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
 
         elif isinstance(target, (list, pd.Series, np.ndarray)):
             target_data = pd.Series(target)
+            target = target.name
 
         corr = pd.DataFrame(data.corrwith(target_data)).rename_axis(target, axis=1)
         corr = _corr_selector(corr, split=split, threshold=threshold)
@@ -285,7 +286,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     else:
         corr = corr_mat(data, split=split, threshold=threshold, method=method, colored=False)
 
-        mask = np.triu(np.ones_like(corr, dtype=np.bool))  # Generate mask for the upper triangle
+        mask = np.triu(np.ones_like(corr, dtype=np.bool))
         square = True
         vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
         vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
@@ -303,13 +304,8 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
               'cbar_kws': {'shrink': .95, 'aspect': 30},
               **kwargs}
 
-    # Draw heatmap with mask and some default settings
-    sns.heatmap(corr,
-                center=0,
-                square=square,
-                fmt='.2f',
-                **kwargs
-                )
+    # Draw heatmap with mask and default settings
+    sns.heatmap(corr, center=0, square=square, fmt='.2f', **kwargs)
 
     ax.set_title(f'Feature-correlation ({method})', fontdict={'fontsize': 18})
 
