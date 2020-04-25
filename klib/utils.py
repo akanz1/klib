@@ -92,14 +92,14 @@ def _diff_report(data, data_cleaned, dupl_rows=None, single_val_cols=None, show=
             print(f'dtypes:\n{data.dtypes.value_counts()}')
             print(f'\nNumber of rows: {data.shape[0]}')
             print(f'Number of cols: {data.shape[1]}')
-            print(f"Missing values: {data_mv_tot}")
+            print(f'Missing values: {data_mv_tot}')
             print(f'Memory usage: {data_mem} KB')
             print('_______________________________________________________\n')
             print('After data cleaning:\n')
             print(f'dtypes:\n{data_cleaned.dtypes.value_counts()}')
             print(f'\nNumber of rows: {data_cleaned.shape[0]}')
             print(f'Number of cols: {data_cleaned.shape[1]}')
-            print(f"Missing values: {data_cl_mv_tot}")
+            print(f'Missing values: {data_cl_mv_tot}')
             print(f'Memory usage: {data_cl_mem} KB')
             print('_______________________________________________________\n')
 
@@ -109,7 +109,7 @@ def _diff_report(data, data_cleaned, dupl_rows=None, single_val_cols=None, show=
         print(f'     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows})')
         print(f'Dropped columns: {data.shape[1]-data_cleaned.shape[1]}')
         print(f'     of which {len(single_val_cols)} single valued. (Columns: {single_val_cols})')
-        print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
+        print(f'Dropped missing values: {data_mv_tot-data_cl_mv_tot}')
         mem_change = data_mem-data_cl_mem
         print(f'Reduced memory by: {round(mem_change,2)} KB (-{round(100*mem_change/data_mem,1)}%)')
 
@@ -185,10 +185,9 @@ def _missing_vals(data):
             'mv_cols_ratio': mv_cols_ratio}
 
 
-def _validate_input_range(value, desc, lower, upper):
-    if value < lower or value > upper:
-        raise ValueError(
-            f'Input value for {desc} is {value} but should be in the range {lower} <= {desc} <= {upper}.')
+def _validate_input_bool(value, desc):
+    if not(isinstance(value, bool)):
+        raise TypeError(f'Input value for {desc} is {type(value)} but should be a boolean.')
 
 
 def _validate_input_int(value, desc):
@@ -196,6 +195,12 @@ def _validate_input_int(value, desc):
         raise TypeError(f'Input value for {desc} is {type(value)} but should be an integer.')
 
 
-def _validate_input_bool(value, desc):
-    if not(isinstance(value, bool)):
-        raise TypeError(f'Input value for {desc} is {type(value)} but should be a boolean.')
+def _validate_input_range(value, desc, lower, upper):
+    if value < lower or value > upper:
+        raise ValueError(
+            f'Input value for {desc} is {value} but should be in the range {lower} <= {desc} <= {upper}.')
+
+
+def _validate_input_smaller(value1, value2, desc):
+    if value1 > value2:
+        raise ValueError(f'The first input for {desc} should be smaller or equal to the second input.')

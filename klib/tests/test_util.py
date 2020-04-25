@@ -7,6 +7,7 @@ from klib.utils import _missing_vals
 from klib.utils import _validate_input_bool
 from klib.utils import _validate_input_int
 from klib.utils import _validate_input_range
+from klib.utils import _validate_input_smaller
 
 
 if __name__ == '__main__':
@@ -141,6 +142,15 @@ class Test__validate_input(unittest.TestCase):
             _validate_input_int([1], None)
         with self.assertRaises(TypeError):
             _validate_input_int('1', None)
+
+    def test__validate_input_smaller(self):
+        # Raises an exception if the first value is larger than the second
+        with self.assertRaises(ValueError):
+            _validate_input_smaller(0.3, 0.2, None)
+        with self.assertRaises(ValueError):
+            _validate_input_smaller(3, 2, None)
+        with self.assertRaises(ValueError):
+            _validate_input_smaller(5, -3, None)
 
     def test__validate_input_range(self):
         with self.assertRaises(ValueError):
