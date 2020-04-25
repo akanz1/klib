@@ -344,10 +344,10 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
         Color of the vertical line indicating the mean of the data.
 
     figsize: tuple, default (14, 2)
-        Use to control the figure size.
+        Controls the figure size.
 
     fill_range: tuple, default (0.025, 0.975)
-        Use to control set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations\
+        Set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations\
         above and below the mean.
 
     hist: bool, default False

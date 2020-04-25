@@ -112,7 +112,7 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
         Drop rows with NA-ratio above the specified threshold.
 
     drop_duplicates: bool, default True
-        Drops duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.
+        Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.
 
     convert_dtypes: bool, default True
         Convert dtypes using pd.convert_dtypes().
@@ -138,8 +138,8 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
 
     See Also
     --------
-    convert_datatypes: Converts columns to best possible dtypes.
-    drop_missing : Flexibly drops columns and rows.
+    convert_datatypes: Convert columns to best possible dtypes.
+    drop_missing : Flexibly drop columns and rows.
     _memory_usage: Gives the total memory usage in kilobytes.
     _missing_vals: Metrics about missing values in the dataset.
 
@@ -159,6 +159,7 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
 
     data = pd.DataFrame(data).copy()
     data_cleaned = drop_missing(data, drop_threshold_cols, drop_threshold_rows)
+
     single_val_cols = data_cleaned.columns[data_cleaned.nunique(dropna=False) == 1].tolist()
     data_cleaned = data_cleaned.drop(columns=single_val_cols)
 
