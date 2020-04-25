@@ -135,7 +135,7 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
 
 
 # Correlation Matrix
-def corr_mat(data, split=None, threshold=0, method='pearson'):
+def corr_mat(data, split=None, threshold=0, method='pearson', colored=True):
     '''
     Returns a color-encoded correlation matrix.
 
@@ -157,9 +157,13 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
         * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but
                     more robus in smaller dataets than 'spearman'.
 
+    colored: bool, default True
+        If True the negative values in the correlation matrix are colored in red.
+
     Returns
     -------
-    Pandas Styler object
+    Pandas Styler object if colored = True
+    Pandas DataFrame if colored =False
 
     '''
 
@@ -175,7 +179,10 @@ def corr_mat(data, split=None, threshold=0, method='pearson'):
 
     corr = _corr_selector(corr, split=split, threshold=threshold)
 
-    return corr.style.applymap(color_negative_red).format("{:.2f}", na_rep='-')
+    if colored:
+        return corr.style.applymap(color_negative_red).format('{:.2f}', na_rep='-')
+    else:
+        return corr
 
 
 # Correlation matrix / heatmap
@@ -276,7 +283,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
         square = False
 
     else:
-        corr = corr_mat(data, split=split, threshold=threshold, method=method).data
+        corr = corr_mat(data, split=split, threshold=threshold, method=method, colored=False)
 
         mask = np.triu(np.ones_like(corr, dtype=np.bool))  # Generate mask for the upper triangle
         square = True
