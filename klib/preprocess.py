@@ -6,17 +6,21 @@ Functions for data preprocessing.
 '''
 
 # Imports
+import numpy as np
 import pandas as pd
+
+from sklearn.model_selection import train_test_split
 
 from .describe import corr_mat
 from .utils import _missing_vals
+from .utils import _validate_input_int
 from .utils import _validate_input_range
 
 
-def mv_col_handler(data, target=None, mv_threshold=0.2, corr_thresh_features=0.6, corr_thresh_target=0.30):
+def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6, corr_thresh_target=0.3):
     '''
-    Drop columns with a high ratio of missing values based on correlation with other features and the target \
-    variable. This function follows a three step process:
+    Converts columns with a high ratio of missing values into binary features and eventually drops them based on \
+    their correlation with other features and the target variable. This function follows a three step process:
     - 1) Identify features with a high ratio of missing values
     - 2) Identify high correlations of these features among themselves and with other features in the dataset.
     - 3) Features with high ratio of missing values and high correlation among each other are dropped unless \
@@ -30,7 +34,7 @@ def mv_col_handler(data, target=None, mv_threshold=0.2, corr_thresh_features=0.6
         Specify target for correlation. E.g. label column to generate only the correlations between each feature \
         and the label.
 
-    mv_threshold: float, default 0.2
+    mv_threshold: float, default 0.1
         Value between 0 <= threshold <= 1. Features with a missing-value-ratio larger than mv_threshold are candidates \
         for dropping and undergo further analysis.
 
@@ -50,9 +54,9 @@ def mv_col_handler(data, target=None, mv_threshold=0.2, corr_thresh_features=0.6
     '''
 
     # Validate Inputs
-    _validate_input_range(mv_threshold, 'mv_threshold', -1, 1)
-    _validate_input_range(corr_thresh_features, 'corr_thresh_features', -1, 1)
-    _validate_input_range(corr_thresh_target, 'corr_thresh_target', -1, 1)
+    _validate_input_range(mv_threshold, 'mv_threshold', 0, 1)
+    _validate_input_range(corr_thresh_features, 'corr_thresh_features', 0, 1)
+    _validate_input_range(corr_thresh_target, 'corr_thresh_target', 0, 1)
 
     data = pd.DataFrame(data).copy()
     mv_ratios = _missing_vals(data)['mv_cols_ratio']
@@ -71,9 +75,75 @@ def mv_col_handler(data, target=None, mv_threshold=0.2, corr_thresh_features=0.6
             data_temp = data_temp.drop(columns=[col])
 
     drop_cols = []
-    for col in high_corr_features:
-        if pd.DataFrame(data_mv_binary[col]).corrwith(target)[0] < corr_thresh_target:
-            drop_cols.append(col)
-            data = data.drop(columns=[col])
+    if target is None:
+        data = data_temp
+    else:
+        for col in high_corr_features:
+            if pd.DataFrame(data_mv_binary[col]).corrwith(target)[0] < corr_thresh_target:
+                drop_cols.append(col)
+                data = data.drop(columns=[col])
 
     return data, drop_cols
+
+
+def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=None, random_state=1234):
+    '''
+    Split a dataset and a label column into train, dev and test sets.
+
+    Parameters:
+    ----------
+
+    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots.
+
+    target: string, list, np.array or pd.Series, default None
+        Specify target for correlation. E.g. label column to generate only the correlations between each feature \
+        and the label.
+
+    dev_size: float, default 0.1
+        If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the dev \
+        split.
+
+    test_size: float, default 0.1
+        If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the test \
+        split.
+
+    stratify: target column, default None
+        If not None, data is split in a stratified fashion, using the input as the class labels.
+
+    random_state: integer
+        Random_state is the seed used by the random number generator.
+
+    Returns
+    -------
+    tuple: Tuple containing train-dev-test split of inputs.
+    '''
+
+    # Validate Inputs
+    _validate_input_int(random_state, 'random_state')
+    _validate_input_range(dev_size, 'dev_size', 0, 1)
+    _validate_input_range(test_size, 'test_size', 0, 1)
+
+    target_data = []
+    if isinstance(target, str):
+        target_data = data[target]
+        data = data.drop(target, axis=1)
+
+    elif isinstance(target, (list, pd.Series, np.ndarray)):
+        target_data = pd.Series(target)
+        target = target.name
+
+    X_train, X_dev_test, y_train, y_dev_test = train_test_split(data, target_data,
+                                                                test_size=dev_size+test_size,
+                                                                random_state=random_state,
+                                                                stratify=stratify)
+
+    if (dev_size == 0) or (test_size == 0):
+        return X_train, X_dev_test, y_train, y_dev_test
+
+    else:
+        X_dev, X_test, y_dev, y_test = train_test_split(X_dev_test, y_dev_test,
+                                                        test_size=test_size/(dev_size+test_size),
+                                                        random_state=random_state,
+                                                        stratify=y_dev_test)
+        return X_train, X_dev, X_test, y_train, y_dev, y_test

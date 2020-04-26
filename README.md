@@ -47,6 +47,7 @@ klib.clean # functions for cleaning datasets
 
 klib.preprocess # functions for data preprocessing (feature selection, scaling, ...)
 - klib.mv_col_handler() # drop features with a high ratio of missing values based on their informational content
+- klib.train_dev_test_split() # split a dataset and a label into train, optionally dev and test sets
 ```
 
 ## Examples
