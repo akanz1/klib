@@ -76,7 +76,6 @@ def _diff_report(data, data_cleaned, dupl_rows=None, single_val_cols=None, show=
     Returns:
     -------
     Print statement highlighting the datasets or changes between the two datasets.
-
     '''
 
     if show in ['changes', 'all']:

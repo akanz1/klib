@@ -56,7 +56,6 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
     Returns
     -------
     gs: Figure with array of Axes objects.
-
     '''
 
     # Validate Inputs
@@ -151,6 +150,10 @@ def corr_mat(data, split=None, threshold=0, target=None, method='pearson', color
     threshold: float, default 0
         Value between 0 <= threshold <= 1
 
+    target: string, list, np.array or pd.Series, default None
+        Specify target for correlation. E.g. label column to generate only the correlations between each feature \
+        and the label.
+
     method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
         * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
@@ -162,13 +165,13 @@ def corr_mat(data, split=None, threshold=0, target=None, method='pearson', color
 
     Returns
     -------
-    Pandas Styler object if colored = True
-    Pandas DataFrame if colored =False
-
+    If colored = True - corr: Pandas Styler object
+    If colored = False - corr: Pandas DataFrame
     '''
 
     # Validate Inputs
     _validate_input_range(threshold, 'threshold', -1, 1)
+    _validate_input_bool(colored, 'colored')
 
     def color_negative_red(val):
         color = '#FF3344' if val < 0 else None
@@ -269,7 +272,6 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     -------
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
-
     '''
 
     # Validate Inputs
@@ -372,11 +374,12 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     -------
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
-
     '''
 
     # Validate Inputs
     _validate_input_bool(hist, 'hist')
+    _validate_input_int(bins, 'bins')
+    _validate_input_range(bins, 'bins', 0, data.shape[1])
     _validate_input_bool(showall, 'showall')
     _validate_input_range(fill_range[0], 'fill_range_lower', 0, 1)
     _validate_input_range(fill_range[1], 'fill_range_upper', 0, 1)
@@ -482,7 +485,6 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
     Returns
     -------
     gs: Figure with array of Axes objects.
-
     '''
 
     # Validate Inputs

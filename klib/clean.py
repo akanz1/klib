@@ -36,7 +36,6 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None)
     Returns
     -------
     data: Pandas DataFrame
-
     '''
 
     # Validate Inputs
@@ -80,7 +79,6 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     Notes
     -----
     Columns are dropped first. Rows are dropped based on the remaining data.
-
     '''
 
     # Validate Inputs
@@ -146,7 +144,6 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
     Notes
     -----
     The category dtype is not grouped in the summary, unless it contains exactly the same categories.
-
     '''
 
     # Validate Inputs
