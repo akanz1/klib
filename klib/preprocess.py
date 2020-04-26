@@ -13,9 +13,14 @@ from .utils import _missing_vals
 from .utils import _validate_input_range
 
 
-def mv_col_handler(data, target=None, mv_threshold=0.25, corr_thresh_features=0.65, corr_thresh_target=0.2):
+def mv_col_handler(data, target=None, mv_threshold=0.2, corr_thresh_features=0.6, corr_thresh_target=0.30):
     '''
-    Drops columns with a high ratio of missing values based on correlation with other features and the target variable.
+    Drop columns with a high ratio of missing values based on correlation with other features and the target \
+    variable. This function follows a three step process:
+    - 1) Identify features with a high ratio of missing values
+    - 2) Identify high correlations of these features among themselves and with other features in the dataset.
+    - 3) Features with high ratio of missing values and high correlation among each other are dropped unless \
+         they correlate reasonably well with the target variable.
 
     Parameters
     ----------
@@ -25,17 +30,18 @@ def mv_col_handler(data, target=None, mv_threshold=0.25, corr_thresh_features=0.
         Specify target for correlation. E.g. label column to generate only the correlations between each feature \
         and the label.
 
-    mv_threshold: float, default 0.25
+    mv_threshold: float, default 0.2
         Value between 0 <= threshold <= 1. Features with a missing-value-ratio larger than mv_threshold are candidates \
         for dropping and undergo further analysis.
 
-    corr_thresh_features: float, default 0.65
-        Value between 0 <= threshold <= 1. Previously identified features with a high mv-ratio with a correlation \
-        larger than corr_thresh_features with any other feature undergo further analysis.
+    corr_thresh_features: float, default 0.6
+        Value between 0 <= threshold <= 1. Maximum correlation a previously identified features with a high mv-ratio is\
+         allowed to have with another feature. If this threshold is overstepped, the feature undergoes further analysis.
 
-    corr_thresh_target: float, default 0.25
-        Value between 0 <= threshold <= 1. The remaining features (with a high mv-ratio and high correlation to an \
-        existing feature) are dropped unless their correlation with the target is larger than corr_thresh_target.
+    corr_thresh_target: float, default 0.3
+        Value between 0 <= threshold <= 1. Minimum required correlation of a remaining feature (i.e. feature with a \
+        high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met \
+        the feature is ultimately dropped.
 
     Returns
     -------

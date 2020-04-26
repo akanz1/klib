@@ -17,7 +17,7 @@ from .utils import _validate_input_bool
 
 def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None):
     '''
-    Converts columns to best possible dtypes using dtypes supporting pd.NA.
+    Converts columns to best possible dtypes using dtypes supporting pd.NA. Temporarily not converting integers.
 
     Parameters
     ----------
@@ -52,7 +52,8 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None)
             col not in cat_exclude and
                 data[col].dtype == 'object'):
             data[col] = data[col].astype('category')
-        data[col] = data[col].convert_dtypes()
+        data[col] = data[col].convert_dtypes(infer_objects=True, convert_string=True,
+                                             convert_integer=False, convert_boolean=True)
 
     return data
 
@@ -93,8 +94,8 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     return data_cleaned
 
 
-def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop_duplicates=True,
-                  convert_dtypes=False, category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
+def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_duplicates=True,
+                  convert_dtypes=True, category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
     '''
     Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty \
         columns as well as optimizing the datatypes.
@@ -103,16 +104,16 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
     ----------
     data: 2D dataset that can be coerced into Pandas DataFrame.
 
-    drop_threshold_cols: float, default 0.95
+    drop_threshold_cols: float, default 0.9
         Drop columns with NA-ratio above the specified threshold.
 
-    drop_threshold_rows: float, default 0.95
+    drop_threshold_rows: float, default 0.9
         Drop rows with NA-ratio above the specified threshold.
 
     drop_duplicates: bool, default True
         Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.
 
-    convert_dtypes: bool, default False
+    convert_dtypes: bool, default True
         Convert dtypes using pd.convert_dtypes().
 
     category: bool, default True
