@@ -96,7 +96,7 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
 
 
 def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop_duplicates=True,
-                  convert_dtypes=True, category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
+                  convert_dtypes=False, category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
     '''
     Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty \
         columns as well as optimizing the datatypes.
@@ -114,7 +114,7 @@ def data_cleaning(data, drop_threshold_cols=0.95, drop_threshold_rows=0.95, drop
     drop_duplicates: bool, default True
         Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.
 
-    convert_dtypes: bool, default True
+    convert_dtypes: bool, default False
         Convert dtypes using pd.convert_dtypes().
 
     category: bool, default True
