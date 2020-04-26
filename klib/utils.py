@@ -197,7 +197,7 @@ def _validate_input_int(value, desc):
 def _validate_input_range(value, desc, lower, upper):
     if value < lower or value > upper:
         raise ValueError(
-            f'Input value for {desc} is {value} but should be in the range {lower} <= {desc} <= {upper}.')
+            f'{desc} = {value} but should be within the range {lower} <= {desc} <= {upper}.')
 
 
 def _validate_input_smaller(value1, value2, desc):
