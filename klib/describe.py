@@ -189,8 +189,9 @@ def corr_mat(data, split=None, threshold=0, target=None, method='pearson', color
             target_data = pd.Series(target)
             target = target.name
 
-        corr = pd.DataFrame(data.corrwith(target_data)).rename_axis(target, axis=1)
+        corr = pd.DataFrame(data.corrwith(target_data))
         corr = corr.sort_values(corr.columns[0], ascending=False)
+        corr.columns = [target]
 
     else:
         corr = data.corr(method=method)
@@ -283,7 +284,11 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
 
     corr = corr_mat(data, split=split, threshold=threshold, target=target, method=method, colored=False)
 
-    mask = np.triu(np.ones_like(corr, dtype=np.bool))
+    mask = np.zeros_like(corr, dtype=np.bool)
+
+    if target is None:
+        mask = np.triu(np.ones_like(corr, dtype=np.bool))
+
     vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
     vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
 
