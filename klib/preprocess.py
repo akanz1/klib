@@ -26,6 +26,8 @@ def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6
     - 3) Features with high ratio of missing values and high correlation among each other are dropped unless \
          they correlate reasonably well with the target variable.
 
+    Note: If no target is provided, the process exits after step two and drops columns identified up to this point.
+
     Parameters
     ----------
     data: 2D dataset that can be coerced into Pandas DataFrame.
