@@ -2,6 +2,7 @@ matplotlib
 numpy
 pandas
 seaborn
+sklearn
 
 # Additional requirements for testing
 jinja2

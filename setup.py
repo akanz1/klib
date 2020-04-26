@@ -25,7 +25,8 @@ setuptools.setup(
         'matplotlib >= 2.1.2',
         'numpy >= 1.13.3',
         'pandas >= 1.0.0',
-        'seaborn >= 0.1.0'
+        'seaborn >= 0.1.0',
+        'sklearn >= 0.22.0',
     ],
     python_requires='>=3.6',
 )
