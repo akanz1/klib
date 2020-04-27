@@ -52,6 +52,7 @@ def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6
     Returns
     -------
     data: Updated Pandas DataFrame
+    cols_mv: Columns with missing values included in the analysis
     drop_cols: List of dropped columns
     '''
 
@@ -61,15 +62,16 @@ def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6
     _validate_input_range(corr_thresh_target, 'corr_thresh_target', 0, 1)
 
     data = pd.DataFrame(data).copy()
-    mv_ratios = _missing_vals(data)['mv_cols_ratio']
+    data_local = data.copy()
+    mv_ratios = _missing_vals(data_local)['mv_cols_ratio']
     cols_mv = mv_ratios[mv_ratios > mv_threshold].index.tolist()
-    data_mv_binary = data[cols_mv].applymap(lambda x: 1 if not pd.isnull(x) else x).fillna(0)
+    data_mv_binary = data_local[cols_mv].applymap(lambda x: 1 if not pd.isnull(x) else x).fillna(0)
 
     for col in cols_mv:
-        data[col] = data_mv_binary[col]
+        data_local[col] = data_mv_binary[col]
 
     high_corr_features = []
-    data_temp = data.copy()
+    data_temp = data_local.copy()
     for col in cols_mv:
         corrmat = corr_mat(data_temp, colored=False)
         if abs(corrmat[col]).nlargest(2)[1] > corr_thresh_features:
@@ -78,14 +80,14 @@ def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6
 
     drop_cols = []
     if target is None:
-        data = data_temp
+        data = data.drop(columns=high_corr_features)
     else:
         for col in high_corr_features:
             if pd.DataFrame(data_mv_binary[col]).corrwith(target)[0] < corr_thresh_target:
                 drop_cols.append(col)
                 data = data.drop(columns=[col])
 
-    return data, drop_cols
+    return data, cols_mv, drop_cols
 
 
 def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=None, random_state=1234):
