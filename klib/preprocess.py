@@ -65,10 +65,7 @@ def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6
     data_local = data.copy()
     mv_ratios = _missing_vals(data_local)['mv_cols_ratio']
     cols_mv = mv_ratios[mv_ratios > mv_threshold].index.tolist()
-    data_mv_binary = data_local[cols_mv].applymap(lambda x: 1 if not pd.isnull(x) else x).fillna(0)
-
-    for col in cols_mv:
-        data_local[col] = data_mv_binary[col]
+    data_local[cols_mv] = data_local[cols_mv].applymap(lambda x: 1 if not pd.isnull(x) else x).fillna(0)
 
     high_corr_features = []
     data_temp = data_local.copy()
@@ -77,13 +74,13 @@ def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6
         if abs(corrmat[col]).nlargest(2)[1] > corr_thresh_features:
             high_corr_features.append(col)
             data_temp = data_temp.drop(columns=[col])
-
+    
     drop_cols = []
     if target is None:
         data = data.drop(columns=high_corr_features)
     else:
         for col in high_corr_features:
-            if pd.DataFrame(data_mv_binary[col]).corrwith(target)[0] < corr_thresh_target:
+            if pd.DataFrame(data_local[col]).corrwith(target)[0] < corr_thresh_target:
                 drop_cols.append(col)
                 data = data.drop(columns=[col])
 
