@@ -74,7 +74,7 @@ def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6
         if abs(corrmat[col]).nlargest(2)[1] > corr_thresh_features:
             high_corr_features.append(col)
             data_temp = data_temp.drop(columns=[col])
-    
+
     drop_cols = []
     if target is None:
         data = data.drop(columns=high_corr_features)

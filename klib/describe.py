@@ -104,7 +104,7 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
         ax_top.bar(value_counts_idx_bot, value_counts_bot, color=bar_color_bottom, width=0.85)
         ax_top.set(frame_on=False)
         ax_top.tick_params(axis='x', labelrotation=90)
-
+        str.split()
         # Summary stats
         ax_bottom = fig.add_subplot(gs[1:2, count:count+1])
         ax_bottom.get_yaxis().set_visible(False)
