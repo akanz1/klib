@@ -382,13 +382,13 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     '''
 
     # Validate Inputs
+    _validate_input_range(fill_range[0], 'fill_range_lower', 0, 1)
+    _validate_input_range(fill_range[1], 'fill_range_upper', 0, 1)
+    _validate_input_smaller(fill_range[0], fill_range[1], 'fill_range')
     _validate_input_bool(hist, 'hist')
     _validate_input_int(bins, 'bins')
     _validate_input_range(bins, 'bins', 0, data.shape[1])
     _validate_input_bool(showall, 'showall')
-    _validate_input_range(fill_range[0], 'fill_range_lower', 0, 1)
-    _validate_input_range(fill_range[1], 'fill_range_upper', 0, 1)
-    _validate_input_smaller(fill_range[0], fill_range[1], 'fill_range')
 
     # Handle dictionary defaults
     kde_kws = {'alpha': 0.7, 'linewidth': 1.5} if kde_kws is None else kde_kws.copy()
