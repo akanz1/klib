@@ -7,8 +7,9 @@ klib is an easy to use Python library of customized functions for cleaning and a
 __author__ = """Andreas Kanz"""
 
 from ._version import __version__
-from .describe import cat_plot, corr_mat, corr_plot, dist_plot, missingval_plot
 from .clean import convert_datatypes, data_cleaning, drop_missing
+from .describe import cat_plot, corr_mat, corr_plot, dist_plot, missingval_plot
+from .preprocess import mv_col_handler, train_dev_test_split
 
 __version__ = __version__
 
@@ -19,4 +20,6 @@ __all__ = ['cat_plot',
            'data_cleaning',
            'dist_plot',
            'drop_missing',
-           'missingval_plot']
+           'missingval_plot',
+           'mv_col_handler',
+           'train_dev_test_split']
