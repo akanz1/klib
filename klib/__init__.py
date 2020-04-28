@@ -9,19 +9,13 @@ klib is an easy to use Python library of customized functions for cleaning and a
 __author__ = """Andreas Kanz"""
 
 from ._version import __version__
-from .clean import *
-from .describe import *
-from .preprocess import *
+from . import clean
+from . import describe
+from . import preprocess
 
 __version__ = __version__
 
-__all__ = ['cat_plot',
-           'convert_datatypes',
-           'corr_mat',
-           'corr_plot',
-           'data_cleaning',
-           'dist_plot',
-           'drop_missing',
-           'missingval_plot',
-           'mv_col_handling',
-           'train_dev_test_split']
+__all__ = ['clean',
+           'describe',
+           'preprocess',
+           '__version__']
