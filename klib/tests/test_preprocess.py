@@ -1,9 +1,6 @@
 import pandas as pd
 import unittest
-from klib.preprocess import train_dev_test_split
-
-if __name__ == '__main__':
-    unittest.main()
+from ..preprocess import train_dev_test_split
 
 
 class Test_train_dev_test_split(unittest.TestCase):
@@ -25,6 +22,7 @@ class Test_train_dev_test_split(unittest.TestCase):
 
     def test_train_dev_test_split_col(self):
         # Test the propper splitting in train, dev and test sets
+
         expected_results = [(8, 4), (1, 4), (1, 4), (8,), (1,), (1,)]
         for i, _ in enumerate(expected_results):
             self.assertEqual(train_dev_test_split(self.data_split, 'Col2',

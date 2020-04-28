@@ -1,17 +1,13 @@
 import numpy as np
 import pandas as pd
 import unittest
-from klib.utils import _corr_selector
-from klib.utils import _drop_duplicates
-from klib.utils import _missing_vals
-from klib.utils import _validate_input_bool
-from klib.utils import _validate_input_int
-from klib.utils import _validate_input_range
-from klib.utils import _validate_input_smaller
-
-
-if __name__ == '__main__':
-    unittest.main()
+from ..utils import _corr_selector
+from ..utils import _drop_duplicates
+from ..utils import _missing_vals
+from ..utils import _validate_input_bool
+from ..utils import _validate_input_int
+from ..utils import _validate_input_range
+from ..utils import _validate_input_smaller
 
 
 class Test__corr_selector(unittest.TestCase):

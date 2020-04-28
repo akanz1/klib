@@ -1,11 +1,8 @@
 import numpy as np
 import pandas as pd
 import unittest
-from klib.clean import drop_missing
-from klib.clean import convert_datatypes
-
-if __name__ == '__main__':
-    unittest.main()
+from ..clean import drop_missing
+from ..clean import convert_datatypes
 
 
 class Test_drop_missing(unittest.TestCase):

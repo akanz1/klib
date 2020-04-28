@@ -1,9 +1,6 @@
 import pandas as pd
 import unittest
-from klib.describe import corr_mat
-
-if __name__ == '__main__':
-    unittest.main()
+from ..describe import corr_mat
 
 
 class Test_corr_mat(unittest.TestCase):
