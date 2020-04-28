@@ -22,6 +22,13 @@ from .utils import _validate_input_range
 from .utils import _validate_input_smaller
 
 
+__all__ = ['cat_plot',
+           'corr_mat',
+           'corr_plot',
+           'dist_plot',
+           'missingval_plot']
+
+
 # Functions
 
 # Categorical Plot

@@ -23,6 +23,13 @@ from .utils import _validate_input_int
 from .utils import _validate_input_range
 
 
+__all__ = ['mv_col_handler',
+           'train_dev_test_split',
+           'cat_pipe',
+           'num_pipe',
+           'preprocessing_pipe']
+
+
 def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6, corr_thresh_target=0.3):
     '''
     Converts columns with a high ratio of missing values into binary features and eventually drops them based on \
@@ -206,6 +213,7 @@ def preprocessing_pipe(num=True, cat=True):
         Set to false if no categorical data is in the dataset.
     '''
 
+    pipe = None
     if num and cat:
         pipe = make_union(num_pipe(), cat_pipe(), n_jobs=4)
 

@@ -10,11 +10,16 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
 # from .preprocess import mv_col_handler
+# from .describe import corr_mat
 from .utils import _diff_report
 from .utils import _drop_duplicates
 from .utils import _missing_vals
 from .utils import _validate_input_range
 from .utils import _validate_input_bool
+
+__all__ = ['convert_datatypes',
+           'data_cleaning',
+           'drop_missing']
 
 
 def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None):
