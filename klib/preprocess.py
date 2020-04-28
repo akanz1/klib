@@ -6,13 +6,19 @@ Functions for data preprocessing.
 '''
 
 # Imports
+from .describe import corr_mat
+from .utils import _missing_vals
 import numpy as np
 import pandas as pd
 
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.ensemble import ExtraTreesRegressor
+from sklearn.experimental import enable_iterative_imputer  # noqa
+from sklearn.impute import SimpleImputer, IterativeImputer
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline, make_union
+from sklearn.preprocessing import OneHotEncoder, RobustScaler
 
-from .describe import corr_mat
-from .utils import _missing_vals
 from .utils import _validate_input_int
 from .utils import _validate_input_range
 
@@ -87,7 +93,7 @@ def mv_col_handler(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6
     return data, cols_mv, drop_cols
 
 
-def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=None, random_state=1234):
+def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=None, random_state=408):
     '''
     Split a dataset and a label column into train, dev and test sets.
 
@@ -112,7 +118,7 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
     stratify: target column, default None
         If not None, data is split in a stratified fashion, using the input as the class labels.
 
-    random_state: integer
+    random_state: integer, default 408
         Random_state is the seed used by the random number generator.
 
     Returns
@@ -148,3 +154,88 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
                                                         random_state=random_state,
                                                         stratify=y_dev_test)
         return X_train, X_dev, X_test, y_train, y_dev, y_test
+
+
+class ColumnSelector(BaseEstimator, TransformerMixin):
+    ''''''
+
+    def __init__(self, num=True):
+        self.num = num
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        temp = X.fillna(X.mode().iloc[0]).convert_dtypes()
+
+        if self.num:
+            return X[temp.select_dtypes(include=['number']).columns.tolist()]
+        else:
+            return X[temp.select_dtypes(exclude=['number']).columns.tolist()]
+
+
+def cat_pipe(imputer=SimpleImputer(strategy='most_frequent')):
+    '''Set of standard preprocessing operations on categorical data.'''
+
+    cat_pipe = make_pipeline(ColumnSelector(num=False),
+                             imputer,
+                             OneHotEncoder(handle_unknown='ignore'))
+    return cat_pipe
+
+
+def num_pipe(imputer=IterativeImputer(
+        estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408),
+        scaler=RobustScaler()):
+    '''Set of standard preprocessing operations on numerical data.'''
+
+    num_pipe = make_pipeline(ColumnSelector(),
+                             (imputer),
+                             (scaler))
+    return num_pipe
+
+
+def preprocessing_pipe(num=True, cat=True):
+    '''Set of standard preprocessing operations on numerical and categorical data.
+
+    Parameters:
+    ----------
+    num: bool, default True
+        Set to false if no numerical data is in the dataset.
+
+    cat: bool, default True
+        Set to false if no categorical data is in the dataset.
+    '''
+
+    if num and cat:
+        pipe = make_union(num_pipe(), cat_pipe(), n_jobs=4)
+
+    elif num:
+        pipe = num_pipe()
+
+    elif cat:
+        pipe = cat_pipe()
+
+    return pipe
+
+
+class MVColHandler(BaseEstimator, TransformerMixin):
+    '''possible component of a cleaning pipeline --> follows DataCleaning'''
+
+    def __init__(self, target=None, mch_mv_thresh=0.1, mch_feature_thresh=0.6, mch_target_thresh=0.3):
+        self.target = target
+        self.mch_mv_thresh = mch_mv_thresh
+        self.mch_feature_thresh = mch_feature_thresh
+        self.mch_target_thresh = mch_target_thresh
+
+    def fit(self, data, target=None):
+        return self
+
+    def transform(self, data, target=None):
+        data, cols_mv, dropped_cols = mv_col_handler(data, target=self.target, mv_threshold=self.mch_mv_thresh,
+                                                     corr_thresh_features=self.mch_feature_thresh,
+                                                     corr_thresh_target=self.mch_target_thresh)
+
+        print(f'\nFeatures with MV-ratio > {self.mch_mv_thresh}: {len(cols_mv)}')
+        print('Features dropped:', len(dropped_cols), dropped_cols)
+
+        return data

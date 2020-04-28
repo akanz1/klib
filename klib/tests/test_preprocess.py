@@ -27,7 +27,8 @@ class Test_train_dev_test_split(unittest.TestCase):
         # Test the propper splitting in train, dev and test sets
         expected_results = [(8, 4), (1, 4), (1, 4), (8,), (1,), (1,)]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(train_dev_test_split(self.data_split, 'Col2')[i].shape, expected_results[i])
+            self.assertEqual(train_dev_test_split(self.data_split, 'Col2',
+                                                  random_state=1234)[i].shape, expected_results[i])
 
         expected_results = [(8, 4), (2, 4), (8,), (2,)]
         for i, _ in enumerate(expected_results):

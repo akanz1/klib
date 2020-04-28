@@ -7,7 +7,9 @@ Functions for data cleaning.
 
 # Imports
 import pandas as pd
+from sklearn.base import BaseEstimator, TransformerMixin
 
+# from .preprocess import mv_col_handler
 from .utils import _diff_report
 from .utils import _drop_duplicates
 from .utils import _missing_vals
@@ -170,3 +172,29 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_d
     _diff_report(data, data_cleaned, dupl_rows=dupl_rows, single_val_cols=single_val_cols, show=show)
 
     return data_cleaned
+
+
+class DataCleaner(BaseEstimator, TransformerMixin):
+    '''Docstring of a class? methods also have docstrings or commments?'''
+    '''possible component of a cleaning pipeline --> e.g. followed by MCH'''
+
+    def __init__(self, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_duplicates=True, convert_dtypes=True,
+                 category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
+        self.drop_threshold_cols = drop_threshold_cols
+        self.drop_threshold_rows = drop_threshold_rows
+        self.drop_duplicates = drop_duplicates
+        self.convert_dtypes = convert_dtypes
+        self.category = category
+        self.cat_threshold = cat_threshold
+        self.cat_exclude = cat_exclude
+        self.show = show
+
+    def fit(self, data, target=None):
+        return self
+
+    def transform(self, data, target=None):
+        data_cleaned = data_cleaning(data, drop_threshold_cols=self.drop_threshold_cols,
+                                     drop_threshold_rows=self.drop_threshold_rows, drop_duplicates=self.drop_duplicates,
+                                     convert_dtypes=self.convert_dtypes, category=self.category, cat_threshold=self.
+                                     cat_threshold, cat_exclude=self.cat_exclude, show=self.show)
+        return data_cleaned
