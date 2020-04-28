@@ -13,6 +13,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.experimental import enable_iterative_imputer  # noqa
 from sklearn.impute import SimpleImputer, IterativeImputer
+from sklearn.feature_selection import VarianceThreshold
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline, make_union
 from sklearn.preprocessing import OneHotEncoder, RobustScaler
@@ -110,21 +111,25 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
 
 def num_pipe(imputer=IterativeImputer(
         estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408),
-        scaler=RobustScaler()):
+        scaler=RobustScaler(),
+        var_thresh=VarianceThreshold(threshold=0.1)):
     '''Set of standard preprocessing operations on numerical data.'''
 
     num_pipe = make_pipeline(ColumnSelector(),
-                             (imputer),
-                             (scaler))
+                             imputer,
+                             scaler,
+                             var_thresh)
     return num_pipe
 
 
-def cat_pipe(imputer=SimpleImputer(strategy='most_frequent')):
+def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
+             var_thresh=VarianceThreshold(threshold=0.1)):
     '''Set of standard preprocessing operations on categorical data.'''
 
     cat_pipe = make_pipeline(ColumnSelector(num=False),
                              imputer,
-                             OneHotEncoder(handle_unknown='ignore'))
+                             OneHotEncoder(handle_unknown='ignore'),
+                             var_thresh)
     return cat_pipe
 
 
