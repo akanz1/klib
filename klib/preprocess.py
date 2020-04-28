@@ -108,15 +108,6 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
             return X[temp.select_dtypes(exclude=['number']).columns.tolist()]
 
 
-def cat_pipe(imputer=SimpleImputer(strategy='most_frequent')):
-    '''Set of standard preprocessing operations on categorical data.'''
-
-    cat_pipe = make_pipeline(ColumnSelector(num=False),
-                             imputer,
-                             OneHotEncoder(handle_unknown='ignore'))
-    return cat_pipe
-
-
 def num_pipe(imputer=IterativeImputer(
         estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408),
         scaler=RobustScaler()):
@@ -126,6 +117,15 @@ def num_pipe(imputer=IterativeImputer(
                              (imputer),
                              (scaler))
     return num_pipe
+
+
+def cat_pipe(imputer=SimpleImputer(strategy='most_frequent')):
+    '''Set of standard preprocessing operations on categorical data.'''
+
+    cat_pipe = make_pipeline(ColumnSelector(num=False),
+                             imputer,
+                             OneHotEncoder(handle_unknown='ignore'))
+    return cat_pipe
 
 
 def preprocessing_pipe(num=True, cat=True):
