@@ -15,12 +15,13 @@ from .preprocess import *
 
 __version__ = __version__
 
-# __all__ = ['cat_plot',
-#            'convert_datatypes',
-#            'corr_mat',
-#            'corr_plot',
-#            'data_cleaning',
-#            'dist_plot',
-#            'drop_missing',
-#            'missingval_plot',
-#            'train_dev_test_split']
+__all__ = ['cat_plot',
+           'convert_datatypes',
+           'corr_mat',
+           'corr_plot',
+           'data_cleaning',
+           'dist_plot',
+           'drop_missing',
+           'missingval_plot',
+           'mv_col_handling',
+           'train_dev_test_split']
