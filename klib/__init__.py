@@ -9,9 +9,9 @@ klib is an easy to use Python library of customized functions for cleaning and a
 __author__ = """Andreas Kanz"""
 
 from ._version import __version__
-from . import clean
-from . import describe
-from . import preprocess
+from .clean import *
+from .describe import *
+from .preprocess import *
 
 __version__ = __version__
 
