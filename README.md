@@ -13,7 +13,7 @@ klib is a Python library for importing, cleaning, analyzing and preprocessing da
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install klib.
 
-[![PyPI Version](https://badgen.net/pypi/v/klib)](https://pypi.org/project/klib/)
+[![PyPI Version](https://img.shields.io/pypi/v/klib)](https://pypi.org/project/klib/)
 
 ```bash
 pip install klib
