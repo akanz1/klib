@@ -13,12 +13,12 @@ import pandas as pd
 import scipy
 import seaborn as sns
 
-from .utils import _corr_selector
-from .utils import _missing_vals
-from .utils import _validate_input_bool
-from .utils import _validate_input_int
-from .utils import _validate_input_range
-from .utils import _validate_input_smaller
+from .utils import (_corr_selector,
+                    _missing_vals,
+                    _validate_input_bool,
+                    _validate_input_int,
+                    _validate_input_smaller,
+                    _validate_input_range)
 
 
 __all__ = ['cat_plot',

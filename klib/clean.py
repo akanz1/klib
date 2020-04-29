@@ -10,11 +10,12 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
 from .describe import corr_mat
-from .utils import _diff_report
-from .utils import _drop_duplicates
-from .utils import _missing_vals
-from .utils import _validate_input_range
-from .utils import _validate_input_bool
+from .utils import (_diff_report,
+                    _drop_duplicates,
+                    _missing_vals,
+                    _validate_input_bool,
+                    _validate_input_range)
+
 
 __all__ = ['convert_datatypes',
            'data_cleaning',

@@ -12,14 +12,17 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.experimental import enable_iterative_imputer  # noqa
-from sklearn.impute import SimpleImputer, IterativeImputer
-from sklearn.feature_selection import f_classif, SelectPercentile, VarianceThreshold
+from sklearn.impute import (SimpleImputer, IterativeImputer)
+from sklearn.feature_selection import (f_classif,
+                                       SelectPercentile,
+                                       VarianceThreshold)
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder, RobustScaler
 
-from .utils import _validate_input_int
-from .utils import _validate_input_range
+from .utils import (_validate_input_int,
+                    _validate_input_range,
+                    _validate_input_sum)
 
 
 __all__ = ['feature_selection_pipe',
@@ -114,6 +117,7 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
     _validate_input_range(dev_size, 'dev_size', 0, 1)
     _validate_input_range(test_size, 'test_size', 0, 1)
     _validate_input_int(random_state, 'random_state')
+    _validate_input_sum(1, 'Sum of args', dev_size, test_size)
 
     target_data = []
     if isinstance(target, str):

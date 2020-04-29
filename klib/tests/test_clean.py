@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
 import unittest
-from ..clean import drop_missing
-from ..clean import convert_datatypes
+from ..clean import drop_missing, convert_datatypes
 
 
 class Test_drop_missing(unittest.TestCase):
