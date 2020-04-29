@@ -13,19 +13,68 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.experimental import enable_iterative_imputer  # noqa
 from sklearn.impute import SimpleImputer, IterativeImputer
-from sklearn.feature_selection import VarianceThreshold
+from sklearn.feature_selection import f_classif, SelectPercentile, VarianceThreshold
 from sklearn.model_selection import train_test_split
-from sklearn.pipeline import make_pipeline, make_union
+from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder, RobustScaler
 
 from .utils import _validate_input_int
 from .utils import _validate_input_range
 
 
-__all__ = ['train_dev_test_split',
-           'cat_pipe',
+__all__ = ['feature_selection_pipe',
            'num_pipe',
-           'preprocessing_pipe']
+           'cat_pipe',
+           'train_dev_test_split']
+
+
+class ColumnSelector(BaseEstimator, TransformerMixin):
+    ''''''
+
+    def __init__(self, num=True):
+        self.num = num
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        temp = X.fillna(X.mode().iloc[0]).convert_dtypes()
+
+        if self.num:
+            return X[temp.select_dtypes(include=['number']).columns.tolist()]
+        else:
+            return X[temp.select_dtypes(exclude=['number']).columns.tolist()]
+
+
+def feature_selection_pipe(
+        var_thresh=VarianceThreshold(threshold=0.1),
+        select_percentile=SelectPercentile(f_classif, percentile=95)):
+    '''Preprocessing operations for feature selection.'''
+
+    feature_selection_pipe = make_pipeline(var_thresh,
+                                           select_percentile)
+    return feature_selection_pipe
+
+
+def num_pipe(imputer=IterativeImputer(estimator=ExtraTreesRegressor(
+        n_estimators=25, n_jobs=4, random_state=408), random_state=408),
+        scaler=RobustScaler()):
+    '''Standard preprocessing operations on numerical data.'''
+
+    num_pipe = make_pipeline(ColumnSelector(),
+                             imputer,
+                             scaler)
+    return num_pipe
+
+
+def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
+             scaler=OneHotEncoder(handle_unknown='ignore')):
+    '''Set of standard preprocessing operations on categorical data.'''
+
+    cat_pipe = make_pipeline(ColumnSelector(num=False),
+                             imputer,
+                             scaler)
+    return cat_pipe
 
 
 def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=None, random_state=408):
@@ -89,70 +138,3 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
                                                         random_state=random_state,
                                                         stratify=y_dev_test)
         return X_train, X_dev, X_test, y_train, y_dev, y_test
-
-
-class ColumnSelector(BaseEstimator, TransformerMixin):
-    ''''''
-
-    def __init__(self, num=True):
-        self.num = num
-
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X, y=None):
-        temp = X.fillna(X.mode().iloc[0]).convert_dtypes()
-
-        if self.num:
-            return X[temp.select_dtypes(include=['number']).columns.tolist()]
-        else:
-            return X[temp.select_dtypes(exclude=['number']).columns.tolist()]
-
-
-def num_pipe(imputer=IterativeImputer(
-        estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408),
-        scaler=RobustScaler(),
-        var_thresh=VarianceThreshold(threshold=0.1)):
-    '''Set of standard preprocessing operations on numerical data.'''
-
-    num_pipe = make_pipeline(ColumnSelector(),
-                             imputer,
-                             scaler,
-                             var_thresh)
-    return num_pipe
-
-
-def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
-             var_thresh=VarianceThreshold(threshold=0.1)):
-    '''Set of standard preprocessing operations on categorical data.'''
-
-    cat_pipe = make_pipeline(ColumnSelector(num=False),
-                             imputer,
-                             OneHotEncoder(handle_unknown='ignore'),
-                             var_thresh)
-    return cat_pipe
-
-
-def preprocessing_pipe(num=True, cat=True):
-    '''Set of standard preprocessing operations on numerical and categorical data.
-
-    Parameters:
-    ----------
-    num: bool, default True
-        Set to false if no numerical data is in the dataset.
-
-    cat: bool, default True
-        Set to false if no categorical data is in the dataset.
-    '''
-
-    pipe = None
-    if num and cat:
-        pipe = make_union(num_pipe(), cat_pipe(), n_jobs=4)
-
-    elif num:
-        pipe = num_pipe()
-
-    elif cat:
-        pipe = cat_pipe()
-
-    return pipe
