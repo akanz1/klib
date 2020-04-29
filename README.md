@@ -41,13 +41,16 @@ klib.describe # functions for visualizing datasets
 - klib.missingval_plot() # returns a figure containing information about missing values
 
 klib.clean # functions for cleaning datasets
-- klib.data_cleaning() # perform datacleaning (drop duplicates & empty rows/columns, adjust dtypes,...) on a dataset
+- klib.data_cleaning() # performs datacleaning (drop duplicates & empty rows/columns, adjust dtypes,...) on a dataset
 - klib.convert_datatypes() # converts existing to more efficient dtypes, also called inside ".data_cleaning()"
-- klib.drop_missing() # drop missing values, also called in ".data_cleaning()"
+- klib.drop_missing() # drops missing values, also called in ".data_cleaning()"
+- klib.mv_col_handling() # drops features with a high ratio of missing values based on their informational content
 
 klib.preprocess # functions for data preprocessing (feature selection, scaling, ...)
-- klib.mv_col_handler() # drop features with a high ratio of missing values based on their informational content
-- klib.train_dev_test_split() # split a dataset and a label into train, optionally dev and test sets
+- klib.train_dev_test_split() # splits a dataset and a label into train, optionally dev and test sets
+- klib.feature_selection_pipe() # provides common operations for feature selection
+- klib.num_pipe() # provides common operations for preprocessing of numerical data
+- klib.cat_pipe() # provides common operations for preprocessing of categorical data
 ```
 
 ## Examples
