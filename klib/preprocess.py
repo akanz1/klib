@@ -14,8 +14,10 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.experimental import enable_iterative_imputer  # noqa
 from sklearn.impute import (SimpleImputer, IterativeImputer)
 from sklearn.feature_selection import (f_classif,
+                                       SelectFromModel,
                                        SelectPercentile,
                                        VarianceThreshold)
+from sklearn.linear_model import LassoCV
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder, RobustScaler
@@ -62,7 +64,8 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
 
 def feature_selection_pipe(
         var_thresh=VarianceThreshold(threshold=0.1),
-        select_percentile=SelectPercentile(f_classif, percentile=95)):
+        select_percentile=SelectPercentile(f_classif, percentile=95),
+        select_from_model=SelectFromModel(LassoCV(cv=5, random_state=408), threshold="0.1*median")):
     '''
     Preprocessing operations for feature selection.
 
@@ -80,7 +83,8 @@ def feature_selection_pipe(
     '''
 
     feature_selection_pipe = make_pipeline(var_thresh,
-                                           select_percentile)
+                                           select_percentile,
+                                           select_from_model)
     return feature_selection_pipe
 
 
