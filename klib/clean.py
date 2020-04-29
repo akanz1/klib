@@ -169,6 +169,8 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_d
     single_val_cols = data_cleaned.columns[data_cleaned.nunique(dropna=False) == 1].tolist()
     data_cleaned = data_cleaned.drop(columns=single_val_cols)
 
+    dupl_rows = None
+
     if drop_duplicates:
         data_cleaned, dupl_rows = _drop_duplicates(data_cleaned)
     if convert_dtypes:
