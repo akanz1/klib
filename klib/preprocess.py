@@ -32,7 +32,18 @@ __all__ = ['feature_selection_pipe',
 
 
 class ColumnSelector(BaseEstimator, TransformerMixin):
-    ''''''
+    '''
+    Selects numerical and categorical columns from a dataset.
+
+    Parameter:
+    ---------
+    num: default, True
+        Select only numerica Columns. If num = False, only categorical columns are selected.
+
+    Returns:
+    -------
+    Dataset containing only numerical or categorical data.
+    '''
 
     def __init__(self, num=True):
         self.num = num
@@ -52,7 +63,21 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
 def feature_selection_pipe(
         var_thresh=VarianceThreshold(threshold=0.1),
         select_percentile=SelectPercentile(f_classif, percentile=95)):
-    '''Preprocessing operations for feature selection.'''
+    '''
+    Preprocessing operations for feature selection.
+
+    Parameters:
+    ----------
+    var_thresh: default, VarianceThreshold(threshold=0.1)
+        Specify a threshold to drop low variance features.
+
+    select_percentile: default, SelectPercentile(f_classif, percentile=95)
+        Specify a score-function and a percentile value of features to keep.
+
+    Returns:
+    -------
+    Pipeline
+    '''
 
     feature_selection_pipe = make_pipeline(var_thresh,
                                            select_percentile)
@@ -62,7 +87,20 @@ def feature_selection_pipe(
 def num_pipe(imputer=IterativeImputer(estimator=ExtraTreesRegressor(
         n_estimators=25, n_jobs=4, random_state=408), random_state=408),
         scaler=RobustScaler()):
-    '''Standard preprocessing operations on numerical data.'''
+    '''
+    Standard preprocessing operations on numerical data.
+
+    Parameters:
+    ----------
+    imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408),
+                                       random_state=408)
+
+    scaler: default, RobustScaler()
+
+    Returns:
+    -------
+    Pipeline
+    '''
 
     num_pipe = make_pipeline(ColumnSelector(),
                              imputer,
@@ -72,7 +110,19 @@ def num_pipe(imputer=IterativeImputer(estimator=ExtraTreesRegressor(
 
 def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
              scaler=OneHotEncoder(handle_unknown='ignore')):
-    '''Set of standard preprocessing operations on categorical data.'''
+    '''
+    Standard preprocessing operations on categorical data.
+
+    Parameters:
+    ----------
+    imputer: default, SimpleImputer(strategy='most_frequent')
+
+    scaler: default, OneHotEncoder(handle_unknown='ignore')
+
+    Returns:
+    -------
+    Pipeline
+    '''
 
     cat_pipe = make_pipeline(ColumnSelector(num=False),
                              imputer,

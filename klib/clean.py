@@ -181,8 +181,43 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_d
 
 
 class DataCleaner(BaseEstimator, TransformerMixin):
-    '''Docstring of a class? methods also have docstrings or commments?'''
-    '''possible component of a cleaning pipeline --> e.g. followed by MCH'''
+    '''
+    Wrapper for data_cleaning(). Allows data_cleaning() to be put into a pipeline with similar
+    functions (e.g. MVColHandler()).
+
+    Parameters:
+    ---------´
+    drop_threshold_cols: float, default 0.9
+        Drop columns with NA-ratio above the specified threshold.
+
+    drop_threshold_rows: float, default 0.9
+        Drop rows with NA-ratio above the specified threshold.
+
+    drop_duplicates: bool, default True
+        Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.
+
+    convert_dtypes: bool, default True
+        Convert dtypes using pd.convert_dtypes().
+
+    category: bool, default True
+        Change dtypes of columns to "category". Set threshold using cat_threshold. Requires convert_dtypes=True
+
+    cat_threshold: float, default 0.03
+        Ratio of unique values below which categories are inferred and column dtype is changed to categorical.
+
+    cat_exclude: list, default None
+        List of columns to exclude from categorical conversion.
+
+    show: {'all', 'changes', None} default 'all'
+        Specify verbosity of the output.
+        * 'all': Print information about the data before and after cleaning as well as information about changes.
+        * 'changes': Print out differences in the data before and after cleaning.
+        * None: No information about the data and the data cleaning is printed.
+
+    Returns:
+    -------
+    data_cleaned: Pandas DataFrame
+    '''
 
     def __init__(self, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_duplicates=True, convert_dtypes=True,
                  category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
@@ -277,23 +312,49 @@ def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.
 
 
 class MVColHandler(BaseEstimator, TransformerMixin):
-    '''possible component of a cleaning pipeline --> follows DataCleaning'''
+    '''
+    Wrapper for mv_col_handling(). Allows mv_col_handling() to be put into a pipeline with similar
+    functions (e.g. DataCleaner()).
 
-    def __init__(self, target=None, mch_mv_thresh=0.1, mch_feature_thresh=0.6, mch_target_thresh=0.3):
+    Parameters
+    ----------
+    target: string, list, np.array or pd.Series, default None
+        Specify target for correlation. E.g. label column to generate only the correlations between each feature \
+        and the label.
+
+    mv_threshold: float, default 0.1
+        Value between 0 <= threshold <= 1. Features with a missing-value-ratio larger than mv_threshold are candidates \
+        for dropping and undergo further analysis.
+
+    corr_thresh_features: float, default 0.6
+        Value between 0 <= threshold <= 1. Maximum correlation a previously identified features with a high mv-ratio is\
+         allowed to have with another feature. If this threshold is overstepped, the feature undergoes further analysis.
+
+    corr_thresh_target: float, default 0.3
+        Value between 0 <= threshold <= 1. Minimum required correlation of a remaining feature (i.e. feature with a \
+        high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met \
+        the feature is ultimately dropped.
+
+    Returns
+    -------
+    data: Updated Pandas DataFrame
+    '''
+
+    def __init__(self, target=None, mv_threshold=0.1, corr_thresh_features=0.6, corr_thresh_target=0.3):
         self.target = target
-        self.mch_mv_thresh = mch_mv_thresh
-        self.mch_feature_thresh = mch_feature_thresh
-        self.mch_target_thresh = mch_target_thresh
+        self.mv_threshold = mv_threshold
+        self.corr_thresh_features = corr_thresh_features
+        self.corr_thresh_target = corr_thresh_target
 
     def fit(self, data, target=None):
         return self
 
     def transform(self, data, target=None):
-        data, cols_mv, dropped_cols = mv_col_handling(data, target=self.target, mv_threshold=self.mch_mv_thresh,
-                                                      corr_thresh_features=self.mch_feature_thresh,
-                                                      corr_thresh_target=self.mch_target_thresh)
+        data, cols_mv, dropped_cols = mv_col_handling(data, target=self.target, mv_threshold=self.mv_threshold,
+                                                      corr_thresh_features=self.corr_thresh_features,
+                                                      corr_thresh_target=self.corr_thresh_target)
 
-        print(f'\nFeatures with MV-ratio > {self.mch_mv_thresh}: {len(cols_mv)}')
+        print(f'\nFeatures with MV-ratio > {self.mv_threshold}: {len(cols_mv)}')
         print('Features dropped:', len(dropped_cols), dropped_cols)
 
         return data
