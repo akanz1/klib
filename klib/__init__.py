@@ -15,7 +15,22 @@ from . import preprocess
 
 __version__ = __version__
 
-__all__ = ['clean',
-           'describe',
-           'preprocess',
+__all__ = ['convert_datatypes',
+           'data_cleaning',
+           'drop_missing',
+           'mv_col_handling',
+           'cat_plot',
+           'corr_mat',
+           'corr_plot',
+           'dist_plot',
+           'missingval_plot',
+           'feature_selection_pipe',
+           'num_pipe',
+           'cat_pipe',
+           'train_dev_test_split',
            '__version__']
+
+# in future versions and especially with an increased number of functions, only the most frequently used functions will be imported into the namespace to be accessible from klib.function directly. The remaining functions can be found in the respective sub-modules:
+        #     'clean',
+        #    'describe',
+        #    'preprocess',
