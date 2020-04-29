@@ -186,20 +186,25 @@ def _missing_vals(data):
 
 def _validate_input_bool(value, desc):
     if not(isinstance(value, bool)):
-        raise TypeError(f'Input value for {desc} is {type(value)} but should be a boolean.')
+        raise TypeError(f"Input value for '{desc}' is {type(value)} but should be a boolean.")
 
 
 def _validate_input_int(value, desc):
     if type(value) != int:
-        raise TypeError(f'Input value for {desc} is {type(value)} but should be an integer.')
+        raise TypeError(f"Input value for '{desc}' is {type(value)} but should be an integer.")
 
 
 def _validate_input_range(value, desc, lower, upper):
     if value < lower or value > upper:
         raise ValueError(
-            f'{desc} = {value} but should be within the range {lower} <= {desc} <= {upper}.')
+            f"'{desc}' = {value} but should be within the range {lower} <= '{desc}' <= {upper}.")
 
 
 def _validate_input_smaller(value1, value2, desc):
     if value1 > value2:
-        raise ValueError(f'The first input for {desc} should be smaller or equal to the second input.')
+        raise ValueError(f"The first input for '{desc}' should be smaller or equal to the second input.")
+
+
+def _validate_input_sum(limit, desc, *args):
+    if sum(args) > limit:
+        raise ValueError(f"The sum of imput values provided for '{desc}' should be less or equal to {limit}.")

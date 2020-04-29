@@ -8,6 +8,7 @@ from ..utils import _validate_input_bool
 from ..utils import _validate_input_int
 from ..utils import _validate_input_range
 from ..utils import _validate_input_smaller
+from ..utils import _validate_input_sum
 
 
 class Test__corr_selector(unittest.TestCase):
@@ -157,3 +158,13 @@ class Test__validate_input(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             _validate_input_range('1', 'value string', 0, 1)
+
+    def test__validate_input_sum(self):
+        with self.assertRaises(ValueError):
+            _validate_input_sum(1, 'Test Sum <= 1', 1.1)
+        with self.assertRaises(ValueError):
+            _validate_input_sum(1, 'Test Sum <= 1', 0.3, 0.2, 0.4, 0.5)
+        with self.assertRaises(ValueError):
+            _validate_input_sum(-1, 'Test Sum <= -1', -0.2, -0.7)
+        with self.assertRaises(ValueError):
+            _validate_input_sum(10, 'Test Sum <= 10', 20, -11, 2)
