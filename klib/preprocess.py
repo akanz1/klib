@@ -20,7 +20,9 @@ from sklearn.feature_selection import (f_classif,
 from sklearn.linear_model import LassoCV
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import OneHotEncoder, RobustScaler
+from sklearn.preprocessing import (OneHotEncoder,
+                                   RobustScaler,
+                                   MaxAbsScaler)
 
 from .utils import (_validate_input_int,
                     _validate_input_range,
@@ -118,7 +120,8 @@ def num_pipe(imputer=IterativeImputer(estimator=ExtraTreesRegressor(
 
 
 def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
-             scaler=OneHotEncoder(handle_unknown='ignore')):
+             encoder=OneHotEncoder(handle_unknown='ignore'),
+             scaler=MaxAbsScaler()):
     '''
     Standard preprocessing operations on categorical data.
 
@@ -126,7 +129,13 @@ def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
     ----------
     imputer: default, SimpleImputer(strategy='most_frequent')
 
-    scaler: default, OneHotEncoder(handle_unknown='ignore')
+    encoder: default, OneHotEncoder(handle_unknown='ignore')
+        Encode categorical features as a one-hot numeric array.
+
+    scaler: default, MaxAbsScaler()
+        Scale each feature by its maximum absolute value. MaxAbsScaler() does not shift/center the data, and thus does \
+        not destroy any sparsity. It is recommended to check for outliers before applying MaxAbsScaler().
+
 
     Returns:
     -------
@@ -135,6 +144,7 @@ def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
 
     cat_pipe = make_pipeline(ColumnSelector(num=False),
                              imputer,
+                             encoder,
                              scaler)
     return cat_pipe
 
