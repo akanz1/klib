@@ -41,8 +41,6 @@ def _corr_selector(corr, split=None, threshold=0):
     elif split == 'below':
         corr = corr.where(np.abs(corr) <= threshold)
         print(f'Displaying absolute correlations below the threshold ({threshold}).')
-    else:
-        pass
 
     return corr
 
