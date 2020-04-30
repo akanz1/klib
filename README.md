@@ -4,6 +4,7 @@
 [![Language](https://img.shields.io/github/languages/top/akanz1/klib)](https://pypi.org/project/klib/)
 [![Downloads](https://img.shields.io/pypi/dm/klib)](https://pypi.org/project/klib/)
 [![Last Commit](https://badgen.net/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib/commits/master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=akanz1_klib&metric=alert_status)](https://sonarcloud.io/dashboard?id=akanz1_klib)
 [![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=master)](https://github.com/akanz1/klib)
 [![License](https://img.shields.io/pypi/l/klib)](https://github.com/akanz1/klib/blob/master/LICENSE)
 

@@ -40,7 +40,7 @@ __all__ = ['convert_datatypes',
 
 # in future versions and especially with an increased number of functions, only the most frequently used functions will\
 # be imported into the namespace to be accessible from klib.function directly. The remaining functions can be found in \
-# the respective sub-modules:
+# the respective modules:
 #     'clean',
 #    'describe',
 #    'preprocess',
