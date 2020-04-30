@@ -35,7 +35,9 @@ __all__ = ['feature_selection_pipe',
 
 class ColumnSelector(BaseEstimator, TransformerMixin):
     '''
-    Selects numerical and categorical columns from a dataset.
+    Determines and selects numerical and categorical columns from a dataset based on their supposed dtype. Unlike \
+    sklearn's make_column_selector() missing values are temporarily filled in to allow convert_dtypes() to determine \
+    the dtype of a column.
 
     Parameter:
     ---------
@@ -64,8 +66,8 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
 
 def feature_selection_pipe(
         var_thresh=VarianceThreshold(threshold=0.1),
-        select_percentile=SelectPercentile(f_classif, percentile=95),
-        select_from_model=SelectFromModel(LassoCV(cv=5, random_state=408), threshold="0.1*median")):
+        select_from_model=SelectFromModel(LassoCV(cv=5, random_state=408), threshold="0.1*median"),
+        select_percentile=SelectPercentile(f_classif, percentile=95)):
     '''
     Preprocessing operations for feature selection.
 
@@ -73,6 +75,9 @@ def feature_selection_pipe(
     ----------
     var_thresh: default, VarianceThreshold(threshold=0.1)
         Specify a threshold to drop low variance features.
+
+    select_from_model: default, SelectFromModel(LassoCV(cv=5, random_state=408), threshold="0.1*median")
+        Specify an estimator which is used for selecting features based on importance weights.
 
     select_percentile: default, SelectPercentile(f_classif, percentile=95)
         Specify a score-function and a percentile value of features to keep.
