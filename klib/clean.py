@@ -405,7 +405,10 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
             if cdr > col_dupl_thresh:
                 check_list.append(col)
 
-        combinations = itertools.combinations(check_list, len(check_list)-i)
+        if len(check_list) > 0:
+            combinations = itertools.combinations(check_list, len(check_list)-i)
+        else:
+            continue
 
         ratios = []
         for comb in combinations:

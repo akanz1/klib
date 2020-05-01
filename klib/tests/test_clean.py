@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
 import unittest
-from ..clean import drop_missing, convert_datatypes
+from ..clean import (drop_missing,
+                     convert_datatypes,
+                     pool_duplicate_subsets)
 
 
 class Test_drop_missing(unittest.TestCase):
@@ -63,3 +65,20 @@ class Test_convert_dtypes(unittest.TestCase):
         for i, _ in enumerate(expected_results):
             self.assertEqual(convert_datatypes(self.df_data_convert, category=False,
                                                cat_threshold=0.95, cat_exclude=[2, 4]).dtypes[i], expected_results[i])
+
+
+class Test_pool_duplicate_subsets(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.df_data_subsets = pd.DataFrame([[1, 7, 'd', 'x', pd.NA, 'v'],
+                                            [1, 8, 'd', 'e', pd.NA, 'v'],
+                                            [2, 7, 'g', 'z', pd.NA, 'v'],
+                                            [1, 7, 'u', 'f', pd.NA, 'p'],
+                                            [1, 7, 'u', 'z', pd.NA, 'p'],
+                                            [2, 7, 'g', 'z', pd.NA, 'p']])
+
+    def test_pool_duplicate_subsets(self):
+        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets)[0].shape, (6, 3))
+        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets, col_dupl_thresh=1)[0].shape, (6, 6))
+        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets, subset_thresh=0)[0].shape, (6, 2))
