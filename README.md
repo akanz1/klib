@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/pypi/dm/klib)](https://pypi.org/project/klib/)
 [![Last Commit](https://badgen.net/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib/commits/master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=akanz1_klib&metric=alert_status)](https://sonarcloud.io/dashboard?id=akanz1_klib)
-[![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=master)](https://github.com/akanz1/klib)
+[![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/akanz1/klib/)
 
 klib is a Python library for importing, cleaning, analyzing and preprocessing data. Future versions will include model creation and optimization to provide an end-to-end solution.
 
@@ -45,6 +45,7 @@ klib.clean # functions for cleaning datasets
 - klib.convert_datatypes() # converts existing to more efficient dtypes, also called inside ".data_cleaning()"
 - klib.drop_missing() # drops missing values, also called in ".data_cleaning()"
 - klib.mv_col_handling() # drops features with a high ratio of missing values based on their informational content
+- klib.pool_duplicate_subsets() # pools a subset of columns containing high amount of duplicates
 
 klib.preprocess # functions for data preprocessing (feature selection, scaling, ...)
 - klib.train_dev_test_split() # splits a dataset and a label into train, optionally dev and test sets

@@ -10,7 +10,8 @@ from ._version import __version__
 from .clean import (convert_datatypes,
                     data_cleaning,
                     drop_missing,
-                    mv_col_handling)
+                    mv_col_handling,
+                    pool_duplicate_subsets)
 from .describe import (cat_plot,
                        corr_mat,
                        corr_plot,
@@ -27,6 +28,7 @@ __all__ = ['convert_datatypes',
            'data_cleaning',
            'drop_missing',
            'mv_col_handling',
+           'pool_duplicate_subsets',
            'cat_plot',
            'corr_mat',
            'corr_plot',
