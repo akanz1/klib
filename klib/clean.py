@@ -6,6 +6,7 @@ Functions for data cleaning.
 '''
 
 # Imports
+import itertools
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
@@ -358,5 +359,115 @@ class MVColHandler(BaseEstimator, TransformerMixin):
 
         print(f'\nFeatures with MV-ratio > {self.mv_threshold}: {len(cols_mv)}')
         print('Features dropped:', len(dropped_cols), dropped_cols)
+
+        return data
+
+
+def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3):
+    '''
+    Checks for duplicates in subsets of columns and pools them. This reduced the number of columns in the data without \
+    loosing any information. Suitable columns are combined to subsets and tested for duplicates. In case sufficient \
+    duplicates can be found, the respective columns are aggregated into a 'pooled_var' column. Identical numbers in \
+    the 'pooled_var' column indicate identical information in the respective rows.
+
+    Parameters
+    ----------
+    data: 2D dataset that can be coerced into Pandas DataFrame.
+
+    col_dupl_ratio: float, default 0.2
+        Columns with a ratio of duplicates higher than 'col_dupl_ratio' are considered in the further analysis. \
+        Columns with a lower ratio are not considered for pooling.
+
+    dupl_thresh: float, default 0.2
+        The first subset with a duplicate threshold higher than 'dupl_thresh' is chosen and aggregated. If no subset \
+        reaches the threshold, the algorithm continues with continuously smaller subsets until 'min_col_pool' is \
+        reached.
+
+    min_col_pool: integer, default 3
+        Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \
+        subsets and stops when 'min_col_pool' is reached.
+
+    Returns:
+    -------
+    data: pd.DataFrame
+    '''
+
+    # Input validation
+    _validate_input_range(col_dupl_thresh, 'col_dupl_thresh', 0, 1)
+    _validate_input_range(subset_thresh, 'subset_thresh', 0, 1)
+    _validate_input_range(min_col_pool, 'min_col_pool', 0, data.shape[1])
+
+    for i in range(data.shape[1]+1-min_col_pool):
+        check_list = []
+        for col in data.columns:
+            cdr = data.duplicated(subset=col).mean()
+            if cdr > col_dupl_thresh:
+                check_list.append(col)
+
+        combinations = itertools.combinations(check_list, len(check_list)-i)
+
+        ratios = []
+        for comb in combinations:
+            ratios.append(data[list(comb)].duplicated().mean())
+
+        max_ratio = pd.DataFrame(ratios).max()
+        max_idx = pd.DataFrame(ratios).idxmax()
+
+        subset_cols = []
+        if max_ratio[0] > subset_thresh:
+            best_subset = itertools.islice(itertools.combinations(
+                check_list, len(check_list)-i), max_idx[0], max_idx[0]+1)
+            best_subset = data[list(list(best_subset)[0])]
+            subset_cols = best_subset.columns.tolist()
+
+            unique_subset = best_subset.drop_duplicates().reset_index().rename(columns={'index': 'pooled_vars'})
+            data = data.merge(unique_subset, how='inner', on=best_subset.columns.tolist()
+                              ).drop(columns=best_subset.columns.tolist())
+            data.index = pd.RangeIndex(len(data))
+            break
+
+    return data, subset_cols
+
+
+class SubsetPooler(BaseEstimator, TransformerMixin):
+    '''
+    Checks for duplicates in subsets of columns and pools them. This reduced the number of columns in the data without \
+    loosing any information. Suitable columns are combined to subsets and tested for duplicates. In case sufficient \
+    duplicates can be found, the respective columns are aggregated into a 'pooled_var' column. Identical numbers in \
+    the 'pooled_var' column indicate identical information in the respective rows.
+
+    Parameters
+    ----------
+    col_dupl_ratio: float, default 0.2
+        Columns with a ratio of duplicates higher than 'col_dupl_ratio' are considered in the further analysis. \
+        Columns with a lower ratio are not considered for pooling.
+
+    dupl_thresh: float, default 0.2
+        The first subset with a duplicate threshold higher than 'dupl_thresh' is chosen and aggregated. If no subset \
+        reaches the threshold, the algorithm continues with continuously smaller subsets until 'min_col_pool' is \
+        reached.
+
+    min_col_pool: integer, default 3
+        Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \
+        subsets and stops when 'min_col_pool' is reached.
+
+    Returns:
+    -------
+    data: pd.DataFrame
+    '''
+
+    def __init__(self, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3):
+        self.col_dupl_thresh = col_dupl_thresh
+        self.subset_thresh = subset_thresh
+        self.min_col_pool = min_col_pool
+
+    def fit(self, data, target=None):
+        return self
+
+    def transform(self, data, target=None):
+        data, subset_cols = pool_duplicate_subsets(
+            data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3)
+
+        print('Combined columns:', len(subset_cols), subset_cols)
 
         return data
