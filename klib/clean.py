@@ -397,6 +397,7 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
     _validate_input_range(subset_thresh, 'subset_thresh', 0, 1)
     _validate_input_range(min_col_pool, 'min_col_pool', 0, data.shape[1])
 
+    subset_cols = []
     for i in range(data.shape[1]+1-min_col_pool):
         check_list = []
         for col in data.columns:
@@ -413,7 +414,6 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
         max_ratio = pd.DataFrame(ratios).max()
         max_idx = pd.DataFrame(ratios).idxmax()
 
-        subset_cols = []
         if max_ratio[0] > subset_thresh:
             best_subset = itertools.islice(itertools.combinations(
                 check_list, len(check_list)-i), max_idx[0], max_idx[0]+1)
