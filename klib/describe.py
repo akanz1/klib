@@ -31,7 +31,7 @@ __all__ = ['cat_plot',
 # Functions
 
 # Categorical Plot
-def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', bar_color_bottom='#d8b365', cmap='BrBG'):
+def cat_plot(data, figsize=(14, 14), top=3, bottom=3, bar_color_top='#5ab4ac', bar_color_bottom='#d8b365', cmap='BrBG'):
     '''
     Two-dimensional visualization of the number and frequency of categorical features.
 
@@ -41,7 +41,7 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
     data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots.
 
-    figsize: tuple, default (10, 14)
+    figsize: tuple, default (14, 14)
         Use to control the figure size.
 
     top: int, default 3
@@ -71,8 +71,8 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
     _validate_input_range(bottom, 'bottom', 0, data.shape[1])
 
     data = pd.DataFrame(data).copy()
-    cols = list(data.select_dtypes(exclude=['number']).columns)  # categorical cols
-    data = data[cols].applymap(str)
+    cols = data.select_dtypes(exclude=['number']).columns.tolist()
+    data = data[cols]
 
     if len(cols) == 0:
         print('No columns with categorical data were detected.')
@@ -90,19 +90,19 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
             lim_top = lim_bot = int(n_unique//2)
 
         value_counts_top = value_counts[0:lim_top]
-        value_counts_idx_top = list(map(str, value_counts_top.index.tolist()))
+        value_counts_idx_top = value_counts_top.index.tolist()
         value_counts_bot = value_counts[-lim_bot:]
-        value_counts_idx_bot = list(map(str, value_counts_bot.index.tolist()))
+        value_counts_idx_bot = value_counts_bot.index.tolist()
 
         if top == 0:
-            value_counts_top = value_counts_idx_top = []
+            value_counts_top = value_counts_idx_top = None
 
         elif bottom == 0:
-            value_counts_bot = value_counts_idx_bot = []
+            value_counts_bot = value_counts_idx_bot = None
 
-        data[col][data[col].isin(value_counts_idx_top)] = 2
-        data[col][data[col].isin(value_counts_idx_bot)] = -2
-        data[col][~((data[col] == 2) | (data[col] == -2))] = 0
+        data.loc[data[col].isin(value_counts_idx_top), col] = 2
+        data.loc[data[col].isin(value_counts_idx_bot), col] = -2
+        data.loc[~((data[col] == 2) | (data[col] == -2)), col] = 0
 
         # Barcharts
         ax_top = fig.add_subplot(gs[:1, count:count+1])
@@ -110,7 +110,7 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
         ax_top.bar(value_counts_idx_bot, value_counts_bot, color=bar_color_bottom, width=0.85)
         ax_top.set(frame_on=False)
         ax_top.tick_params(axis='x', labelrotation=90)
-        str.split()
+
         # Summary stats
         ax_bottom = fig.add_subplot(gs[1:2, count:count+1])
         ax_bottom.get_yaxis().set_visible(False)
@@ -118,7 +118,7 @@ def cat_plot(data, figsize=(10, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
         ax_bottom.set(frame_on=False)
         ax_bottom.text(0, 0, f'Unique values: {n_unique}\n\n'
                        f'Top {top} vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n'
-                       f'Bottom {bottom} vals: {sum(value_counts_bot)} ' +
+                       f'Bot {bottom} vals: {sum(value_counts_bot)} ' +
                        f'({sum(value_counts_bot)/data.shape[0]*100:.1f}%)',
                        transform=ax_bottom.transAxes, color='#111111', fontsize=11)
 
