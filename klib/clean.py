@@ -7,6 +7,7 @@ Functions for data cleaning.
 
 # Imports
 import itertools
+import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
@@ -414,8 +415,8 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
         for comb in combinations:
             ratios.append(data[list(comb)].duplicated().mean())
 
-        max_ratio = pd.DataFrame(ratios).max()[0]
-        max_idx = pd.DataFrame(ratios).idxmax()[0]
+        max_ratio = max(ratios)
+        max_idx = np.argmax(ratios)
 
         if max_ratio > subset_thresh:
             best_subset = itertools.islice(itertools.combinations(
