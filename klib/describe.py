@@ -418,8 +418,9 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     for col in cols:
         dropped_values = data[col].isna().sum()
         if dropped_values > 0:
-            print(f'Dropped {dropped_values} missing values from column {col}.')
             col_data = data[col].dropna(axis=0)
+            print(f'Dropped {dropped_values} missing values from column {col}.')
+
         else:
             col_data = data[col]
 
