@@ -78,7 +78,7 @@ klib.corr_plot(df, target='air_time') # default representation of correlations w
 
 
 ```python
-klib.cat_plot(data, top=4, bottom=4,) # representation of the 4 most and least common values in each categorical column
+klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least common values in each categorical column
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/images/example_cat_plot.png" alt="Cat Plot Example" width="720" height="720"></p>

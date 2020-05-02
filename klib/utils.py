@@ -47,8 +47,8 @@ def _corr_selector(corr, split=None, threshold=0):
 
 def _diff_report(data, data_cleaned, dupl_rows=None, single_val_cols=None, show='changes'):
     '''
-    Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty \
-        columns as well as optimizing the datatypes.
+    Provides information about changes between two datasets, such as dropped rows and columns, memory usage and \
+    missing values.
 
     Parameters
     ----------
