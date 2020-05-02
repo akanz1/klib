@@ -340,7 +340,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
 
 
 # Distribution plot
-def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.975), hist=False, bins=None,
+def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.975), hist=False, bins=10,
               showall=False, kde_kws=None, rug_kws=None, fill_kws=None, font_kws=None):
     '''
     Two-dimensional visualization of the distribution of numerical features.
@@ -363,7 +363,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     hist: bool, default False
         Set to True to display histogram bars in the plot.
 
-    bins: integer, default None
+    bins: integer, default 10
         Specification of the number of hist bins. Requires hist = True
 
     showall: bool, default False
@@ -393,7 +393,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     _validate_input_smaller(fill_range[0], fill_range[1], 'fill_range')
     _validate_input_bool(hist, 'hist')
     _validate_input_int(bins, 'bins')
-    _validate_input_range(bins, 'bins', 0, data.shape[1])
+    _validate_input_range(bins, 'bins', 0, data.shape[0])
     _validate_input_bool(showall, 'showall')
 
     # Handle dictionary defaults
