@@ -45,7 +45,7 @@ klib.clean # functions for cleaning datasets
 - klib.convert_datatypes() # converts existing to more efficient dtypes, also called inside ".data_cleaning()"
 - klib.drop_missing() # drops missing values, also called in ".data_cleaning()"
 - klib.mv_col_handling() # drops features with a high ratio of missing values based on their informational content
-- klib.pool_duplicate_subsets() # pools a subset of columns containing high amount of duplicates
+- klib.pool_duplicate_subsets() # pools a subset of columns based on duplicate values without any loss of information
 
 klib.preprocess # functions for data preprocessing (feature selection, scaling, ...)
 - klib.train_dev_test_split() # splits a dataset and a label into train, optionally dev and test sets
@@ -57,17 +57,25 @@ klib.preprocess # functions for data preprocessing (feature selection, scaling, 
 ## Examples
 
 ```python
-klib.corr_plot(df) # providing a pd.DataFrame is sufficient, however, plently of settings and options are available
-klib.corr_plot(df, split='pos') # displaying only positive correlations
-```
-
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="655"></p>
-
-```python
 klib.missingval_plot(df) # default representation of missing values in a DataFrame, plenty of settings are available
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/images/example_mv_plot.png" alt="Corr Plot Example" width="720" height="792"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/images/example_mv_plot.png" alt="Corr Plot Example" width="720" height="864"></p>
+
+
+```python
+klib.corr_plot(df, split='pos') # displaying only positive correlations
+```
+
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="656"></p>
+
+
+```python
+klib.corr_plot(df, target='air_time') # default representation of correlations with the feature column
+```
+
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="720" height="600"></p>
+
 
 ## Contributing
 
