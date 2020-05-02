@@ -186,7 +186,7 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_d
 class DataCleaner(BaseEstimator, TransformerMixin):
     '''
     Wrapper for data_cleaning(). Allows data_cleaning() to be put into a pipeline with similar
-    functions (e.g. MVColHandler()).
+    functions (e.g. using MVColHandler() or SubsetPooler()).
 
     Parameters:
     ---------´
@@ -317,7 +317,7 @@ def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.
 class MVColHandler(BaseEstimator, TransformerMixin):
     '''
     Wrapper for mv_col_handling(). Allows mv_col_handling() to be put into a pipeline with similar
-    functions (e.g. DataCleaner()).
+    functions (e.g. using DataCleaner() or SubsetPooler()).
 
     Parameters
     ----------
@@ -434,10 +434,8 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
 
 class SubsetPooler(BaseEstimator, TransformerMixin):
     '''
-    Checks for duplicates in subsets of columns and pools them. This reduced the number of columns in the data without \
-    loosing any information. Suitable columns are combined to subsets and tested for duplicates. In case sufficient \
-    duplicates can be found, the respective columns are aggregated into a 'pooled_var' column. Identical numbers in \
-    the 'pooled_var' column indicate identical information in the respective rows.
+    Wrapper for pool_duplicate_subsets(). Allows pool_duplicate_subsets() to be put into a pipeline with similar
+    functions (e.g. using DataCleaner() or MVColHandler()).
 
     Parameters
     ----------
