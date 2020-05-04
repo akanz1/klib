@@ -245,7 +245,8 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         return data_cleaned
 
 
-def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6, corr_thresh_target=0.3):
+def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6, corr_thresh_target=0.3,
+                    return_details=False):
     '''
     Converts columns with a high ratio of missing values into binary features and eventually drops them based on \
     their correlation with other features and the target variable. This function follows a three step process:
@@ -277,9 +278,14 @@ def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.
         high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met \
         the feature is ultimately dropped.
 
+    return_details: bool, default False
+        Provdies flexibility to return intermediary results.
+
     Returns
     -------
     data: Updated Pandas DataFrame
+
+    optional:
     cols_mv: Columns with missing values included in the analysis
     drop_cols: List of dropped columns
     '''
@@ -312,7 +318,10 @@ def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.
                 drop_cols.append(col)
                 data = data.drop(columns=[col])
 
-    return data, cols_mv, drop_cols
+    if return_details:
+        return data, cols_mv, drop_cols
+
+    return data
 
 
 class MVColHandler(BaseEstimator, TransformerMixin):
@@ -339,16 +348,21 @@ class MVColHandler(BaseEstimator, TransformerMixin):
         high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met \
         the feature is ultimately dropped.
 
+    return_details: bool, default True
+        Provdies flexibility to return intermediary results.
+
     Returns
     -------
     data: Updated Pandas DataFrame
     '''
 
-    def __init__(self, target=None, mv_threshold=0.1, corr_thresh_features=0.6, corr_thresh_target=0.3):
+    def __init__(self, target=None, mv_threshold=0.1, corr_thresh_features=0.6, corr_thresh_target=0.3,
+                 return_details=True):
         self.target = target
         self.mv_threshold = mv_threshold
         self.corr_thresh_features = corr_thresh_features
         self.corr_thresh_target = corr_thresh_target
+        self.return_details = return_details
 
     def fit(self, data, target=None):
         return self
@@ -356,7 +370,8 @@ class MVColHandler(BaseEstimator, TransformerMixin):
     def transform(self, data, target=None):
         data, cols_mv, dropped_cols = mv_col_handling(data, target=self.target, mv_threshold=self.mv_threshold,
                                                       corr_thresh_features=self.corr_thresh_features,
-                                                      corr_thresh_target=self.corr_thresh_target)
+                                                      corr_thresh_target=self.corr_thresh_target,
+                                                      return_details=self.return_details)
 
         print(f'\nFeatures with MV-ratio > {self.mv_threshold}: {len(cols_mv)}')
         print('Features dropped:', len(dropped_cols), dropped_cols)
@@ -364,7 +379,7 @@ class MVColHandler(BaseEstimator, TransformerMixin):
         return data
 
 
-def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3):
+def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, return_details=False):
     '''
     Checks for duplicates in subsets of columns and pools them. This reduced the number of columns in the data without \
     loosing any information. Suitable columns are combined to subsets and tested for duplicates. In case sufficient \
@@ -388,9 +403,15 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
         Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \
         subsets and stops when 'min_col_pool' is reached.
 
+    return_details: bool, default False
+        Provdies flexibility to return intermediary results.
+
     Returns:
     -------
     data: pd.DataFrame
+
+    optional:
+    subset_cols: List of columns used as subset.
     '''
 
     # Input validation
@@ -453,22 +474,26 @@ class SubsetPooler(BaseEstimator, TransformerMixin):
         Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \
         subsets and stops when 'min_col_pool' is reached.
 
+    return_details: bool, default False
+        Provdies flexibility to return intermediary results.
+
     Returns:
     -------
     data: pd.DataFrame
     '''
 
-    def __init__(self, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3):
+    def __init__(self, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, return_details=True):
         self.col_dupl_thresh = col_dupl_thresh
         self.subset_thresh = subset_thresh
         self.min_col_pool = min_col_pool
+        self.return_details = return_details
 
     def fit(self, data, target=None):
         return self
 
     def transform(self, data, target=None):
         data, subset_cols = pool_duplicate_subsets(
-            data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3)
+            data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, return_details=True)
 
         print('Combined columns:', len(subset_cols), subset_cols)
 
