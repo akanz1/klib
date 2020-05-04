@@ -14,7 +14,7 @@ klib.missingval_plot(df) # default representation of missing values in a DataFra
 
 ### Correlation Plots
 
-This plot visualizes the correlation between different features. Settings include the possibility to only display positive, negative, high or low correlations as well as specify an additional threshold. THi works for Person, Spearmann and Kendall correlation. Annotations and development settings can optionally be turned on or off.
+This plot visualizes the correlation between different features. Settings include the possibility to only display positive, negative, high or low correlations as well as specify an additional threshold. This works for Person, Spearmann and Kendall correlation. Annotations and development settings can optionally be turned on or off.
 
 ```python
 klib.corr_plot(df, split='pos') # displaying only positive correlations
@@ -64,4 +64,4 @@ As can be seen in <a href="https://github.com/akanz1/klib/tree/master/examples#c
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets1.png" alt="Duplicate subsets2" width="945" height="424"></p>
 
-All of these functions were run with default settings but many setting parameters are available allowing an even more restrictive data cleaning.
+All of these functions were run with default settings but many parameters are available allowing an even more restrictive data cleaning.
