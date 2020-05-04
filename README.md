@@ -56,6 +56,8 @@ klib.preprocess # functions for data preprocessing (feature selection, scaling, 
 
 ## Examples
 
+Find all available examples with added descriptions <a href="https://github.com/akanz1/klib/tree/master/examples">here</a>.
+
 ```python
 klib.missingval_plot(df) # default representation of missing values in a DataFrame, plenty of settings are available
 ```
