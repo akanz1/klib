@@ -402,7 +402,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
     fill_kws = {'color': 'brown', 'alpha': 0.1} if fill_kws is None else fill_kws.copy()
     font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11} if font_kws is None else font_kws.copy()
 
-    data = data.copy().dropna(axis=1, how='all')
+    data = pd.DataFrame(data.copy()).dropna(axis=1, how='all')
     cols = list(data.select_dtypes(include=['number']).columns)
     data = data[cols]
 
