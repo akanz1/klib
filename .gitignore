@@ -1,11 +1,10 @@
-#Folders
+# Folders
+
 __pycache__/
 .ipynb_checkpoints
 .vscode/
 /build/
 /dist/
-/temp/
+/misc/
 *.code-workspace
 *.egg-info/
-
-#Specific Files
