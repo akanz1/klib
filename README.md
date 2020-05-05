@@ -85,6 +85,7 @@ klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least comm
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="720" height="720"></p>
 
+Further examples, as well as applications of the functions in klib.clean() can be found <a href="https://github.com/akanz1/klib/tree/master/examples#data-cleaning-and-aggretation">here</a>.
 
 ## Contributing
 

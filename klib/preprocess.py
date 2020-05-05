@@ -195,7 +195,6 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
 
     elif isinstance(target, (list, pd.Series, np.ndarray)):
         target_data = pd.Series(target)
-        target = target.name
 
     X_train, X_dev_test, y_train, y_dev_test = train_test_split(data, target_data,
                                                                 test_size=dev_size+test_size,

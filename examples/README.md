@@ -54,11 +54,11 @@ After applying *klib.data_cleaning()* **the size reduces by about 36 MB (-69.2%)
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_data_cleaning_dtypes.png" alt="Change in dtypes" width="294" height="440"></p>
 
-Further, *pool_duplicate_subsets()* can be applied to aggregate columns. **This ultimately reduces the dataset to only 6.8 MB (from 55.1 MB originally)**.
+Further, *pool_duplicate_subsets()* can be applied to aggregate the columns. **This ultimately reduces the dataset to only 6.8 MB (from 55.1 MB originally)**.
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets2.png" alt="Duplicate subsets" width="571" height="469"></p>
 
-The columns are "pooled" **without loss of information**. This can be achieved by finding duplicates in subsets of the data and encoding the largest possible subset with integers, which added to the original data what allows dropping the identified columns.
+The columns are "pooled" **without loss of information**. This can be achieved by finding duplicates in subsets of the data and encoding the largest possible subset with integers, which are added to the original data what allows dropping the identified columns.
 
 As can be seen in <a href="https://github.com/akanz1/klib/tree/master/examples#categorical-data-plot">*cat_plot()*</a> the "carrier" column is made up of a few very frequent values - the top 4 values make up roughly 75% - while in "tailnum" the top 4 values barely make up 2%. This allows "carrier" and similar columns to be bundled and encoded, while "tailnum" remains in the dataset. Using this procedure, 56006 duplicate rows are identified in the subset, i.e., **56006 rows in 10 columns are encoded in a single column of dtype integer**, greatly reducing the memory footprint and number of columns which should speed up model training.
 
