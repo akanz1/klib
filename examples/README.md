@@ -42,7 +42,7 @@ klib.corr_plot(df, target='air_time') # default representation of a correlation 
 klib.dist_plot(df) # default representation of a distribution plot, other settings include fill_range, histogram, ...
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="770" height="110"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p>
 
 ### Categorical Data Plot
 
