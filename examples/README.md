@@ -52,7 +52,7 @@ This sections describes the data cleaning and aggregation capabilities of <a hre
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets3.png" alt="Original Dataset" width="329" height="376"></p>
 
-After applying *klib.data_cleaning()* **the size reduces by about 36 MB (-69.2%)**. This is achieved by dropping empty and single valued columns as well as empty and duplicate rows (none found in this example). Additionally, the optimal data types are inferred and applied.
+After applying *klib.data_cleaning()* **the size reduces by about 36 MB (-69.2%)**. This is achieved by dropping empty and single valued columns as well as empty and duplicate rows (neither found in this example). Additionally, the optimal data types are inferred and applied, which also increases memory efficiency.
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_data_cleaning_dtypes.png" alt="Change in dtypes" width="294" height="440"></p>
 
