@@ -7,7 +7,7 @@
 This plot visualizes the missing values in a dataset. At the top it shows the aggregate for each column using a relative scale and absolute missing-value annotations, while on the right, summary statistics and individual row results are displayed.
 
 ```python
-klib.missingval_plot(df) # default representation of missing values in a DataFrame, other settings such as sorting are available
+klib.missingval_plot(df) # default representation of missing values, other settings such as sorting are available
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Corr Plot Example" width="792" height="970"></p>
