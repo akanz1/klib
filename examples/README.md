@@ -17,7 +17,7 @@ klib.missingval_plot(df) # default representation of missing values, other setti
 This plot visualizes the correlation between different features. Settings include the possibility to only display positive, negative, high or low correlations as well as specify an additional threshold. This works for Person, Spearmann and Kendall correlation. Annotations and development settings can optionally be turned on or off.
 
 ```python
-klib.corr_plot(df, split='pos') # displaying only positive correlations, other settings include setting a threshold or different colormap
+klib.corr_plot(df, split='pos') # displaying only positive correlations, other settings include threshold, different colormap...
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="792" height="721"></p>
@@ -35,6 +35,14 @@ klib.corr_plot(df, target='air_time') # default representation of a correlation 
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_corr_mat.png" alt="Target Corr Plot Example" width="808" height="369"></p>
+
+### Numerical Data Distribution Plot
+
+```python
+klib.dist_plot(df) # default representation of a distribution plot, other settings include fill_range, histogram, ...
+```
+
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="770" height="110"></p>
 
 ### Categorical Data Plot
 
