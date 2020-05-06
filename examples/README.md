@@ -7,7 +7,7 @@
 This plot visualizes the missing values in a dataset. At the top it shows the aggregate for each column using a relative scale and absolute missing-value annotations, while on the right, summary statistics and individual row results are displayed.
 
 ```python
-klib.missingval_plot(df) # default representation of missing values in a DataFrame, plenty of settings are available
+klib.missingval_plot(df) # default representation of missing values in a DataFrame, other settings such as sorting are available
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Corr Plot Example" width="792" height="970"></p>
@@ -17,7 +17,7 @@ klib.missingval_plot(df) # default representation of missing values in a DataFra
 This plot visualizes the correlation between different features. Settings include the possibility to only display positive, negative, high or low correlations as well as specify an additional threshold. This works for Person, Spearmann and Kendall correlation. Annotations and development settings can optionally be turned on or off.
 
 ```python
-klib.corr_plot(df, split='pos') # displaying only positive correlations
+klib.corr_plot(df, split='pos') # displaying only positive correlations, other settings include setting a threshold or different colormap
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="792" height="721"></p>
@@ -37,6 +37,8 @@ klib.corr_plot(df, target='air_time') # default representation of a correlation 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_corr_mat.png" alt="Target Corr Plot Example" width="808" height="369"></p>
 
 ### Categorical Data Plot
+
+This section shows an example of categorical data visualization. The function allows to dispaly the top and/or bottom values regarding their frequency in each column. Further, it gives an idea of the distribution of the values in the dataset.
 
 ```python
 klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least common values in each categorical column
