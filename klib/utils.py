@@ -16,7 +16,7 @@ def _corr_selector(corr, split=None, threshold=0):
 
     Parameters
     ----------
-    corr: List or matrix of correlations.
+    corr: pd.Series or pd.DataFrame of correlations.
 
     split: {None, 'pos', 'neg', 'above', 'below'}, default None
         Type of split to be performed.
