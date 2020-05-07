@@ -14,7 +14,7 @@ klib.missingval_plot(df) # default representation of missing values, other setti
 
 ### Correlation Plots
 
-This plot visualizes the correlation between different features. Settings include the possibility to only display positive, negative, high or low correlations as well as specify an additional threshold. This works for Person, Spearmann and Kendall correlation. Annotations and development settings can optionally be turned on or off.
+This plot visualizes the correlation between different features. Settings include the possibility to only display positive, negative, high or low correlations as well as specify an additional threshold. This works for Person, Spearman and Kendall correlation. Annotations and development settings can optionally be turned on or off.
 
 ```python
 klib.corr_plot(df, split='pos') # displaying only positive correlations, other settings include threshold, cmap...
@@ -31,7 +31,7 @@ klib.corr_plot(df, target='air_time') # default representation of correlations w
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="792" height="660"></p>
 
 ```python
-klib.corr_plot(df, target='air_time') # default representation of a correlation matrix
+klib.corr_mat(df) # default representation of a correlation matrix
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_corr_mat.png" alt="Target Corr Plot Example" width="808" height="369"></p>
@@ -54,7 +54,7 @@ klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least comm
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="900" height="900"></p>
 
-### Data Cleaning and Aggretation
+### Data Cleaning and Aggregation
 
 This sections describes the data cleaning and aggregation capabilities of <a href="https://github.com/akanz1/klib/">klib</a>. We start with an initial dataset about US flight data, which has a size of about 51.5 MB.
 
@@ -70,7 +70,7 @@ Further, *pool_duplicate_subsets()* can be applied to aggregate the columns. **T
 
 The columns are "pooled" **without loss of information**. This can be achieved by finding duplicates in subsets of the data and encoding the largest possible subset with integers, which are added to the original data what allows dropping the identified columns.
 
-As can be seen in <a href="https://github.com/akanz1/klib/tree/master/examples#categorical-data-plot">*cat_plot()*</a> the "carrier" column is made up of a few very frequent values - the top 4 values make up roughly 75% - while in "tailnum" the top 4 values barely make up 2%. This allows "carrier" and similar columns to be bundled and encoded, while "tailnum" remains in the dataset. Using this procedure, 56006 duplicate rows are identified in the subset, i.e., **56006 rows in 10 columns are encoded in a single column of dtype integer**, greatly reducing the memory footprint and number of columns which should speed up model training.
+As can be seen in <a href="https://github.com/akanz1/klib/tree/master/examples#categorical-data-plot">*cat_plot()*</a> the "carrier" column is made up of a few very frequent values - the top 4 values make up roughly 75% - while in "tailnum" the top 4 values barely make up 2%. This allows "carrier" and similar columns to be bundled and encoded, while "tailnum" remains in the dataset. Using this procedure, 56006 duplicate rows are identified in the subset, i.e., **56006 rows in 10 columns are encoded into a single column of dtype integer**, greatly reducing the memory footprint and number of columns which should speed up model training.
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets1.png" alt="Duplicate subsets2" width="945" height="424"></p>
 
