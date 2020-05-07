@@ -193,7 +193,7 @@ def corr_mat(data, split=None, threshold=0, target=None, method='pearson', color
 
         elif isinstance(target, (list, pd.Series, np.ndarray)):
             target_data = pd.Series(target)
-            target = target.name
+            target = target_data.name
 
         corr = pd.DataFrame(data.corrwith(target_data))
         corr = corr.sort_values(corr.columns[0], ascending=False)
