@@ -390,12 +390,12 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
     ----------
     data: 2D dataset that can be coerced into Pandas DataFrame.
 
-    col_dupl_ratio: float, default 0.2
-        Columns with a ratio of duplicates higher than 'col_dupl_ratio' are considered in the further analysis. \
+    col_dupl_thresh: float, default 0.2
+        Columns with a ratio of duplicates higher than 'col_dupl_thresh' are considered in the further analysis. \
         Columns with a lower ratio are not considered for pooling.
 
-    dupl_thresh: float, default 0.2
-        The first subset with a duplicate threshold higher than 'dupl_thresh' is chosen and aggregated. If no subset \
+    subset_thresh: float, default 0.2
+        The first subset with a duplicate threshold higher than 'subset_thresh' is chosen and aggregated. If no subset \
         reaches the threshold, the algorithm continues with continuously smaller subsets until 'min_col_pool' is \
         reached.
 
@@ -451,7 +451,10 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
             data.index = pd.RangeIndex(len(data))
             break
 
-    return data, subset_cols
+    if return_details:
+        return data, subset_cols
+
+    return data
 
 
 class SubsetPooler(BaseEstimator, TransformerMixin):

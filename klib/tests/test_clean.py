@@ -79,6 +79,6 @@ class Test_pool_duplicate_subsets(unittest.TestCase):
                                             [2, 7, 'g', 'z', pd.NA, 'p']])
 
     def test_pool_duplicate_subsets(self):
-        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets)[0].shape, (6, 3))
-        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets, col_dupl_thresh=1)[0].shape, (6, 6))
-        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets, subset_thresh=0)[0].shape, (6, 2))
+        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets).shape, (6, 3))
+        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets, col_dupl_thresh=1).shape, (6, 6))
+        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets, subset_thresh=0).shape, (6, 2))
