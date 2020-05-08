@@ -245,14 +245,14 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         return data_cleaned
 
 
-def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.6, corr_thresh_target=0.3,
+def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.5, corr_thresh_target=0.3,
                     return_details=False):
     '''
-    Converts columns with a high ratio of missing values into binary features and eventually drops them based on \
+    Converts columns with a high ratio of missing values into binary features and eventually drops them based on
     their correlation with other features and the target variable. This function follows a three step process:
-    - 1) Identify features with a high ratio of missing values
+    - 1) Identify features with a high ratio of missing values.
     - 2) Identify high correlations of these features among themselves and with other features in the dataset.
-    - 3) Features with high ratio of missing values and high correlation among each other are dropped unless \
+    - 3) Features with high ratio of missing values and high correlation among each other are dropped unless
          they correlate reasonably well with the target variable.
 
     Note: If no target is provided, the process exits after step two and drops columns identified up to this point.
@@ -262,20 +262,21 @@ def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.
     data: 2D dataset that can be coerced into Pandas DataFrame.
 
     target: string, list, np.array or pd.Series, default None
-        Specify target for correlation. E.g. label column to generate only the correlations between each feature \
+        Specify target for correlation. I.e. label column to generate only the correlations between each feature
         and the label.
 
     mv_threshold: float, default 0.1
-        Value between 0 <= threshold <= 1. Features with a missing-value-ratio larger than mv_threshold are candidates \
+        Value between 0 <= threshold <= 1. Features with a missing-value-ratio larger than mv_threshold are candidates
         for dropping and undergo further analysis.
 
-    corr_thresh_features: float, default 0.6
-        Value between 0 <= threshold <= 1. Maximum correlation a previously identified features with a high mv-ratio is\
-         allowed to have with another feature. If this threshold is overstepped, the feature undergoes further analysis.
+    corr_thresh_features: float, default 0.5
+        Value between 0 <= threshold <= 1. Maximum correlation a previously identified features (with a high mv-ratio)
+        is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further
+        analysis.
 
     corr_thresh_target: float, default 0.3
-        Value between 0 <= threshold <= 1. Minimum required correlation of a remaining feature (i.e. feature with a \
-        high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met \
+        Value between 0 <= threshold <= 1. Minimum required correlation of a remaining feature (i.e. feature with a
+        high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met
         the feature is ultimately dropped.
 
     return_details: bool, default False
@@ -313,10 +314,9 @@ def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.
     if target is None:
         data = data.drop(columns=high_corr_features)
     else:
-        for col in high_corr_features:
-            if pd.DataFrame(data_local[col]).corrwith(target)[0] < corr_thresh_target:
-                drop_cols.append(col)
-                data = data.drop(columns=[col])
+        corrs = corr_mat(data_local, target=target, colored=False).loc[high_corr_features]
+        drop_cols = corrs.loc[abs(corrs.iloc[:, 0]) < corr_thresh_target].index.tolist()
+        data = data.drop(columns=drop_cols)
 
     if return_details:
         return data, cols_mv, drop_cols
