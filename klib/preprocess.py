@@ -66,9 +66,39 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
             return X[temp.select_dtypes(exclude=['number']).columns.tolist()]
 
 
+def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
+             encoder=OneHotEncoder(handle_unknown='ignore'),
+             scaler=MaxAbsScaler()):
+    '''
+    Standard preprocessing operations on categorical data.
+
+    Parameters:
+    ----------
+    imputer: default, SimpleImputer(strategy='most_frequent')
+
+    encoder: default, OneHotEncoder(handle_unknown='ignore')
+        Encode categorical features as a one-hot numeric array.
+
+    scaler: default, MaxAbsScaler()
+        Scale each feature by its maximum absolute value. MaxAbsScaler() does not shift/center the data, and thus does \
+        not destroy any sparsity. It is recommended to check for outliers before applying MaxAbsScaler().
+
+
+    Returns:
+    -------
+    Pipeline
+    '''
+
+    cat_pipe = make_pipeline(ColumnSelector(num=False),
+                             imputer,
+                             encoder,
+                             scaler)
+    return cat_pipe
+
+
 def feature_selection_pipe(
         var_thresh=VarianceThreshold(threshold=0.1),
-        select_from_model=SelectFromModel(LassoCV(cv=5, random_state=408), threshold="0.1*median"),
+        select_from_model=SelectFromModel(LassoCV(cv=4, random_state=408), threshold="0.1*median"),
         select_percentile=SelectPercentile(f_classif, percentile=95)):
     '''
     Preprocessing operations for feature selection.
@@ -78,7 +108,7 @@ def feature_selection_pipe(
     var_thresh: default, VarianceThreshold(threshold=0.1)
         Specify a threshold to drop low variance features.
 
-    select_from_model: default, SelectFromModel(LassoCV(cv=5, random_state=408), threshold="0.1*median")
+    select_from_model: default, SelectFromModel(LassoCV(cv=4, random_state=408), threshold="0.1*median")
         Specify an estimator which is used for selecting features based on importance weights.
 
     select_percentile: default, SelectPercentile(f_classif, percentile=95)
@@ -117,36 +147,6 @@ def num_pipe(imputer=IterativeImputer(estimator=ExtraTreesRegressor(
                              imputer,
                              scaler)
     return num_pipe
-
-
-def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
-             encoder=OneHotEncoder(handle_unknown='ignore'),
-             scaler=MaxAbsScaler()):
-    '''
-    Standard preprocessing operations on categorical data.
-
-    Parameters:
-    ----------
-    imputer: default, SimpleImputer(strategy='most_frequent')
-
-    encoder: default, OneHotEncoder(handle_unknown='ignore')
-        Encode categorical features as a one-hot numeric array.
-
-    scaler: default, MaxAbsScaler()
-        Scale each feature by its maximum absolute value. MaxAbsScaler() does not shift/center the data, and thus does \
-        not destroy any sparsity. It is recommended to check for outliers before applying MaxAbsScaler().
-
-
-    Returns:
-    -------
-    Pipeline
-    '''
-
-    cat_pipe = make_pipeline(ColumnSelector(num=False),
-                             imputer,
-                             encoder,
-                             scaler)
-    return cat_pipe
 
 
 def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=None, random_state=408):
