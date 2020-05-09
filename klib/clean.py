@@ -186,7 +186,7 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_d
 
 class DataCleaner(BaseEstimator, TransformerMixin):
     '''
-    Wrapper for data_cleaning(). Allows data_cleaning() to be put into a pipeline with similar
+    Wrapper for data_cleaning(). Allows data_cleaning() to be put into a pipeline with similar \
     functions (e.g. using MVColHandler() or SubsetPooler()).
 
     Parameters:
@@ -248,11 +248,11 @@ class DataCleaner(BaseEstimator, TransformerMixin):
 def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.5, corr_thresh_target=0.3,
                     return_details=False):
     '''
-    Converts columns with a high ratio of missing values into binary features and eventually drops them based on
+    Converts columns with a high ratio of missing values into binary features and eventually drops them based on \
     their correlation with other features and the target variable. This function follows a three step process:
     - 1) Identify features with a high ratio of missing values.
     - 2) Identify high correlations of these features among themselves and with other features in the dataset.
-    - 3) Features with high ratio of missing values and high correlation among each other are dropped unless
+    - 3) Features with high ratio of missing values and high correlation among each other are dropped unless \
          they correlate reasonably well with the target variable.
 
     Note: If no target is provided, the process exits after step two and drops columns identified up to this point.
@@ -262,21 +262,21 @@ def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.
     data: 2D dataset that can be coerced into Pandas DataFrame.
 
     target: string, list, np.array or pd.Series, default None
-        Specify target for correlation. I.e. label column to generate only the correlations between each feature
+        Specify target for correlation. I.e. label column to generate only the correlations between each feature \
         and the label.
 
     mv_threshold: float, default 0.1
-        Value between 0 <= threshold <= 1. Features with a missing-value-ratio larger than mv_threshold are candidates
+        Value between 0 <= threshold <= 1. Features with a missing-value-ratio larger than mv_threshold are candidates \
         for dropping and undergo further analysis.
 
     corr_thresh_features: float, default 0.5
-        Value between 0 <= threshold <= 1. Maximum correlation a previously identified features (with a high mv-ratio)
-        is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further
+        Value between 0 <= threshold <= 1. Maximum correlation a previously identified features (with a high mv-ratio) \
+        is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further \
         analysis.
 
     corr_thresh_target: float, default 0.3
-        Value between 0 <= threshold <= 1. Minimum required correlation of a remaining feature (i.e. feature with a
-        high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met
+        Value between 0 <= threshold <= 1. Minimum required correlation of a remaining feature (i.e. feature with a \
+        high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met \
         the feature is ultimately dropped.
 
     return_details: bool, default False
@@ -326,7 +326,7 @@ def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.
 
 class MVColHandler(BaseEstimator, TransformerMixin):
     '''
-    Wrapper for mv_col_handling(). Allows mv_col_handling() to be put into a pipeline with similar
+    Wrapper for mv_col_handling(). Allows mv_col_handling() to be put into a pipeline with similar \
     functions (e.g. using DataCleaner() or SubsetPooler()).
 
     Parameters
@@ -379,7 +379,8 @@ class MVColHandler(BaseEstimator, TransformerMixin):
         return data
 
 
-def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, return_details=False):
+def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, exclude=None,
+                           return_details=False):
     '''
     Checks for duplicates in subsets of columns and pools them. This reduced the number of columns in the data without \
     loosing any information. Suitable columns are combined to subsets and tested for duplicates. In case sufficient \
@@ -403,6 +404,9 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
         Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \
         subsets and stops when 'min_col_pool' is reached.
 
+    exclude. list, default None
+        List of column names to be excluded from the analysis. These columns are passed through without modification.
+
     return_details: bool, default False
         Provdies flexibility to return intermediary results.
 
@@ -418,6 +422,11 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
     _validate_input_range(col_dupl_thresh, 'col_dupl_thresh', 0, 1)
     _validate_input_range(subset_thresh, 'subset_thresh', 0, 1)
     _validate_input_range(min_col_pool, 'min_col_pool', 0, data.shape[1])
+
+    excluded_cols = []
+    if exclude is not None:
+        excluded_cols = data[exclude]
+        data = data.drop(columns=exclude)
 
     subset_cols = []
     for i in range(data.shape[1]+1-min_col_pool):
@@ -446,10 +455,12 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
             subset_cols = best_subset.columns.tolist()
 
             unique_subset = best_subset.drop_duplicates().reset_index().rename(columns={'index': 'pooled_vars'})
-            data = data.merge(unique_subset, how='inner', on=best_subset.columns.tolist()
+            data = data.merge(unique_subset, how='left', on=best_subset.columns.tolist()
                               ).drop(columns=best_subset.columns.tolist())
             data.index = pd.RangeIndex(len(data))
             break
+
+    data = pd.concat([data, pd.DataFrame(excluded_cols)], axis=1)
 
     if return_details:
         return data, subset_cols
@@ -459,7 +470,7 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
 
 class SubsetPooler(BaseEstimator, TransformerMixin):
     '''
-    Wrapper for pool_duplicate_subsets(). Allows pool_duplicate_subsets() to be put into a pipeline with similar
+    Wrapper for pool_duplicate_subsets(). Allows pool_duplicate_subsets() to be put into a pipeline with similar \
     functions (e.g. using DataCleaner() or MVColHandler()).
 
     Parameters
