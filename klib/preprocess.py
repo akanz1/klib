@@ -103,7 +103,7 @@ def num_pipe(imputer=IterativeImputer(estimator=ExtraTreesRegressor(
 
     Parameters:
     ----------
-    imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408),
+    imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), \
                                        random_state=408)
 
     scaler: default, RobustScaler()

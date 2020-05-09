@@ -163,7 +163,7 @@ def corr_mat(data, split=None, threshold=0, target=None, method='pearson', color
     method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
         * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
-        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but
+        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but \
                     more robus in smaller dataets than 'spearman'.
 
     colored: bool, default True
@@ -240,7 +240,7 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
         * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
-        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but
+        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but \
                    more robust in smaller dataets than 'spearman'.
 
     cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
@@ -357,7 +357,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
         Controls the figure size.
 
     fill_range: tuple, default (0.025, 0.975)
-        Set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations\
+        Set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations \
         above and below the mean.
 
     hist: bool, default False
@@ -489,7 +489,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
         Use to control the figure size.
 
     sort: bool, default False
-        Sort columns based on missing values in descending order and drop columns without any missing values
+        Sort columns based on missing values in descending order and drop columns without any missing values.
 
     spine_color: color, default '#EEEEEE'
         Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument.
