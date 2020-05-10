@@ -66,9 +66,36 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
             return X[temp.select_dtypes(exclude=['number']).columns.tolist()]
 
 
+class PipeInfo(BaseEstimator, TransformerMixin):
+    '''
+    Prints intermediary information about the dataset from within a pipeline. Include at any point in a Pipeline to
+    print out the shape of the dataset at this point.
+
+    Parameter:
+    ---------
+    name: string, default None
+        Provide a name for the current step.
+
+    Returns:
+    -------
+    Data: Data is being passed through.
+    '''
+
+    def __init__(self, name=None):
+        self.name = name
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        print(f'Step: {self.name} --- Shape: {X.shape}')
+        return X
+
+
 def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
              encoder=OneHotEncoder(handle_unknown='ignore'),
-             scaler=MaxAbsScaler()):
+             scaler=MaxAbsScaler(),
+             encoder_info=PipeInfo(name='after encoding')):
     '''
     Standard preprocessing operations on categorical data.
 
@@ -91,7 +118,7 @@ def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
 
     cat_pipe = make_pipeline(ColumnSelector(num=False),
                              imputer,
-                             encoder,
+                             encoder, encoder_info,
                              scaler)
     return cat_pipe
 
@@ -99,7 +126,10 @@ def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
 def feature_selection_pipe(
         var_thresh=VarianceThreshold(threshold=0.1),
         select_from_model=SelectFromModel(LassoCV(cv=4, random_state=408), threshold="0.1*median"),
-        select_percentile=SelectPercentile(f_classif, percentile=95)):
+        select_percentile=SelectPercentile(f_classif, percentile=95),
+        var_thresh_info=PipeInfo(name='after var_thresh'),
+        select_from_model_info=PipeInfo(name='after select_from_model'),
+        select_percentile_info=PipeInfo(name='after select_percentile')):
     '''
     Preprocessing operations for feature selection.
 
@@ -119,9 +149,9 @@ def feature_selection_pipe(
     Pipeline
     '''
 
-    feature_selection_pipe = make_pipeline(var_thresh,
-                                           select_percentile,
-                                           select_from_model)
+    feature_selection_pipe = make_pipeline(var_thresh, var_thresh_info,
+                                           select_from_model, select_from_model_info,
+                                           select_percentile, select_percentile_info)
     return feature_selection_pipe
 
 
