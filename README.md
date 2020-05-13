@@ -52,6 +52,8 @@ klib.preprocess # functions for data preprocessing (feature selection, scaling, 
 - klib.feature_selection_pipe() # provides common operations for feature selection
 - klib.num_pipe() # provides common operations for preprocessing of numerical data
 - klib.cat_pipe() # provides common operations for preprocessing of categorical data
+- klib.preprocess.ColumnSelector() # selects numerical or categorical columns, ideal for a Feature Union or Pipeline
+- klib.preprocess.PipeInfo() # prints out the shape of the data at the specified step of a Pipeline
 ```
 
 ## Examples
