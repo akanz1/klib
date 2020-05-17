@@ -25,9 +25,25 @@ __all__ = ['convert_datatypes',
            'mv_col_handling']
 
 
+def optimize_ints(data):
+    data = pd.DataFrame(data).copy()
+    ints = data.select_dtypes(include=['int64']).columns.tolist()
+    data[ints] = data[ints].apply(pd.to_numeric, downcast='integer')
+    return data
+
+
+def optimize_floats(data):
+    data = pd.DataFrame(data).copy()
+    floats = data.select_dtypes(include=['float64']).columns.tolist()
+    data[floats] = data[floats].apply(pd.to_numeric, downcast='float')
+    return data
+
+
 def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None):
     '''
-    Converts columns to best possible dtypes using dtypes supporting pd.NA. Temporarily not converting integers.
+    Converts columns to best possible dtypes using dtypes supporting pd.NA. Temporarily not converting to integers \
+        due to an issue in pandas. This is expected to be fixed in pandas 1.1. \
+        See https://github.com/pandas-dev/pandas/issues/33803
 
     Parameters
     ----------
@@ -64,6 +80,9 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None)
             data[col] = data[col].astype('category')
         data[col] = data[col].convert_dtypes(infer_objects=True, convert_string=True,
                                              convert_integer=False, convert_boolean=True)
+
+    data = optimize_ints(data)
+    data = optimize_floats(data)
 
     return data
 
