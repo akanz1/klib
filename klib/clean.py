@@ -146,7 +146,8 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_d
         Convert dtypes using pd.convert_dtypes().
 
     category: bool, default True
-        Change dtypes of columns to "category". Set threshold using cat_threshold. Requires convert_dtypes=True
+        Enable changing dtypes of 'object' columns to "category". Set threshold using cat_threshold. Requires \
+        convert_dtypes=True.
 
     cat_threshold: float, default 0.03
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical.
@@ -269,10 +270,11 @@ def mv_col_handling(data, target=None, mv_threshold=0.1, corr_thresh_features=0.
     '''
     Converts columns with a high ratio of missing values into binary features and eventually drops them based on \
     their correlation with other features and the target variable. This function follows a three step process:
-    - 1) Identify features with a high ratio of missing values.
-    - 2) Identify high correlations of these features among themselves and with other features in the dataset.
+    - 1) Identify features with a high ratio of missing values (above 'mv_threshold').
+    - 2) Identify high correlations of these features among themselves and with other features in the dataset (above \
+         'corr_thresh_features').
     - 3) Features with high ratio of missing values and high correlation among each other are dropped unless \
-         they correlate reasonably well with the target variable.
+         they correlate reasonably well with the target variable (above 'corr_thresh_target').
 
     Note: If no target is provided, the process exits after step two and drops columns identified up to this point.
 
@@ -401,10 +403,10 @@ class MVColHandler(BaseEstimator, TransformerMixin):
 def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, exclude=None,
                            return_details=False):
     '''
-    Checks for duplicates in subsets of columns and pools them. This reduced the number of columns in the data without \
-    loosing any information. Suitable columns are combined to subsets and tested for duplicates. In case sufficient \
-    duplicates can be found, the respective columns are aggregated into a 'pooled_var' column. Identical numbers in \
-    the 'pooled_var' column indicate identical information in the respective rows.
+    Checks for duplicates in subsets of columns and pools them. This can reduce the number of columns in the data \
+    without loosing much information. Suitable columns are combined to subsets and tested for duplicates. In case \
+    sufficient duplicates can be found, the respective columns are aggregated into a 'pooled_var' column. Identical \
+    numbers in the 'pooled_var' column indicate identical information in the respective rows.
 
     Parameters
     ----------
