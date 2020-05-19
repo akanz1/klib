@@ -458,7 +458,7 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
         else:
             continue
 
-        ratios = [*map(lambda comb: data[list(comb)].duplicated().mean(), combinations)]
+        ratios = [*map(lambda comb: data.duplicated(subset=list(comb)).mean(), combinations)]
 
         max_ratio = max(ratios)
         max_idx = np.argmax(ratios)
