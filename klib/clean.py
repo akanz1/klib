@@ -451,20 +451,14 @@ def pool_duplicate_subsets(data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col
 
     subset_cols = []
     for i in range(data.shape[1]+1-min_col_pool):
-        check_list = []
-        for col in data.columns:
-            cdr = data.duplicated(subset=col).mean()
-            if cdr > col_dupl_thresh:
-                check_list.append(col)
+        check_list = [col for col in data.columns if data.duplicated(subset=col).mean() > col_dupl_thresh]
 
         if len(check_list) > 0:
             combinations = itertools.combinations(check_list, len(check_list)-i)
         else:
             continue
 
-        ratios = []
-        for comb in combinations:
-            ratios.append(data[list(comb)].duplicated().mean())
+        ratios = [data[list(comb)].duplicated().mean() for comb in combinations]
 
         max_ratio = max(ratios)
         max_idx = np.argmax(ratios)
