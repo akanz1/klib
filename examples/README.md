@@ -56,15 +56,17 @@ klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least comm
 
 ### Data Cleaning and Aggregation
 
-This sections describes the data cleaning and aggregation capabilities of <a href="https://github.com/akanz1/klib/">klib</a>. We start with an initial dataset about US flight data, which has a size of about 51.5 MB.
+This sections describes the data cleaning and aggregation capabilities of <a href="https://github.com/akanz1/klib/">klib</a>. We start with an initial dataset about US flight data, which has a size of about 51 MB.
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets3.png" alt="Original Dataset" width="329" height="376"></p>
 
-After applying *klib.data_cleaning()* **the size reduces by about 36 MB (-69.2%)**. This is achieved by dropping empty and single valued columns as well as empty and duplicate rows (neither found in this example). Additionally, the optimal data types are inferred and applied, which also increases memory efficiency.
+#### klib.data_cleaning()
+By applying *klib.data_cleaning()* **the size reduces by about 44 MB (-85.2%)**. This is achieved by dropping empty and single valued columns as well as empty and duplicate rows (neither found in this example). Additionally, the optimal data types are inferred and applied, which also increases memory efficiency.
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_data_cleaning_dtypes.png" alt="Change in dtypes" width="294" height="440"></p>
 
-Further, *klib.pool_duplicate\_subsets()* can be applied, what **ultimately reduces the dataset to only 6.8 MB (from 55.1 MB originally)**.
+#### klib.pool_duplicate_subsets()
+Further, *klib.pool_duplicate\_subsets()* can be applied, what **ultimately reduces the dataset to only 3.8 MB (from 51 MB originally). This is a reduction of roughly -92.5%**.
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets2.png" alt="Duplicate subsets" width="571" height="469"></p>
 
