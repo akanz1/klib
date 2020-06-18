@@ -69,6 +69,7 @@ klib.missingval_plot(df) # default representation of missing values in a DataFra
 
 ```python
 klib.corr_plot(df, split='pos') # displaying only positive correlations
+klib.corr_plot(df, split='neg') # displaying only negative correlations
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="338"></p>
