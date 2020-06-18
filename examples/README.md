@@ -20,7 +20,7 @@ This plot visualizes the correlation between different features. Settings includ
 klib.corr_plot(df, split='pos') # displaying only positive correlations, other settings include threshold, cmap...
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="792" height="721"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="792" height="338"></p>
 
 Further, as seen below, if a column is specified, either by name or by passing in a separate target List or Series, the plot gives the correlation of all features with the specified target.
 
@@ -34,7 +34,7 @@ klib.corr_plot(df, target='air_time') # default representation of correlations w
 klib.corr_mat(df) # default representation of a correlation matrix
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_corr_mat.png" alt="Target Corr Plot Example" width="808" height="369"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_corr_mat.png" alt="Corr Mat Example" width="808" height="369"></p>
 
 ### Numerical Data Distribution Plot
 
