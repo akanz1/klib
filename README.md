@@ -58,7 +58,7 @@ klib.preprocess # functions for data preprocessing (feature selection, scaling, 
 
 ## Examples
 
-Find all available examples with added descriptions <a href="https://github.com/akanz1/klib/tree/master/examples">here</a>.
+Find all available examples as well as applications of the functions in **klib.clean()** with detailed descriptions <a href="https://github.com/akanz1/klib/tree/master/examples">here</a>.
 
 ```python
 klib.missingval_plot(df) # default representation of missing values in a DataFrame, plenty of settings are available
@@ -68,7 +68,7 @@ klib.missingval_plot(df) # default representation of missing values in a DataFra
 
 
 ```python
-klib.corr_plot(df, split='pos') # displaying only positive correlations
+klib.corr_plot(df, split='pos') # displaying only positive correlations, other settings include threshold, cmap...
 klib.corr_plot(df, split='neg') # displaying only negative correlations
 ```
 
@@ -88,7 +88,7 @@ klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least comm
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="720" height="720"></p>
 
-Further examples, as well as applications of the functions in klib.clean() can be found <a href="https://github.com/akanz1/klib/tree/master/examples#data-cleaning-and-aggretation">here</a>.
+Further examples, as well as applications of the functions in **klib.clean()** can be found <a href="https://github.com/akanz1/klib/tree/master/examples#data-cleaning-and-aggretation">here</a>.
 
 ## Contributing
 
