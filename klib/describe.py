@@ -485,7 +485,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
         Any valid colormap can be used. E.g. 'Greys', 'RdPu'. More information can be found in the matplotlib \
         documentation.
 
-    figsize: tuple, default (20, 12)
+    figsize: tuple, default (12, 12)
         Use to control the figure size.
 
     sort: bool, default False
@@ -519,7 +519,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
     else:
         # Create figure and axes
         fig = plt.figure(figsize=figsize)
-        gs = fig.add_gridspec(nrows=6, ncols=6, left=0.05, wspace=0.05)
+        gs = fig.add_gridspec(nrows=6, ncols=6, left=0.1, wspace=0.05)
         ax1 = fig.add_subplot(gs[:1, :5])
         ax2 = fig.add_subplot(gs[1:, :5])
         ax3 = fig.add_subplot(gs[:1, 5:])
@@ -543,7 +543,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
                      va='bottom',
                      rotation='90',
                      alpha=0.5,
-                     fontsize='small')
+                     fontsize='11')
 
         ax1.set_frame_on(True)
         for _, spine in ax1.spines.items():
@@ -559,7 +559,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
             ax2.get_xticklabels(),
             horizontalalignment='center',
             fontweight='light',
-            fontsize='medium')
+            fontsize='12')
         ax2.tick_params(length=1, colors='#111111')
         for _, spine in ax2.spines.items():
             spine.set_visible(True)
@@ -568,25 +568,25 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
         # ax3 - Summary
         fontax3 = {'color':  '#111111',
                    'weight': 'normal',
-                   'size': 12,
+                   'size': 14,
                    }
         ax3.get_xaxis().set_visible(False)
         ax3.get_yaxis().set_visible(False)
         ax3.set(frame_on=False)
 
-        ax3.text(0.1, 0.9, f"Total: {np.round(total_datapoints/1000,1)}K",
+        ax3.text(0.025, 0.875, f"Total: {np.round(total_datapoints/1000,1)}K",
                  transform=ax3.transAxes,
                  fontdict=fontax3)
-        ax3.text(0.1, 0.7, f"Missing: {np.round(mv_total/1000,1)}K",
+        ax3.text(0.025, 0.675, f"Missing: {np.round(mv_total/1000,1)}K",
                  transform=ax3.transAxes,
                  fontdict=fontax3)
-        ax3.text(0.1, 0.5, f"Relative: {np.round(mv_total/total_datapoints*100,1)}%",
+        ax3.text(0.025, 0.475, f"Relative: {np.round(mv_total/total_datapoints*100,1)}%",
                  transform=ax3.transAxes,
                  fontdict=fontax3)
-        ax3.text(0.1, 0.3, f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%",
+        ax3.text(0.025, 0.275, f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%",
                  transform=ax3.transAxes,
                  fontdict=fontax3)
-        ax3.text(0.1, 0.1, f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%",
+        ax3.text(0.025, 0.075, f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%",
                  transform=ax3.transAxes,
                  fontdict=fontax3)
 
