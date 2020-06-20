@@ -65,9 +65,10 @@ def _diff_report(data, data_cleaned, dupl_rows=None, single_val_cols=None, show=
         List of single-valued column indices. I.e. columns where all cells contain the same value. \
         NaNs count as a separate value.
 
-    show: {'all', 'changes', None} default 'all'
+    show: {'all', 'changes', None} default 'changes'
         Specify verbosity of the output.
-        * 'all': Print information about the data before and after cleaning as well as information about changes.
+        * 'all': Print information about the data before and after cleaning as well as information about changes and \
+        memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
         * 'changes': Print out differences in the data before and after cleaning.
         * None: No information about the data and the data cleaning is printed.
 
@@ -79,12 +80,14 @@ def _diff_report(data, data_cleaned, dupl_rows=None, single_val_cols=None, show=
     if show in ['changes', 'all']:
         dupl_rows = [] if dupl_rows is None else dupl_rows.copy()
         single_val_cols = [] if single_val_cols is None else single_val_cols.copy()
-        data_mem = _memory_usage(data)
-        data_cl_mem = _memory_usage(data_cleaned)
+        data_mem = _memory_usage(data, deep=False)
+        data_cl_mem = _memory_usage(data_cleaned, deep=False)
         data_mv_tot = _missing_vals(data)['mv_total']
         data_cl_mv_tot = _missing_vals(data_cleaned)['mv_total']
 
         if show == 'all':
+            data_mem = _memory_usage(data, deep=True)
+            data_cl_mem = _memory_usage(data_cleaned, deep=True)
             print('Before data cleaning:\n')
             print(f'dtypes:\n{data.dtypes.value_counts()}')
             print(f'\nNumber of rows: {data.shape[0]}')
@@ -132,7 +135,7 @@ def _drop_duplicates(data):
     return data, dupl_rows
 
 
-def _memory_usage(data):
+def _memory_usage(data, deep=True):
     '''
     Gives the total memory usage in kilobytes.
 
@@ -140,13 +143,16 @@ def _memory_usage(data):
     ----------
     data: 2D dataset that can be coerced into Pandas DataFrame.
 
+    deep: bool, default True
+    Runs a deep analysis of the memory usage.
+
     Returns
     -------
     memory_usage: float
     '''
 
     data = pd.DataFrame(data).copy()
-    memory_usage = round(data.memory_usage(index=True, deep=True).sum()/1024, 2)
+    memory_usage = round(data.memory_usage(index=True, deep=deep).sum()/1024, 2)
 
     return memory_usage
 
