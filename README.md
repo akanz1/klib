@@ -45,7 +45,7 @@ klib.clean # functions for cleaning datasets
 - klib.convert_datatypes() # converts existing to more efficient dtypes, also called inside ".data_cleaning()"
 - klib.drop_missing() # drops missing values, also called in ".data_cleaning()"
 - klib.mv_col_handling() # drops features with a high ratio of missing values based on their informational content
-- klib.pool_duplicate_subsets() # pools a subset of columns based on duplicate values without any loss of information
+- klib.pool_duplicate_subsets() # pools a subset of columns based on duplicate values with minimal loss of information
 
 klib.preprocess # functions for data preprocessing (feature selection, scaling, ...)
 - klib.train_dev_test_split() # splits a dataset and a label into train, optionally dev and test sets
