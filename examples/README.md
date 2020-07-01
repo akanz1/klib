@@ -10,7 +10,7 @@ This plot visualizes the missing values in a dataset. At the top it shows the ag
 klib.missingval_plot(df) # default representation of missing values, other settings such as sorting are available
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="900" height="900"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1100" height="1100"></p>
 
 ### Correlation Plots
 
@@ -21,7 +21,7 @@ klib.corr_plot(df, split='pos') # displaying only positive correlations, other s
 klib.corr_plot(df, split='neg') # displaying only negative correlations
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="792" height="338"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="1130" height="520"></p>
 
 Further, as seen below, if a column is specified, either by name or by passing in a separate target List or pd.Series, the plot gives the correlation of all features with the specified target.
 
@@ -29,7 +29,7 @@ Further, as seen below, if a column is specified, either by name or by passing i
 klib.corr_plot(df, target='air_time') # default representation of correlations with the feature column
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="792" height="660"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="1000" height="833"></p>
 
 ```python
 klib.corr_mat(df) # default representation of a correlation matrix
@@ -53,7 +53,7 @@ This section shows an example of categorical data visualization. The function al
 klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least common values in each categorical column
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="900" height="900"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1100" height="1100"></p>
 
 ### Data Cleaning and Aggregation
 

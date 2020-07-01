@@ -64,7 +64,7 @@ Find all available examples as well as applications of the functions in **klib.c
 klib.missingval_plot(df) # default representation of missing values in a DataFrame, plenty of settings are available
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="900" height="900"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1000" height="1000"></p>
 
 
 ```python
@@ -86,7 +86,7 @@ klib.corr_plot(df, target='air_time') # default representation of correlations w
 klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least common values in each categorical column
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="720" height="720"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1000" height="1000"></p>
 
 Further examples, as well as applications of the functions in **klib.clean()** can be found <a href="https://github.com/akanz1/klib/tree/master/examples#data-cleaning-and-aggretation">here</a>.
 
