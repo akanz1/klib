@@ -10,7 +10,7 @@ This plot visualizes the missing values in a dataset. At the top it shows the ag
 klib.missingval_plot(df) # default representation of missing values, other settings such as sorting are available
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1100" height="1100"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1100" height="1200"></p>
 
 ### Correlation Plots
 
