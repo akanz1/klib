@@ -87,7 +87,7 @@ def convert_datatypes(data, category=True, cat_threshold=0.05, cat_exclude=None)
     return data
 
 
-def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
+def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1, col_exclude=None):
     '''
     Drops completely empty columns and rows by default and optionally provides flexibility to loosen restrictions to \
     drop additional non-empty columns and rows based on the fraction of NA-values.
@@ -97,10 +97,13 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     data: 2D dataset that can be coerced into Pandas DataFrame.
 
     drop_threshold_cols: float, default 1
-        Drop columns with NA-ratio above the specified threshold.
+        Drop columns with NA-ratio equal to or above the specified threshold.
 
     drop_threshold_rows: float, default 1
-        Drop rows with NA-ratio above the specified threshold.
+        Drop rows with NA-ratio equal to or above the specified threshold.
+
+    col_exclude: list, default None
+        Columns to exclude from dropping.
 
     Returns
     -------
@@ -115,11 +118,19 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1):
     _validate_input_range(drop_threshold_cols, 'drop_threshold_cols', 0, 1)
     _validate_input_range(drop_threshold_rows, 'drop_threshold_rows', 0, 1)
 
-    data = pd.DataFrame(data).copy()
-    data = data.dropna(axis=0, how='all').dropna(axis=1, how='all')
-    data = data.drop(columns=data.loc[:, _missing_vals(data)['mv_cols_ratio'] > drop_threshold_cols].columns)
-    data_cleaned = data.drop(index=data.loc[_missing_vals(data)['mv_rows_ratio'] > drop_threshold_rows, :].index)
+    col_exclude = [] if col_exclude is None else col_exclude.copy()
+    data_exclude = data[col_exclude]
 
+    data = pd.DataFrame(data).copy()
+
+    data_dropped = data.drop(columns=col_exclude)
+    data_dropped = data_dropped.drop(columns=data_dropped.loc[:, _missing_vals(data_dropped)['mv_cols_ratio']
+                                                              > drop_threshold_cols].columns).dropna(axis=1, how='all')
+
+    data = pd.concat([data_dropped, data_exclude], axis=1)
+
+    data_cleaned = data.drop(index=data.loc[_missing_vals(data)['mv_rows_ratio'] >
+                                            drop_threshold_rows, :].index).dropna(axis=0, how='all')
     return data_cleaned
 
 
@@ -134,10 +145,10 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_d
     data: 2D dataset that can be coerced into Pandas DataFrame.
 
     drop_threshold_cols: float, default 0.9
-        Drop columns with NA-ratio above the specified threshold.
+        Drop columns with NA-ratio equal to or above the specified threshold.
 
     drop_threshold_rows: float, default 0.9
-        Drop rows with NA-ratio above the specified threshold.
+        Drop rows with NA-ratio equal to or above the specified threshold.
 
     drop_duplicates: bool, default True
         Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.
@@ -212,10 +223,10 @@ class DataCleaner(BaseEstimator, TransformerMixin):
     Parameters:
     ---------´
     drop_threshold_cols: float, default 0.9
-        Drop columns with NA-ratio above the specified threshold.
+        Drop columns with NA-ratio equal to or above the specified threshold.
 
     drop_threshold_rows: float, default 0.9
-        Drop rows with NA-ratio above the specified threshold.
+        Drop rows with NA-ratio equal to or above the specified threshold.
 
     drop_duplicates: bool, default True
         Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.

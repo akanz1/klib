@@ -15,20 +15,25 @@ class Test_drop_missing(unittest.TestCase):
                                          [pd.NA, 'b', 'c', 'd', 'e'],
                                          [pd.NA, 6, 7, 8, 9],
                                          [pd.NA, 2, 3, 4, pd.NA],
-                                         [pd.NA, 6, 7, pd.NA, pd.NA]])
+                                         [pd.NA, 6, 7, pd.NA, pd.NA]], columns=['c1', 'c2', 'c3', 'c4', 'c5'])
 
     def test_drop_missing(self):
         self.assertEqual(drop_missing(self.df_data_drop).shape, (4, 4))
 
         # Drop further columns based on threshold
-        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0.5).shape, (4, 4))
-        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0.49).shape, (4, 3))
-        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0).shape, (4, 2))
+        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0.5).shape, (4, 3))
+        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0.5, col_exclude=['c1']).shape, (4, 4))
+        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0.49).shape, (4, 2))
+        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0).shape, (0, 0))
 
         # Drop further rows based on threshold
+        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0.67).shape, (4, 4))
         self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0.5).shape, (4, 4))
         self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0.49).shape, (3, 4))
-        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0).shape, (2, 4))
+        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0.25).shape, (3, 4))
+        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0.24).shape, (2, 4))
+        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0.24, col_exclude=['c1']).shape, (2, 5))
+        self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0.24, col_exclude=['c2']).shape, (2, 4))
 
 
 class Test_convert_dtypes(unittest.TestCase):
