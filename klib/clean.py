@@ -103,7 +103,7 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1, col_exclude
         Drop rows with NA-ratio equal to or above the specified threshold.
 
     col_exclude: list, default None
-        Columns to exclude from dropping.
+        Specify a list of columns to exclude from dropping.
 
     Returns
     -------
@@ -111,7 +111,7 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1, col_exclude
 
     Notes
     -----
-    Columns are dropped first. Rows are dropped based on the remaining data.
+    Columns are dropped first.
     '''
 
     # Validate Inputs
@@ -135,7 +135,8 @@ def drop_missing(data, drop_threshold_cols=1, drop_threshold_rows=1, col_exclude
 
 
 def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_duplicates=True,
-                  convert_dtypes=True, category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
+                  convert_dtypes=True, col_exclude=None, category=True, cat_threshold=0.03, cat_exclude=None,
+                  show='changes'):
     '''
     Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty \
         columns as well as optimizing the datatypes.
@@ -155,6 +156,9 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_d
 
     convert_dtypes: bool, default True
         Convert dtypes using pd.convert_dtypes().
+
+    col_exclude: list, default None
+        Specify a list of columns to exclude from dropping.
 
     category: bool, default True
         Enable changing dtypes of 'object' columns to "category". Set threshold using cat_threshold. Requires \
@@ -197,7 +201,7 @@ def data_cleaning(data, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_d
     _validate_input_range(cat_threshold, 'cat_threshold', 0, 1)
 
     data = pd.DataFrame(data).copy()
-    data_cleaned = drop_missing(data, drop_threshold_cols, drop_threshold_rows)
+    data_cleaned = drop_missing(data, drop_threshold_cols, drop_threshold_rows, col_exclude=col_exclude)
 
     single_val_cols = data_cleaned.columns[data_cleaned.nunique(dropna=False) == 1].tolist()
     data_cleaned = data_cleaned.drop(columns=single_val_cols)
@@ -234,6 +238,9 @@ class DataCleaner(BaseEstimator, TransformerMixin):
     convert_dtypes: bool, default True
         Convert dtypes using pd.convert_dtypes().
 
+    col_exclude: list, default None
+        Specify a list of columns to exclude from dropping.
+
     category: bool, default True
         Change dtypes of columns to "category". Set threshold using cat_threshold. Requires convert_dtypes=True
 
@@ -255,11 +262,12 @@ class DataCleaner(BaseEstimator, TransformerMixin):
     '''
 
     def __init__(self, drop_threshold_cols=0.9, drop_threshold_rows=0.9, drop_duplicates=True, convert_dtypes=True,
-                 category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
+                 col_exclude=None, category=True, cat_threshold=0.03, cat_exclude=None, show='changes'):
         self.drop_threshold_cols = drop_threshold_cols
         self.drop_threshold_rows = drop_threshold_rows
         self.drop_duplicates = drop_duplicates
         self.convert_dtypes = convert_dtypes
+        self.col_exclude = col_exclude
         self.category = category
         self.cat_threshold = cat_threshold
         self.cat_exclude = cat_exclude
@@ -271,8 +279,9 @@ class DataCleaner(BaseEstimator, TransformerMixin):
     def transform(self, data, target=None):
         data_cleaned = data_cleaning(data, drop_threshold_cols=self.drop_threshold_cols,
                                      drop_threshold_rows=self.drop_threshold_rows, drop_duplicates=self.drop_duplicates,
-                                     convert_dtypes=self.convert_dtypes, category=self.category, cat_threshold=self.
-                                     cat_threshold, cat_exclude=self.cat_exclude, show=self.show)
+                                     convert_dtypes=self.convert_dtypes, col_exclude=self.col_exclude,
+                                     category=self.category, cat_threshold=self.cat_threshold,
+                                     cat_exclude=self.cat_exclude, show=self.show)
         return data_cleaned
 
 
