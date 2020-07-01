@@ -64,7 +64,7 @@ Find all available examples as well as applications of the functions in **klib.c
 klib.missingval_plot(df) # default representation of missing values in a DataFrame, plenty of settings are available
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot1.png" alt="Corr Plot Example" width="720" height="864"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot1.png" alt="Corr Plot Example" width="900" height="900"></p>
 
 
 ```python
