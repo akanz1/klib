@@ -31,7 +31,7 @@ __all__ = ['cat_plot',
 # Functions
 
 # Categorical Plot
-def cat_plot(data, figsize=(14, 14), top=3, bottom=3, bar_color_top='#5ab4ac', bar_color_bottom='#d8b365', cmap='BrBG'):
+def cat_plot(data, figsize=(16, 16), top=3, bottom=3, bar_color_top='#5ab4ac', bar_color_bottom='#d8b365', cmap='BrBG'):
     '''
     Two-dimensional visualization of the number and frequency of categorical features.
 
@@ -41,7 +41,7 @@ def cat_plot(data, figsize=(14, 14), top=3, bottom=3, bar_color_top='#5ab4ac', b
     data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots.
 
-    figsize: tuple, default (14, 14)
+    figsize: tuple, default (16, 16)
         Use to control the figure size.
 
     top: int, default 3
@@ -472,7 +472,7 @@ def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.9
 
 
 # Missing value plot
-def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_color='#EEEEEE'):
+def missingval_plot(data, cmap='PuBuGn', figsize=(20, 20), sort=False, spine_color='#EEEEEE'):
     '''
     Two-dimensional visualization of the missing values in a dataset.
 
@@ -485,7 +485,7 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(12, 12), sort=False, spine_col
         Any valid colormap can be used. E.g. 'Greys', 'RdPu'. More information can be found in the matplotlib \
         documentation.
 
-    figsize: tuple, default (12, 12)
+    figsize: tuple, default (20, 20)
         Use to control the figure size.
 
     sort: bool, default False
