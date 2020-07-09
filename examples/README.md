@@ -26,7 +26,7 @@ klib.corr_plot(df, split='neg') # displaying only negative correlations
 Further, as seen below, if a column is specified, either by name or by passing in a separate target List or pd.Series, the plot gives the correlation of all features with the specified target.
 
 ```python
-klib.corr_plot(df, target='air_time') # default representation of correlations with the feature column
+klib.corr_plot(df, target='wine') # default representation of correlations with the feature column
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="1000" height="833"></p>
