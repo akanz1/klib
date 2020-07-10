@@ -11,8 +11,8 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from typing import List, Optional, Union
 
-from .describe import corr_mat
-from .utils import _diff_report, _drop_duplicates, _missing_vals, _validate_input_bool, _validate_input_range
+from klib.describe import corr_mat
+from klib.utils import _diff_report, _drop_duplicates, _missing_vals, _validate_input_bool, _validate_input_range
 
 
 __all__ = ["convert_datatypes", "data_cleaning", "drop_missing", "mv_col_handling"]

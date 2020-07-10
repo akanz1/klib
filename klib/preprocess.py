@@ -1,9 +1,9 @@
-'''
+"""
 Functions for data preprocessing.
 
 :author: Andreas Kanz
 
-'''
+"""
 
 # Imports
 import numpy as np
@@ -12,31 +12,21 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.experimental import enable_iterative_imputer  # noqa
-from sklearn.impute import (SimpleImputer, IterativeImputer)
-from sklearn.feature_selection import (f_classif,
-                                       SelectFromModel,
-                                       SelectPercentile,
-                                       VarianceThreshold)
+from sklearn.impute import SimpleImputer, IterativeImputer
+from sklearn.feature_selection import f_classif, SelectFromModel, SelectPercentile, VarianceThreshold
 from sklearn.linear_model import LassoCV
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import (OneHotEncoder,
-                                   RobustScaler,
-                                   MaxAbsScaler)
+from sklearn.preprocessing import OneHotEncoder, RobustScaler, MaxAbsScaler
 
-from .utils import (_validate_input_int,
-                    _validate_input_range,
-                    _validate_input_sum)
+from klib.utils import _validate_input_int, _validate_input_range, _validate_input_sum
 
 
-__all__ = ['feature_selection_pipe',
-           'num_pipe',
-           'cat_pipe',
-           'train_dev_test_split']
+__all__ = ["feature_selection_pipe", "num_pipe", "cat_pipe", "train_dev_test_split"]
 
 
 class ColumnSelector(BaseEstimator, TransformerMixin):
-    '''
+    """
     Determines and selects numerical and categorical columns from a dataset based on their supposed dtype. Unlike \
     sklearn's make_column_selector() missing values are temporarily filled in to allow convert_dtypes() to determine \
     the dtype of a column.
@@ -49,7 +39,7 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
     Returns:
     -------
     Dataset containing only numerical or categorical data.
-    '''
+    """
 
     def __init__(self, num=True):
         self.num = num
@@ -61,13 +51,13 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
         temp = X.fillna(X.mode().iloc[0]).convert_dtypes()
 
         if self.num:
-            return X[temp.select_dtypes(include=['number']).columns.tolist()]
+            return X[temp.select_dtypes(include=["number"]).columns.tolist()]
         else:
-            return X[temp.select_dtypes(exclude=['number']).columns.tolist()]
+            return X[temp.select_dtypes(exclude=["number"]).columns.tolist()]
 
 
 class PipeInfo(BaseEstimator, TransformerMixin):
-    '''
+    """
     Prints intermediary information about the dataset from within a pipeline. Include at any point in a Pipeline to
     print out the shape of the dataset at this point and to receive an indication of the progress within the pipeline.
     Set to 'None' to avoid printing the shape of the dataset. This parameter can also be set as a hyperparameter, \
@@ -81,7 +71,7 @@ class PipeInfo(BaseEstimator, TransformerMixin):
     Returns:
     -------
     Data: Data is being passed through.
-    '''
+    """
 
     def __init__(self, name=None):
         self.name = name
@@ -90,15 +80,17 @@ class PipeInfo(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X, y=None):
-        print(f'Step: {self.name} --- Shape: {X.shape}')
+        print(f"Step: {self.name} --- Shape: {X.shape}")
         return X
 
 
-def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
-             encoder=OneHotEncoder(handle_unknown='ignore'),
-             scaler=MaxAbsScaler(),
-             encoder_info=PipeInfo(name='after encoding')):
-    '''
+def cat_pipe(
+    imputer=SimpleImputer(strategy="most_frequent"),
+    encoder=OneHotEncoder(handle_unknown="ignore"),
+    scaler=MaxAbsScaler(),
+    encoder_info=PipeInfo(name="after encoding"),
+):
+    """
     Standard preprocessing operations on categorical data.
 
     Parameters:
@@ -120,23 +112,21 @@ def cat_pipe(imputer=SimpleImputer(strategy='most_frequent'),
     Returns:
     -------
     Pipeline
-    '''
+    """
 
-    cat_pipe = make_pipeline(ColumnSelector(num=False),
-                             imputer,
-                             encoder, encoder_info,
-                             scaler)
+    cat_pipe = make_pipeline(ColumnSelector(num=False), imputer, encoder, encoder_info, scaler)
     return cat_pipe
 
 
 def feature_selection_pipe(
-        var_thresh=VarianceThreshold(threshold=0.1),
-        select_from_model=SelectFromModel(LassoCV(cv=4, random_state=408), threshold="0.1*median"),
-        select_percentile=SelectPercentile(f_classif, percentile=95),
-        var_thresh_info=PipeInfo(name='after var_thresh'),
-        select_from_model_info=PipeInfo(name='after select_from_model'),
-        select_percentile_info=PipeInfo(name='after select_percentile')):
-    '''
+    var_thresh=VarianceThreshold(threshold=0.1),
+    select_from_model=SelectFromModel(LassoCV(cv=4, random_state=408), threshold="0.1*median"),
+    select_percentile=SelectPercentile(f_classif, percentile=95),
+    var_thresh_info=PipeInfo(name="after var_thresh"),
+    select_from_model_info=PipeInfo(name="after select_from_model"),
+    select_percentile_info=PipeInfo(name="after select_percentile"),
+):
+    """
     Preprocessing operations for feature selection.
 
     Parameters:
@@ -158,18 +148,26 @@ def feature_selection_pipe(
     Returns:
     -------
     Pipeline
-    '''
+    """
 
-    feature_selection_pipe = make_pipeline(var_thresh, var_thresh_info,
-                                           select_from_model, select_from_model_info,
-                                           select_percentile, select_percentile_info)
+    feature_selection_pipe = make_pipeline(
+        var_thresh,
+        var_thresh_info,
+        select_from_model,
+        select_from_model_info,
+        select_percentile,
+        select_percentile_info,
+    )
     return feature_selection_pipe
 
 
-def num_pipe(imputer=IterativeImputer(estimator=ExtraTreesRegressor(
-        n_estimators=25, n_jobs=4, random_state=408), random_state=408),
-        scaler=RobustScaler()):
-    '''
+def num_pipe(
+    imputer=IterativeImputer(
+        estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408
+    ),
+    scaler=RobustScaler(),
+):
+    """
     Standard preprocessing operations on numerical data.
 
     Parameters:
@@ -182,16 +180,14 @@ def num_pipe(imputer=IterativeImputer(estimator=ExtraTreesRegressor(
     Returns:
     -------
     Pipeline
-    '''
+    """
 
-    num_pipe = make_pipeline(ColumnSelector(),
-                             imputer,
-                             scaler)
+    num_pipe = make_pipeline(ColumnSelector(), imputer, scaler)
     return num_pipe
 
 
 def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=None, random_state=408):
-    '''
+    """
     Split a dataset and a label column into train, dev and test sets.
 
     Parameters:
@@ -221,13 +217,13 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
     Returns
     -------
     tuple: Tuple containing train-dev-test split of inputs.
-    '''
+    """
 
     # Validate Inputs
-    _validate_input_range(dev_size, 'dev_size', 0, 1)
-    _validate_input_range(test_size, 'test_size', 0, 1)
-    _validate_input_int(random_state, 'random_state')
-    _validate_input_sum(1, 'Dev and test', dev_size, test_size)
+    _validate_input_range(dev_size, "dev_size", 0, 1)
+    _validate_input_range(test_size, "test_size", 0, 1)
+    _validate_input_int(random_state, "random_state")
+    _validate_input_sum(1, "Dev and test", dev_size, test_size)
 
     target_data = []
     if isinstance(target, str):
@@ -237,17 +233,19 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
     elif isinstance(target, (list, pd.Series, np.ndarray)):
         target_data = pd.Series(target)
 
-    X_train, X_dev_test, y_train, y_dev_test = train_test_split(data, target_data,
-                                                                test_size=dev_size+test_size,
-                                                                random_state=random_state,
-                                                                stratify=stratify)
+    X_train, X_dev_test, y_train, y_dev_test = train_test_split(
+        data, target_data, test_size=dev_size + test_size, random_state=random_state, stratify=stratify
+    )
 
     if (dev_size == 0) or (test_size == 0):
         return X_train, X_dev_test, y_train, y_dev_test
 
     else:
-        X_dev, X_test, y_dev, y_test = train_test_split(X_dev_test, y_dev_test,
-                                                        test_size=test_size/(dev_size+test_size),
-                                                        random_state=random_state,
-                                                        stratify=y_dev_test)
+        X_dev, X_test, y_dev, y_test = train_test_split(
+            X_dev_test,
+            y_dev_test,
+            test_size=test_size / (dev_size + test_size),
+            random_state=random_state,
+            stratify=y_dev_test,
+        )
         return X_train, X_dev, X_test, y_train, y_dev, y_test
