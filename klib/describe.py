@@ -152,7 +152,7 @@ def corr_mat(
     target: Optional[Union[pd.DataFrame, str]] = None,
     method: str = "pearson",
     colored: bool = True,
-) -> Union[pd.DataFrame, pd.io.formats.style.Styler]:
+) -> Union[pd.DataFrame, Any]:
     """ Returns a color-encoded correlation matrix.
 
     Parameters
@@ -179,7 +179,7 @@ def corr_mat(
 
     Returns
     -------
-    Union[pd.DataFrame, pd.io.formats.style.Styler]
+    Union[pd.DataFrame, pd.Styler]
         If colored = True - corr: Pandas Styler object
         If colored = False - corr: Pandas DataFrame
     """
