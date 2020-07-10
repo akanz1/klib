@@ -170,9 +170,10 @@ def data_cleaning(
     cat_exclude : Optional[List[str]], optional
         List of columns to exclude from categorical conversion, by default None
     show : str, optional
-        {'all', 'changes', None} default 'all'
-        Specify verbosity of the output, by default "changes"
-            * 'all': Print information about the data before and after cleaning as well as information about changes.
+        {'all', 'changes', None}, by default "changes"
+        Specify verbosity of the output:
+            * 'all': Print information about the data before and after cleaning as well as information about changes \
+            and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
             * 'changes': Print out differences in the data before and after cleaning.
             * None: No information about the data and the data cleaning is printed.
 
@@ -251,9 +252,11 @@ class DataCleaner(BaseEstimator, TransformerMixin):
     cat_exclude: list, default None
         List of columns to exclude from categorical conversion.
 
-    show: {'all', 'changes', None} default 'all'
-        Specify verbosity of the output.
-            * 'all': Print information about the data before and after cleaning as well as information about changes.
+    show: str, optional
+        {'all', 'changes', None}, by default "changes"
+        Specify verbosity of the output:
+            * 'all': Print information about the data before and after cleaning as well as information about changes \
+            and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
             * 'changes': Print out differences in the data before and after cleaning.
             * None: No information about the data and the data cleaning is printed.
 
