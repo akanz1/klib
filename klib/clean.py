@@ -33,7 +33,10 @@ def optimize_floats(data: Union[pd.Series, pd.DataFrame]):
 
 
 def convert_datatypes(
-    data: pd.DataFrame, category: bool = True, cat_threshold: float = 0.05, cat_exclude: Optional[List[str]] = None
+    data: pd.DataFrame,
+    category: bool = True,
+    cat_threshold: float = 0.05,
+    cat_exclude: Optional[List[Union[str, int]]] = None,
 ) -> pd.DataFrame:
     """ Converts columns to best possible dtypes using dtypes supporting pd.NA. Temporarily not converting to integers \
         due to an issue in pandas. This is expected to be fixed in pandas 1.1. \
@@ -140,7 +143,7 @@ def data_cleaning(
     col_exclude: Optional[List[str]] = None,
     category: bool = True,
     cat_threshold: float = 0.03,
-    cat_exclude: Optional[List[str]] = None,
+    cat_exclude: Optional[List[Union[str, int]]] = None,
     show: str = "changes",
 ) -> pd.DataFrame:
     """ Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty \
@@ -274,7 +277,7 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         col_exclude: Optional[List[str]] = None,
         category: bool = True,
         cat_threshold: float = 0.03,
-        cat_exclude: Optional[List[str]] = None,
+        cat_exclude: Optional[List[Union[str, int]]] = None,
         show: str = "changes",
     ):
         self.drop_threshold_cols = drop_threshold_cols

@@ -48,7 +48,7 @@ class Test__corr_selector(unittest.TestCase):
 class Test__drop_duplicates(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls: pd.DataFrame) -> pd.DataFrame:
         cls.data_dupl_df = pd.DataFrame([[pd.NA, pd.NA, pd.NA, pd.NA],
                                          [1, 2, 3, 4],
                                          [1, 2, 3, 4],

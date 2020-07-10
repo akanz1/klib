@@ -8,7 +8,7 @@ Utilities and auxiliary functions.
 # Imports
 import numpy as np
 import pandas as pd
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 def _corr_selector(
@@ -120,7 +120,7 @@ def _diff_report(
         print(f"Reduced memory by at least: {round(mem_change,2)} MB (-{round(100*mem_change/data_mem,1)}%)")
 
 
-def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, List]:
+def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
     """ Provides information on and drops duplicate rows.
 
     Parameters
@@ -163,7 +163,7 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
     return memory_usage
 
 
-def _missing_vals(data: pd.DataFrame) -> Dict[str, float]:
+def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
     """ Gives metrics of missing values in the dataset.
 
     Parameters

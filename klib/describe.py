@@ -1,9 +1,9 @@
-'''
+"""
 Functions for descriptive analytics.
 
 :author: Andreas Kanz
 
-'''
+"""
 
 # Imports
 import matplotlib.pyplot as plt
@@ -13,69 +13,70 @@ import pandas as pd
 import scipy
 import seaborn as sns
 
-from .utils import (_corr_selector,
-                    _missing_vals,
-                    _validate_input_bool,
-                    _validate_input_int,
-                    _validate_input_smaller,
-                    _validate_input_range)
+from typing import Any, Dict, Optional, Tuple, Union
+from .utils import (
+    _corr_selector,
+    _missing_vals,
+    _validate_input_bool,
+    _validate_input_int,
+    _validate_input_smaller,
+    _validate_input_range,
+)
 
 
-__all__ = ['cat_plot',
-           'corr_mat',
-           'corr_plot',
-           'dist_plot',
-           'missingval_plot']
+__all__ = ["cat_plot", "corr_mat", "corr_plot", "dist_plot", "missingval_plot"]
 
 
 # Functions
 
 # Categorical Plot
-def cat_plot(data, figsize=(16, 16), top=3, bottom=3, bar_color_top='#5ab4ac', bar_color_bottom='#d8b365', cmap='BrBG'):
-    '''
-    Two-dimensional visualization of the number and frequency of categorical features.
+def cat_plot(
+    data: pd.DataFrame,
+    figsize: Tuple = (16, 16),
+    top: int = 3,
+    bottom: int = 3,
+    bar_color_top: str = "#5ab4ac",
+    bar_color_bottom: str = "#d8b365",
+    cmap: str = "BrBG",
+):
+    """ Two-dimensional visualization of the number and frequency of categorical features.
 
     Parameters
     ----------
-
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
-
-    figsize: tuple, default (16, 16)
-        Use to control the figure size.
-
-    top: int, default 3
-        Show the "top" most frequent values in a column.
-
-    bottom: int, default 3
-        Show the "bottom" most frequent values in a column.
-
-    bar_color_top: color, default '#5ab4ac'
-        Use to control the color of the bars indicating the most common values.
-
-    bar_color_bottom: color, default '#d8b365'
-        Use to control the color of the bars indicating the least common values.
-
-    cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
-        The mapping from data values to color space.
+    data : pd.DataFrame
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots
+    figsize : Tuple, optional
+        Use to control the figure size, by default (16, 16)
+    top : int, optional
+        Show the "top" most frequent values in a column, by default 3
+    bottom : int, optional
+        Show the "bottom" most frequent values in a column, by default 3
+    bar_color_top : str, optional
+        Use to control the color of the bars indicating the most common values, by default "#5ab4ac"
+    bar_color_bottom : str, optional
+        Use to control the color of the bars indicating the least common values, by default "#d8b365"
+    cmap : str, optional
+        The mapping from data values to color space, by default "BrBG"
 
     Returns
     -------
-    gs: Figure with array of Axes objects.
-    '''
+    Gridspec
+        gs: Figure with array of Axes objects
+    """
 
     # Validate Inputs
-    _validate_input_int(top, 'top')
-    _validate_input_int(bottom, 'bottom')
-    _validate_input_range(top, 'top', 0, data.shape[1])
-    _validate_input_range(bottom, 'bottom', 0, data.shape[1])
+    _validate_input_int(top, "top")
+    _validate_input_int(bottom, "bottom")
+    _validate_input_range(top, "top", 0, data.shape[1])
+    _validate_input_range(bottom, "bottom", 0, data.shape[1])
 
     data = pd.DataFrame(data).copy()
-    cols = data.select_dtypes(exclude=['number']).columns.tolist()
+    cols = data.select_dtypes(exclude=["number"]).columns.tolist()
     data = data[cols]
 
     if len(cols) == 0:
-        print('No columns with categorical data were detected.')
+        print("No columns with categorical data were detected.")
 
     fig = plt.figure(figsize=figsize)
     gs = fig.add_gridspec(nrows=6, ncols=len(cols), wspace=0.2)
@@ -86,8 +87,8 @@ def cat_plot(data, figsize=(16, 16), top=3, bottom=3, bar_color_top='#5ab4ac', b
         value_counts = data[col].value_counts()
         lim_top, lim_bot = top, bottom
 
-        if n_unique < top+bottom:
-            lim_top = lim_bot = int(n_unique//2)
+        if n_unique < top + bottom:
+            lim_top = lim_bot = int(n_unique // 2)
 
         value_counts_top = value_counts[0:lim_top]
         value_counts_idx_top = value_counts_top.index.tolist()
@@ -95,93 +96,101 @@ def cat_plot(data, figsize=(16, 16), top=3, bottom=3, bar_color_top='#5ab4ac', b
         value_counts_idx_bot = value_counts_bot.index.tolist()
 
         if top == 0:
-            value_counts_top = value_counts_idx_top = None
+            value_counts_top: Any = None
+            value_counts_idx_top = None
 
         elif bottom == 0:
-            value_counts_bot = value_counts_idx_bot = None
+            value_counts_bot: Any = None
+            value_counts_idx_bot = None
 
         data.loc[data[col].isin(value_counts_idx_top), col] = 2
         data.loc[data[col].isin(value_counts_idx_bot), col] = -2
         data.loc[~((data[col] == 2) | (data[col] == -2)), col] = 0
 
         # Barcharts
-        ax_top = fig.add_subplot(gs[:1, count:count+1])
+        ax_top = fig.add_subplot(gs[:1, count : count + 1])
         ax_top.bar(value_counts_idx_top, value_counts_top, color=bar_color_top, width=0.85)
         ax_top.bar(value_counts_idx_bot, value_counts_bot, color=bar_color_bottom, width=0.85)
         ax_top.set(frame_on=False)
-        ax_top.tick_params(axis='x', labelrotation=90)
+        ax_top.tick_params(axis="x", labelrotation=90)
 
         # Summary stats
-        ax_bottom = fig.add_subplot(gs[1:2, count:count+1])
+        ax_bottom = fig.add_subplot(gs[1:2, count : count + 1])
         ax_bottom.get_yaxis().set_visible(False)
         ax_bottom.get_xaxis().set_visible(False)
         ax_bottom.set(frame_on=False)
-        ax_bottom.text(0, 0, f'Unique values: {n_unique}\n\n'
-                       f'Top {top} vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n'
-                       f'Bot {bottom} vals: {sum(value_counts_bot)} ' +
-                       f'({sum(value_counts_bot)/data.shape[0]*100:.1f}%)',
-                       transform=ax_bottom.transAxes, color='#111111', fontsize=11)
+        ax_bottom.text(
+            0,
+            0,
+            f"Unique values: {n_unique}\n\n"
+            f"Top {top} vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n"
+            f"Bot {bottom} vals: {sum(value_counts_bot)} " + f"({sum(value_counts_bot)/data.shape[0]*100:.1f}%)",
+            transform=ax_bottom.transAxes,
+            color="#111111",
+            fontsize=11,
+        )
 
     # Heatmap
-    data = data.astype('int')
+    data = data.astype("int")
     ax_hm = fig.add_subplot(gs[2:, :])
     sns.heatmap(data, cmap=cmap, cbar=False, vmin=-4.25, vmax=4.25, ax=ax_hm)
     ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
     ax_hm.set_yticklabels(ax_hm.get_yticks())
-    ax_hm.set_xticklabels(ax_hm.get_xticklabels(),
-                          horizontalalignment='center',
-                          fontweight='light',
-                          fontsize='medium')
-    ax_hm.tick_params(length=1, colors='#111111')
+    ax_hm.set_xticklabels(ax_hm.get_xticklabels(), horizontalalignment="center", fontweight="light", fontsize="medium")
+    ax_hm.tick_params(length=1, colors="#111111")
 
-    gs.figure.suptitle('Categorical data plot', x=0.47, y=0.925, fontsize=18, color='#111111')
+    gs.figure.suptitle("Categorical data plot", x=0.47, y=0.925, fontsize=18, color="#111111")
 
     return gs
 
 
 # Correlation Matrix
-def corr_mat(data, split=None, threshold=0, target=None, method='pearson', colored=True):
-    '''
-    Returns a color-encoded correlation matrix.
+def corr_mat(
+    data: pd.DataFrame,
+    split: Optional[str] = None,
+    threshold: float = 0,
+    target: Optional[Union[pd.DataFrame, str]] = None,
+    method: str = "pearson",
+    colored: bool = True,
+) -> Union[pd.DataFrame, pd.io.formats.style.Styler]:
+    """ Returns a color-encoded correlation matrix.
 
     Parameters
     ----------
-
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
-
-    split: {None, 'pos', 'neg', 'above', 'below'}, default None
-        Type of split to be performed.
-
-    threshold: float, default 0
-        Value between 0 <= threshold <= 1
-
-    target: string, list, np.array or pd.Series, default None
+    data : pd.DataFrame
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots
+    split : Optional[str], optional
+        Type of split to be performed, by default None
+        {None, 'pos', 'neg', 'above', 'below'}
+    threshold : float, optional
+        Value between 0 <= threshold <= 1, by default 0
+    target : Optional[Union[pd.DataFrame, str]], optional
         Specify target for correlation. E.g. label column to generate only the correlations between each feature \
-        and the label.
-
-    method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
+        and the label, by default None
+    method : str, optional
+        method: {'pearson', 'spearman', 'kendall'}, by default "pearson"
         * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
         * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but \
-                    more robus in smaller dataets than 'spearman'.
-
-    colored: bool, default True
-        If True the negative values in the correlation matrix are colored in red.
+                    more robus in smaller dataets than 'spearman'
+    colored : bool, optional
+        If True the negative values in the correlation matrix are colored in red, by default True
 
     Returns
     -------
-    If colored = True - corr: Pandas Styler object
-    If colored = False - corr: Pandas DataFrame
-    '''
+    Union[pd.DataFrame, pd.io.formats.style.Styler]
+        If colored = True - corr: Pandas Styler object
+        If colored = False - corr: Pandas DataFrame
+    """
 
     # Validate Inputs
-    _validate_input_range(threshold, 'threshold', -1, 1)
-    _validate_input_bool(colored, 'colored')
+    _validate_input_range(threshold, "threshold", -1, 1)
+    _validate_input_bool(colored, "colored")
 
     def color_negative_red(val):
-        color = '#FF3344' if val < 0 else None
-        return 'color: %s' % color
+        color = "#FF3344" if val < 0 else None
+        return "color: %s" % color
 
     data = pd.DataFrame(data)
 
@@ -205,55 +214,60 @@ def corr_mat(data, split=None, threshold=0, target=None, method='pearson', color
     corr = _corr_selector(corr, split=split, threshold=threshold)
 
     if colored:
-        return corr.style.applymap(color_negative_red).format('{:.2f}', na_rep='-')
+        return corr.style.applymap(color_negative_red).format("{:.2f}", na_rep="-")
     else:
         return corr
 
 
 # Correlation matrix / heatmap
-def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap='BrBG', figsize=(12, 10), annot=True,
-              dev=False, **kwargs):
-    '''
-    Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
+def corr_plot(
+    data: pd.DataFrame,
+    split: Optional[str] = None,
+    threshold: float = 0,
+    target: Optional[Union[pd.Series, str]] = None,
+    method: str = "pearson",
+    cmap: str = "BrBG",
+    figsize: Tuple = (12, 10),
+    annot: bool = True,
+    dev: bool = False,
+    **kwargs,
+):
+    """ Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
-
-    split: {None, 'pos', 'neg', 'above', 'below'}, default None
-        Type of split to be performed.
-
-        * None: visualize all correlations between the feature-columns.
-        * pos: visualize all positive correlations between the feature-columns above the threshold.
-        * neg: visualize all negative correlations between the feature-columns below the threshold.
-        * above: visualize all correlations between the feature-columns for which abs(corr) > threshold is True.
-        * below: visualize all correlations between the feature-columns for which abs(corr) < threshold is True.
-
-    threshold: float, default 0
-        Value between 0 <= threshold <= 1
-
-    target: string, list, np.array or pd.Series, default None
+    data : pd.DataFrame
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+        information is used to label the plots
+    split : Optional[str], optional
+        Type of split to be performed, by default None
+        {None, 'pos', 'neg', 'above', 'below'}
+            * None: visualize all correlations between the feature-columns
+            * pos: visualize all positive correlations between the feature-columns above the threshold
+            * neg: visualize all negative correlations between the feature-columns below the threshold
+            * above: visualize all correlations between the feature-columns for which abs(corr) > threshold is True
+            * below: visualize all correlations between the feature-columns for which abs(corr) < threshold is True
+    threshold : float, optional
+        Value between 0 <= threshold <= 1, by default 0
+    target : Optional[Union[pd.Series, str]], optional
         Specify target for correlation. E.g. label column to generate only the correlations between each feature \
-        and the label.
-
-    method: {'pearson', 'spearman', 'kendall'}, default 'pearson'
-        * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
-        * spearman: ranked/ordinal correlation, measures monotonic relationships.
-        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but \
-                   more robust in smaller dataets than 'spearman'.
-
-    cmap: matplotlib colormap name or object, or list of colors, default 'BrBG'
-        The mapping from data values to color space.
-
-    figsize: tuple, default (12, 10)
-        Use to control the figure size.
-
-    annot: bool, default True
-        Use to show or hide annotations.
-
-    dev: bool, default False
-        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed.
+        and the label, by default None
+    method : str, optional
+        method: {'pearson', 'spearman', 'kendall'}, by default "pearson"
+            * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
+            * spearman: ranked/ordinal correlation, measures monotonic relationships.
+            * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive \
+            but more robust in smaller dataets than 'spearman'.
+    cmap : str, optional
+        The mapping from data values to color space, matplotlib colormap name or object, or list of colors, by default \
+        "BrBG"
+    figsize : Tuple, optional
+        Use to control the figure size, by default (12, 10)
+    annot : bool, optional
+        Use to show or hide annotations, by default True
+    dev : bool, optional
+        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed, by \
+        default False
 
     **kwargs: optional
         Additional elements to control the visualization of the plot, e.g.:
@@ -279,12 +293,12 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     -------
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
-    '''
+    """
 
     # Validate Inputs
-    _validate_input_range(threshold, 'threshold', -1, 1)
-    _validate_input_bool(annot, 'annot')
-    _validate_input_bool(dev, 'dev')
+    _validate_input_range(threshold, "threshold", -1, 1)
+    _validate_input_bool(annot, "annot")
+    _validate_input_bool(dev, "dev")
 
     data = pd.DataFrame(data)
 
@@ -295,30 +309,33 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
     if target is None:
         mask = np.triu(np.ones_like(corr, dtype=np.bool))
 
-    vmax = np.round(np.nanmax(corr.where(~mask))-0.05, 2)
-    vmin = np.round(np.nanmin(corr.where(~mask))+0.05, 2)
+    vmax = np.round(np.nanmax(corr.where(~mask)) - 0.05, 2)
+    vmin = np.round(np.nanmin(corr.where(~mask)) + 0.05, 2)
 
     fig, ax = plt.subplots(figsize=figsize)
 
     # Specify kwargs for the heatmap
-    kwargs = {'mask': mask,
-              'cmap': cmap,
-              'annot': annot,
-              'vmax': vmax,
-              'vmin': vmin,
-              'linewidths': .5,
-              'annot_kws': {'size': 10},
-              'cbar_kws': {'shrink': .95, 'aspect': 30},
-              **kwargs}
+    kwargs = {
+        "mask": mask,
+        "cmap": cmap,
+        "annot": annot,
+        "vmax": vmax,
+        "vmin": vmin,
+        "linewidths": 0.5,
+        "annot_kws": {"size": 10},
+        "cbar_kws": {"shrink": 0.95, "aspect": 30},
+        **kwargs,
+    }
 
     # Draw heatmap with mask and default settings
-    sns.heatmap(corr, center=0, fmt='.2f', **kwargs)
+    sns.heatmap(corr, center=0, fmt=".2f", **kwargs)
 
-    ax.set_title(f'Feature-correlation ({method})', fontdict={'fontsize': 18})
+    ax.set_title(f"Feature-correlation ({method})", fontdict={"fontsize": 18})
 
     # Settings
     if dev:
-        fig.suptitle(f"\
+        fig.suptitle(
+            f"\
             Settings (dev-mode): \n\
             - split-mode: {split} \n\
             - threshold: {threshold} \n\
@@ -330,177 +347,195 @@ def corr_plot(data, split=None, threshold=0, target=None, method='pearson', cmap
             - linewidths: {kwargs['linewidths']} \n\
             - annot_kws: {kwargs['annot_kws']} \n\
             - cbar_kws: {kwargs['cbar_kws']}",
-                     fontsize=12,
-                     color='gray',
-                     x=0.35,
-                     y=0.85,
-                     ha='left')
+            fontsize=12,
+            color="gray",
+            x=0.35,
+            y=0.85,
+            ha="left",
+        )
 
     return ax
 
 
 # Distribution plot
-def dist_plot(data, mean_color='orange', figsize=(14, 2), fill_range=(0.025, 0.975), hist=False, bins=10,
-              showall=False, kde_kws=None, rug_kws=None, fill_kws=None, font_kws=None):
-    '''
-    Two-dimensional visualization of the distribution of numerical features.
+def dist_plot(
+    data: pd.DataFrame,
+    mean_color: str = "orange",
+    figsize: Tuple = (14, 2),
+    fill_range: Tuple = (0.025, 0.975),
+    hist: bool = False,
+    bins: int = 10,
+    showall: bool = False,
+    kde_kws: Dict[str, Any] = None,
+    rug_kws: Dict[str, Any] = None,
+    fill_kws: Dict[str, Any] = None,
+    font_kws: Dict[str, Any] = None,
+):
+    """ Two-dimensional visualization of the distribution of numerical features.
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
-
-    mean_color: color, default 'orange'
-        Color of the vertical line indicating the mean of the data.
-
-    figsize: tuple, default (14, 2)
-        Controls the figure size.
-
-    fill_range: tuple, default (0.025, 0.975)
+    data : pd.DataFrame
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots
+    mean_color : str, optional
+        Color of the vertical line indicating the mean of the data, by default "orange"
+    figsize : Tuple, optional
+        Controls the figure size, by default (14, 2)
+    fill_range : Tuple, optional
         Set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations \
-        above and below the mean.
-
-    hist: bool, default False
-        Set to True to display histogram bars in the plot.
-
-    bins: integer, default 10
-        Specification of the number of hist bins. Requires hist = True
-
-    showall: bool, default False
-        Set to True to remove the output limit of 20 plots.
-
-    kdw_kws: dict, default {'color': 'k', 'alpha': 0.7, 'linewidth': 1}
-        Keyword arguments for kdeplot().
-
-    rug_kws: dict, default {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04}
-        Keyword arguments for rugplot().
-
-    fill_kws: dict, default {'color': 'brown', 'alpha': 0.1}
-        Keyword arguments to control the fill.
-
-    font_kws: dict, default {'color':  '#111111', 'weight': 'normal', 'size': 11}
-        Keyword arguments to control the font.
+        above and below the mean, by default (0.025, 0.975)
+    hist : bool, optional
+        Set to True to display histogram bars in the plot, by default False
+    bins : int, optional
+        Specification of the number of hist bins. Requires hist = True, by default 10
+    showall : bool, optional
+        Set to True to remove the output limit of 20 plots, by default False
+    kde_kws : Dict[str, Any], optional
+        Keyword arguments for kdeplot(), by default {'color': 'k', 'alpha': 0.7, 'linewidth': 1}
+    rug_kws : Dict[str, Any], optional
+        Keyword arguments for rugplot(), by default {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04}
+    fill_kws : Dict[str, Any], optional
+        Keyword arguments to control the fill, by default {'color': 'brown', 'alpha': 0.1}
+    font_kws : Dict[str, Any], optional
+        Keyword arguments to control the font, by default {'color':  '#111111', 'weight': 'normal', 'size': 11}
 
     Returns
     -------
-    ax: matplotlib Axes
-        Returns the Axes object with the plot for further tweaking.
-    '''
+    [type]
+        [description]
+    """
 
     # Validate Inputs
-    _validate_input_range(fill_range[0], 'fill_range_lower', 0, 1)
-    _validate_input_range(fill_range[1], 'fill_range_upper', 0, 1)
-    _validate_input_smaller(fill_range[0], fill_range[1], 'fill_range')
-    _validate_input_bool(hist, 'hist')
-    _validate_input_int(bins, 'bins')
-    _validate_input_range(bins, 'bins', 0, data.shape[0])
-    _validate_input_bool(showall, 'showall')
+    _validate_input_range(fill_range[0], "fill_range_lower", 0, 1)
+    _validate_input_range(fill_range[1], "fill_range_upper", 0, 1)
+    _validate_input_smaller(fill_range[0], fill_range[1], "fill_range")
+    _validate_input_bool(hist, "hist")
+    _validate_input_int(bins, "bins")
+    _validate_input_range(bins, "bins", 0, data.shape[0])
+    _validate_input_bool(showall, "showall")
 
     # Handle dictionary defaults
-    kde_kws = {'alpha': 0.7, 'linewidth': 1.5} if kde_kws is None else kde_kws.copy()
-    rug_kws = {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04} if rug_kws is None else rug_kws.copy()
-    fill_kws = {'color': 'brown', 'alpha': 0.1} if fill_kws is None else fill_kws.copy()
-    font_kws = {'color':  '#111111', 'weight': 'normal', 'size': 11} if font_kws is None else font_kws.copy()
+    kde_kws = {"alpha": 0.7, "linewidth": 1.5} if kde_kws is None else kde_kws.copy()
+    rug_kws = {"color": "brown", "alpha": 0.5, "linewidth": 2, "height": 0.04} if rug_kws is None else rug_kws.copy()
+    fill_kws = {"color": "brown", "alpha": 0.1} if fill_kws is None else fill_kws.copy()
+    font_kws = {"color": "#111111", "weight": "normal", "size": 11} if font_kws is None else font_kws.copy()
 
-    data = pd.DataFrame(data.copy()).dropna(axis=1, how='all')
-    cols = list(data.select_dtypes(include=['number']).columns)
+    data = pd.DataFrame(data.copy()).dropna(axis=1, how="all")
+    cols = list(data.select_dtypes(include=["number"]).columns)
     data = data[cols]
 
     if len(cols) == 0:
-        print('No columns with numeric data were detected.')
+        print("No columns with numeric data were detected.")
 
     elif len(cols) >= 20 and showall is False:
         print(
-            f'Note: The number of numerical features is very large ({len(cols)}), please consider splitting the data. '
-            'Showing plots for the first 20 numerical features. Override this by setting showall=True.')
+            f"Note: The number of numerical features is very large ({len(cols)}), please consider splitting the data. "
+            "Showing plots for the first 20 numerical features. Override this by setting showall=True."
+        )
         cols = cols[:20]
 
     for col in cols:
         dropped_values = data[col].isna().sum()
         if dropped_values > 0:
             col_data = data[col].dropna(axis=0)
-            print(f'Dropped {dropped_values} missing values from column {col}.')
+            print(f"Dropped {dropped_values} missing values from column {col}.")
 
         else:
             col_data = data[col]
 
         _, ax = plt.subplots(figsize=figsize)
-        ax = sns.distplot(col_data, bins=bins, hist=hist, rug=True, kde_kws=kde_kws,
-                          rug_kws=rug_kws, hist_kws={'alpha': 0.5, 'histtype': 'step'})
+        ax = sns.distplot(
+            col_data,
+            bins=bins,
+            hist=hist,
+            rug=True,
+            kde_kws=kde_kws,
+            rug_kws=rug_kws,
+            hist_kws={"alpha": 0.5, "histtype": "step"},
+        )
 
         # Vertical lines and fill
         x, y = ax.lines[0].get_xydata().T
-        ax.fill_between(x, y,
-                        where=(
-                            (x >= np.quantile(col_data, fill_range[0])) &
-                            (x <= np.quantile(col_data, fill_range[1]))),
-                        label=f'{fill_range[0]*100:.1f}% - {fill_range[1]*100:.1f}%',
-                        **fill_kws)
+        ax.fill_between(
+            x,
+            y,
+            where=((x >= np.quantile(col_data, fill_range[0])) & (x <= np.quantile(col_data, fill_range[1]))),
+            label=f"{fill_range[0]*100:.1f}% - {fill_range[1]*100:.1f}%",
+            **fill_kws,
+        )
 
         mean = np.mean(col_data)
         std = scipy.stats.tstd(col_data)
-        ax.vlines(x=mean,
-                  ymin=0,
-                  ymax=np.interp(mean, x, y),
-                  ls='dotted', color=mean_color, lw=2, label='mean')
-        ax.vlines(x=np.median(col_data),
-                  ymin=0,
-                  ymax=np.interp(np.median(col_data), x, y),
-                  ls=':', color='.3', label='median')
-        ax.vlines(x=[mean-std, mean+std],
-                  ymin=0,
-                  ymax=[np.interp(mean-std, x, y), np.interp(mean+std, x, y)], ls=':', color='.5',
-                  label='\u03BC \u00B1 \u03C3')
+        ax.vlines(x=mean, ymin=0, ymax=np.interp(mean, x, y), ls="dotted", color=mean_color, lw=2, label="mean")
+        ax.vlines(
+            x=np.median(col_data), ymin=0, ymax=np.interp(np.median(col_data), x, y), ls=":", color=".3", label="median"
+        )
+        ax.vlines(
+            x=[mean - std, mean + std],
+            ymin=0,
+            ymax=[np.interp(mean - std, x, y), np.interp(mean + std, x, y)],
+            ls=":",
+            color=".5",
+            label="\u03BC \u00B1 \u03C3",
+        )
 
         ax.set_ylim(0,)
-        ax.set_xlim(ax.get_xlim()[0]*1.15, ax.get_xlim()[1]*1.15)
+        ax.set_xlim(ax.get_xlim()[0] * 1.15, ax.get_xlim()[1] * 1.15)
 
         # Annotations and legend
-        ax.text(0.01, 0.85, f'Mean: {np.round(mean,2)}',
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.7, f'Std. dev: {np.round(std,2)}',
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.55, f'Skew: {np.round(scipy.stats.skew(col_data),2)}',
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.4, f'Kurtosis: {np.round(scipy.stats.kurtosis(col_data),2)}',  # Excess Kurtosis
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.25, f'Count: {np.round(len(col_data))}',
-                fontdict=font_kws, transform=ax.transAxes)
-        ax.legend(loc='upper right')
+        ax.text(0.01, 0.85, f"Mean: {np.round(mean,2)}", fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.7, f"Std. dev: {np.round(std,2)}", fontdict=font_kws, transform=ax.transAxes)
+        ax.text(
+            0.01, 0.55, f"Skew: {np.round(scipy.stats.skew(col_data),2)}", fontdict=font_kws, transform=ax.transAxes
+        )
+        ax.text(
+            0.01,
+            0.4,
+            f"Kurtosis: {np.round(scipy.stats.kurtosis(col_data),2)}",  # Excess Kurtosis
+            fontdict=font_kws,
+            transform=ax.transAxes,
+        )
+        ax.text(0.01, 0.25, f"Count: {np.round(len(col_data))}", fontdict=font_kws, transform=ax.transAxes)
+        ax.legend(loc="upper right")
 
     return ax
 
 
 # Missing value plot
-def missingval_plot(data, cmap='PuBuGn', figsize=(20, 20), sort=False, spine_color='#EEEEEE'):
-    '''
-    Two-dimensional visualization of the missing values in a dataset.
+def missingval_plot(
+    data: pd.DataFrame,
+    cmap: str = "PuBuGn",
+    figsize: Tuple = (20, 20),
+    sort: bool = False,
+    spine_color: str = "#EEEEEE",
+):
+    """ Two-dimensional visualization of the missing values in a dataset.
 
     Parameters
     ----------
-    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots.
-
-    cmap: colormap, default 'PuBuGn'
+    data : pd.DataFrame
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
+    information is used to label the plots
+    cmap : str, optional
         Any valid colormap can be used. E.g. 'Greys', 'RdPu'. More information can be found in the matplotlib \
-        documentation.
-
-    figsize: tuple, default (20, 20)
-        Use to control the figure size.
-
-    sort: bool, default False
-        Sort columns based on missing values in descending order and drop columns without any missing values.
-
-    spine_color: color, default '#EEEEEE'
-        Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument.
+        documentation, by default "PuBuGn"
+    figsize : Tuple, optional
+        Use to control the figure size, by default (20, 20)
+    sort : bool, optional
+        Sort columns based on missing values in descending order and drop columns without any missing values, \
+        by default False
+    spine_color : str, optional
+        Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument, by default "#EEEEEE"
 
     Returns
     -------
-    gs: Figure with array of Axes objects.
-    '''
+    GridSpec
+        gs: Figure with array of Axes objects
+    """
 
     # Validate Inputs
-    _validate_input_bool(sort, 'sort')
+    _validate_input_bool(sort, "sort")
 
     data = pd.DataFrame(data)
 
@@ -508,14 +543,14 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 20), sort=False, spine_col
         mv_cols_sorted = data.isna().sum(axis=0).sort_values(ascending=False)
         final_cols = mv_cols_sorted.drop(mv_cols_sorted[mv_cols_sorted.values == 0].keys().tolist()).keys().tolist()
         data = data[final_cols]
-        print('Displaying only columns with missing values.')
+        print("Displaying only columns with missing values.")
 
     # Identify missing values
     mv_total, mv_rows, mv_cols, _, mv_cols_ratio = _missing_vals(data).values()
-    total_datapoints = data.shape[0]*data.shape[1]
+    total_datapoints = data.shape[0] * data.shape[1]
 
     if mv_total == 0:
-        print('No missing values found in the dataset.')
+        print("No missing values found in the dataset.")
     else:
         # Create figure and axes
         fig = plt.figure(figsize=figsize)
@@ -527,80 +562,91 @@ def missingval_plot(data, cmap='PuBuGn', figsize=(20, 20), sort=False, spine_col
 
         # ax1 - Barplot
         colors = plt.get_cmap(cmap)(mv_cols / np.max(mv_cols))  # color bars by height
-        ax1.bar(range(len(mv_cols)), np.round((mv_cols_ratio)*100, 2), color=colors)
+        ax1.bar(range(len(mv_cols)), np.round((mv_cols_ratio) * 100, 2), color=colors)
         ax1.get_xaxis().set_visible(False)
-        ax1.set(frame_on=False, xlim=(-.5, len(mv_cols)-0.5))
-        ax1.set_ylim(0, np.max(mv_cols_ratio)*100)
-        ax1.grid(linestyle=':', linewidth=1)
+        ax1.set(frame_on=False, xlim=(-0.5, len(mv_cols) - 0.5))
+        ax1.set_ylim(0, np.max(mv_cols_ratio) * 100)
+        ax1.grid(linestyle=":", linewidth=1)
         ax1.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=0))
-        ax1.tick_params(axis='y', colors='#111111', length=1)
+        ax1.tick_params(axis="y", colors="#111111", length=1)
 
         # annotate values on top of the bars
         for rect, label in zip(ax1.patches, mv_cols):
             height = rect.get_height()
-            ax1.text(.1 + rect.get_x() + rect.get_width() / 2, height+0.5, label,
-                     ha='center',
-                     va='bottom',
-                     rotation='90',
-                     alpha=0.5,
-                     fontsize='11')
+            ax1.text(
+                0.1 + rect.get_x() + rect.get_width() / 2,
+                height + 0.5,
+                label,
+                ha="center",
+                va="bottom",
+                rotation="90",
+                alpha=0.5,
+                fontsize="11",
+            )
 
         ax1.set_frame_on(True)
         for _, spine in ax1.spines.items():
             spine.set_visible(True)
             spine.set_color(spine_color)
-        ax1.spines['top'].set_color(None)
+        ax1.spines["top"].set_color(None)
 
         # ax2 - Heatmap
-        sns.heatmap(data.isna(), cbar=False, cmap='binary', ax=ax2)
+        sns.heatmap(data.isna(), cbar=False, cmap="binary", ax=ax2)
         ax2.set_yticks(np.round(ax2.get_yticks()[0::5], -1))
         ax2.set_yticklabels(ax2.get_yticks())
-        ax2.set_xticklabels(
-            ax2.get_xticklabels(),
-            horizontalalignment='center',
-            fontweight='light',
-            fontsize='12')
-        ax2.tick_params(length=1, colors='#111111')
+        ax2.set_xticklabels(ax2.get_xticklabels(), horizontalalignment="center", fontweight="light", fontsize="12")
+        ax2.tick_params(length=1, colors="#111111")
         for _, spine in ax2.spines.items():
             spine.set_visible(True)
             spine.set_color(spine_color)
 
         # ax3 - Summary
-        fontax3 = {'color':  '#111111',
-                   'weight': 'normal',
-                   'size': 14,
-                   }
+        fontax3 = {
+            "color": "#111111",
+            "weight": "normal",
+            "size": 14,
+        }
         ax3.get_xaxis().set_visible(False)
         ax3.get_yaxis().set_visible(False)
         ax3.set(frame_on=False)
 
-        ax3.text(0.025, 0.875, f"Total: {np.round(total_datapoints/1000,1)}K",
-                 transform=ax3.transAxes,
-                 fontdict=fontax3)
-        ax3.text(0.025, 0.675, f"Missing: {np.round(mv_total/1000,1)}K",
-                 transform=ax3.transAxes,
-                 fontdict=fontax3)
-        ax3.text(0.025, 0.475, f"Relative: {np.round(mv_total/total_datapoints*100,1)}%",
-                 transform=ax3.transAxes,
-                 fontdict=fontax3)
-        ax3.text(0.025, 0.275, f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%",
-                 transform=ax3.transAxes,
-                 fontdict=fontax3)
-        ax3.text(0.025, 0.075, f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%",
-                 transform=ax3.transAxes,
-                 fontdict=fontax3)
+        ax3.text(
+            0.025, 0.875, f"Total: {np.round(total_datapoints/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3
+        )
+        ax3.text(0.025, 0.675, f"Missing: {np.round(mv_total/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3)
+        ax3.text(
+            0.025,
+            0.475,
+            f"Relative: {np.round(mv_total/total_datapoints*100,1)}%",
+            transform=ax3.transAxes,
+            fontdict=fontax3,
+        )
+        ax3.text(
+            0.025,
+            0.275,
+            f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%",
+            transform=ax3.transAxes,
+            fontdict=fontax3,
+        )
+        ax3.text(
+            0.025,
+            0.075,
+            f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%",
+            transform=ax3.transAxes,
+            fontdict=fontax3,
+        )
 
         # ax4 - Scatter plot
         ax4.get_yaxis().set_visible(False)
         for _, spine in ax4.spines.items():
             spine.set_color(spine_color)
-        ax4.tick_params(axis='x', colors='#111111', length=1)
+        ax4.tick_params(axis="x", colors="#111111", length=1)
 
         ax4.scatter(mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap=cmap, marker=".", vmin=1)
         ax4.set_ylim((0, len(mv_rows))[::-1])  # limit and invert y-axis
-        ax4.set_xlim(0, max(mv_rows)+0.5)
-        ax4.grid(linestyle=':', linewidth=1)
+        ax4.set_xlim(0, max(mv_rows) + 0.5)
+        ax4.grid(linestyle=":", linewidth=1)
 
-        gs.figure.suptitle('Missing value plot', x=0.45, y=0.94, fontsize=18, color='#111111')
+        gs.figure.suptitle("Missing value plot", x=0.45, y=0.94, fontsize=18, color="#111111")
 
         return gs
