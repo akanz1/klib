@@ -194,7 +194,7 @@ def _validate_input_bool(value, desc):
 
 
 def _validate_input_int(value, desc):
-    if not isinstance(value, 'int'):
+    if not isinstance(value, int):
         raise TypeError(f"Input value for '{desc}' is {type(value)} but should be an integer.")
 
 

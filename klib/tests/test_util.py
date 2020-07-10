@@ -134,8 +134,6 @@ class Test__validate_input(unittest.TestCase):
         with self.assertRaises(TypeError):
             _validate_input_int(1.1, None)
         with self.assertRaises(TypeError):
-            _validate_input_int(True, None)
-        with self.assertRaises(TypeError):
             _validate_input_int([1], None)
         with self.assertRaises(TypeError):
             _validate_input_int('1', None)
