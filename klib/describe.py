@@ -14,7 +14,7 @@ import scipy
 import seaborn as sns
 
 from typing import Any, Dict, Optional, Tuple, Union
-from .utils import (
+from klib.utils import (
     _corr_selector,
     _missing_vals,
     _validate_input_bool,
