@@ -26,7 +26,7 @@ setuptools.setup(
         'numpy >= 1.13.3',
         'pandas >= 1.0.0',
         'seaborn >= 0.1.0',
-        'scikit-learn >= 0.22',
+        'scikit-learn >= 0.23',
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.7',
 )
