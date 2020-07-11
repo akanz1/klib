@@ -9,7 +9,7 @@ Welcome to klib's documentation!
 
 Readme
 ======
-.. include:: ../README.md
+.. mdinclude:: ../../README.md
  
 
 
