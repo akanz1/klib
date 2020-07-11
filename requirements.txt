@@ -6,3 +6,6 @@ scikit-learn
 
 # Additional requirements for testing
 jinja2
+
+# Documentation
+numpydoc
