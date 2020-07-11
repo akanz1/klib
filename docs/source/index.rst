@@ -5,6 +5,12 @@ Welcome to klib's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   modules
+
+Readme
+======
+.. mdinclude:: ../../README.md
+ 
 
 
 Indices and tables
