@@ -238,8 +238,7 @@ def corr_plot(
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
 information is used to label the plots
     split : Optional[str], optional
-        Type of split to be performed
-        {None, 'pos', 'neg', 'above', 'below'}, by default None
+        Type of split to be performed {None, 'pos', 'neg', 'above', 'below'}, by default None
             * None: visualize all correlations between the feature-columns
             * pos: visualize all positive correlations between the feature-columns above the threshold
             * neg: visualize all negative correlations between the feature-columns below the threshold
@@ -262,14 +261,14 @@ but more robust in smaller dataets than 'spearman'.
         The mapping from data values to color space, matplotlib colormap name or object, or list of colors, by default \
 "BrBG"
     figsize : Tuple, optional
-Use to control the figure size, by default (12, 10)
+        Use to control the figure size, by default (12, 10)
     annot : bool, optional
-Use to show or hide annotations, by default True
+        Use to show or hide annotations, by default True
     dev : bool, optional
         Display figure settings in the plot by setting dev = True. If False, the settings are not displayed, by \
 default False
 
-    Keyword Arguments: optional
+    Keyword Arguments : optional
         Additional elements to control the visualization of the plot, e.g.:
 
             * mask: bool, default True
