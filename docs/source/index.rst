@@ -2,14 +2,14 @@ Welcome to klib's documentation!
 ================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    modules
 
 Readme
 ======
-.. mdinclude:: ../../README.md
+.. mdinclude:: README.md
  
 
 
