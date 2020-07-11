@@ -48,7 +48,7 @@ Log of the imbalanced-learn history.
 `About klib <about.html>`_
 --------------------------------------
 
-Contact information and links. #(github, pypi, conda, ...)
+Contact information and links.
 
 
 .. include:: ../README.rst
