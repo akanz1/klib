@@ -23,21 +23,6 @@ formats:
 #   install:
 #     - requirements: docs/requirements.txt
 #     - requirements: requirements.txt
-
-build:
-    image: latest
-
-python:
-    version: 3.6
-    setup_py_install: true
-
-conda:
-    file: klib/environment.yml
-# python:
-#   version: 3.7
-#   install:
-#     - requirements: docs/requirements.txt
-#     - requirements: requirements.txt
 #     - method: pip
 #       path: .
 #       extra_requirements:
