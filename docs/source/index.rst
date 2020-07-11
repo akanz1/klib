@@ -13,7 +13,6 @@ Welcome to klib's documentation!
    :maxdepth: 3
    :caption: Contents:
 
-   modules
 
 .. include:: ../README.rst
  

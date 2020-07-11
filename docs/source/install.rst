@@ -28,7 +28,7 @@ Alternatively, to install this package with conda run::
 Lastly, should you prefer, you can fork/clone the repository and run the setup.py file. Use the following commands to get a copy from Github and install all dependencies::
 
   git clone https://github.com/akanz1/klib.git
-  cd into the package root directory and run
+  cd into package root dir
   pip install .
 
 Or install using pip and GitHub::

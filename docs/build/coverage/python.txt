@@ -1,0 +1,20 @@
+Undocumented Python objects
+===========================
+klib.clean
+----------
+Functions:
+ * optimize_floats
+ * optimize_ints
+ * pool_duplicate_subsets
+
+Classes:
+ * DataCleaner
+ * MVColHandler
+ * SubsetPooler
+
+klib.preprocess
+---------------
+Classes:
+ * ColumnSelector
+ * PipeInfo
+
