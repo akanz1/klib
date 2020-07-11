@@ -175,6 +175,7 @@ default 0.03
     show : str, optional
         {'all', 'changes', None}, by default "changes"
         Specify verbosity of the output:
+
             * 'all': Print information about the data before and after cleaning as well as information about changes \
 and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
             * 'changes': Print out differences in the data before and after cleaning.
