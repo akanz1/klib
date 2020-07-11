@@ -238,7 +238,8 @@ def corr_plot(
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
 information is used to label the plots
     split : Optional[str], optional
-        Type of split to be performed {None, 'pos', 'neg', 'above', 'below'}, by default None
+        Type of split to be performed
+        {None, 'pos', 'neg', 'above', 'below'}, by default None
             * None: visualize all correlations between the feature-columns
             * pos: visualize all positive correlations between the feature-columns above the threshold
             * neg: visualize all negative correlations between the feature-columns below the threshold
