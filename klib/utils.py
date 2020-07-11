@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 def _corr_selector(
     corr: Union[pd.Series, pd.DataFrame], split: Optional[str] = None, threshold: float = 0
-) -> pd.DataFrame:
+) -> Union[pd.Series, pd.DataFrame]:
     """[summary]
 
     Parameters
