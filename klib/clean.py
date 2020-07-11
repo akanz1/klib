@@ -170,6 +170,8 @@ convert_dtypes=True, by default True
     cat_threshold : float, optional
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by \
 default 0.03
+    aslkdjaskldjaklsdj:
+        aslkdjalksjdlkajsdkajskd
     cat_exclude : Optional[List[str]], optional
         List of columns to exclude from categorical conversion, by default None
     show : str, optional
@@ -179,9 +181,12 @@ default 0.03
 and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
             * 'changes': Print out differences in the data before and after cleaning.
             * None: No information about the data and the data cleaning is printed.
+    third : asdasdasdasd
 
     Returns
     -------
+    something
+        asdasdasd
     pd.DataFrame
         Cleaned Pandas DataFrame
 
