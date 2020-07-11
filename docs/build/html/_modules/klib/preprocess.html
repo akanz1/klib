@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>klib.preprocess &mdash; klib 0.0.89 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> klib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install and contribution</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">klib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>klib.preprocess</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for klib.preprocess</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions for data preprocessing.</span>
+
+<span class="sd">:author: Andreas Kanz</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">ExtraTreesRegressor</span>
+<span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="kn">import</span> <span class="n">enable_iterative_imputer</span>  <span class="c1"># noqa</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span><span class="p">,</span> <span class="n">IterativeImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">f_classif</span><span class="p">,</span> <span class="n">SelectFromModel</span><span class="p">,</span> <span class="n">SelectPercentile</span><span class="p">,</span> <span class="n">VarianceThreshold</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LassoCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span><span class="p">,</span> <span class="n">RobustScaler</span><span class="p">,</span> <span class="n">MaxAbsScaler</span>
+
+<span class="kn">from</span> <span class="nn">klib.utils</span> <span class="kn">import</span> <span class="n">_validate_input_int</span><span class="p">,</span> <span class="n">_validate_input_range</span><span class="p">,</span> <span class="n">_validate_input_sum</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;feature_selection_pipe&quot;</span><span class="p">,</span> <span class="s2">&quot;num_pipe&quot;</span><span class="p">,</span> <span class="s2">&quot;cat_pipe&quot;</span><span class="p">,</span> <span class="s2">&quot;train_dev_test_split&quot;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">ColumnSelector</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines and selects numerical and categorical columns from a dataset based on their supposed dtype. Unlike \</span>
+<span class="sd">    sklearn&#39;s make_column_selector() missing values are temporarily filled in to allow convert_dtypes() to determine \</span>
+<span class="sd">    the dtype of a column.</span>
+
+<span class="sd">    Parameter:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    num: default, True</span>
+<span class="sd">        Select only numerica Columns. If num = False, only categorical columns are selected.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    Dataset containing only numerical or categorical data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num</span> <span class="o">=</span> <span class="n">num</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">convert_dtypes</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="n">temp</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;number&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="n">temp</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;number&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+
+
+<span class="k">class</span> <span class="nc">PipeInfo</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prints intermediary information about the dataset from within a pipeline. Include at any point in a Pipeline to</span>
+<span class="sd">    print out the shape of the dataset at this point and to receive an indication of the progress within the pipeline.</span>
+<span class="sd">    Set to &#39;None&#39; to avoid printing the shape of the dataset. This parameter can also be set as a hyperparameter, \</span>
+<span class="sd">    e.g. &#39;pipeline__pipeinfo-1&#39;: [None] or &#39;pipeline__pipeinfo-1__name&#39;: [&#39;my_custom_name&#39;].</span>
+
+<span class="sd">    Parameter:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    name: string, default None</span>
+<span class="sd">        Provide a name for the current step.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    Data: Data is being passed through.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Step: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> --- Shape: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">X</span>
+
+
+<div class="viewcode-block" id="cat_pipe"><a class="viewcode-back" href="../../klib.html#klib.preprocess.cat_pipe">[docs]</a><span class="k">def</span> <span class="nf">cat_pipe</span><span class="p">(</span>
+    <span class="n">imputer</span><span class="o">=</span><span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;most_frequent&quot;</span><span class="p">),</span>
+    <span class="n">encoder</span><span class="o">=</span><span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">),</span>
+    <span class="n">scaler</span><span class="o">=</span><span class="n">MaxAbsScaler</span><span class="p">(),</span>
+    <span class="n">encoder_info</span><span class="o">=</span><span class="n">PipeInfo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;after encoding&quot;</span><span class="p">),</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Standard preprocessing operations on categorical data.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    imputer: default, SimpleImputer(strategy=&#39;most_frequent&#39;)</span>
+
+<span class="sd">    encoder: default, OneHotEncoder(handle_unknown=&#39;ignore&#39;)</span>
+<span class="sd">        Encode categorical features as a one-hot numeric array.</span>
+
+<span class="sd">    scaler: default, MaxAbsScaler()</span>
+<span class="sd">        Scale each feature by its maximum absolute value. MaxAbsScaler() does not shift/center the data, and thus does \</span>
+<span class="sd">        not destroy any sparsity. It is recommended to check for outliers before applying MaxAbsScaler().</span>
+
+<span class="sd">    encoder_info:</span>
+<span class="sd">        Prints the shape of the dataset at the end of &#39;cat_pipe&#39;. Set to &#39;None&#39; to avoid printing the shape of \</span>
+<span class="sd">        dataset. This parameter can also be set as a hyperparameter, e.g. &#39;pipeline__pipeinfo-1&#39;: [None] or \</span>
+<span class="sd">        &#39;pipeline__pipeinfo-1__name&#39;: [&#39;my_custom_name&#39;].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    Pipeline</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cat_pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">ColumnSelector</span><span class="p">(</span><span class="n">num</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">imputer</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">encoder_info</span><span class="p">,</span> <span class="n">scaler</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cat_pipe</span></div>
+
+
+<div class="viewcode-block" id="feature_selection_pipe"><a class="viewcode-back" href="../../klib.html#klib.preprocess.feature_selection_pipe">[docs]</a><span class="k">def</span> <span class="nf">feature_selection_pipe</span><span class="p">(</span>
+    <span class="n">var_thresh</span><span class="o">=</span><span class="n">VarianceThreshold</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
+    <span class="n">select_from_model</span><span class="o">=</span><span class="n">SelectFromModel</span><span class="p">(</span><span class="n">LassoCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">408</span><span class="p">),</span> <span class="n">threshold</span><span class="o">=</span><span class="s2">&quot;0.1*median&quot;</span><span class="p">),</span>
+    <span class="n">select_percentile</span><span class="o">=</span><span class="n">SelectPercentile</span><span class="p">(</span><span class="n">f_classif</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mi">95</span><span class="p">),</span>
+    <span class="n">var_thresh_info</span><span class="o">=</span><span class="n">PipeInfo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;after var_thresh&quot;</span><span class="p">),</span>
+    <span class="n">select_from_model_info</span><span class="o">=</span><span class="n">PipeInfo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;after select_from_model&quot;</span><span class="p">),</span>
+    <span class="n">select_percentile_info</span><span class="o">=</span><span class="n">PipeInfo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;after select_percentile&quot;</span><span class="p">),</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocessing operations for feature selection.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    var_thresh: default, VarianceThreshold(threshold=0.1)</span>
+<span class="sd">        Specify a threshold to drop low variance features.</span>
+
+<span class="sd">    select_from_model: default, SelectFromModel(LassoCV(cv=4, random_state=408), threshold=&quot;0.1*median&quot;)</span>
+<span class="sd">        Specify an estimator which is used for selecting features based on importance weights.</span>
+
+<span class="sd">    select_percentile: default, SelectPercentile(f_classif, percentile=95)</span>
+<span class="sd">        Specify a score-function and a percentile value of features to keep.</span>
+
+<span class="sd">    var_thresh_info, select_from_model_info, select_percentile_info</span>
+<span class="sd">        Prints the shape of the dataset after applying the respective function. Set to &#39;None&#39; to avoid printing the \</span>
+<span class="sd">        shape of dataset. This parameter can also be set as a hyperparameter, e.g. &#39;pipeline__pipeinfo-1&#39;: [None] \</span>
+<span class="sd">        or &#39;pipeline__pipeinfo-1__name&#39;: [&#39;my_custom_name&#39;].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    Pipeline</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">feature_selection_pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+        <span class="n">var_thresh</span><span class="p">,</span>
+        <span class="n">var_thresh_info</span><span class="p">,</span>
+        <span class="n">select_from_model</span><span class="p">,</span>
+        <span class="n">select_from_model_info</span><span class="p">,</span>
+        <span class="n">select_percentile</span><span class="p">,</span>
+        <span class="n">select_percentile_info</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">feature_selection_pipe</span></div>
+
+
+<div class="viewcode-block" id="num_pipe"><a class="viewcode-back" href="../../klib.html#klib.preprocess.num_pipe">[docs]</a><span class="k">def</span> <span class="nf">num_pipe</span><span class="p">(</span>
+    <span class="n">imputer</span><span class="o">=</span><span class="n">IterativeImputer</span><span class="p">(</span>
+        <span class="n">estimator</span><span class="o">=</span><span class="n">ExtraTreesRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">408</span><span class="p">),</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">408</span>
+    <span class="p">),</span>
+    <span class="n">scaler</span><span class="o">=</span><span class="n">RobustScaler</span><span class="p">(),</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Standard preprocessing operations on numerical data.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), \</span>
+<span class="sd">                                       random_state=408)</span>
+
+<span class="sd">    scaler: default, RobustScaler()</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    Pipeline</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">num_pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">ColumnSelector</span><span class="p">(),</span> <span class="n">imputer</span><span class="p">,</span> <span class="n">scaler</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num_pipe</span></div>
+
+
+<div class="viewcode-block" id="train_dev_test_split"><a class="viewcode-back" href="../../klib.html#klib.preprocess.train_dev_test_split">[docs]</a><span class="k">def</span> <span class="nf">train_dev_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">dev_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">408</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Split a dataset and a label column into train, dev and test sets.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+
+<span class="sd">    data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \</span>
+<span class="sd">    information is used to label the plots.</span>
+
+<span class="sd">    target: string, list, np.array or pd.Series, default None</span>
+<span class="sd">        Specify target for correlation. E.g. label column to generate only the correlations between each feature \</span>
+<span class="sd">        and the label.</span>
+
+<span class="sd">    dev_size: float, default 0.1</span>
+<span class="sd">        If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the dev \</span>
+<span class="sd">        split.</span>
+
+<span class="sd">    test_size: float, default 0.1</span>
+<span class="sd">        If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the test \</span>
+<span class="sd">        split.</span>
+
+<span class="sd">    stratify: target column, default None</span>
+<span class="sd">        If not None, data is split in a stratified fashion, using the input as the class labels.</span>
+
+<span class="sd">    random_state: integer, default 408</span>
+<span class="sd">        Random_state is the seed used by the random number generator.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    tuple: Tuple containing train-dev-test split of inputs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Validate Inputs</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">dev_size</span><span class="p">,</span> <span class="s2">&quot;dev_size&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">test_size</span><span class="p">,</span> <span class="s2">&quot;test_size&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">_validate_input_int</span><span class="p">(</span><span class="n">random_state</span><span class="p">,</span> <span class="s2">&quot;random_state&quot;</span><span class="p">)</span>
+    <span class="n">_validate_input_sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Dev and test&quot;</span><span class="p">,</span> <span class="n">dev_size</span><span class="p">,</span> <span class="n">test_size</span><span class="p">)</span>
+
+    <span class="n">target_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">target_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">target</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">target_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_dev_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_dev_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">target_data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">dev_size</span> <span class="o">+</span> <span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">stratify</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">dev_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">test_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_dev_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_dev_test</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">X_dev</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_dev</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+            <span class="n">X_dev_test</span><span class="p">,</span>
+            <span class="n">y_dev_test</span><span class="p">,</span>
+            <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span> <span class="o">/</span> <span class="p">(</span><span class="n">dev_size</span> <span class="o">+</span> <span class="n">test_size</span><span class="p">),</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">stratify</span><span class="o">=</span><span class="n">y_dev_test</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_dev</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_dev</span><span class="p">,</span> <span class="n">y_test</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Andreas Kanz
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

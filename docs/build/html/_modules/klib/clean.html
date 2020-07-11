@@ -1,0 +1,788 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>klib.clean &mdash; klib 0.0.89 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> klib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install and contribution</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">klib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>klib.clean</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for klib.clean</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions for data cleaning.</span>
+
+<span class="sd">:author: Andreas Kanz</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Imports</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">klib.describe</span> <span class="kn">import</span> <span class="n">corr_mat</span>
+<span class="kn">from</span> <span class="nn">klib.utils</span> <span class="kn">import</span> <span class="n">_diff_report</span><span class="p">,</span> <span class="n">_drop_duplicates</span><span class="p">,</span> <span class="n">_missing_vals</span><span class="p">,</span> <span class="n">_validate_input_bool</span><span class="p">,</span> <span class="n">_validate_input_range</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;convert_datatypes&quot;</span><span class="p">,</span> <span class="s2">&quot;data_cleaning&quot;</span><span class="p">,</span> <span class="s2">&quot;drop_missing&quot;</span><span class="p">,</span> <span class="s2">&quot;mv_col_handling&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">optimize_ints</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">ints</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;int64&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">ints</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">ints</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">downcast</span><span class="o">=</span><span class="s2">&quot;integer&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+
+
+<span class="k">def</span> <span class="nf">optimize_floats</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">floats</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;float64&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">floats</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">floats</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">,</span> <span class="n">downcast</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+
+
+<div class="viewcode-block" id="convert_datatypes"><a class="viewcode-back" href="../../klib.html#klib.clean.convert_datatypes">[docs]</a><span class="k">def</span> <span class="nf">convert_datatypes</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">category</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">cat_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">cat_exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Converts columns to best possible dtypes using dtypes supporting pd.NA. Temporarily not converting to integers \</span>
+<span class="sd">        due to an issue in pandas. This is expected to be fixed in pandas 1.1. \</span>
+<span class="sd">        See https://github.com/pandas-dev/pandas/issues/33803</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : pd.DataFrame</span>
+<span class="sd">        2D dataset that can be coerced into Pandas DataFrame</span>
+<span class="sd">    category : bool, optional</span>
+<span class="sd">        Change dtypes of columns with dtype &quot;object&quot; to &quot;category&quot;. Set threshold using cat_threshold or exclude \</span>
+<span class="sd">        columns using cat_exclude, by default True</span>
+<span class="sd">    cat_threshold : float, optional</span>
+<span class="sd">        Ratio of unique values below which categories are inferred and column dtype is changed to categorical, \</span>
+<span class="sd">        by default 0.05</span>
+<span class="sd">    cat_exclude : Optional[List[str]], optional</span>
+<span class="sd">        List of columns to exclude from categorical conversion, by default None</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        Pandas DataFrame with converted Datatypes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Validate Inputs</span>
+    <span class="n">_validate_input_bool</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="s2">&quot;Category&quot;</span><span class="p">)</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">cat_threshold</span><span class="p">,</span> <span class="s2">&quot;cat_threshold&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">cat_exclude</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">cat_exclude</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">cat_exclude</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">unique_vals_ratio</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">category</span> <span class="ow">and</span> <span class="n">unique_vals_ratio</span> <span class="o">&lt;</span> <span class="n">cat_threshold</span> <span class="ow">and</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cat_exclude</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;object&quot;</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">convert_dtypes</span><span class="p">(</span>
+            <span class="n">infer_objects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">convert_string</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">convert_integer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert_boolean</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">optimize_ints</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">optimize_floats</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="drop_missing"><a class="viewcode-back" href="../../klib.html#klib.clean.drop_missing">[docs]</a><span class="k">def</span> <span class="nf">drop_missing</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">col_exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Drops completely empty columns and rows by default and optionally provides flexibility to loosen restrictions \</span>
+<span class="sd">        to drop additional non-empty columns and rows based on the fraction of NA-values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : pd.DataFrame</span>
+<span class="sd">        2D dataset that can be coerced into Pandas DataFrame</span>
+<span class="sd">    drop_threshold_cols : float, optional</span>
+<span class="sd">        Drop columns with NA-ratio equal to or above the specified threshold, by default 1</span>
+<span class="sd">    drop_threshold_rows : float, optional</span>
+<span class="sd">        Drop rows with NA-ratio equal to or above the specified threshold, by default 1</span>
+<span class="sd">    col_exclude : Optional[List[str]], optional</span>
+<span class="sd">        Specify a list of columns to exclude from dropping, by default None</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        Pandas DataFrame without any empty columns or rows</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Columns are dropped first</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Validate Inputs</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">drop_threshold_cols</span><span class="p">,</span> <span class="s2">&quot;drop_threshold_cols&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">drop_threshold_rows</span><span class="p">,</span> <span class="s2">&quot;drop_threshold_rows&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">col_exclude</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">col_exclude</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">col_exclude</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">data_exclude</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">col_exclude</span><span class="p">]</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">data_dropped</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">col_exclude</span><span class="p">)</span>
+    <span class="n">data_dropped</span> <span class="o">=</span> <span class="n">data_dropped</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="n">data_dropped</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">_missing_vals</span><span class="p">(</span><span class="n">data_dropped</span><span class="p">)[</span><span class="s2">&quot;mv_cols_ratio&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">drop_threshold_cols</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data_dropped</span><span class="p">,</span> <span class="n">data_exclude</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">data_cleaned</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">_missing_vals</span><span class="p">(</span><span class="n">data</span><span class="p">)[</span><span class="s2">&quot;mv_rows_ratio&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">drop_threshold_rows</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">index</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data_cleaned</span></div>
+
+
+<div class="viewcode-block" id="data_cleaning"><a class="viewcode-back" href="../../klib.html#klib.clean.data_cleaning">[docs]</a><span class="k">def</span> <span class="nf">data_cleaning</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+    <span class="n">drop_duplicates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">convert_dtypes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">col_exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">category</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">cat_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.03</span><span class="p">,</span>
+    <span class="n">cat_exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">show</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;changes&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty \</span>
+<span class="sd">        columns as well as optimizing the datatypes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : pd.DataFrame</span>
+<span class="sd">        2D dataset that can be coerced into Pandas DataFrame</span>
+<span class="sd">    drop_threshold_cols : float, optional</span>
+<span class="sd">        Drop columns with NA-ratio equal to or above the specified threshold, by default 0.9</span>
+<span class="sd">    drop_threshold_rows : float, optional</span>
+<span class="sd">        Drop rows with NA-ratio equal to or above the specified threshold, by default 0.9</span>
+<span class="sd">    drop_duplicates : bool, optional</span>
+<span class="sd">        Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values, by \</span>
+<span class="sd">        default True</span>
+<span class="sd">    convert_dtypes : bool, optional</span>
+<span class="sd">        Convert dtypes using pd.convert_dtypes(), by default True</span>
+<span class="sd">    col_exclude : Optional[List[str]], optional</span>
+<span class="sd">        Specify a list of columns to exclude from dropping, by default None</span>
+<span class="sd">    category : bool, optional</span>
+<span class="sd">        Enable changing dtypes of &#39;object&#39; columns to &quot;category&quot;. Set threshold using cat_threshold. Requires \</span>
+<span class="sd">        convert_dtypes=True, by default True</span>
+<span class="sd">    cat_threshold : float, optional</span>
+<span class="sd">        Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by \</span>
+<span class="sd">        default 0.03</span>
+<span class="sd">    cat_exclude : Optional[List[str]], optional</span>
+<span class="sd">        List of columns to exclude from categorical conversion, by default None</span>
+<span class="sd">    show : str, optional</span>
+<span class="sd">        {&#39;all&#39;, &#39;changes&#39;, None}, by default &quot;changes&quot;</span>
+<span class="sd">        Specify verbosity of the output:</span>
+<span class="sd">            * &#39;all&#39;: Print information about the data before and after cleaning as well as information about changes \</span>
+<span class="sd">            and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.</span>
+<span class="sd">            * &#39;changes&#39;: Print out differences in the data before and after cleaning.</span>
+<span class="sd">            * None: No information about the data and the data cleaning is printed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        Cleaned Pandas DataFrame</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    convert_datatypes: Convert columns to best possible dtypes.</span>
+<span class="sd">    drop_missing : Flexibly drop columns and rows.</span>
+<span class="sd">    _memory_usage: Gives the total memory usage in megabytes.</span>
+<span class="sd">    _missing_vals: Metrics about missing values in the dataset.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The category dtype is not grouped in the summary, unless it contains exactly the same categories.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Validate Inputs</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">drop_threshold_cols</span><span class="p">,</span> <span class="s2">&quot;drop_threshold_cols&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">drop_threshold_rows</span><span class="p">,</span> <span class="s2">&quot;drop_threshold_rows&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">_validate_input_bool</span><span class="p">(</span><span class="n">drop_duplicates</span><span class="p">,</span> <span class="s2">&quot;drop_duplicates&quot;</span><span class="p">)</span>
+    <span class="n">_validate_input_bool</span><span class="p">(</span><span class="n">convert_dtypes</span><span class="p">,</span> <span class="s2">&quot;convert_datatypes&quot;</span><span class="p">)</span>
+    <span class="n">_validate_input_bool</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">)</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">cat_threshold</span><span class="p">,</span> <span class="s2">&quot;cat_threshold&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">data_cleaned</span> <span class="o">=</span> <span class="n">drop_missing</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">drop_threshold_cols</span><span class="p">,</span> <span class="n">drop_threshold_rows</span><span class="p">,</span> <span class="n">col_exclude</span><span class="o">=</span><span class="n">col_exclude</span><span class="p">)</span>
+
+    <span class="n">single_val_cols</span> <span class="o">=</span> <span class="n">data_cleaned</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">data_cleaned</span><span class="o">.</span><span class="n">nunique</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">data_cleaned</span> <span class="o">=</span> <span class="n">data_cleaned</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">single_val_cols</span><span class="p">)</span>
+
+    <span class="n">dupl_rows</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">drop_duplicates</span><span class="p">:</span>
+        <span class="n">data_cleaned</span><span class="p">,</span> <span class="n">dupl_rows</span> <span class="o">=</span> <span class="n">_drop_duplicates</span><span class="p">(</span><span class="n">data_cleaned</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">convert_dtypes</span><span class="p">:</span>
+        <span class="n">data_cleaned</span> <span class="o">=</span> <span class="n">convert_datatypes</span><span class="p">(</span>
+            <span class="n">data_cleaned</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span> <span class="n">cat_threshold</span><span class="o">=</span><span class="n">cat_threshold</span><span class="p">,</span> <span class="n">cat_exclude</span><span class="o">=</span><span class="n">cat_exclude</span>
+        <span class="p">)</span>
+
+    <span class="n">_diff_report</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_cleaned</span><span class="p">,</span> <span class="n">dupl_rows</span><span class="o">=</span><span class="n">dupl_rows</span><span class="p">,</span> <span class="n">single_val_cols</span><span class="o">=</span><span class="n">single_val_cols</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data_cleaned</span></div>
+
+
+<span class="k">class</span> <span class="nc">DataCleaner</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Wrapper for data_cleaning(). Allows data_cleaning() to be put into a pipeline with similar \</span>
+<span class="sd">    functions (e.g. using MVColHandler() or SubsetPooler()).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ---------´</span>
+<span class="sd">    drop_threshold_cols: float, default 0.9</span>
+<span class="sd">        Drop columns with NA-ratio equal to or above the specified threshold.</span>
+
+<span class="sd">    drop_threshold_rows: float, default 0.9</span>
+<span class="sd">        Drop rows with NA-ratio equal to or above the specified threshold.</span>
+
+<span class="sd">    drop_duplicates: bool, default True</span>
+<span class="sd">        Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.</span>
+
+<span class="sd">    convert_dtypes: bool, default True</span>
+<span class="sd">        Convert dtypes using pd.convert_dtypes().</span>
+
+<span class="sd">    col_exclude: list, default None</span>
+<span class="sd">        Specify a list of columns to exclude from dropping.</span>
+
+<span class="sd">    category: bool, default True</span>
+<span class="sd">        Change dtypes of columns to &quot;category&quot;. Set threshold using cat_threshold. Requires convert_dtypes=True</span>
+
+<span class="sd">    cat_threshold: float, default 0.03</span>
+<span class="sd">        Ratio of unique values below which categories are inferred and column dtype is changed to categorical.</span>
+
+<span class="sd">    cat_exclude: list, default None</span>
+<span class="sd">        List of columns to exclude from categorical conversion.</span>
+
+<span class="sd">    show: str, optional</span>
+<span class="sd">        {&#39;all&#39;, &#39;changes&#39;, None}, by default &quot;changes&quot;</span>
+<span class="sd">        Specify verbosity of the output:</span>
+<span class="sd">            * &#39;all&#39;: Print information about the data before and after cleaning as well as information about changes \</span>
+<span class="sd">            and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.</span>
+<span class="sd">            * &#39;changes&#39;: Print out differences in the data before and after cleaning.</span>
+<span class="sd">            * None: No information about the data and the data cleaning is printed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    data_cleaned: Pandas DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+        <span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+        <span class="n">drop_duplicates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">convert_dtypes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">col_exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">category</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">cat_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.03</span><span class="p">,</span>
+        <span class="n">cat_exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;changes&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drop_threshold_cols</span> <span class="o">=</span> <span class="n">drop_threshold_cols</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drop_threshold_rows</span> <span class="o">=</span> <span class="n">drop_threshold_rows</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drop_duplicates</span> <span class="o">=</span> <span class="n">drop_duplicates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convert_dtypes</span> <span class="o">=</span> <span class="n">convert_dtypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col_exclude</span> <span class="o">=</span> <span class="n">col_exclude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cat_threshold</span> <span class="o">=</span> <span class="n">cat_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cat_exclude</span> <span class="o">=</span> <span class="n">cat_exclude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span> <span class="o">=</span> <span class="n">show</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">data_cleaned</span> <span class="o">=</span> <span class="n">data_cleaning</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">drop_threshold_cols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_threshold_cols</span><span class="p">,</span>
+            <span class="n">drop_threshold_rows</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_threshold_rows</span><span class="p">,</span>
+            <span class="n">drop_duplicates</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">,</span>
+            <span class="n">convert_dtypes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">convert_dtypes</span><span class="p">,</span>
+            <span class="n">col_exclude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">col_exclude</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">,</span>
+            <span class="n">cat_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cat_threshold</span><span class="p">,</span>
+            <span class="n">cat_exclude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cat_exclude</span><span class="p">,</span>
+            <span class="n">show</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_cleaned</span>
+
+
+<div class="viewcode-block" id="mv_col_handling"><a class="viewcode-back" href="../../klib.html#klib.clean.mv_col_handling">[docs]</a><span class="k">def</span> <span class="nf">mv_col_handling</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">mv_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">corr_thresh_features</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">corr_thresh_target</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">return_details</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Converts columns with a high ratio of missing values into binary features and eventually drops them based on \</span>
+<span class="sd">    their correlation with other features and the target variable. This function follows a three step process:</span>
+<span class="sd">    - 1) Identify features with a high ratio of missing values (above &#39;mv_threshold&#39;).</span>
+<span class="sd">    - 2) Identify high correlations of these features among themselves and with other features in the dataset (above \</span>
+<span class="sd">         &#39;corr_thresh_features&#39;).</span>
+<span class="sd">    - 3) Features with high ratio of missing values and high correlation among each other are dropped unless \</span>
+<span class="sd">         they correlate reasonably well with the target variable (above &#39;corr_thresh_target&#39;).</span>
+
+<span class="sd">    Note: If no target is provided, the process exits after step two and drops columns identified up to this point.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : pd.DataFrame</span>
+<span class="sd">        2D dataset that can be coerced into Pandas DataFrame</span>
+<span class="sd">    target : Optional[Union[str, pd.Series, List]], optional</span>
+<span class="sd">        Specify target for correlation. I.e. label column to generate only the correlations between each feature \</span>
+<span class="sd">        and the label, by default None</span>
+<span class="sd">    mv_threshold : float, optional</span>
+<span class="sd">        Value between 0 &lt;= threshold &lt;= 1. Features with a missing-value-ratio larger than mv_threshold are candidates \</span>
+<span class="sd">        for dropping and undergo further analysis, by default 0.1</span>
+<span class="sd">    corr_thresh_features : float, optional</span>
+<span class="sd">        Value between 0 &lt;= threshold &lt;= 1. Maximum correlation a previously identified features (with a high mv-ratio) \</span>
+<span class="sd">        is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further \</span>
+<span class="sd">        analysis, by default 0.5</span>
+<span class="sd">    corr_thresh_target : float, optional</span>
+<span class="sd">        Value between 0 &lt;= threshold &lt;= 1. Minimum required correlation of a remaining feature (i.e. feature with a \</span>
+<span class="sd">        high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met \</span>
+<span class="sd">        the feature is ultimately dropped, by default 0.3</span>
+<span class="sd">    return_details : bool, optional</span>
+<span class="sd">        Provdies flexibility to return intermediary results, by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        Updated Pandas DataFrame</span>
+
+<span class="sd">    optional:</span>
+<span class="sd">    cols_mv: Columns with missing values included in the analysis</span>
+<span class="sd">    drop_cols: List of dropped columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Validate Inputs</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">mv_threshold</span><span class="p">,</span> <span class="s2">&quot;mv_threshold&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">corr_thresh_features</span><span class="p">,</span> <span class="s2">&quot;corr_thresh_features&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">corr_thresh_target</span><span class="p">,</span> <span class="s2">&quot;corr_thresh_target&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">data_local</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">mv_ratios</span> <span class="o">=</span> <span class="n">_missing_vals</span><span class="p">(</span><span class="n">data_local</span><span class="p">)[</span><span class="s2">&quot;mv_cols_ratio&quot;</span><span class="p">]</span>
+    <span class="n">cols_mv</span> <span class="o">=</span> <span class="n">mv_ratios</span><span class="p">[</span><span class="n">mv_ratios</span> <span class="o">&gt;</span> <span class="n">mv_threshold</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">data_local</span><span class="p">[</span><span class="n">cols_mv</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_local</span><span class="p">[</span><span class="n">cols_mv</span><span class="p">]</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">high_corr_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">data_temp</span> <span class="o">=</span> <span class="n">data_local</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols_mv</span><span class="p">:</span>
+        <span class="n">corrmat</span> <span class="o">=</span> <span class="n">corr_mat</span><span class="p">(</span><span class="n">data_temp</span><span class="p">,</span> <span class="n">colored</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">corrmat</span><span class="p">[</span><span class="n">col</span><span class="p">])</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">2</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">corr_thresh_features</span><span class="p">:</span>
+            <span class="n">high_corr_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+            <span class="n">data_temp</span> <span class="o">=</span> <span class="n">data_temp</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+
+    <span class="n">drop_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">high_corr_features</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">corrs</span> <span class="o">=</span> <span class="n">corr_mat</span><span class="p">(</span><span class="n">data_local</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">colored</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">high_corr_features</span><span class="p">]</span>
+        <span class="n">drop_cols</span> <span class="o">=</span> <span class="n">corrs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">corrs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">corr_thresh_target</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">drop_cols</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_details</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">cols_mv</span><span class="p">,</span> <span class="n">drop_cols</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<span class="k">class</span> <span class="nc">MVColHandler</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Wrapper for mv_col_handling(). Allows mv_col_handling() to be put into a pipeline with similar \</span>
+<span class="sd">    functions (e.g. using DataCleaner() or SubsetPooler()).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    target: string, list, np.array or pd.Series, default None</span>
+<span class="sd">        Specify target for correlation. E.g. label column to generate only the correlations between each feature \</span>
+<span class="sd">        and the label.</span>
+
+<span class="sd">    mv_threshold: float, default 0.1</span>
+<span class="sd">        Value between 0 &lt;= threshold &lt;= 1. Features with a missing-value-ratio larger than mv_threshold are candidates \</span>
+<span class="sd">        for dropping and undergo further analysis.</span>
+
+<span class="sd">    corr_thresh_features: float, default 0.6</span>
+<span class="sd">        Value between 0 &lt;= threshold &lt;= 1. Maximum correlation a previously identified features with a high mv-ratio \</span>
+<span class="sd">        is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further \</span>
+<span class="sd">        analysis.</span>
+
+<span class="sd">    corr_thresh_target: float, default 0.3</span>
+<span class="sd">        Value between 0 &lt;= threshold &lt;= 1. Minimum required correlation of a remaining feature (i.e. feature with a \</span>
+<span class="sd">        high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met \</span>
+<span class="sd">        the feature is ultimately dropped.</span>
+
+<span class="sd">    return_details: bool, default True</span>
+<span class="sd">        Provdies flexibility to return intermediary results.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data: Updated Pandas DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">mv_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">corr_thresh_features</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">corr_thresh_target</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="n">return_details</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mv_threshold</span> <span class="o">=</span> <span class="n">mv_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">corr_thresh_features</span> <span class="o">=</span> <span class="n">corr_thresh_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">corr_thresh_target</span> <span class="o">=</span> <span class="n">corr_thresh_target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_details</span> <span class="o">=</span> <span class="n">return_details</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">cols_mv</span><span class="p">,</span> <span class="n">dropped_cols</span> <span class="o">=</span> <span class="n">mv_col_handling</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+            <span class="n">mv_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mv_threshold</span><span class="p">,</span>
+            <span class="n">corr_thresh_features</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">corr_thresh_features</span><span class="p">,</span>
+            <span class="n">corr_thresh_target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">corr_thresh_target</span><span class="p">,</span>
+            <span class="n">return_details</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">return_details</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Features with MV-ratio &gt; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mv_threshold</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cols_mv</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Features dropped:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dropped_cols</span><span class="p">),</span> <span class="n">dropped_cols</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+
+
+<div class="viewcode-block" id="pool_duplicate_subsets"><a class="viewcode-back" href="../../klib.html#klib.clean.pool_duplicate_subsets">[docs]</a><span class="k">def</span> <span class="nf">pool_duplicate_subsets</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">col_dupl_thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">subset_thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">min_col_pool</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_details</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Checks for duplicates in subsets of columns and pools them. This can reduce the number of columns in the data \</span>
+<span class="sd">    without loosing much information. Suitable columns are combined to subsets and tested for duplicates. In case \</span>
+<span class="sd">    sufficient duplicates can be found, the respective columns are aggregated into a &#39;pooled_var&#39; column. Identical \</span>
+<span class="sd">    numbers in the &#39;pooled_var&#39; column indicate identical information in the respective rows.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : pd.DataFrame</span>
+<span class="sd">        2D dataset that can be coerced into Pandas DataFrame</span>
+<span class="sd">    col_dupl_thresh : float, optional</span>
+<span class="sd">        Columns with a ratio of duplicates higher than &#39;col_dupl_thresh&#39; are considered in the further analysis. \</span>
+<span class="sd">        Columns with a lower ratio are not considered for pooling, by default 0.2</span>
+<span class="sd">    subset_thresh : float, optional</span>
+<span class="sd">        The first subset with a duplicate threshold higher than &#39;subset_thresh&#39; is chosen and aggregated. If no subset \</span>
+<span class="sd">        reaches the threshold, the algorithm continues with continuously smaller subsets until &#39;min_col_pool&#39; is \</span>
+<span class="sd">        reached, by default 0.2</span>
+<span class="sd">    min_col_pool : int, optional</span>
+<span class="sd">        Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \</span>
+<span class="sd">        subsets and stops when &#39;min_col_pool&#39; is reached, by default 3</span>
+<span class="sd">    exclude : Optional[List[str]], optional</span>
+<span class="sd">        List of column names to be excluded from the analysis. These columns are passed through without modification, \</span>
+<span class="sd">        by default None</span>
+<span class="sd">    return_details : bool, optional</span>
+<span class="sd">        Provdies flexibility to return intermediary results, by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        DataFrame with low cardinality columns pooled</span>
+
+<span class="sd">    optional:</span>
+<span class="sd">    subset_cols: List of columns used as subset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Input validation</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">col_dupl_thresh</span><span class="p">,</span> <span class="s2">&quot;col_dupl_thresh&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">subset_thresh</span><span class="p">,</span> <span class="s2">&quot;subset_thresh&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">_validate_input_range</span><span class="p">(</span><span class="n">min_col_pool</span><span class="p">,</span> <span class="s2">&quot;min_col_pool&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">excluded_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">excluded_cols</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">exclude</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
+
+    <span class="n">subset_cols</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">min_col_pool</span><span class="p">):</span>
+        <span class="n">check_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="n">col</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">col_dupl_thresh</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">check_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">combinations</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">check_list</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">check_list</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">ratios</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">comb</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">comb</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">combinations</span><span class="p">)]</span>
+
+        <span class="n">max_ratio</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ratios</span><span class="p">)</span>
+        <span class="n">max_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ratios</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">max_ratio</span> <span class="o">&gt;</span> <span class="n">subset_thresh</span><span class="p">:</span>
+            <span class="n">best_subset</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span>
+                <span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">check_list</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">check_list</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span><span class="p">),</span> <span class="n">max_idx</span><span class="p">,</span> <span class="n">max_idx</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">best_subset</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">best_subset</span><span class="p">)[</span><span class="mi">0</span><span class="p">])]</span>
+            <span class="n">subset_cols</span> <span class="o">=</span> <span class="n">best_subset</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+            <span class="n">unique_subset</span> <span class="o">=</span> <span class="n">best_subset</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="s2">&quot;pooled_vars&quot;</span><span class="p">})</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">unique_subset</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">best_subset</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="n">best_subset</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">RangeIndex</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="k">break</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">excluded_cols</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_details</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">subset_cols</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<span class="k">class</span> <span class="nc">SubsetPooler</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Wrapper for pool_duplicate_subsets(). Allows pool_duplicate_subsets() to be put into a pipeline with similar \</span>
+<span class="sd">    functions (e.g. using DataCleaner() or MVColHandler()).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    col_dupl_ratio: float, default 0.2</span>
+<span class="sd">        Columns with a ratio of duplicates higher than &#39;col_dupl_ratio&#39; are considered in the further analysis. \</span>
+<span class="sd">        Columns with a lower ratio are not considered for pooling.</span>
+
+<span class="sd">    dupl_thresh: float, default 0.2</span>
+<span class="sd">        The first subset with a duplicate threshold higher than &#39;dupl_thresh&#39; is chosen and aggregated. If no subset \</span>
+<span class="sd">        reaches the threshold, the algorithm continues with continuously smaller subsets until &#39;min_col_pool&#39; is \</span>
+<span class="sd">        reached.</span>
+
+<span class="sd">    min_col_pool: integer, default 3</span>
+<span class="sd">        Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \</span>
+<span class="sd">        subsets and stops when &#39;min_col_pool&#39; is reached.</span>
+
+<span class="sd">    return_details: bool, default False</span>
+<span class="sd">        Provdies flexibility to return intermediary results.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">    data: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col_dupl_thresh</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">subset_thresh</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">min_col_pool</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">return_details</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col_dupl_thresh</span> <span class="o">=</span> <span class="n">col_dupl_thresh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subset_thresh</span> <span class="o">=</span> <span class="n">subset_thresh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_col_pool</span> <span class="o">=</span> <span class="n">min_col_pool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_details</span> <span class="o">=</span> <span class="n">return_details</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">subset_cols</span> <span class="o">=</span> <span class="n">pool_duplicate_subsets</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">col_dupl_thresh</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">subset_thresh</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">min_col_pool</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">return_details</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Combined columns:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset_cols</span><span class="p">),</span> <span class="n">subset_cols</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Andreas Kanz
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
