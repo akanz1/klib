@@ -1,2 +1,4 @@
 numpydoc
 sphinx
+sphinxcontrib.napoleon
+sphinxcontrib-napoleon

@@ -6,29 +6,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>klib package &#8212; klib 0.0.89 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="search" title="Search" href="search.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">klib 0.0.89 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">klib package</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <div class="section" id="klib-package">
@@ -57,7 +63,7 @@
 </dd>
 <dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical,         by default 0.05</p>
 </dd>
-<dt><strong>cat_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
+<dt><strong>cat_exclude</strong><span class="classifier">Optional[List[Union[str, int]]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
 </dd>
 </dl>
 </dd>
@@ -73,7 +79,7 @@
 <dl class="py function">
 <dt id="klib.clean.data_cleaning">
 <code class="sig-prename descclassname">klib.clean.</code><code class="sig-name descname">data_cleaning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_duplicates</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">convert_dtypes</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">category</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.03</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">show</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'changes'</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.clean.data_cleaning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty         columns as well as optimizing the datatypes.</p>
+<dd><p>Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty columns as well as optimizing the datatypes.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
@@ -83,15 +89,15 @@
 </dd>
 <dt><strong>drop_threshold_rows</strong><span class="classifier">float, optional</span></dt><dd><p>Drop rows with NA-ratio equal to or above the specified threshold, by default 0.9</p>
 </dd>
-<dt><strong>drop_duplicates</strong><span class="classifier">bool, optional</span></dt><dd><p>Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values, by         default True</p>
+<dt><strong>drop_duplicates</strong><span class="classifier">bool, optional</span></dt><dd><p>Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values, by default True</p>
 </dd>
 <dt><strong>convert_dtypes</strong><span class="classifier">bool, optional</span></dt><dd><p>Convert dtypes using pd.convert_dtypes(), by default True</p>
 </dd>
 <dt><strong>col_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>Specify a list of columns to exclude from dropping, by default None</p>
 </dd>
-<dt><strong>category</strong><span class="classifier">bool, optional</span></dt><dd><p>Enable changing dtypes of ‘object’ columns to “category”. Set threshold using cat_threshold. Requires         convert_dtypes=True, by default True</p>
+<dt><strong>category</strong><span class="classifier">bool, optional</span></dt><dd><p>Enable changing dtypes of ‘object’ columns to “category”. Set threshold using cat_threshold. Requires convert_dtypes=True, by default True</p>
 </dd>
-<dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by         default 0.03</p>
+<dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by default 0.03</p>
 </dd>
 <dt><strong>cat_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
 </dd>
@@ -99,7 +105,7 @@
 Specify verbosity of the output:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>‘all’: Print information about the data before and after cleaning as well as information about changes             and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.</p></li>
+<li><p>‘all’: Print information about the data before and after cleaning as well as information about changes and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.</p></li>
 <li><p>‘changes’: Print out differences in the data before and after cleaning.</p></li>
 <li><p>None: No information about the data and the data cleaning is printed.</p></li>
 </ul>
@@ -281,17 +287,16 @@ If colored = False - corr: Pandas DataFrame</p>
 <dd class="field-odd"><dl>
 <dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column         information is used to label the plots</p>
 </dd>
-<dt><strong>split</strong><span class="classifier">Optional[str], optional</span></dt><dd><p>Type of split to be performed, by default None
-{None, ‘pos’, ‘neg’, ‘above’, ‘below’}</p>
-<blockquote>
-<div><ul class="simple">
+<dt><strong>split</strong><span class="classifier">Optional[str], optional</span></dt><dd><dl class="simple">
+<dt>Type of split to be performed {None, ‘pos’, ‘neg’, ‘above’, ‘below’}, by default None</dt><dd><ul class="simple">
 <li><p>None: visualize all correlations between the feature-columns</p></li>
 <li><p>pos: visualize all positive correlations between the feature-columns above the threshold</p></li>
 <li><p>neg: visualize all negative correlations between the feature-columns below the threshold</p></li>
 <li><p>above: visualize all correlations between the feature-columns for which abs(corr) &gt; threshold is True</p></li>
 <li><p>below: visualize all correlations between the feature-columns for which abs(corr) &lt; threshold is True</p></li>
 </ul>
-</div></blockquote>
+</dd>
+</dl>
 </dd>
 <dt><strong>threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1, by default 0</p>
 </dd>
@@ -315,10 +320,11 @@ If colored = False - corr: Pandas DataFrame</p>
 <dt><strong>dev</strong><span class="classifier">bool, optional</span></dt><dd><p>Display figure settings in the plot by setting dev = True. If False, the settings are not displayed, by         default False</p>
 </dd>
 <dt><strong>**kwargs: optional</strong></dt><dd><p>Additional elements to control the visualization of the plot, e.g.:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p>mask: bool, default True</p></li>
 </ul>
-<p>If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this         case to avoid overlap.
+<p>If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this case to avoid overlap.
 * vmax: float, default is calculated from the given correlation coefficients.
 Value between -1 or vmin &lt;= vmax &lt;= 1, limits the range of the colorbar.
 * vmin: float, default is calculated from the given correlation coefficients.
@@ -330,6 +336,7 @@ Controls the font size of the annotations. Only available when annot = True.
 * cbar_kws: dict, default {‘shrink’: .95, ‘aspect’: 30}
 Controls the size of the colorbar.
 * Many more kwargs are available, i.e. ‘alpha’ to control blending, or options to adjust labels, ticks …</p>
+</div></blockquote>
 <p>Kwargs can be supplied through a dictionary of key-value pairs (see above).</p>
 </dd>
 </dl>
@@ -424,24 +431,96 @@ Controls the size of the colorbar.
 <dt id="klib.preprocess.cat_pipe">
 <code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">cat_pipe</code><span class="sig-paren">(</span><em class="sig-param">imputer=SimpleImputer(add_indicator=False</em>, <em class="sig-param">copy=True</em>, <em class="sig-param">fill_value=None</em>, <em class="sig-param">missing_values=nan</em>, <em class="sig-param">strategy='most_frequent'</em>, <em class="sig-param">verbose=0)</em>, <em class="sig-param">encoder=OneHotEncoder(categories='auto'</em>, <em class="sig-param">drop=None</em>, <em class="sig-param">dtype=&lt;class 'numpy.float64'&gt;</em>, <em class="sig-param">handle_unknown='ignore'</em>, <em class="sig-param">sparse=True)</em>, <em class="sig-param">scaler=MaxAbsScaler(copy=True)</em>, <em class="sig-param">encoder_info=PipeInfo(name='after encoding')</em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.cat_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard preprocessing operations on categorical data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>imputer: default, SimpleImputer(strategy=’most_frequent’)</strong></dt><dd></dd>
+<dt><strong>encoder: default, OneHotEncoder(handle_unknown=’ignore’)</strong></dt><dd><p>Encode categorical features as a one-hot numeric array.</p>
+</dd>
+<dt><strong>scaler: default, MaxAbsScaler()</strong></dt><dd><p>Scale each feature by its maximum absolute value. MaxAbsScaler() does not shift/center the data, and thus does         not destroy any sparsity. It is recommended to check for outliers before applying MaxAbsScaler().</p>
+</dd>
+<dt><strong>encoder_info:</strong></dt><dd><p>Prints the shape of the dataset at the end of ‘cat_pipe’. Set to ‘None’ to avoid printing the shape of         dataset. This parameter can also be set as a hyperparameter, e.g. ‘pipeline__pipeinfo-1’: [None] or         ‘pipeline__pipeinfo-1__name’: [‘my_custom_name’].</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Pipeline</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.preprocess.feature_selection_pipe">
 <code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">feature_selection_pipe</code><span class="sig-paren">(</span><em class="sig-param">var_thresh=VarianceThreshold(threshold=0.1)</em>, <em class="sig-param">select_from_model=SelectFromModel(estimator=LassoCV(alphas=None</em>, <em class="sig-param">copy_X=True</em>, <em class="sig-param">cv=4</em>, <em class="sig-param">eps=0.001</em>, <em class="sig-param">fit_intercept=True</em>, <em class="sig-param">max_iter=1000</em>, <em class="sig-param">n_alphas=100</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">positive=False</em>, <em class="sig-param">precompute='auto'</em>, <em class="sig-param">random_state=408</em>, <em class="sig-param">selection='cyclic'</em>, <em class="sig-param">tol=0.0001</em>, <em class="sig-param">verbose=False)</em>, <em class="sig-param">max_features=None</em>, <em class="sig-param">norm_order=1</em>, <em class="sig-param">prefit=False</em>, <em class="sig-param">threshold='0.1*median')</em>, <em class="sig-param">select_percentile=SelectPercentile(percentile=95</em>, <em class="sig-param">score_func=&lt;function f_classif&gt;)</em>, <em class="sig-param">var_thresh_info=PipeInfo(name='after var_thresh')</em>, <em class="sig-param">select_from_model_info=PipeInfo(name='after select_from_model')</em>, <em class="sig-param">select_percentile_info=PipeInfo(name='after select_percentile')</em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.feature_selection_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Preprocessing operations for feature selection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>var_thresh: default, VarianceThreshold(threshold=0.1)</strong></dt><dd><p>Specify a threshold to drop low variance features.</p>
+</dd>
+<dt><strong>select_from_model: default, SelectFromModel(LassoCV(cv=4, random_state=408), threshold=”0.1*median”)</strong></dt><dd><p>Specify an estimator which is used for selecting features based on importance weights.</p>
+</dd>
+<dt><strong>select_percentile: default, SelectPercentile(f_classif, percentile=95)</strong></dt><dd><p>Specify a score-function and a percentile value of features to keep.</p>
+</dd>
+<dt><strong>var_thresh_info, select_from_model_info, select_percentile_info</strong></dt><dd><p>Prints the shape of the dataset after applying the respective function. Set to ‘None’ to avoid printing the         shape of dataset. This parameter can also be set as a hyperparameter, e.g. ‘pipeline__pipeinfo-1’: [None]         or ‘pipeline__pipeinfo-1__name’: [‘my_custom_name’].</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Pipeline</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.preprocess.num_pipe">
 <code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">num_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imputer</span><span class="o">=</span><span class="default_value">IterativeImputer(add_indicator=False, estimator=ExtraTreesRegressor(bootstrap=False, ccp_alpha=0.0, criterion='mse', max_depth=None, max_features='auto', max_leaf_nodes=None, max_samples=None, min_impurity_decrease=0.0, min_impurity_split=None, min_samples_leaf=1, min_samples_split=2, min_weight_fraction_leaf=0.0, n_estimators=25, n_jobs=4, oob_score=False, random_state=408, verbose=0, warm_start=False), imputation_order='ascending', initial_strategy='mean', max_iter=10, max_value=None, min_value=None, missing_values=nan, n_nearest_features=None, random_state=408, sample_posterior=False, skip_complete=False, tol=0.001, verbose=0)</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">RobustScaler(copy=True, quantile_range=25.0, 75.0, with_centering=True, with_scaling=True)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.num_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard preprocessing operations on numerical data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408),                                        random_state=408)</strong></dt><dd></dd>
+<dt><strong>scaler: default, RobustScaler()</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Pipeline</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.preprocess.train_dev_test_split">
 <code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">train_dev_test_split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">dev_size</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">test_size</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">stratify</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">408</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.train_dev_test_split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a dataset and a label column into train, dev and test sets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots.</strong></dt><dd></dd>
+<dt><strong>target: string, list, np.array or pd.Series, default None</strong></dt><dd><p>Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label.</p>
+</dd>
+<dt><strong>dev_size: float, default 0.1</strong></dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the dev         split.</p>
+</dd>
+<dt><strong>test_size: float, default 0.1</strong></dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the test         split.</p>
+</dd>
+<dt><strong>stratify: target column, default None</strong></dt><dd><p>If not None, data is split in a stratified fashion, using the input as the class labels.</p>
+</dd>
+<dt><strong>random_state: integer, default 408</strong></dt><dd><p>Random_state is the seed used by the random number generator.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple: Tuple containing train-dev-test split of inputs.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -454,6 +533,24 @@ Controls the size of the colorbar.
 <dt id="klib.cat_pipe">
 <code class="sig-prename descclassname">klib.</code><code class="sig-name descname">cat_pipe</code><span class="sig-paren">(</span><em class="sig-param">imputer=SimpleImputer(add_indicator=False</em>, <em class="sig-param">copy=True</em>, <em class="sig-param">fill_value=None</em>, <em class="sig-param">missing_values=nan</em>, <em class="sig-param">strategy='most_frequent'</em>, <em class="sig-param">verbose=0)</em>, <em class="sig-param">encoder=OneHotEncoder(categories='auto'</em>, <em class="sig-param">drop=None</em>, <em class="sig-param">dtype=&lt;class 'numpy.float64'&gt;</em>, <em class="sig-param">handle_unknown='ignore'</em>, <em class="sig-param">sparse=True)</em>, <em class="sig-param">scaler=MaxAbsScaler(copy=True)</em>, <em class="sig-param">encoder_info=PipeInfo(name='after encoding')</em><span class="sig-paren">)</span><a class="headerlink" href="#klib.cat_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard preprocessing operations on categorical data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>imputer: default, SimpleImputer(strategy=’most_frequent’)</strong></dt><dd></dd>
+<dt><strong>encoder: default, OneHotEncoder(handle_unknown=’ignore’)</strong></dt><dd><p>Encode categorical features as a one-hot numeric array.</p>
+</dd>
+<dt><strong>scaler: default, MaxAbsScaler()</strong></dt><dd><p>Scale each feature by its maximum absolute value. MaxAbsScaler() does not shift/center the data, and thus does         not destroy any sparsity. It is recommended to check for outliers before applying MaxAbsScaler().</p>
+</dd>
+<dt><strong>encoder_info:</strong></dt><dd><p>Prints the shape of the dataset at the end of ‘cat_pipe’. Set to ‘None’ to avoid printing the shape of         dataset. This parameter can also be set as a hyperparameter, e.g. ‘pipeline__pipeinfo-1’: [None] or         ‘pipeline__pipeinfo-1__name’: [‘my_custom_name’].</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Pipeline</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -501,7 +598,7 @@ Controls the size of the colorbar.
 </dd>
 <dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical,         by default 0.05</p>
 </dd>
-<dt><strong>cat_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
+<dt><strong>cat_exclude</strong><span class="classifier">Optional[List[Union[str, int]]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
 </dd>
 </dl>
 </dd>
@@ -558,17 +655,16 @@ If colored = False - corr: Pandas DataFrame</p>
 <dd class="field-odd"><dl>
 <dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column         information is used to label the plots</p>
 </dd>
-<dt><strong>split</strong><span class="classifier">Optional[str], optional</span></dt><dd><p>Type of split to be performed, by default None
-{None, ‘pos’, ‘neg’, ‘above’, ‘below’}</p>
-<blockquote>
-<div><ul class="simple">
+<dt><strong>split</strong><span class="classifier">Optional[str], optional</span></dt><dd><dl class="simple">
+<dt>Type of split to be performed {None, ‘pos’, ‘neg’, ‘above’, ‘below’}, by default None</dt><dd><ul class="simple">
 <li><p>None: visualize all correlations between the feature-columns</p></li>
 <li><p>pos: visualize all positive correlations between the feature-columns above the threshold</p></li>
 <li><p>neg: visualize all negative correlations between the feature-columns below the threshold</p></li>
 <li><p>above: visualize all correlations between the feature-columns for which abs(corr) &gt; threshold is True</p></li>
 <li><p>below: visualize all correlations between the feature-columns for which abs(corr) &lt; threshold is True</p></li>
 </ul>
-</div></blockquote>
+</dd>
+</dl>
 </dd>
 <dt><strong>threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1, by default 0</p>
 </dd>
@@ -592,10 +688,11 @@ If colored = False - corr: Pandas DataFrame</p>
 <dt><strong>dev</strong><span class="classifier">bool, optional</span></dt><dd><p>Display figure settings in the plot by setting dev = True. If False, the settings are not displayed, by         default False</p>
 </dd>
 <dt><strong>**kwargs: optional</strong></dt><dd><p>Additional elements to control the visualization of the plot, e.g.:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p>mask: bool, default True</p></li>
 </ul>
-<p>If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this         case to avoid overlap.
+<p>If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this case to avoid overlap.
 * vmax: float, default is calculated from the given correlation coefficients.
 Value between -1 or vmin &lt;= vmax &lt;= 1, limits the range of the colorbar.
 * vmin: float, default is calculated from the given correlation coefficients.
@@ -607,6 +704,7 @@ Controls the font size of the annotations. Only available when annot = True.
 * cbar_kws: dict, default {‘shrink’: .95, ‘aspect’: 30}
 Controls the size of the colorbar.
 * Many more kwargs are available, i.e. ‘alpha’ to control blending, or options to adjust labels, ticks …</p>
+</div></blockquote>
 <p>Kwargs can be supplied through a dictionary of key-value pairs (see above).</p>
 </dd>
 </dl>
@@ -623,7 +721,7 @@ Controls the size of the colorbar.
 <dl class="py function">
 <dt id="klib.data_cleaning">
 <code class="sig-prename descclassname">klib.</code><code class="sig-name descname">data_cleaning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_duplicates</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">convert_dtypes</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">category</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.03</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">show</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'changes'</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.data_cleaning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty         columns as well as optimizing the datatypes.</p>
+<dd><p>Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty columns as well as optimizing the datatypes.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
@@ -633,15 +731,15 @@ Controls the size of the colorbar.
 </dd>
 <dt><strong>drop_threshold_rows</strong><span class="classifier">float, optional</span></dt><dd><p>Drop rows with NA-ratio equal to or above the specified threshold, by default 0.9</p>
 </dd>
-<dt><strong>drop_duplicates</strong><span class="classifier">bool, optional</span></dt><dd><p>Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values, by         default True</p>
+<dt><strong>drop_duplicates</strong><span class="classifier">bool, optional</span></dt><dd><p>Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values, by default True</p>
 </dd>
 <dt><strong>convert_dtypes</strong><span class="classifier">bool, optional</span></dt><dd><p>Convert dtypes using pd.convert_dtypes(), by default True</p>
 </dd>
 <dt><strong>col_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>Specify a list of columns to exclude from dropping, by default None</p>
 </dd>
-<dt><strong>category</strong><span class="classifier">bool, optional</span></dt><dd><p>Enable changing dtypes of ‘object’ columns to “category”. Set threshold using cat_threshold. Requires         convert_dtypes=True, by default True</p>
+<dt><strong>category</strong><span class="classifier">bool, optional</span></dt><dd><p>Enable changing dtypes of ‘object’ columns to “category”. Set threshold using cat_threshold. Requires convert_dtypes=True, by default True</p>
 </dd>
-<dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by         default 0.03</p>
+<dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by default 0.03</p>
 </dd>
 <dt><strong>cat_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
 </dd>
@@ -649,7 +747,7 @@ Controls the size of the colorbar.
 Specify verbosity of the output:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>‘all’: Print information about the data before and after cleaning as well as information about changes             and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.</p></li>
+<li><p>‘all’: Print information about the data before and after cleaning as well as information about changes and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.</p></li>
 <li><p>‘changes’: Print out differences in the data before and after cleaning.</p></li>
 <li><p>None: No information about the data and the data cleaning is printed.</p></li>
 </ul>
@@ -753,6 +851,25 @@ Specify verbosity of the output:</p>
 <dt id="klib.feature_selection_pipe">
 <code class="sig-prename descclassname">klib.</code><code class="sig-name descname">feature_selection_pipe</code><span class="sig-paren">(</span><em class="sig-param">var_thresh=VarianceThreshold(threshold=0.1)</em>, <em class="sig-param">select_from_model=SelectFromModel(estimator=LassoCV(alphas=None</em>, <em class="sig-param">copy_X=True</em>, <em class="sig-param">cv=4</em>, <em class="sig-param">eps=0.001</em>, <em class="sig-param">fit_intercept=True</em>, <em class="sig-param">max_iter=1000</em>, <em class="sig-param">n_alphas=100</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">positive=False</em>, <em class="sig-param">precompute='auto'</em>, <em class="sig-param">random_state=408</em>, <em class="sig-param">selection='cyclic'</em>, <em class="sig-param">tol=0.0001</em>, <em class="sig-param">verbose=False)</em>, <em class="sig-param">max_features=None</em>, <em class="sig-param">norm_order=1</em>, <em class="sig-param">prefit=False</em>, <em class="sig-param">threshold='0.1*median')</em>, <em class="sig-param">select_percentile=SelectPercentile(percentile=95</em>, <em class="sig-param">score_func=&lt;function f_classif&gt;)</em>, <em class="sig-param">var_thresh_info=PipeInfo(name='after var_thresh')</em>, <em class="sig-param">select_from_model_info=PipeInfo(name='after select_from_model')</em>, <em class="sig-param">select_percentile_info=PipeInfo(name='after select_percentile')</em><span class="sig-paren">)</span><a class="headerlink" href="#klib.feature_selection_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Preprocessing operations for feature selection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>var_thresh: default, VarianceThreshold(threshold=0.1)</strong></dt><dd><p>Specify a threshold to drop low variance features.</p>
+</dd>
+<dt><strong>select_from_model: default, SelectFromModel(LassoCV(cv=4, random_state=408), threshold=”0.1*median”)</strong></dt><dd><p>Specify an estimator which is used for selecting features based on importance weights.</p>
+</dd>
+<dt><strong>select_percentile: default, SelectPercentile(f_classif, percentile=95)</strong></dt><dd><p>Specify a score-function and a percentile value of features to keep.</p>
+</dd>
+<dt><strong>var_thresh_info, select_from_model_info, select_percentile_info</strong></dt><dd><p>Prints the shape of the dataset after applying the respective function. Set to ‘None’ to avoid printing the         shape of dataset. This parameter can also be set as a hyperparameter, e.g. ‘pipeline__pipeinfo-1’: [None]         or ‘pipeline__pipeinfo-1__name’: [‘my_custom_name’].</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Pipeline</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -824,6 +941,19 @@ Specify verbosity of the output:</p>
 <dt id="klib.num_pipe">
 <code class="sig-prename descclassname">klib.</code><code class="sig-name descname">num_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imputer</span><span class="o">=</span><span class="default_value">IterativeImputer(add_indicator=False, estimator=ExtraTreesRegressor(bootstrap=False, ccp_alpha=0.0, criterion='mse', max_depth=None, max_features='auto', max_leaf_nodes=None, max_samples=None, min_impurity_decrease=0.0, min_impurity_split=None, min_samples_leaf=1, min_samples_split=2, min_weight_fraction_leaf=0.0, n_estimators=25, n_jobs=4, oob_score=False, random_state=408, verbose=0, warm_start=False), imputation_order='ascending', initial_strategy='mean', max_iter=10, max_value=None, min_value=None, missing_values=nan, n_nearest_features=None, random_state=408, sample_posterior=False, skip_complete=False, tol=0.001, verbose=0)</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">RobustScaler(copy=True, quantile_range=25.0, 75.0, with_centering=True, with_scaling=True)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.num_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard preprocessing operations on numerical data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408),                                        random_state=408)</strong></dt><dd></dd>
+<dt><strong>scaler: default, RobustScaler()</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Pipeline</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -862,6 +992,28 @@ Specify verbosity of the output:</p>
 <dt id="klib.train_dev_test_split">
 <code class="sig-prename descclassname">klib.</code><code class="sig-name descname">train_dev_test_split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">dev_size</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">test_size</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">stratify</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">408</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.train_dev_test_split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a dataset and a label column into train, dev and test sets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots.</strong></dt><dd></dd>
+<dt><strong>target: string, list, np.array or pd.Series, default None</strong></dt><dd><p>Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label.</p>
+</dd>
+<dt><strong>dev_size: float, default 0.1</strong></dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the dev         split.</p>
+</dd>
+<dt><strong>test_size: float, default 0.1</strong></dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the test         split.</p>
+</dd>
+<dt><strong>stratify: target column, default None</strong></dt><dd><p>If not None, data is split in a stratified fashion, using the input as the class labels.</p>
+</dd>
+<dt><strong>random_state: integer, default 408</strong></dt><dd><p>Random_state is the seed used by the random number generator.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple: Tuple containing train-dev-test split of inputs.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -869,30 +1021,34 @@ Specify verbosity of the output:</p>
 </div>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">klib</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  </ul></li>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">klib package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-klib.clean">klib.clean module</a></li>
+<li><a class="reference internal" href="#module-klib.describe">klib.describe module</a></li>
+<li><a class="reference internal" href="#module-klib.preprocess">klib.preprocess module</a></li>
+<li><a class="reference internal" href="#module-klib">Module contents</a><ul>
+<li><a class="reference internal" href="#data-science-module-for-python">Data Science Module for Python</a></li>
 </ul>
-</div>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/klib.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -903,32 +1059,26 @@ Specify verbosity of the output:</p>
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2020, Andreas Kanz.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/klib.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">klib 0.0.89 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">klib package</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Andreas Kanz.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
   </body>
 </html>
