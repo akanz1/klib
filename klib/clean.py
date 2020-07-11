@@ -146,8 +146,8 @@ def data_cleaning(
     cat_exclude: Optional[List[Union[str, int]]] = None,
     show: str = "changes",
 ) -> pd.DataFrame:
-    """ Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty \
-        columns as well as optimizing the datatypes.
+    """ Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, \
+empty columns as well as optimizing the datatypes.
 
     Parameters
     ----------
@@ -159,24 +159,24 @@ def data_cleaning(
         Drop rows with NA-ratio equal to or above the specified threshold, by default 0.9
     drop_duplicates : bool, optional
         Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values, by \
-        default True
+default True
     convert_dtypes : bool, optional
         Convert dtypes using pd.convert_dtypes(), by default True
     col_exclude : Optional[List[str]], optional
         Specify a list of columns to exclude from dropping, by default None
     category : bool, optional
         Enable changing dtypes of 'object' columns to "category". Set threshold using cat_threshold. Requires \
-        convert_dtypes=True, by default True
+convert_dtypes=True, by default True
     cat_threshold : float, optional
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by \
-        default 0.03
+default 0.03
     cat_exclude : Optional[List[str]], optional
         List of columns to exclude from categorical conversion, by default None
     show : str, optional
         {'all', 'changes', None}, by default "changes"
         Specify verbosity of the output:
             * 'all': Print information about the data before and after cleaning as well as information about changes \
-            and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
+and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
             * 'changes': Print out differences in the data before and after cleaning.
             * None: No information about the data and the data cleaning is printed.
 
@@ -185,7 +185,7 @@ def data_cleaning(
     pd.DataFrame
         Cleaned Pandas DataFrame
 
-    See Also
+    See also
     --------
     convert_datatypes: Convert columns to best possible dtypes.
     drop_missing : Flexibly drop columns and rows.

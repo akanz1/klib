@@ -31,12 +31,12 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
     sklearn's make_column_selector() missing values are temporarily filled in to allow convert_dtypes() to determine \
     the dtype of a column.
 
-    Parameter:
+    Parameter
     ---------
     num: default, True
         Select only numerica Columns. If num = False, only categorical columns are selected.
 
-    Returns:
+    Returns
     -------
     Dataset containing only numerical or categorical data.
     """
@@ -63,12 +63,12 @@ class PipeInfo(BaseEstimator, TransformerMixin):
     Set to 'None' to avoid printing the shape of the dataset. This parameter can also be set as a hyperparameter, \
     e.g. 'pipeline__pipeinfo-1': [None] or 'pipeline__pipeinfo-1__name': ['my_custom_name'].
 
-    Parameter:
+    Parameter
     ---------
     name: string, default None
         Provide a name for the current step.
 
-    Returns:
+    Returns
     -------
     Data: Data is being passed through.
     """
@@ -93,8 +93,8 @@ def cat_pipe(
     """
     Standard preprocessing operations on categorical data.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     imputer: default, SimpleImputer(strategy='most_frequent')
 
     encoder: default, OneHotEncoder(handle_unknown='ignore')
@@ -109,8 +109,8 @@ def cat_pipe(
         dataset. This parameter can also be set as a hyperparameter, e.g. 'pipeline__pipeinfo-1': [None] or \
         'pipeline__pipeinfo-1__name': ['my_custom_name'].
 
-    Returns:
-    --------
+    Returns
+    -------
     Pipeline
     """
 
@@ -129,8 +129,8 @@ def feature_selection_pipe(
     """
     Preprocessing operations for feature selection.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     var_thresh: default, VarianceThreshold(threshold=0.1)
         Specify a threshold to drop low variance features.
 
@@ -145,8 +145,8 @@ def feature_selection_pipe(
         shape of dataset. This parameter can also be set as a hyperparameter, e.g. 'pipeline__pipeinfo-1': [None] \
         or 'pipeline__pipeinfo-1__name': ['my_custom_name'].
 
-    Returns:
-    --------
+    Returns
+    -------
     Pipeline
     """
 
@@ -170,15 +170,15 @@ def num_pipe(
     """
     Standard preprocessing operations on numerical data.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), \
                                        random_state=408)
 
     scaler: default, RobustScaler()
 
-    Returns:
-    --------
+    Returns
+    -------
     Pipeline
     """
 
@@ -190,8 +190,8 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
     """
     Split a dataset and a label column into train, dev and test sets.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
 
     data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots.

@@ -238,8 +238,7 @@ def corr_plot(
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
         information is used to label the plots
     split : Optional[str], optional
-        Type of split to be performed, by default None
-        {None, 'pos', 'neg', 'above', 'below'}
+        Type of split to be performed {None, 'pos', 'neg', 'above', 'below'}, by default None
             * None: visualize all correlations between the feature-columns
             * pos: visualize all positive correlations between the feature-columns above the threshold
             * neg: visualize all negative correlations between the feature-columns below the threshold
@@ -270,20 +269,20 @@ def corr_plot(
     **kwargs: optional
         Additional elements to control the visualization of the plot, e.g.:
 
-        * mask: bool, default True
-        If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this \
-        case to avoid overlap.
-        * vmax: float, default is calculated from the given correlation coefficients.
-        Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
-        * vmin: float, default is calculated from the given correlation coefficients.
-        Value between -1 <= vmin <= 1 or vmax, limits the range of the colorbar.
-        * linewidths: float, default 0.5
-        Controls the line-width inbetween the squares.
-        * annot_kws: dict, default {'size' : 10}
-        Controls the font size of the annotations. Only available when annot = True.
-        * cbar_kws: dict, default {'shrink': .95, 'aspect': 30}
-        Controls the size of the colorbar.
-        * Many more kwargs are available, i.e. 'alpha' to control blending, or options to adjust labels, ticks ...
+            * mask: bool, default True
+            If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in \
+this case to avoid overlap.
+            * vmax: float, default is calculated from the given correlation coefficients.
+            Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
+            * vmin: float, default is calculated from the given correlation coefficients.
+            Value between -1 <= vmin <= 1 or vmax, limits the range of the colorbar.
+            * linewidths: float, default 0.5
+            Controls the line-width inbetween the squares.
+            * annot_kws: dict, default {'size' : 10}
+            Controls the font size of the annotations. Only available when annot = True.
+            * cbar_kws: dict, default {'shrink': .95, 'aspect': 30}
+            Controls the size of the colorbar.
+            * Many more kwargs are available, i.e. 'alpha' to control blending, or options to adjust labels, ticks ...
 
         Kwargs can be supplied through a dictionary of key-value pairs (see above).
 

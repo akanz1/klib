@@ -1,14 +1,6 @@
 klib package
 ============
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   klib.tests
-
 Submodules
 ----------
 
@@ -28,26 +20,10 @@ klib.describe module
    :undoc-members:
    :show-inheritance:
 
-klib.ingest module
-------------------
-
-.. automodule:: klib.ingest
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 klib.preprocess module
 ----------------------
 
 .. automodule:: klib.preprocess
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-klib.utils module
------------------
-
-.. automodule:: klib.utils
    :members:
    :undoc-members:
    :show-inheritance:

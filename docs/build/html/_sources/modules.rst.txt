@@ -5,4 +5,3 @@ klib
    :maxdepth: 4
 
    klib
-   setup

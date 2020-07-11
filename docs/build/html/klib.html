@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>klib package &#8212; klib 0.0.88 documentation</title>
+    <title>klib package &#8212; klib 0.0.89 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -33,22 +33,6 @@
             
   <div class="section" id="klib-package">
 <h1>klib package<a class="headerlink" href="#klib-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="klib.tests.html">klib.tests package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="klib.tests.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="klib.tests.html#module-klib.tests.test_clean">klib.tests.test_clean module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="klib.tests.html#module-klib.tests.test_describe">klib.tests.test_describe module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="klib.tests.html#module-klib.tests.test_preprocess">klib.tests.test_preprocess module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="klib.tests.html#module-klib.tests.test_util">klib.tests.test_util module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="klib.tests.html#module-klib.tests">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -62,65 +46,84 @@
 </dl>
 <dl class="py function">
 <dt id="klib.clean.convert_datatypes">
-<code class="sig-prename descclassname">klib.clean.</code><code class="sig-name descname">convert_datatypes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">category</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.clean.convert_datatypes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.clean.</code><code class="sig-name descname">convert_datatypes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">category</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.clean.convert_datatypes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts columns to best possible dtypes using dtypes supporting pd.NA. Temporarily not converting to integers         due to an issue in pandas. This is expected to be fixed in pandas 1.1.         See <a class="reference external" href="https://github.com/pandas-dev/pandas/issues/33803">https://github.com/pandas-dev/pandas/issues/33803</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame.</em>) – </p></li>
-<li><p><strong>category</strong> (<em>bool</em><em>, </em><em>default True</em>) – Change dtypes of columns with dtype “object” to “category”. Set threshold using cat_threshold or exclude         columns using cat_exclude.</p></li>
-<li><p><strong>cat_threshold</strong> (<em>float</em><em>, </em><em>default 0.05</em>) – Ratio of unique values below which categories are inferred and column dtype is changed to categorical.</p></li>
-<li><p><strong>cat_exclude</strong> (<em>list</em><em>, </em><em>default None</em>) – List of columns to exclude from categorical conversion.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame</p>
+</dd>
+<dt><strong>category</strong><span class="classifier">bool, optional</span></dt><dd><p>Change dtypes of columns with dtype “object” to “category”. Set threshold using cat_threshold or exclude         columns using cat_exclude, by default True</p>
+</dd>
+<dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical,         by default 0.05</p>
+</dd>
+<dt><strong>cat_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>data</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>Pandas DataFrame with converted Datatypes</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Pandas DataFrame</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.clean.data_cleaning">
-<code class="sig-prename descclassname">klib.clean.</code><code class="sig-name descname">data_cleaning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="o">=</span><span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="o">=</span><span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_duplicates</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">convert_dtypes</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">category</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="o">=</span><span class="default_value">0.03</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">'changes'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.clean.data_cleaning" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.clean.</code><code class="sig-name descname">data_cleaning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_duplicates</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">convert_dtypes</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">category</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.03</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">show</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'changes'</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.clean.data_cleaning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty         columns as well as optimizing the datatypes.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame.</em>) – </p></li>
-<li><p><strong>drop_threshold_cols</strong> (<em>float</em><em>, </em><em>default 0.9</em>) – Drop columns with NA-ratio equal to or above the specified threshold.</p></li>
-<li><p><strong>drop_threshold_rows</strong> (<em>float</em><em>, </em><em>default 0.9</em>) – Drop rows with NA-ratio equal to or above the specified threshold.</p></li>
-<li><p><strong>drop_duplicates</strong> (<em>bool</em><em>, </em><em>default True</em>) – Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.</p></li>
-<li><p><strong>convert_dtypes</strong> (<em>bool</em><em>, </em><em>default True</em>) – Convert dtypes using pd.convert_dtypes().</p></li>
-<li><p><strong>col_exclude</strong> (<em>list</em><em>, </em><em>default None</em>) – Specify a list of columns to exclude from dropping.</p></li>
-<li><p><strong>category</strong> (<em>bool</em><em>, </em><em>default True</em>) – Enable changing dtypes of ‘object’ columns to “category”. Set threshold using cat_threshold. Requires         convert_dtypes=True.</p></li>
-<li><p><strong>cat_threshold</strong> (<em>float</em><em>, </em><em>default 0.03</em>) – Ratio of unique values below which categories are inferred and column dtype is changed to categorical.</p></li>
-<li><p><strong>cat_exclude</strong> (<em>list</em><em>, </em><em>default None</em>) – List of columns to exclude from categorical conversion.</p></li>
-<li><p><strong>show</strong> (<em>{'all'</em><em>, </em><em>'changes'</em><em>, </em><em>None} default 'all'</em>) – Specify verbosity of the output.
-* ‘all’: Print information about the data before and after cleaning as well as information about changes.
-* ‘changes’: Print out differences in the data before and after cleaning.
-* None: No information about the data and the data cleaning is printed.</p></li>
+<dd class="field-odd"><dl>
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame</p>
+</dd>
+<dt><strong>drop_threshold_cols</strong><span class="classifier">float, optional</span></dt><dd><p>Drop columns with NA-ratio equal to or above the specified threshold, by default 0.9</p>
+</dd>
+<dt><strong>drop_threshold_rows</strong><span class="classifier">float, optional</span></dt><dd><p>Drop rows with NA-ratio equal to or above the specified threshold, by default 0.9</p>
+</dd>
+<dt><strong>drop_duplicates</strong><span class="classifier">bool, optional</span></dt><dd><p>Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values, by         default True</p>
+</dd>
+<dt><strong>convert_dtypes</strong><span class="classifier">bool, optional</span></dt><dd><p>Convert dtypes using pd.convert_dtypes(), by default True</p>
+</dd>
+<dt><strong>col_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>Specify a list of columns to exclude from dropping, by default None</p>
+</dd>
+<dt><strong>category</strong><span class="classifier">bool, optional</span></dt><dd><p>Enable changing dtypes of ‘object’ columns to “category”. Set threshold using cat_threshold. Requires         convert_dtypes=True, by default True</p>
+</dd>
+<dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by         default 0.03</p>
+</dd>
+<dt><strong>cat_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
+</dd>
+<dt><strong>show</strong><span class="classifier">str, optional</span></dt><dd><p>{‘all’, ‘changes’, None}, by default “changes”
+Specify verbosity of the output:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘all’: Print information about the data before and after cleaning as well as information about changes             and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.</p></li>
+<li><p>‘changes’: Print out differences in the data before and after cleaning.</p></li>
+<li><p>None: No information about the data and the data cleaning is printed.</p></li>
 </ul>
+</div></blockquote>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>data_cleaned</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>Cleaned Pandas DataFrame</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Pandas DataFrame</p>
+</dl>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="#klib.clean.convert_datatypes" title="klib.clean.convert_datatypes"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_datatypes()</span></code></a></dt><dd><p>Convert columns to best possible dtypes.</p>
+<dt><a class="reference internal" href="#klib.clean.convert_datatypes" title="klib.clean.convert_datatypes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_datatypes</span></code></a></dt><dd><p>Convert columns to best possible dtypes.</p>
 </dd>
-<dt><a class="reference internal" href="#klib.clean.drop_missing" title="klib.clean.drop_missing"><code class="xref py py-func docutils literal notranslate"><span class="pre">drop_missing()</span></code></a></dt><dd><p>Flexibly drop columns and rows.</p>
+<dt><a class="reference internal" href="#klib.clean.drop_missing" title="klib.clean.drop_missing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drop_missing</span></code></a></dt><dd><p>Flexibly drop columns and rows.</p>
 </dd>
-<dt><code class="xref py py-func docutils literal notranslate"><span class="pre">_memory_usage()</span></code></dt><dd><p>Gives the total memory usage in kilobytes.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">_memory_usage</span></code></dt><dd><p>Gives the total memory usage in megabytes.</p>
 </dd>
-<dt><code class="xref py py-func docutils literal notranslate"><span class="pre">_missing_vals()</span></code></dt><dd><p>Metrics about missing values in the dataset.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">_missing_vals</span></code></dt><dd><p>Metrics about missing values in the dataset.</p>
 </dd>
 </dl>
 </div>
@@ -130,31 +133,35 @@
 
 <dl class="py function">
 <dt id="klib.clean.drop_missing">
-<code class="sig-prename descclassname">klib.clean.</code><code class="sig-name descname">drop_missing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.clean.drop_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Drops completely empty columns and rows by default and optionally provides flexibility to loosen restrictions to     drop additional non-empty columns and rows based on the fraction of NA-values.</p>
+<code class="sig-prename descclassname">klib.clean.</code><code class="sig-name descname">drop_missing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.clean.drop_missing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drops completely empty columns and rows by default and optionally provides flexibility to loosen restrictions         to drop additional non-empty columns and rows based on the fraction of NA-values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame.</em>) – </p></li>
-<li><p><strong>drop_threshold_cols</strong> (<em>float</em><em>, </em><em>default 1</em>) – Drop columns with NA-ratio equal to or above the specified threshold.</p></li>
-<li><p><strong>drop_threshold_rows</strong> (<em>float</em><em>, </em><em>default 1</em>) – Drop rows with NA-ratio equal to or above the specified threshold.</p></li>
-<li><p><strong>col_exclude</strong> (<em>list</em><em>, </em><em>default None</em>) – Specify a list of columns to exclude from dropping.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame</p>
+</dd>
+<dt><strong>drop_threshold_cols</strong><span class="classifier">float, optional</span></dt><dd><p>Drop columns with NA-ratio equal to or above the specified threshold, by default 1</p>
+</dd>
+<dt><strong>drop_threshold_rows</strong><span class="classifier">float, optional</span></dt><dd><p>Drop rows with NA-ratio equal to or above the specified threshold, by default 1</p>
+</dd>
+<dt><strong>col_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>Specify a list of columns to exclude from dropping, by default None</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>data_cleaned</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>Pandas DataFrame without any empty columns or rows</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Pandas DataFrame</p>
+</dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Columns are dropped first.</p>
+<p>Columns are dropped first</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.clean.mv_col_handling">
-<code class="sig-prename descclassname">klib.clean.</code><code class="sig-name descname">mv_col_handling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mv_threshold</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">corr_thresh_features</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">corr_thresh_target</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">return_details</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.clean.mv_col_handling" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.clean.</code><code class="sig-name descname">mv_col_handling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>pandas.core.series.Series<span class="p">, </span>List<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mv_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">corr_thresh_features</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">corr_thresh_target</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">return_details</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.clean.mv_col_handling" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts columns with a high ratio of missing values into binary features and eventually drops them based on     their correlation with other features and the target variable. This function follows a three step process:
 - 1) Identify features with a high ratio of missing values (above ‘mv_threshold’).
 - 2) Identify high correlations of these features among themselves and with other features in the dataset (above          ‘corr_thresh_features’).
@@ -162,23 +169,29 @@
 <p>Note: If no target is provided, the process exits after step two and drops columns identified up to this point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame.</em>) – </p></li>
-<li><p><strong>target</strong> (<em>string</em><em>, </em><em>list</em><em>, </em><em>np.array</em><em> or </em><em>pd.Series</em><em>, </em><em>default None</em>) – Specify target for correlation. I.e. label column to generate only the correlations between each feature         and the label.</p></li>
-<li><p><strong>mv_threshold</strong> (<em>float</em><em>, </em><em>default 0.1</em>) – Value between 0 &lt;= threshold &lt;= 1. Features with a missing-value-ratio larger than mv_threshold are candidates         for dropping and undergo further analysis.</p></li>
-<li><p><strong>corr_thresh_features</strong> (<em>float</em><em>, </em><em>default 0.5</em>) – Value between 0 &lt;= threshold &lt;= 1. Maximum correlation a previously identified features (with a high mv-ratio)         is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further         analysis.</p></li>
-<li><p><strong>corr_thresh_target</strong> (<em>float</em><em>, </em><em>default 0.3</em>) – Value between 0 &lt;= threshold &lt;= 1. Minimum required correlation of a remaining feature (i.e. feature with a         high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met         the feature is ultimately dropped.</p></li>
-<li><p><strong>return_details</strong> (<em>bool</em><em>, </em><em>default False</em>) – Provdies flexibility to return intermediary results.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame</p>
+</dd>
+<dt><strong>target</strong><span class="classifier">Optional[Union[str, pd.Series, List]], optional</span></dt><dd><p>Specify target for correlation. I.e. label column to generate only the correlations between each feature         and the label, by default None</p>
+</dd>
+<dt><strong>mv_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1. Features with a missing-value-ratio larger than mv_threshold are candidates         for dropping and undergo further analysis, by default 0.1</p>
+</dd>
+<dt><strong>corr_thresh_features</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1. Maximum correlation a previously identified features (with a high mv-ratio)         is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further         analysis, by default 0.5</p>
+</dd>
+<dt><strong>corr_thresh_target</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1. Minimum required correlation of a remaining feature (i.e. feature with a         high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met         the feature is ultimately dropped, by default 0.3</p>
+</dd>
+<dt><strong>return_details</strong><span class="classifier">bool, optional</span></dt><dd><p>Provdies flexibility to return intermediary results, by default False</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>data</strong> (<em>Updated Pandas DataFrame</em>)</p></li>
-<li><p><em>optional</em></p></li>
-<li><p><strong>cols_mv</strong> (<em>Columns with missing values included in the analysis</em>)</p></li>
-<li><p><strong>drop_cols</strong> (<em>List of dropped columns</em>)</p></li>
-</ul>
-</p>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>Updated Pandas DataFrame</p>
+</dd>
+<dt>optional:</dt><dd></dd>
+<dt>cols_mv: Columns with missing values included in the analysis</dt><dd></dd>
+<dt>drop_cols: List of dropped columns</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -194,90 +207,115 @@
 </dl>
 <dl class="py function">
 <dt id="klib.describe.cat_plot">
-<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">cat_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">14, 14</span></em>, <em class="sig-param"><span class="n">top</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">bottom</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">bar_color_top</span><span class="o">=</span><span class="default_value">'#5ab4ac'</span></em>, <em class="sig-param"><span class="n">bar_color_bottom</span><span class="o">=</span><span class="default_value">'#d8b365'</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'BrBG'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.describe.cat_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">cat_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">16, 16</span></em>, <em class="sig-param"><span class="n">top</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">3</span></em>, <em class="sig-param"><span class="n">bottom</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">3</span></em>, <em class="sig-param"><span class="n">bar_color_top</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'#5ab4ac'</span></em>, <em class="sig-param"><span class="n">bar_color_bottom</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'#d8b365'</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'BrBG'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.describe.cat_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two-dimensional visualization of the number and frequency of categorical features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>14</em><em>, </em><em>14</em><em>)</em>) – Use to control the figure size.</p></li>
-<li><p><strong>top</strong> (<em>int</em><em>, </em><em>default 3</em>) – Show the “top” most frequent values in a column.</p></li>
-<li><p><strong>bottom</strong> (<em>int</em><em>, </em><em>default 3</em>) – Show the “bottom” most frequent values in a column.</p></li>
-<li><p><strong>bar_color_top</strong> (<em>color</em><em>, </em><em>default '#5ab4ac'</em>) – Use to control the color of the bars indicating the most common values.</p></li>
-<li><p><strong>bar_color_bottom</strong> (<em>color</em><em>, </em><em>default '#d8b365'</em>) – Use to control the color of the bars indicating the least common values.</p></li>
-<li><p><strong>cmap</strong> (<em>matplotlib colormap name</em><em> or </em><em>object</em><em>, or </em><em>list of colors</em><em>, </em><em>default 'BrBG'</em>) – The mapping from data values to color space.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots</p>
+</dd>
+<dt><strong>figsize</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Use to control the figure size, by default (16, 16)</p>
+</dd>
+<dt><strong>top</strong><span class="classifier">int, optional</span></dt><dd><p>Show the “top” most frequent values in a column, by default 3</p>
+</dd>
+<dt><strong>bottom</strong><span class="classifier">int, optional</span></dt><dd><p>Show the “bottom” most frequent values in a column, by default 3</p>
+</dd>
+<dt><strong>bar_color_top</strong><span class="classifier">str, optional</span></dt><dd><p>Use to control the color of the bars indicating the most common values, by default “#5ab4ac”</p>
+</dd>
+<dt><strong>bar_color_bottom</strong><span class="classifier">str, optional</span></dt><dd><p>Use to control the color of the bars indicating the least common values, by default “#d8b365”</p>
+</dd>
+<dt><strong>cmap</strong><span class="classifier">str, optional</span></dt><dd><p>The mapping from data values to color space, by default “BrBG”</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>gs</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>Gridspec</dt><dd><p>gs: Figure with array of Axes objects</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Figure with array of Axes objects.</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.describe.corr_mat">
-<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">corr_mat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'pearson'</span></em>, <em class="sig-param"><span class="n">colored</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.describe.corr_mat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">corr_mat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">split</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>pandas.core.frame.DataFrame<span class="p">, </span>pandas.core.series.Series<span class="p">, </span>numpy.ndarray<span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'pearson'</span></em>, <em class="sig-param"><span class="n">colored</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>pandas.core.frame.DataFrame<span class="p">, </span>Any<span class="p">]</span><a class="headerlink" href="#klib.describe.corr_mat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a color-encoded correlation matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>split</strong> (<em>{None</em><em>, </em><em>'pos'</em><em>, </em><em>'neg'</em><em>, </em><em>'above'</em><em>, </em><em>'below'}</em><em>, </em><em>default None</em>) – Type of split to be performed.</p></li>
-<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default 0</em>) – Value between 0 &lt;= threshold &lt;= 1</p></li>
-<li><p><strong>target</strong> (<em>string</em><em>, </em><em>list</em><em>, </em><em>np.array</em><em> or </em><em>pd.Series</em><em>, </em><em>default None</em>) – Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label.</p></li>
-<li><p><strong>method</strong> (<em>{'pearson'</em><em>, </em><em>'spearman'</em><em>, </em><em>'kendall'}</em><em>, </em><em>default 'pearson'</em>) – <ul>
-<li><p>pearson: measures linear relationships and requires normally distributed and homoscedastic data.</p></li>
-<li><p>spearman: ranked/ordinal correlation, measures monotonic relationships.</p></li>
-<li><p>kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but                     more robus in smaller dataets than ‘spearman’.</p></li>
-</ul>
-</p></li>
-<li><p><strong>colored</strong> (<em>bool</em><em>, </em><em>default True</em>) – If True the negative values in the correlation matrix are colored in red.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots</p>
+</dd>
+<dt><strong>split</strong><span class="classifier">Optional[str], optional</span></dt><dd><p>Type of split to be performed, by default None
+{None, ‘pos’, ‘neg’, ‘above’, ‘below’}</p>
+</dd>
+<dt><strong>threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1, by default 0</p>
+</dd>
+<dt><strong>target</strong><span class="classifier">Optional[Union[pd.DataFrame, str]], optional</span></dt><dd><p>Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label, by default None</p>
+</dd>
+<dt><strong>method</strong><span class="classifier">str, optional</span></dt><dd><p>method: {‘pearson’, ‘spearman’, ‘kendall’}, by default “pearson”
+* pearson: measures linear relationships and requires normally distributed and homoscedastic data.
+* spearman: ranked/ordinal correlation, measures monotonic relationships.
+* kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but             more robust in smaller dataets than ‘spearman’</p>
+</dd>
+<dt><strong>colored</strong><span class="classifier">bool, optional</span></dt><dd><p>If True the negative values in the correlation matrix are colored in red, by default True</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>If colored = True - corr</strong> (<em>Pandas Styler object</em>)</p></li>
-<li><p><strong>If colored = False - corr</strong> (<em>Pandas DataFrame</em>)</p></li>
-</ul>
-</p>
+<dd class="field-even"><dl class="simple">
+<dt>Union[pd.DataFrame, pd.Styler]</dt><dd><p>If colored = True - corr: Pandas Styler object
+If colored = False - corr: Pandas DataFrame</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.describe.corr_plot">
-<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">corr_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'pearson'</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'BrBG'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">12, 10</span></em>, <em class="sig-param"><span class="n">annot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.describe.corr_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">corr_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">split</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>pandas.core.series.Series<span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'pearson'</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'BrBG'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">12, 10</span></em>, <em class="sig-param"><span class="n">annot</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dev</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.describe.corr_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two-dimensional visualization of the correlation between feature-columns, excluding NA values.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>split</strong> (<em>{None</em><em>, </em><em>'pos'</em><em>, </em><em>'neg'</em><em>, </em><em>'above'</em><em>, </em><em>'below'}</em><em>, </em><em>default None</em>) – <p>Type of split to be performed.</p>
-<ul>
-<li><p>None: visualize all correlations between the feature-columns.</p></li>
-<li><p>pos: visualize all positive correlations between the feature-columns above the threshold.</p></li>
-<li><p>neg: visualize all negative correlations between the feature-columns below the threshold.</p></li>
-<li><p>above: visualize all correlations between the feature-columns for which abs(corr) &gt; threshold is True.</p></li>
-<li><p>below: visualize all correlations between the feature-columns for which abs(corr) &lt; threshold is True.</p></li>
+<dd class="field-odd"><dl>
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column         information is used to label the plots</p>
+</dd>
+<dt><strong>split</strong><span class="classifier">Optional[str], optional</span></dt><dd><p>Type of split to be performed, by default None
+{None, ‘pos’, ‘neg’, ‘above’, ‘below’}</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>None: visualize all correlations between the feature-columns</p></li>
+<li><p>pos: visualize all positive correlations between the feature-columns above the threshold</p></li>
+<li><p>neg: visualize all negative correlations between the feature-columns below the threshold</p></li>
+<li><p>above: visualize all correlations between the feature-columns for which abs(corr) &gt; threshold is True</p></li>
+<li><p>below: visualize all correlations between the feature-columns for which abs(corr) &lt; threshold is True</p></li>
 </ul>
-</p></li>
-<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default 0</em>) – Value between 0 &lt;= threshold &lt;= 1</p></li>
-<li><p><strong>target</strong> (<em>string</em><em>, </em><em>list</em><em>, </em><em>np.array</em><em> or </em><em>pd.Series</em><em>, </em><em>default None</em>) – Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label.</p></li>
-<li><p><strong>method</strong> (<em>{'pearson'</em><em>, </em><em>'spearman'</em><em>, </em><em>'kendall'}</em><em>, </em><em>default 'pearson'</em>) – <ul>
+</div></blockquote>
+</dd>
+<dt><strong>threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1, by default 0</p>
+</dd>
+<dt><strong>target</strong><span class="classifier">Optional[Union[pd.Series, str]], optional</span></dt><dd><p>Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label, by default None</p>
+</dd>
+<dt><strong>method</strong><span class="classifier">str, optional</span></dt><dd><dl class="simple">
+<dt>method: {‘pearson’, ‘spearman’, ‘kendall’}, by default “pearson”</dt><dd><ul class="simple">
 <li><p>pearson: measures linear relationships and requires normally distributed and homoscedastic data.</p></li>
 <li><p>spearman: ranked/ordinal correlation, measures monotonic relationships.</p></li>
-<li><p>kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but                    more robust in smaller dataets than ‘spearman’.</p></li>
+<li><p>kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive                 but more robust in smaller dataets than ‘spearman’.</p></li>
 </ul>
-</p></li>
-<li><p><strong>cmap</strong> (<em>matplotlib colormap name</em><em> or </em><em>object</em><em>, or </em><em>list of colors</em><em>, </em><em>default 'BrBG'</em>) – The mapping from data values to color space.</p></li>
-<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>12</em><em>, </em><em>10</em><em>)</em>) – Use to control the figure size.</p></li>
-<li><p><strong>annot</strong> (<em>bool</em><em>, </em><em>default True</em>) – Use to show or hide annotations.</p></li>
-<li><p><strong>dev</strong> (<em>bool</em><em>, </em><em>default False</em>) – Display figure settings in the plot by setting dev = True. If False, the settings are not displayed.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional</em>) – <p>Additional elements to control the visualization of the plot, e.g.:</p>
-<ul>
+</dd>
+</dl>
+</dd>
+<dt><strong>cmap</strong><span class="classifier">str, optional</span></dt><dd><p>The mapping from data values to color space, matplotlib colormap name or object, or list of colors, by default         “BrBG”</p>
+</dd>
+<dt><strong>figsize</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Use to control the figure size, by default (12, 10)</p>
+</dd>
+<dt><strong>annot</strong><span class="classifier">bool, optional</span></dt><dd><p>Use to show or hide annotations, by default True</p>
+</dd>
+<dt><strong>dev</strong><span class="classifier">bool, optional</span></dt><dd><p>Display figure settings in the plot by setting dev = True. If False, the settings are not displayed, by         default False</p>
+</dd>
+<dt><strong>**kwargs: optional</strong></dt><dd><p>Additional elements to control the visualization of the plot, e.g.:</p>
+<ul class="simple">
 <li><p>mask: bool, default True</p></li>
 </ul>
 <p>If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this         case to avoid overlap.
@@ -293,73 +331,86 @@ Controls the font size of the annotations. Only available when annot = True.
 Controls the size of the colorbar.
 * Many more kwargs are available, i.e. ‘alpha’ to control blending, or options to adjust labels, ticks …</p>
 <p>Kwargs can be supplied through a dictionary of key-value pairs (see above).</p>
-</p></li>
-</ul>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>ax</strong> – Returns the Axes object with the plot for further tweaking.</p>
+<dd class="field-even"><dl class="simple">
+<dt>ax: matplotlib Axes</dt><dd><p>Returns the Axes object with the plot for further tweaking.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matplotlib Axes</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.describe.dist_plot">
-<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">dist_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">mean_color</span><span class="o">=</span><span class="default_value">'orange'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">14, 2</span></em>, <em class="sig-param"><span class="n">fill_range</span><span class="o">=</span><span class="default_value">0.025, 0.975</span></em>, <em class="sig-param"><span class="n">hist</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">showall</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">kde_kws</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rug_kws</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fill_kws</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">font_kws</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.describe.dist_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">dist_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">mean_color</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'orange'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">14, 2</span></em>, <em class="sig-param"><span class="n">fill_range</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">0.025, 0.975</span></em>, <em class="sig-param"><span class="n">hist</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">bins</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">10</span></em>, <em class="sig-param"><span class="n">showall</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">kde_kws</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rug_kws</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fill_kws</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">font_kws</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.describe.dist_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two-dimensional visualization of the distribution of numerical features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>mean_color</strong> (<em>color</em><em>, </em><em>default 'orange'</em>) – Color of the vertical line indicating the mean of the data.</p></li>
-<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>14</em><em>, </em><em>2</em><em>)</em>) – Controls the figure size.</p></li>
-<li><p><strong>fill_range</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>0.025</em><em>, </em><em>0.975</em><em>)</em>) – Set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations         above and below the mean.</p></li>
-<li><p><strong>hist</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True to display histogram bars in the plot.</p></li>
-<li><p><strong>bins</strong> (<em>integer</em><em>, </em><em>default 10</em>) – Specification of the number of hist bins. Requires hist = True</p></li>
-<li><p><strong>showall</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True to remove the output limit of 20 plots.</p></li>
-<li><p><strong>kdw_kws</strong> (<em>dict</em><em>, </em><em>default {'color': 'k'</em><em>, </em><em>'alpha': 0.7</em><em>, </em><em>'linewidth': 1}</em>) – Keyword arguments for kdeplot().</p></li>
-<li><p><strong>rug_kws</strong> (<em>dict</em><em>, </em><em>default {'color': 'brown'</em><em>, </em><em>'alpha': 0.5</em><em>, </em><em>'linewidth': 2</em><em>, </em><em>'height': 0.04}</em>) – Keyword arguments for rugplot().</p></li>
-<li><p><strong>fill_kws</strong> (<em>dict</em><em>, </em><em>default {'color': 'brown'</em><em>, </em><em>'alpha': 0.1}</em>) – Keyword arguments to control the fill.</p></li>
-<li><p><strong>font_kws</strong> (<em>dict</em><em>, </em><em>default {'color':  '#111111'</em><em>, </em><em>'weight': 'normal'</em><em>, </em><em>'size': 11}</em>) – Keyword arguments to control the font.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots</p>
+</dd>
+<dt><strong>mean_color</strong><span class="classifier">str, optional</span></dt><dd><p>Color of the vertical line indicating the mean of the data, by default “orange”</p>
+</dd>
+<dt><strong>figsize</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Controls the figure size, by default (14, 2)</p>
+</dd>
+<dt><strong>fill_range</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations         above and below the mean, by default (0.025, 0.975)</p>
+</dd>
+<dt><strong>hist</strong><span class="classifier">bool, optional</span></dt><dd><p>Set to True to display histogram bars in the plot, by default False</p>
+</dd>
+<dt><strong>bins</strong><span class="classifier">int, optional</span></dt><dd><p>Specification of the number of hist bins. Requires hist = True, by default 10</p>
+</dd>
+<dt><strong>showall</strong><span class="classifier">bool, optional</span></dt><dd><p>Set to True to remove the output limit of 20 plots, by default False</p>
+</dd>
+<dt><strong>kde_kws</strong><span class="classifier">Dict[str, Any], optional</span></dt><dd><p>Keyword arguments for kdeplot(), by default {‘color’: ‘k’, ‘alpha’: 0.7, ‘linewidth’: 1}</p>
+</dd>
+<dt><strong>rug_kws</strong><span class="classifier">Dict[str, Any], optional</span></dt><dd><p>Keyword arguments for rugplot(), by default {‘color’: ‘brown’, ‘alpha’: 0.5, ‘linewidth’: 2, ‘height’: 0.04}</p>
+</dd>
+<dt><strong>fill_kws</strong><span class="classifier">Dict[str, Any], optional</span></dt><dd><p>Keyword arguments to control the fill, by default {‘color’: ‘brown’, ‘alpha’: 0.1}</p>
+</dd>
+<dt><strong>font_kws</strong><span class="classifier">Dict[str, Any], optional</span></dt><dd><p>Keyword arguments to control the font, by default {‘color’:  ‘#111111’, ‘weight’: ‘normal’, ‘size’: 11}</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>ax</strong> – Returns the Axes object with the plot for further tweaking.</p>
+<dd class="field-even"><dl class="simple">
+<dt>[type]</dt><dd><p>[description]</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matplotlib Axes</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.describe.missingval_plot">
-<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">missingval_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'PuBuGn'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">12, 12</span></em>, <em class="sig-param"><span class="n">sort</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">spine_color</span><span class="o">=</span><span class="default_value">'#EEEEEE'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.describe.missingval_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.describe.</code><code class="sig-name descname">missingval_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'PuBuGn'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">20, 20</span></em>, <em class="sig-param"><span class="n">sort</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">spine_color</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'#EEEEEE'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.describe.missingval_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two-dimensional visualization of the missing values in a dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>cmap</strong> (<em>colormap</em><em>, </em><em>default 'PuBuGn'</em>) – Any valid colormap can be used. E.g. ‘Greys’, ‘RdPu’. More information can be found in the matplotlib         documentation.</p></li>
-<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>12</em><em>, </em><em>12</em><em>)</em>) – Use to control the figure size.</p></li>
-<li><p><strong>sort</strong> (<em>bool</em><em>, </em><em>default False</em>) – Sort columns based on missing values in descending order and drop columns without any missing values.</p></li>
-<li><p><strong>spine_color</strong> (<em>color</em><em>, </em><em>default '#EEEEEE'</em>) – Set to ‘None’ to hide the spines on all plots or use any valid matplotlib color argument.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots</p>
+</dd>
+<dt><strong>cmap</strong><span class="classifier">str, optional</span></dt><dd><p>Any valid colormap can be used. E.g. ‘Greys’, ‘RdPu’. More information can be found in the matplotlib         documentation, by default “PuBuGn”</p>
+</dd>
+<dt><strong>figsize</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Use to control the figure size, by default (20, 20)</p>
+</dd>
+<dt><strong>sort</strong><span class="classifier">bool, optional</span></dt><dd><p>Sort columns based on missing values in descending order and drop columns without any missing values,         by default False</p>
+</dd>
+<dt><strong>spine_color</strong><span class="classifier">str, optional</span></dt><dd><p>Set to ‘None’ to hide the spines on all plots or use any valid matplotlib color argument, by default “#EEEEEE”</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>gs</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>GridSpec</dt><dd><p>gs: Figure with array of Axes objects</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Figure with array of Axes objects.</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-klib.ingest">
-<span id="klib-ingest-module"></span><h2>klib.ingest module<a class="headerlink" href="#module-klib.ingest" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-klib.preprocess">
 <span id="klib-preprocess-module"></span><h2>klib.preprocess module<a class="headerlink" href="#module-klib.preprocess" title="Permalink to this headline">¶</a></h2>
@@ -371,82 +422,28 @@ Controls the size of the colorbar.
 </dl>
 <dl class="py function">
 <dt id="klib.preprocess.cat_pipe">
-<code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">cat_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imputer</span><span class="o">=</span><span class="default_value">SimpleImputer(strategy='most_frequent')</span></em>, <em class="sig-param"><span class="n">encoder</span><span class="o">=</span><span class="default_value">OneHotEncoder(handle_unknown='ignore')</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">MaxAbsScaler()</span></em>, <em class="sig-param"><span class="n">encoder_info</span><span class="o">=</span><span class="default_value">PipeInfo(name='after encoding')</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.cat_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">cat_pipe</code><span class="sig-paren">(</span><em class="sig-param">imputer=SimpleImputer(add_indicator=False</em>, <em class="sig-param">copy=True</em>, <em class="sig-param">fill_value=None</em>, <em class="sig-param">missing_values=nan</em>, <em class="sig-param">strategy='most_frequent'</em>, <em class="sig-param">verbose=0)</em>, <em class="sig-param">encoder=OneHotEncoder(categories='auto'</em>, <em class="sig-param">drop=None</em>, <em class="sig-param">dtype=&lt;class 'numpy.float64'&gt;</em>, <em class="sig-param">handle_unknown='ignore'</em>, <em class="sig-param">sparse=True)</em>, <em class="sig-param">scaler=MaxAbsScaler(copy=True)</em>, <em class="sig-param">encoder_info=PipeInfo(name='after encoding')</em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.cat_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard preprocessing operations on categorical data.</p>
-<p>imputer: default, SimpleImputer(strategy=’most_frequent’)</p>
-<dl class="simple">
-<dt>encoder: default, OneHotEncoder(handle_unknown=’ignore’)</dt><dd><p>Encode categorical features as a one-hot numeric array.</p>
-</dd>
-<dt>scaler: default, MaxAbsScaler()</dt><dd><p>Scale each feature by its maximum absolute value. MaxAbsScaler() does not shift/center the data, and thus does         not destroy any sparsity. It is recommended to check for outliers before applying MaxAbsScaler().</p>
-</dd>
-<dt>encoder_info:</dt><dd><p>Prints the shape of the dataset at the end of ‘cat_pipe’. Set to ‘None’ to avoid printing the shape of         dataset. This parameter can also be set as a hyperparameter, e.g. ‘pipeline__pipeinfo-1’: [None] or         ‘pipeline__pipeinfo-1__name’: [‘my_custom_name’].</p>
-</dd>
-</dl>
-<p>Pipeline</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.preprocess.feature_selection_pipe">
-<code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">feature_selection_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">var_thresh</span><span class="o">=</span><span class="default_value">VarianceThreshold(threshold=0.1)</span></em>, <em class="sig-param"><span class="n">select_from_model</span><span class="o">=</span><span class="default_value">SelectFromModel(estimator=LassoCV(cv=4, random_state=408), threshold='0.1*median')</span></em>, <em class="sig-param"><span class="n">select_percentile</span><span class="o">=</span><span class="default_value">SelectPercentile(percentile=95)</span></em>, <em class="sig-param"><span class="n">var_thresh_info</span><span class="o">=</span><span class="default_value">PipeInfo(name='after var_thresh')</span></em>, <em class="sig-param"><span class="n">select_from_model_info</span><span class="o">=</span><span class="default_value">PipeInfo(name='after select_from_model')</span></em>, <em class="sig-param"><span class="n">select_percentile_info</span><span class="o">=</span><span class="default_value">PipeInfo(name='after select_percentile')</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.feature_selection_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">feature_selection_pipe</code><span class="sig-paren">(</span><em class="sig-param">var_thresh=VarianceThreshold(threshold=0.1)</em>, <em class="sig-param">select_from_model=SelectFromModel(estimator=LassoCV(alphas=None</em>, <em class="sig-param">copy_X=True</em>, <em class="sig-param">cv=4</em>, <em class="sig-param">eps=0.001</em>, <em class="sig-param">fit_intercept=True</em>, <em class="sig-param">max_iter=1000</em>, <em class="sig-param">n_alphas=100</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">positive=False</em>, <em class="sig-param">precompute='auto'</em>, <em class="sig-param">random_state=408</em>, <em class="sig-param">selection='cyclic'</em>, <em class="sig-param">tol=0.0001</em>, <em class="sig-param">verbose=False)</em>, <em class="sig-param">max_features=None</em>, <em class="sig-param">norm_order=1</em>, <em class="sig-param">prefit=False</em>, <em class="sig-param">threshold='0.1*median')</em>, <em class="sig-param">select_percentile=SelectPercentile(percentile=95</em>, <em class="sig-param">score_func=&lt;function f_classif&gt;)</em>, <em class="sig-param">var_thresh_info=PipeInfo(name='after var_thresh')</em>, <em class="sig-param">select_from_model_info=PipeInfo(name='after select_from_model')</em>, <em class="sig-param">select_percentile_info=PipeInfo(name='after select_percentile')</em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.feature_selection_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Preprocessing operations for feature selection.</p>
-<dl class="simple">
-<dt>var_thresh: default, VarianceThreshold(threshold=0.1)</dt><dd><p>Specify a threshold to drop low variance features.</p>
-</dd>
-<dt>select_from_model: default, SelectFromModel(LassoCV(cv=4, random_state=408), threshold=”0.1*median”)</dt><dd><p>Specify an estimator which is used for selecting features based on importance weights.</p>
-</dd>
-<dt>select_percentile: default, SelectPercentile(f_classif, percentile=95)</dt><dd><p>Specify a score-function and a percentile value of features to keep.</p>
-</dd>
-<dt>var_thresh_info, select_from_model_info, select_percentile_info</dt><dd><p>Prints the shape of the dataset after applying the respective function. Set to ‘None’ to avoid printing the         shape of dataset. This parameter can also be set as a hyperparameter, e.g. ‘pipeline__pipeinfo-1’: [None]         or ‘pipeline__pipeinfo-1__name’: [‘my_custom_name’].</p>
-</dd>
-</dl>
-<p>Pipeline</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.preprocess.num_pipe">
-<code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">num_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imputer</span><span class="o">=</span><span class="default_value">IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408)</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">RobustScaler()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.num_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">num_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imputer</span><span class="o">=</span><span class="default_value">IterativeImputer(add_indicator=False, estimator=ExtraTreesRegressor(bootstrap=False, ccp_alpha=0.0, criterion='mse', max_depth=None, max_features='auto', max_leaf_nodes=None, max_samples=None, min_impurity_decrease=0.0, min_impurity_split=None, min_samples_leaf=1, min_samples_split=2, min_weight_fraction_leaf=0.0, n_estimators=25, n_jobs=4, oob_score=False, random_state=408, verbose=0, warm_start=False), imputation_order='ascending', initial_strategy='mean', max_iter=10, max_value=None, min_value=None, missing_values=nan, n_nearest_features=None, random_state=408, sample_posterior=False, skip_complete=False, tol=0.001, verbose=0)</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">RobustScaler(copy=True, quantile_range=25.0, 75.0, with_centering=True, with_scaling=True)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.num_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard preprocessing operations on numerical data.</p>
-<p>imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408),                                        random_state=408)</p>
-<p>scaler: default, RobustScaler()</p>
-<p>Pipeline</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.preprocess.train_dev_test_split">
 <code class="sig-prename descclassname">klib.preprocess.</code><code class="sig-name descname">train_dev_test_split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">dev_size</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">test_size</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">stratify</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">408</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.preprocess.train_dev_test_split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a dataset and a label column into train, dev and test sets.</p>
-<p>data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots.</p>
-<dl class="simple">
-<dt>target: string, list, np.array or pd.Series, default None</dt><dd><p>Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label.</p>
-</dd>
-<dt>dev_size: float, default 0.1</dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the dev         split.</p>
-</dd>
-<dt>test_size: float, default 0.1</dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the test         split.</p>
-</dd>
-<dt>stratify: target column, default None</dt><dd><p>If not None, data is split in a stratified fashion, using the input as the class labels.</p>
-</dd>
-<dt>random_state: integer, default 408</dt><dd><p>Random_state is the seed used by the random number generator.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>tuple</strong></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Tuple containing train-dev-test split of inputs.</p>
-</dd>
-</dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-klib.utils">
-<span id="klib-utils-module"></span><h2>klib.utils module<a class="headerlink" href="#module-klib.utils" title="Permalink to this headline">¶</a></h2>
-<p>Utilities and auxiliary functions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">author</dt>
-<dd class="field-odd"><p>Andreas Kanz</p>
-</dd>
-</dl>
 </div>
 <div class="section" id="module-klib">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-klib" title="Permalink to this headline">¶</a></h2>
@@ -455,128 +452,147 @@ Controls the size of the colorbar.
 <p>klib is an easy to use Python library of customized functions for cleaning and analyzing data.</p>
 <dl class="py function">
 <dt id="klib.cat_pipe">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">cat_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imputer</span><span class="o">=</span><span class="default_value">SimpleImputer(strategy='most_frequent')</span></em>, <em class="sig-param"><span class="n">encoder</span><span class="o">=</span><span class="default_value">OneHotEncoder(handle_unknown='ignore')</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">MaxAbsScaler()</span></em>, <em class="sig-param"><span class="n">encoder_info</span><span class="o">=</span><span class="default_value">PipeInfo(name='after encoding')</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.cat_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">cat_pipe</code><span class="sig-paren">(</span><em class="sig-param">imputer=SimpleImputer(add_indicator=False</em>, <em class="sig-param">copy=True</em>, <em class="sig-param">fill_value=None</em>, <em class="sig-param">missing_values=nan</em>, <em class="sig-param">strategy='most_frequent'</em>, <em class="sig-param">verbose=0)</em>, <em class="sig-param">encoder=OneHotEncoder(categories='auto'</em>, <em class="sig-param">drop=None</em>, <em class="sig-param">dtype=&lt;class 'numpy.float64'&gt;</em>, <em class="sig-param">handle_unknown='ignore'</em>, <em class="sig-param">sparse=True)</em>, <em class="sig-param">scaler=MaxAbsScaler(copy=True)</em>, <em class="sig-param">encoder_info=PipeInfo(name='after encoding')</em><span class="sig-paren">)</span><a class="headerlink" href="#klib.cat_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard preprocessing operations on categorical data.</p>
-<p>imputer: default, SimpleImputer(strategy=’most_frequent’)</p>
-<dl class="simple">
-<dt>encoder: default, OneHotEncoder(handle_unknown=’ignore’)</dt><dd><p>Encode categorical features as a one-hot numeric array.</p>
-</dd>
-<dt>scaler: default, MaxAbsScaler()</dt><dd><p>Scale each feature by its maximum absolute value. MaxAbsScaler() does not shift/center the data, and thus does         not destroy any sparsity. It is recommended to check for outliers before applying MaxAbsScaler().</p>
-</dd>
-<dt>encoder_info:</dt><dd><p>Prints the shape of the dataset at the end of ‘cat_pipe’. Set to ‘None’ to avoid printing the shape of         dataset. This parameter can also be set as a hyperparameter, e.g. ‘pipeline__pipeinfo-1’: [None] or         ‘pipeline__pipeinfo-1__name’: [‘my_custom_name’].</p>
-</dd>
-</dl>
-<p>Pipeline</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.cat_plot">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">cat_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">14, 14</span></em>, <em class="sig-param"><span class="n">top</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">bottom</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">bar_color_top</span><span class="o">=</span><span class="default_value">'#5ab4ac'</span></em>, <em class="sig-param"><span class="n">bar_color_bottom</span><span class="o">=</span><span class="default_value">'#d8b365'</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'BrBG'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.cat_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">cat_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">16, 16</span></em>, <em class="sig-param"><span class="n">top</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">3</span></em>, <em class="sig-param"><span class="n">bottom</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">3</span></em>, <em class="sig-param"><span class="n">bar_color_top</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'#5ab4ac'</span></em>, <em class="sig-param"><span class="n">bar_color_bottom</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'#d8b365'</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'BrBG'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.cat_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two-dimensional visualization of the number and frequency of categorical features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>14</em><em>, </em><em>14</em><em>)</em>) – Use to control the figure size.</p></li>
-<li><p><strong>top</strong> (<em>int</em><em>, </em><em>default 3</em>) – Show the “top” most frequent values in a column.</p></li>
-<li><p><strong>bottom</strong> (<em>int</em><em>, </em><em>default 3</em>) – Show the “bottom” most frequent values in a column.</p></li>
-<li><p><strong>bar_color_top</strong> (<em>color</em><em>, </em><em>default '#5ab4ac'</em>) – Use to control the color of the bars indicating the most common values.</p></li>
-<li><p><strong>bar_color_bottom</strong> (<em>color</em><em>, </em><em>default '#d8b365'</em>) – Use to control the color of the bars indicating the least common values.</p></li>
-<li><p><strong>cmap</strong> (<em>matplotlib colormap name</em><em> or </em><em>object</em><em>, or </em><em>list of colors</em><em>, </em><em>default 'BrBG'</em>) – The mapping from data values to color space.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots</p>
+</dd>
+<dt><strong>figsize</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Use to control the figure size, by default (16, 16)</p>
+</dd>
+<dt><strong>top</strong><span class="classifier">int, optional</span></dt><dd><p>Show the “top” most frequent values in a column, by default 3</p>
+</dd>
+<dt><strong>bottom</strong><span class="classifier">int, optional</span></dt><dd><p>Show the “bottom” most frequent values in a column, by default 3</p>
+</dd>
+<dt><strong>bar_color_top</strong><span class="classifier">str, optional</span></dt><dd><p>Use to control the color of the bars indicating the most common values, by default “#5ab4ac”</p>
+</dd>
+<dt><strong>bar_color_bottom</strong><span class="classifier">str, optional</span></dt><dd><p>Use to control the color of the bars indicating the least common values, by default “#d8b365”</p>
+</dd>
+<dt><strong>cmap</strong><span class="classifier">str, optional</span></dt><dd><p>The mapping from data values to color space, by default “BrBG”</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>gs</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>Gridspec</dt><dd><p>gs: Figure with array of Axes objects</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Figure with array of Axes objects.</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.convert_datatypes">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">convert_datatypes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">category</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.convert_datatypes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">convert_datatypes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">category</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.convert_datatypes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts columns to best possible dtypes using dtypes supporting pd.NA. Temporarily not converting to integers         due to an issue in pandas. This is expected to be fixed in pandas 1.1.         See <a class="reference external" href="https://github.com/pandas-dev/pandas/issues/33803">https://github.com/pandas-dev/pandas/issues/33803</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame.</em>) – </p></li>
-<li><p><strong>category</strong> (<em>bool</em><em>, </em><em>default True</em>) – Change dtypes of columns with dtype “object” to “category”. Set threshold using cat_threshold or exclude         columns using cat_exclude.</p></li>
-<li><p><strong>cat_threshold</strong> (<em>float</em><em>, </em><em>default 0.05</em>) – Ratio of unique values below which categories are inferred and column dtype is changed to categorical.</p></li>
-<li><p><strong>cat_exclude</strong> (<em>list</em><em>, </em><em>default None</em>) – List of columns to exclude from categorical conversion.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame</p>
+</dd>
+<dt><strong>category</strong><span class="classifier">bool, optional</span></dt><dd><p>Change dtypes of columns with dtype “object” to “category”. Set threshold using cat_threshold or exclude         columns using cat_exclude, by default True</p>
+</dd>
+<dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical,         by default 0.05</p>
+</dd>
+<dt><strong>cat_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>data</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>Pandas DataFrame with converted Datatypes</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Pandas DataFrame</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.corr_mat">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">corr_mat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'pearson'</span></em>, <em class="sig-param"><span class="n">colored</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.corr_mat" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">corr_mat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">split</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>pandas.core.frame.DataFrame<span class="p">, </span>pandas.core.series.Series<span class="p">, </span>numpy.ndarray<span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'pearson'</span></em>, <em class="sig-param"><span class="n">colored</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>pandas.core.frame.DataFrame<span class="p">, </span>Any<span class="p">]</span><a class="headerlink" href="#klib.corr_mat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a color-encoded correlation matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>split</strong> (<em>{None</em><em>, </em><em>'pos'</em><em>, </em><em>'neg'</em><em>, </em><em>'above'</em><em>, </em><em>'below'}</em><em>, </em><em>default None</em>) – Type of split to be performed.</p></li>
-<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default 0</em>) – Value between 0 &lt;= threshold &lt;= 1</p></li>
-<li><p><strong>target</strong> (<em>string</em><em>, </em><em>list</em><em>, </em><em>np.array</em><em> or </em><em>pd.Series</em><em>, </em><em>default None</em>) – Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label.</p></li>
-<li><p><strong>method</strong> (<em>{'pearson'</em><em>, </em><em>'spearman'</em><em>, </em><em>'kendall'}</em><em>, </em><em>default 'pearson'</em>) – <ul>
-<li><p>pearson: measures linear relationships and requires normally distributed and homoscedastic data.</p></li>
-<li><p>spearman: ranked/ordinal correlation, measures monotonic relationships.</p></li>
-<li><p>kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but                     more robus in smaller dataets than ‘spearman’.</p></li>
-</ul>
-</p></li>
-<li><p><strong>colored</strong> (<em>bool</em><em>, </em><em>default True</em>) – If True the negative values in the correlation matrix are colored in red.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots</p>
+</dd>
+<dt><strong>split</strong><span class="classifier">Optional[str], optional</span></dt><dd><p>Type of split to be performed, by default None
+{None, ‘pos’, ‘neg’, ‘above’, ‘below’}</p>
+</dd>
+<dt><strong>threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1, by default 0</p>
+</dd>
+<dt><strong>target</strong><span class="classifier">Optional[Union[pd.DataFrame, str]], optional</span></dt><dd><p>Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label, by default None</p>
+</dd>
+<dt><strong>method</strong><span class="classifier">str, optional</span></dt><dd><p>method: {‘pearson’, ‘spearman’, ‘kendall’}, by default “pearson”
+* pearson: measures linear relationships and requires normally distributed and homoscedastic data.
+* spearman: ranked/ordinal correlation, measures monotonic relationships.
+* kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but             more robust in smaller dataets than ‘spearman’</p>
+</dd>
+<dt><strong>colored</strong><span class="classifier">bool, optional</span></dt><dd><p>If True the negative values in the correlation matrix are colored in red, by default True</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>If colored = True - corr</strong> (<em>Pandas Styler object</em>)</p></li>
-<li><p><strong>If colored = False - corr</strong> (<em>Pandas DataFrame</em>)</p></li>
-</ul>
-</p>
+<dd class="field-even"><dl class="simple">
+<dt>Union[pd.DataFrame, pd.Styler]</dt><dd><p>If colored = True - corr: Pandas Styler object
+If colored = False - corr: Pandas DataFrame</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.corr_plot">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">corr_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'pearson'</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'BrBG'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">12, 10</span></em>, <em class="sig-param"><span class="n">annot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dev</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.corr_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">corr_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">split</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>pandas.core.series.Series<span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'pearson'</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'BrBG'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">12, 10</span></em>, <em class="sig-param"><span class="n">annot</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dev</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.corr_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two-dimensional visualization of the correlation between feature-columns, excluding NA values.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>split</strong> (<em>{None</em><em>, </em><em>'pos'</em><em>, </em><em>'neg'</em><em>, </em><em>'above'</em><em>, </em><em>'below'}</em><em>, </em><em>default None</em>) – <p>Type of split to be performed.</p>
-<ul>
-<li><p>None: visualize all correlations between the feature-columns.</p></li>
-<li><p>pos: visualize all positive correlations between the feature-columns above the threshold.</p></li>
-<li><p>neg: visualize all negative correlations between the feature-columns below the threshold.</p></li>
-<li><p>above: visualize all correlations between the feature-columns for which abs(corr) &gt; threshold is True.</p></li>
-<li><p>below: visualize all correlations between the feature-columns for which abs(corr) &lt; threshold is True.</p></li>
+<dd class="field-odd"><dl>
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column         information is used to label the plots</p>
+</dd>
+<dt><strong>split</strong><span class="classifier">Optional[str], optional</span></dt><dd><p>Type of split to be performed, by default None
+{None, ‘pos’, ‘neg’, ‘above’, ‘below’}</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>None: visualize all correlations between the feature-columns</p></li>
+<li><p>pos: visualize all positive correlations between the feature-columns above the threshold</p></li>
+<li><p>neg: visualize all negative correlations between the feature-columns below the threshold</p></li>
+<li><p>above: visualize all correlations between the feature-columns for which abs(corr) &gt; threshold is True</p></li>
+<li><p>below: visualize all correlations between the feature-columns for which abs(corr) &lt; threshold is True</p></li>
 </ul>
-</p></li>
-<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>default 0</em>) – Value between 0 &lt;= threshold &lt;= 1</p></li>
-<li><p><strong>target</strong> (<em>string</em><em>, </em><em>list</em><em>, </em><em>np.array</em><em> or </em><em>pd.Series</em><em>, </em><em>default None</em>) – Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label.</p></li>
-<li><p><strong>method</strong> (<em>{'pearson'</em><em>, </em><em>'spearman'</em><em>, </em><em>'kendall'}</em><em>, </em><em>default 'pearson'</em>) – <ul>
+</div></blockquote>
+</dd>
+<dt><strong>threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1, by default 0</p>
+</dd>
+<dt><strong>target</strong><span class="classifier">Optional[Union[pd.Series, str]], optional</span></dt><dd><p>Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label, by default None</p>
+</dd>
+<dt><strong>method</strong><span class="classifier">str, optional</span></dt><dd><dl class="simple">
+<dt>method: {‘pearson’, ‘spearman’, ‘kendall’}, by default “pearson”</dt><dd><ul class="simple">
 <li><p>pearson: measures linear relationships and requires normally distributed and homoscedastic data.</p></li>
 <li><p>spearman: ranked/ordinal correlation, measures monotonic relationships.</p></li>
-<li><p>kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but                    more robust in smaller dataets than ‘spearman’.</p></li>
+<li><p>kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive                 but more robust in smaller dataets than ‘spearman’.</p></li>
 </ul>
-</p></li>
-<li><p><strong>cmap</strong> (<em>matplotlib colormap name</em><em> or </em><em>object</em><em>, or </em><em>list of colors</em><em>, </em><em>default 'BrBG'</em>) – The mapping from data values to color space.</p></li>
-<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>12</em><em>, </em><em>10</em><em>)</em>) – Use to control the figure size.</p></li>
-<li><p><strong>annot</strong> (<em>bool</em><em>, </em><em>default True</em>) – Use to show or hide annotations.</p></li>
-<li><p><strong>dev</strong> (<em>bool</em><em>, </em><em>default False</em>) – Display figure settings in the plot by setting dev = True. If False, the settings are not displayed.</p></li>
-<li><p><strong>**kwargs</strong> (<em>optional</em>) – <p>Additional elements to control the visualization of the plot, e.g.:</p>
-<ul>
+</dd>
+</dl>
+</dd>
+<dt><strong>cmap</strong><span class="classifier">str, optional</span></dt><dd><p>The mapping from data values to color space, matplotlib colormap name or object, or list of colors, by default         “BrBG”</p>
+</dd>
+<dt><strong>figsize</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Use to control the figure size, by default (12, 10)</p>
+</dd>
+<dt><strong>annot</strong><span class="classifier">bool, optional</span></dt><dd><p>Use to show or hide annotations, by default True</p>
+</dd>
+<dt><strong>dev</strong><span class="classifier">bool, optional</span></dt><dd><p>Display figure settings in the plot by setting dev = True. If False, the settings are not displayed, by         default False</p>
+</dd>
+<dt><strong>**kwargs: optional</strong></dt><dd><p>Additional elements to control the visualization of the plot, e.g.:</p>
+<ul class="simple">
 <li><p>mask: bool, default True</p></li>
 </ul>
 <p>If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False in this         case to avoid overlap.
@@ -592,57 +608,72 @@ Controls the font size of the annotations. Only available when annot = True.
 Controls the size of the colorbar.
 * Many more kwargs are available, i.e. ‘alpha’ to control blending, or options to adjust labels, ticks …</p>
 <p>Kwargs can be supplied through a dictionary of key-value pairs (see above).</p>
-</p></li>
-</ul>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>ax</strong> – Returns the Axes object with the plot for further tweaking.</p>
+<dd class="field-even"><dl class="simple">
+<dt>ax: matplotlib Axes</dt><dd><p>Returns the Axes object with the plot for further tweaking.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matplotlib Axes</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.data_cleaning">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">data_cleaning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="o">=</span><span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="o">=</span><span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_duplicates</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">convert_dtypes</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">category</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="o">=</span><span class="default_value">0.03</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">'changes'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.data_cleaning" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">data_cleaning</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.9</span></em>, <em class="sig-param"><span class="n">drop_duplicates</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">convert_dtypes</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">category</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.03</span></em>, <em class="sig-param"><span class="n">cat_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">show</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'changes'</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.data_cleaning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, empty         columns as well as optimizing the datatypes.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame.</em>) – </p></li>
-<li><p><strong>drop_threshold_cols</strong> (<em>float</em><em>, </em><em>default 0.9</em>) – Drop columns with NA-ratio equal to or above the specified threshold.</p></li>
-<li><p><strong>drop_threshold_rows</strong> (<em>float</em><em>, </em><em>default 0.9</em>) – Drop rows with NA-ratio equal to or above the specified threshold.</p></li>
-<li><p><strong>drop_duplicates</strong> (<em>bool</em><em>, </em><em>default True</em>) – Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.</p></li>
-<li><p><strong>convert_dtypes</strong> (<em>bool</em><em>, </em><em>default True</em>) – Convert dtypes using pd.convert_dtypes().</p></li>
-<li><p><strong>col_exclude</strong> (<em>list</em><em>, </em><em>default None</em>) – Specify a list of columns to exclude from dropping.</p></li>
-<li><p><strong>category</strong> (<em>bool</em><em>, </em><em>default True</em>) – Enable changing dtypes of ‘object’ columns to “category”. Set threshold using cat_threshold. Requires         convert_dtypes=True.</p></li>
-<li><p><strong>cat_threshold</strong> (<em>float</em><em>, </em><em>default 0.03</em>) – Ratio of unique values below which categories are inferred and column dtype is changed to categorical.</p></li>
-<li><p><strong>cat_exclude</strong> (<em>list</em><em>, </em><em>default None</em>) – List of columns to exclude from categorical conversion.</p></li>
-<li><p><strong>show</strong> (<em>{'all'</em><em>, </em><em>'changes'</em><em>, </em><em>None} default 'all'</em>) – Specify verbosity of the output.
-* ‘all’: Print information about the data before and after cleaning as well as information about changes.
-* ‘changes’: Print out differences in the data before and after cleaning.
-* None: No information about the data and the data cleaning is printed.</p></li>
+<dd class="field-odd"><dl>
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame</p>
+</dd>
+<dt><strong>drop_threshold_cols</strong><span class="classifier">float, optional</span></dt><dd><p>Drop columns with NA-ratio equal to or above the specified threshold, by default 0.9</p>
+</dd>
+<dt><strong>drop_threshold_rows</strong><span class="classifier">float, optional</span></dt><dd><p>Drop rows with NA-ratio equal to or above the specified threshold, by default 0.9</p>
+</dd>
+<dt><strong>drop_duplicates</strong><span class="classifier">bool, optional</span></dt><dd><p>Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values, by         default True</p>
+</dd>
+<dt><strong>convert_dtypes</strong><span class="classifier">bool, optional</span></dt><dd><p>Convert dtypes using pd.convert_dtypes(), by default True</p>
+</dd>
+<dt><strong>col_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>Specify a list of columns to exclude from dropping, by default None</p>
+</dd>
+<dt><strong>category</strong><span class="classifier">bool, optional</span></dt><dd><p>Enable changing dtypes of ‘object’ columns to “category”. Set threshold using cat_threshold. Requires         convert_dtypes=True, by default True</p>
+</dd>
+<dt><strong>cat_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by         default 0.03</p>
+</dd>
+<dt><strong>cat_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>List of columns to exclude from categorical conversion, by default None</p>
+</dd>
+<dt><strong>show</strong><span class="classifier">str, optional</span></dt><dd><p>{‘all’, ‘changes’, None}, by default “changes”
+Specify verbosity of the output:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘all’: Print information about the data before and after cleaning as well as information about changes             and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.</p></li>
+<li><p>‘changes’: Print out differences in the data before and after cleaning.</p></li>
+<li><p>None: No information about the data and the data cleaning is printed.</p></li>
 </ul>
+</div></blockquote>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>data_cleaned</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>Cleaned Pandas DataFrame</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Pandas DataFrame</p>
+</dl>
 </dd>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="#klib.convert_datatypes" title="klib.convert_datatypes"><code class="xref py py-func docutils literal notranslate"><span class="pre">convert_datatypes()</span></code></a></dt><dd><p>Convert columns to best possible dtypes.</p>
+<dt><a class="reference internal" href="#klib.convert_datatypes" title="klib.convert_datatypes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_datatypes</span></code></a></dt><dd><p>Convert columns to best possible dtypes.</p>
 </dd>
-<dt><a class="reference internal" href="#klib.drop_missing" title="klib.drop_missing"><code class="xref py py-func docutils literal notranslate"><span class="pre">drop_missing()</span></code></a></dt><dd><p>Flexibly drop columns and rows.</p>
+<dt><a class="reference internal" href="#klib.drop_missing" title="klib.drop_missing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">drop_missing</span></code></a></dt><dd><p>Flexibly drop columns and rows.</p>
 </dd>
-<dt><code class="xref py py-func docutils literal notranslate"><span class="pre">_memory_usage()</span></code></dt><dd><p>Gives the total memory usage in kilobytes.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">_memory_usage</span></code></dt><dd><p>Gives the total memory usage in megabytes.</p>
 </dd>
-<dt><code class="xref py py-func docutils literal notranslate"><span class="pre">_missing_vals()</span></code></dt><dd><p>Metrics about missing values in the dataset.</p>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">_missing_vals</span></code></dt><dd><p>Metrics about missing values in the dataset.</p>
 </dd>
 </dl>
 </div>
@@ -652,100 +683,109 @@ Controls the size of the colorbar.
 
 <dl class="py function">
 <dt id="klib.dist_plot">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">dist_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">mean_color</span><span class="o">=</span><span class="default_value">'orange'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">14, 2</span></em>, <em class="sig-param"><span class="n">fill_range</span><span class="o">=</span><span class="default_value">0.025, 0.975</span></em>, <em class="sig-param"><span class="n">hist</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">showall</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">kde_kws</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rug_kws</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fill_kws</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">font_kws</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.dist_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">dist_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">mean_color</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'orange'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">14, 2</span></em>, <em class="sig-param"><span class="n">fill_range</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">0.025, 0.975</span></em>, <em class="sig-param"><span class="n">hist</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">bins</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">10</span></em>, <em class="sig-param"><span class="n">showall</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">kde_kws</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rug_kws</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fill_kws</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">font_kws</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.dist_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two-dimensional visualization of the distribution of numerical features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>mean_color</strong> (<em>color</em><em>, </em><em>default 'orange'</em>) – Color of the vertical line indicating the mean of the data.</p></li>
-<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>14</em><em>, </em><em>2</em><em>)</em>) – Controls the figure size.</p></li>
-<li><p><strong>fill_range</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>0.025</em><em>, </em><em>0.975</em><em>)</em>) – Set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations         above and below the mean.</p></li>
-<li><p><strong>hist</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True to display histogram bars in the plot.</p></li>
-<li><p><strong>bins</strong> (<em>integer</em><em>, </em><em>default 10</em>) – Specification of the number of hist bins. Requires hist = True</p></li>
-<li><p><strong>showall</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True to remove the output limit of 20 plots.</p></li>
-<li><p><strong>kdw_kws</strong> (<em>dict</em><em>, </em><em>default {'color': 'k'</em><em>, </em><em>'alpha': 0.7</em><em>, </em><em>'linewidth': 1}</em>) – Keyword arguments for kdeplot().</p></li>
-<li><p><strong>rug_kws</strong> (<em>dict</em><em>, </em><em>default {'color': 'brown'</em><em>, </em><em>'alpha': 0.5</em><em>, </em><em>'linewidth': 2</em><em>, </em><em>'height': 0.04}</em>) – Keyword arguments for rugplot().</p></li>
-<li><p><strong>fill_kws</strong> (<em>dict</em><em>, </em><em>default {'color': 'brown'</em><em>, </em><em>'alpha': 0.1}</em>) – Keyword arguments to control the fill.</p></li>
-<li><p><strong>font_kws</strong> (<em>dict</em><em>, </em><em>default {'color':  '#111111'</em><em>, </em><em>'weight': 'normal'</em><em>, </em><em>'size': 11}</em>) – Keyword arguments to control the font.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots</p>
+</dd>
+<dt><strong>mean_color</strong><span class="classifier">str, optional</span></dt><dd><p>Color of the vertical line indicating the mean of the data, by default “orange”</p>
+</dd>
+<dt><strong>figsize</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Controls the figure size, by default (14, 2)</p>
+</dd>
+<dt><strong>fill_range</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations         above and below the mean, by default (0.025, 0.975)</p>
+</dd>
+<dt><strong>hist</strong><span class="classifier">bool, optional</span></dt><dd><p>Set to True to display histogram bars in the plot, by default False</p>
+</dd>
+<dt><strong>bins</strong><span class="classifier">int, optional</span></dt><dd><p>Specification of the number of hist bins. Requires hist = True, by default 10</p>
+</dd>
+<dt><strong>showall</strong><span class="classifier">bool, optional</span></dt><dd><p>Set to True to remove the output limit of 20 plots, by default False</p>
+</dd>
+<dt><strong>kde_kws</strong><span class="classifier">Dict[str, Any], optional</span></dt><dd><p>Keyword arguments for kdeplot(), by default {‘color’: ‘k’, ‘alpha’: 0.7, ‘linewidth’: 1}</p>
+</dd>
+<dt><strong>rug_kws</strong><span class="classifier">Dict[str, Any], optional</span></dt><dd><p>Keyword arguments for rugplot(), by default {‘color’: ‘brown’, ‘alpha’: 0.5, ‘linewidth’: 2, ‘height’: 0.04}</p>
+</dd>
+<dt><strong>fill_kws</strong><span class="classifier">Dict[str, Any], optional</span></dt><dd><p>Keyword arguments to control the fill, by default {‘color’: ‘brown’, ‘alpha’: 0.1}</p>
+</dd>
+<dt><strong>font_kws</strong><span class="classifier">Dict[str, Any], optional</span></dt><dd><p>Keyword arguments to control the font, by default {‘color’:  ‘#111111’, ‘weight’: ‘normal’, ‘size’: 11}</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>ax</strong> – Returns the Axes object with the plot for further tweaking.</p>
+<dd class="field-even"><dl class="simple">
+<dt>[type]</dt><dd><p>[description]</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>matplotlib Axes</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.drop_missing">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">drop_missing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.drop_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Drops completely empty columns and rows by default and optionally provides flexibility to loosen restrictions to     drop additional non-empty columns and rows based on the fraction of NA-values.</p>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">drop_missing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">col_exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.drop_missing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drops completely empty columns and rows by default and optionally provides flexibility to loosen restrictions         to drop additional non-empty columns and rows based on the fraction of NA-values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame.</em>) – </p></li>
-<li><p><strong>drop_threshold_cols</strong> (<em>float</em><em>, </em><em>default 1</em>) – Drop columns with NA-ratio equal to or above the specified threshold.</p></li>
-<li><p><strong>drop_threshold_rows</strong> (<em>float</em><em>, </em><em>default 1</em>) – Drop rows with NA-ratio equal to or above the specified threshold.</p></li>
-<li><p><strong>col_exclude</strong> (<em>list</em><em>, </em><em>default None</em>) – Specify a list of columns to exclude from dropping.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame</p>
+</dd>
+<dt><strong>drop_threshold_cols</strong><span class="classifier">float, optional</span></dt><dd><p>Drop columns with NA-ratio equal to or above the specified threshold, by default 1</p>
+</dd>
+<dt><strong>drop_threshold_rows</strong><span class="classifier">float, optional</span></dt><dd><p>Drop rows with NA-ratio equal to or above the specified threshold, by default 1</p>
+</dd>
+<dt><strong>col_exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>Specify a list of columns to exclude from dropping, by default None</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>data_cleaned</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>Pandas DataFrame without any empty columns or rows</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Pandas DataFrame</p>
+</dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Columns are dropped first.</p>
+<p>Columns are dropped first</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.feature_selection_pipe">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">feature_selection_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">var_thresh</span><span class="o">=</span><span class="default_value">VarianceThreshold(threshold=0.1)</span></em>, <em class="sig-param"><span class="n">select_from_model</span><span class="o">=</span><span class="default_value">SelectFromModel(estimator=LassoCV(cv=4, random_state=408), threshold='0.1*median')</span></em>, <em class="sig-param"><span class="n">select_percentile</span><span class="o">=</span><span class="default_value">SelectPercentile(percentile=95)</span></em>, <em class="sig-param"><span class="n">var_thresh_info</span><span class="o">=</span><span class="default_value">PipeInfo(name='after var_thresh')</span></em>, <em class="sig-param"><span class="n">select_from_model_info</span><span class="o">=</span><span class="default_value">PipeInfo(name='after select_from_model')</span></em>, <em class="sig-param"><span class="n">select_percentile_info</span><span class="o">=</span><span class="default_value">PipeInfo(name='after select_percentile')</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.feature_selection_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">feature_selection_pipe</code><span class="sig-paren">(</span><em class="sig-param">var_thresh=VarianceThreshold(threshold=0.1)</em>, <em class="sig-param">select_from_model=SelectFromModel(estimator=LassoCV(alphas=None</em>, <em class="sig-param">copy_X=True</em>, <em class="sig-param">cv=4</em>, <em class="sig-param">eps=0.001</em>, <em class="sig-param">fit_intercept=True</em>, <em class="sig-param">max_iter=1000</em>, <em class="sig-param">n_alphas=100</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">normalize=False</em>, <em class="sig-param">positive=False</em>, <em class="sig-param">precompute='auto'</em>, <em class="sig-param">random_state=408</em>, <em class="sig-param">selection='cyclic'</em>, <em class="sig-param">tol=0.0001</em>, <em class="sig-param">verbose=False)</em>, <em class="sig-param">max_features=None</em>, <em class="sig-param">norm_order=1</em>, <em class="sig-param">prefit=False</em>, <em class="sig-param">threshold='0.1*median')</em>, <em class="sig-param">select_percentile=SelectPercentile(percentile=95</em>, <em class="sig-param">score_func=&lt;function f_classif&gt;)</em>, <em class="sig-param">var_thresh_info=PipeInfo(name='after var_thresh')</em>, <em class="sig-param">select_from_model_info=PipeInfo(name='after select_from_model')</em>, <em class="sig-param">select_percentile_info=PipeInfo(name='after select_percentile')</em><span class="sig-paren">)</span><a class="headerlink" href="#klib.feature_selection_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Preprocessing operations for feature selection.</p>
-<dl class="simple">
-<dt>var_thresh: default, VarianceThreshold(threshold=0.1)</dt><dd><p>Specify a threshold to drop low variance features.</p>
-</dd>
-<dt>select_from_model: default, SelectFromModel(LassoCV(cv=4, random_state=408), threshold=”0.1*median”)</dt><dd><p>Specify an estimator which is used for selecting features based on importance weights.</p>
-</dd>
-<dt>select_percentile: default, SelectPercentile(f_classif, percentile=95)</dt><dd><p>Specify a score-function and a percentile value of features to keep.</p>
-</dd>
-<dt>var_thresh_info, select_from_model_info, select_percentile_info</dt><dd><p>Prints the shape of the dataset after applying the respective function. Set to ‘None’ to avoid printing the         shape of dataset. This parameter can also be set as a hyperparameter, e.g. ‘pipeline__pipeinfo-1’: [None]         or ‘pipeline__pipeinfo-1__name’: [‘my_custom_name’].</p>
-</dd>
-</dl>
-<p>Pipeline</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.missingval_plot">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">missingval_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'PuBuGn'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">12, 12</span></em>, <em class="sig-param"><span class="n">sort</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">spine_color</span><span class="o">=</span><span class="default_value">'#EEEEEE'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.missingval_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">missingval_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'PuBuGn'</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="default_value">20, 20</span></em>, <em class="sig-param"><span class="n">sort</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">spine_color</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'#EEEEEE'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.missingval_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Two-dimensional visualization of the missing values in a dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided</em><em>, </em><em>the index/column     information is used to label the plots.</em>) – </p></li>
-<li><p><strong>cmap</strong> (<em>colormap</em><em>, </em><em>default 'PuBuGn'</em>) – Any valid colormap can be used. E.g. ‘Greys’, ‘RdPu’. More information can be found in the matplotlib         documentation.</p></li>
-<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>default</em><em> (</em><em>12</em><em>, </em><em>12</em><em>)</em>) – Use to control the figure size.</p></li>
-<li><p><strong>sort</strong> (<em>bool</em><em>, </em><em>default False</em>) – Sort columns based on missing values in descending order and drop columns without any missing values.</p></li>
-<li><p><strong>spine_color</strong> (<em>color</em><em>, </em><em>default '#EEEEEE'</em>) – Set to ‘None’ to hide the spines on all plots or use any valid matplotlib color argument.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots</p>
+</dd>
+<dt><strong>cmap</strong><span class="classifier">str, optional</span></dt><dd><p>Any valid colormap can be used. E.g. ‘Greys’, ‘RdPu’. More information can be found in the matplotlib         documentation, by default “PuBuGn”</p>
+</dd>
+<dt><strong>figsize</strong><span class="classifier">Tuple, optional</span></dt><dd><p>Use to control the figure size, by default (20, 20)</p>
+</dd>
+<dt><strong>sort</strong><span class="classifier">bool, optional</span></dt><dd><p>Sort columns based on missing values in descending order and drop columns without any missing values,         by default False</p>
+</dd>
+<dt><strong>spine_color</strong><span class="classifier">str, optional</span></dt><dd><p>Set to ‘None’ to hide the spines on all plots or use any valid matplotlib color argument, by default “#EEEEEE”</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>gs</strong></p>
+<dd class="field-even"><dl class="simple">
+<dt>GridSpec</dt><dd><p>gs: Figure with array of Axes objects</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Figure with array of Axes objects.</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.mv_col_handling">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">mv_col_handling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mv_threshold</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">corr_thresh_features</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">corr_thresh_target</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">return_details</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.mv_col_handling" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">mv_col_handling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>pandas.core.series.Series<span class="p">, </span>List<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mv_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">corr_thresh_features</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">corr_thresh_target</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">return_details</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.mv_col_handling" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts columns with a high ratio of missing values into binary features and eventually drops them based on     their correlation with other features and the target variable. This function follows a three step process:
 - 1) Identify features with a high ratio of missing values (above ‘mv_threshold’).
 - 2) Identify high correlations of these features among themselves and with other features in the dataset (above          ‘corr_thresh_features’).
@@ -753,55 +793,67 @@ Controls the size of the colorbar.
 <p>Note: If no target is provided, the process exits after step two and drops columns identified up to this point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>2D dataset that can be coerced into Pandas DataFrame.</em>) – </p></li>
-<li><p><strong>target</strong> (<em>string</em><em>, </em><em>list</em><em>, </em><em>np.array</em><em> or </em><em>pd.Series</em><em>, </em><em>default None</em>) – Specify target for correlation. I.e. label column to generate only the correlations between each feature         and the label.</p></li>
-<li><p><strong>mv_threshold</strong> (<em>float</em><em>, </em><em>default 0.1</em>) – Value between 0 &lt;= threshold &lt;= 1. Features with a missing-value-ratio larger than mv_threshold are candidates         for dropping and undergo further analysis.</p></li>
-<li><p><strong>corr_thresh_features</strong> (<em>float</em><em>, </em><em>default 0.5</em>) – Value between 0 &lt;= threshold &lt;= 1. Maximum correlation a previously identified features (with a high mv-ratio)         is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further         analysis.</p></li>
-<li><p><strong>corr_thresh_target</strong> (<em>float</em><em>, </em><em>default 0.3</em>) – Value between 0 &lt;= threshold &lt;= 1. Minimum required correlation of a remaining feature (i.e. feature with a         high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met         the feature is ultimately dropped.</p></li>
-<li><p><strong>return_details</strong> (<em>bool</em><em>, </em><em>default False</em>) – Provdies flexibility to return intermediary results.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame</p>
+</dd>
+<dt><strong>target</strong><span class="classifier">Optional[Union[str, pd.Series, List]], optional</span></dt><dd><p>Specify target for correlation. I.e. label column to generate only the correlations between each feature         and the label, by default None</p>
+</dd>
+<dt><strong>mv_threshold</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1. Features with a missing-value-ratio larger than mv_threshold are candidates         for dropping and undergo further analysis, by default 0.1</p>
+</dd>
+<dt><strong>corr_thresh_features</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1. Maximum correlation a previously identified features (with a high mv-ratio)         is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further         analysis, by default 0.5</p>
+</dd>
+<dt><strong>corr_thresh_target</strong><span class="classifier">float, optional</span></dt><dd><p>Value between 0 &lt;= threshold &lt;= 1. Minimum required correlation of a remaining feature (i.e. feature with a         high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met         the feature is ultimately dropped, by default 0.3</p>
+</dd>
+<dt><strong>return_details</strong><span class="classifier">bool, optional</span></dt><dd><p>Provdies flexibility to return intermediary results, by default False</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>data</strong> (<em>Updated Pandas DataFrame</em>)</p></li>
-<li><p><em>optional</em></p></li>
-<li><p><strong>cols_mv</strong> (<em>Columns with missing values included in the analysis</em>)</p></li>
-<li><p><strong>drop_cols</strong> (<em>List of dropped columns</em>)</p></li>
-</ul>
-</p>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>Updated Pandas DataFrame</p>
+</dd>
+<dt>optional:</dt><dd></dd>
+<dt>cols_mv: Columns with missing values included in the analysis</dt><dd></dd>
+<dt>drop_cols: List of dropped columns</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.num_pipe">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">num_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imputer</span><span class="o">=</span><span class="default_value">IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408)</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">RobustScaler()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.num_pipe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">num_pipe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">imputer</span><span class="o">=</span><span class="default_value">IterativeImputer(add_indicator=False, estimator=ExtraTreesRegressor(bootstrap=False, ccp_alpha=0.0, criterion='mse', max_depth=None, max_features='auto', max_leaf_nodes=None, max_samples=None, min_impurity_decrease=0.0, min_impurity_split=None, min_samples_leaf=1, min_samples_split=2, min_weight_fraction_leaf=0.0, n_estimators=25, n_jobs=4, oob_score=False, random_state=408, verbose=0, warm_start=False), imputation_order='ascending', initial_strategy='mean', max_iter=10, max_value=None, min_value=None, missing_values=nan, n_nearest_features=None, random_state=408, sample_posterior=False, skip_complete=False, tol=0.001, verbose=0)</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">RobustScaler(copy=True, quantile_range=25.0, 75.0, with_centering=True, with_scaling=True)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.num_pipe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard preprocessing operations on numerical data.</p>
-<p>imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408),                                        random_state=408)</p>
-<p>scaler: default, RobustScaler()</p>
-<p>Pipeline</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="klib.pool_duplicate_subsets">
-<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">pool_duplicate_subsets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">col_dupl_thresh</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">subset_thresh</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">min_col_pool</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">exclude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">return_details</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.pool_duplicate_subsets" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">klib.</code><code class="sig-name descname">pool_duplicate_subsets</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">col_dupl_thresh</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">subset_thresh</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">min_col_pool</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">3</span></em>, <em class="sig-param"><span class="n">exclude</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">return_details</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#klib.pool_duplicate_subsets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks for duplicates in subsets of columns and pools them. This can reduce the number of columns in the data     without loosing much information. Suitable columns are combined to subsets and tested for duplicates. In case     sufficient duplicates can be found, the respective columns are aggregated into a ‘pooled_var’ column. Identical     numbers in the ‘pooled_var’ column indicate identical information in the respective rows.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – </p></li>
-<li><p><strong>col_dupl_thresh</strong> (<em>float</em><em>, </em><em>default 0.2</em>) – Columns with a ratio of duplicates higher than ‘col_dupl_thresh’ are considered in the further analysis.         Columns with a lower ratio are not considered for pooling.</p></li>
-<li><p><strong>subset_thresh</strong> (<em>float</em><em>, </em><em>default 0.2</em>) – The first subset with a duplicate threshold higher than ‘subset_thresh’ is chosen and aggregated. If no subset         reaches the threshold, the algorithm continues with continuously smaller subsets until ‘min_col_pool’ is         reached.</p></li>
-<li><p><strong>min_col_pool</strong> (<em>integer</em><em>, </em><em>default 3</em>) – Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable         subsets and stops when ‘min_col_pool’ is reached.</p></li>
-<li><p><strong>list</strong><strong>, </strong><strong>default None</strong> (<em>exclude.</em>) – List of column names to be excluded from the analysis. These columns are passed through without modification.</p></li>
-<li><p><strong>return_details</strong> (<em>bool</em><em>, </em><em>default False</em>) – Provdies flexibility to return intermediary results.</p></li>
-<li><p><strong>Returns</strong> – </p></li>
-<li><p><strong>-------</strong> – </p></li>
-<li><p><strong>data</strong> – </p></li>
-<li><p><strong>optional</strong> – </p></li>
-<li><p><strong>subset_cols</strong> (<em>List of columns used as subset.</em>) – </p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">pd.DataFrame</span></dt><dd><p>2D dataset that can be coerced into Pandas DataFrame</p>
+</dd>
+<dt><strong>col_dupl_thresh</strong><span class="classifier">float, optional</span></dt><dd><p>Columns with a ratio of duplicates higher than ‘col_dupl_thresh’ are considered in the further analysis.         Columns with a lower ratio are not considered for pooling, by default 0.2</p>
+</dd>
+<dt><strong>subset_thresh</strong><span class="classifier">float, optional</span></dt><dd><p>The first subset with a duplicate threshold higher than ‘subset_thresh’ is chosen and aggregated. If no subset         reaches the threshold, the algorithm continues with continuously smaller subsets until ‘min_col_pool’ is         reached, by default 0.2</p>
+</dd>
+<dt><strong>min_col_pool</strong><span class="classifier">int, optional</span></dt><dd><p>Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable         subsets and stops when ‘min_col_pool’ is reached, by default 3</p>
+</dd>
+<dt><strong>exclude</strong><span class="classifier">Optional[List[str]], optional</span></dt><dd><p>List of column names to be excluded from the analysis. These columns are passed through without modification,         by default None</p>
+</dd>
+<dt><strong>return_details</strong><span class="classifier">bool, optional</span></dt><dd><p>Provdies flexibility to return intermediary results, by default False</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>pd.DataFrame</dt><dd><p>DataFrame with low cardinality columns pooled</p>
+</dd>
+<dt>optional:</dt><dd></dd>
+<dt>subset_cols: List of columns used as subset</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -810,27 +862,6 @@ Controls the size of the colorbar.
 <dt id="klib.train_dev_test_split">
 <code class="sig-prename descclassname">klib.</code><code class="sig-name descname">train_dev_test_split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">dev_size</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">test_size</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">stratify</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">408</span></em><span class="sig-paren">)</span><a class="headerlink" href="#klib.train_dev_test_split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a dataset and a label column into train, dev and test sets.</p>
-<p>data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column     information is used to label the plots.</p>
-<dl class="simple">
-<dt>target: string, list, np.array or pd.Series, default None</dt><dd><p>Specify target for correlation. E.g. label column to generate only the correlations between each feature         and the label.</p>
-</dd>
-<dt>dev_size: float, default 0.1</dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the dev         split.</p>
-</dd>
-<dt>test_size: float, default 0.1</dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the test         split.</p>
-</dd>
-<dt>stratify: target column, default None</dt><dd><p>If not None, data is split in a stratified fashion, using the input as the class labels.</p>
-</dd>
-<dt>random_state: integer, default 408</dt><dd><p>Random_state is the seed used by the random number generator.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>tuple</strong></p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Tuple containing train-dev-test split of inputs.</p>
-</dd>
-</dl>
 </dd></dl>
 
 </div>
