@@ -214,8 +214,8 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
     random_state: integer, default 408
         Random_state is the seed used by the random number generator.
 
-    Returns:
-    --------
+    Returns
+    -------
     tuple: Tuple containing train-dev-test split of inputs.
     """
 
