@@ -28,5 +28,5 @@ python:
       extra_requirements:
           - docs
     - method: setuptools
-      # path: another/package
+      path: klib
   system_packages: true
