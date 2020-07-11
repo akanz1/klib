@@ -171,7 +171,7 @@ def corr_mat(
         * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
         * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but \
-                    more robus in smaller dataets than 'spearman'
+            more robust in smaller dataets than 'spearman'
     colored : bool, optional
         If True the negative values in the correlation matrix are colored in red, by default True
 
@@ -255,7 +255,7 @@ def corr_plot(
             * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
             * spearman: ranked/ordinal correlation, measures monotonic relationships.
             * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive \
-            but more robust in smaller dataets than 'spearman'.
+                but more robust in smaller dataets than 'spearman'.
     cmap : str, optional
         The mapping from data values to color space, matplotlib colormap name or object, or list of colors, by default \
         "BrBG"

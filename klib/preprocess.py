@@ -94,7 +94,7 @@ def cat_pipe(
     Standard preprocessing operations on categorical data.
 
     Parameters:
-    ----------
+    -----------
     imputer: default, SimpleImputer(strategy='most_frequent')
 
     encoder: default, OneHotEncoder(handle_unknown='ignore')
@@ -110,7 +110,7 @@ def cat_pipe(
         'pipeline__pipeinfo-1__name': ['my_custom_name'].
 
     Returns:
-    -------
+    --------
     Pipeline
     """
 
@@ -130,7 +130,7 @@ def feature_selection_pipe(
     Preprocessing operations for feature selection.
 
     Parameters:
-    ----------
+    -----------
     var_thresh: default, VarianceThreshold(threshold=0.1)
         Specify a threshold to drop low variance features.
 
@@ -146,7 +146,7 @@ def feature_selection_pipe(
         or 'pipeline__pipeinfo-1__name': ['my_custom_name'].
 
     Returns:
-    -------
+    --------
     Pipeline
     """
 
@@ -171,14 +171,14 @@ def num_pipe(
     Standard preprocessing operations on numerical data.
 
     Parameters:
-    ----------
+    -----------
     imputer: default, IterativeImputer(estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), \
                                        random_state=408)
 
     scaler: default, RobustScaler()
 
     Returns:
-    -------
+    --------
     Pipeline
     """
 
@@ -191,7 +191,7 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
     Split a dataset and a label column into train, dev and test sets.
 
     Parameters:
-    ----------
+    -----------
 
     data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots.
@@ -214,8 +214,8 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
     random_state: integer, default 408
         Random_state is the seed used by the random number generator.
 
-    Returns
-    -------
+    Returns:
+    --------
     tuple: Tuple containing train-dev-test split of inputs.
     """
 
