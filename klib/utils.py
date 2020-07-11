@@ -12,7 +12,9 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 def _corr_selector(
-    corr: Union[pd.Series, pd.DataFrame], split: Optional[str] = None, threshold: float = 0
+    corr: Union[pd.Series, pd.DataFrame],
+    split: Optional[str] = None,  # Optional[Literal["pos", "neg", "above", "below"]] = None,
+    threshold: float = 0,
 ) -> Union[pd.Series, pd.DataFrame]:
     """[summary]
 
@@ -53,7 +55,7 @@ def _diff_report(
     data_cleaned: pd.DataFrame,
     dupl_rows: Optional[List[Union[str, int]]] = None,
     single_val_cols: Optional[List[str]] = None,
-    show: str = "changes",
+    show: Optional[str] = "changes",  # Optional[Literal["all", "changes"]] = "changes",
 ) -> None:
     """ Provides information about changes between two datasets, such as dropped rows and columns, memory usage and \
     missing values.

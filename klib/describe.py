@@ -96,16 +96,14 @@ def cat_plot(
         value_counts_idx_bot = value_counts_bot.index.tolist()
 
         if top == 0:
-            value_counts_top: Any = None
-            value_counts_idx_top = None
+            value_counts_top = value_counts_idx_top = []
 
         elif bottom == 0:
-            value_counts_bot: Any = None
-            value_counts_idx_bot = None
+            value_counts_bot = value_counts_idx_bot = []
 
         data.loc[data[col].isin(value_counts_idx_top), col] = 2
         data.loc[data[col].isin(value_counts_idx_bot), col] = -2
-        data.loc[~((data[col] == 2) | (data[col] == -2)), col] = 0
+        data.loc[((data[col] != 2) & (data[col] != -2)), col] = 0
 
         # Barcharts
         ax_top = fig.add_subplot(gs[:1, count : count + 1])
@@ -147,10 +145,10 @@ def cat_plot(
 # Correlation Matrix
 def corr_mat(
     data: pd.DataFrame,
-    split: Optional[str] = None,
+    split: Optional[str] = None,  # Optional[Literal['pos', 'neg', 'above', 'below']] = None,
     threshold: float = 0,
-    target: Optional[Union[pd.DataFrame, str]] = None,
-    method: str = "pearson",
+    target: Optional[Union[pd.DataFrame, pd.Series, np.ndarray, str]] = None,
+    method: str = "pearson",  # Literal['pearson', 'spearman', 'kendall'] = "pearson",
     colored: bool = True,
 ) -> Union[pd.DataFrame, Any]:
     """ Returns a color-encoded correlation matrix.
