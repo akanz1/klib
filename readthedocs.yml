@@ -18,15 +18,15 @@ formats:
   - pdf
 
 # Optionally set the version of Python and requirements required to build your docs
-# python:
-#   version: 3.7
-#   install:
-#     - requirements: docs/requirements.txt
-#     - requirements: requirements.txt
-#     - method: pip
-#       path: .
-#       extra_requirements:
-#           - docs
-#     - method: setuptools
-#       path: another/package
-#   system_packages: true
+python:
+  version: 3.7
+  install:
+    - requirements: docs/requirements.txt
+    - requirements: requirements.txt
+    - method: pip
+      path: .
+      extra_requirements:
+          - docs
+    - method: setuptools
+      path: another/package
+  system_packages: true
