@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -82,7 +83,16 @@
             
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install and contribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation and Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Documentation and Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About klib</a></li>
 </ul>
 
             
@@ -181,7 +191,7 @@
     <span class="k">return</span> <span class="n">data</span>
 
 
-<div class="viewcode-block" id="convert_datatypes"><a class="viewcode-back" href="../../klib.html#klib.clean.convert_datatypes">[docs]</a><span class="k">def</span> <span class="nf">convert_datatypes</span><span class="p">(</span>
+<div class="viewcode-block" id="convert_datatypes"><a class="viewcode-back" href="../../modules.html#klib.clean.convert_datatypes">[docs]</a><span class="k">def</span> <span class="nf">convert_datatypes</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">category</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">cat_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
@@ -231,7 +241,7 @@
     <span class="k">return</span> <span class="n">data</span></div>
 
 
-<div class="viewcode-block" id="drop_missing"><a class="viewcode-back" href="../../klib.html#klib.clean.drop_missing">[docs]</a><span class="k">def</span> <span class="nf">drop_missing</span><span class="p">(</span>
+<div class="viewcode-block" id="drop_missing"><a class="viewcode-back" href="../../modules.html#klib.clean.drop_missing">[docs]</a><span class="k">def</span> <span class="nf">drop_missing</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
@@ -283,7 +293,7 @@
     <span class="k">return</span> <span class="n">data_cleaned</span></div>
 
 
-<div class="viewcode-block" id="data_cleaning"><a class="viewcode-back" href="../../klib.html#klib.clean.data_cleaning">[docs]</a><span class="k">def</span> <span class="nf">data_cleaning</span><span class="p">(</span>
+<div class="viewcode-block" id="data_cleaning"><a class="viewcode-back" href="../../modules.html#klib.clean.data_cleaning">[docs]</a><span class="k">def</span> <span class="nf">data_cleaning</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">drop_threshold_cols</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
     <span class="n">drop_threshold_rows</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
@@ -458,7 +468,7 @@
         <span class="k">return</span> <span class="n">data_cleaned</span>
 
 
-<div class="viewcode-block" id="mv_col_handling"><a class="viewcode-back" href="../../klib.html#klib.clean.mv_col_handling">[docs]</a><span class="k">def</span> <span class="nf">mv_col_handling</span><span class="p">(</span>
+<div class="viewcode-block" id="mv_col_handling"><a class="viewcode-back" href="../../modules.html#klib.clean.mv_col_handling">[docs]</a><span class="k">def</span> <span class="nf">mv_col_handling</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">target</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">List</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">mv_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
@@ -605,7 +615,7 @@
         <span class="k">return</span> <span class="n">data</span>
 
 
-<div class="viewcode-block" id="pool_duplicate_subsets"><a class="viewcode-back" href="../../klib.html#klib.clean.pool_duplicate_subsets">[docs]</a><span class="k">def</span> <span class="nf">pool_duplicate_subsets</span><span class="p">(</span>
+<div class="viewcode-block" id="pool_duplicate_subsets"><a class="viewcode-back" href="../../modules.html#klib.clean.pool_duplicate_subsets">[docs]</a><span class="k">def</span> <span class="nf">pool_duplicate_subsets</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">col_dupl_thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
     <span class="n">subset_thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>

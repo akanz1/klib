@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -82,7 +83,16 @@
             
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install and contribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation and Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Documentation and Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About klib</a></li>
 </ul>
 
             
@@ -179,7 +189,7 @@
 <span class="c1"># Functions</span>
 
 <span class="c1"># Categorical Plot</span>
-<div class="viewcode-block" id="cat_plot"><a class="viewcode-back" href="../../klib.html#klib.describe.cat_plot">[docs]</a><span class="k">def</span> <span class="nf">cat_plot</span><span class="p">(</span>
+<div class="viewcode-block" id="cat_plot"><a class="viewcode-back" href="../../modules.html#klib.describe.cat_plot">[docs]</a><span class="k">def</span> <span class="nf">cat_plot</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
     <span class="n">top</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
@@ -292,7 +302,7 @@
 
 
 <span class="c1"># Correlation Matrix</span>
-<div class="viewcode-block" id="corr_mat"><a class="viewcode-back" href="../../klib.html#klib.describe.corr_mat">[docs]</a><span class="k">def</span> <span class="nf">corr_mat</span><span class="p">(</span>
+<div class="viewcode-block" id="corr_mat"><a class="viewcode-back" href="../../modules.html#klib.describe.corr_mat">[docs]</a><span class="k">def</span> <span class="nf">corr_mat</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">split</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Optional[Literal[&#39;pos&#39;, &#39;neg&#39;, &#39;above&#39;, &#39;below&#39;]] = None,</span>
     <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -367,7 +377,7 @@
 
 
 <span class="c1"># Correlation matrix / heatmap</span>
-<div class="viewcode-block" id="corr_plot"><a class="viewcode-back" href="../../klib.html#klib.describe.corr_plot">[docs]</a><span class="k">def</span> <span class="nf">corr_plot</span><span class="p">(</span>
+<div class="viewcode-block" id="corr_plot"><a class="viewcode-back" href="../../modules.html#klib.describe.corr_plot">[docs]</a><span class="k">def</span> <span class="nf">corr_plot</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">split</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
@@ -505,7 +515,7 @@
 
 
 <span class="c1"># Distribution plot</span>
-<div class="viewcode-block" id="dist_plot"><a class="viewcode-back" href="../../klib.html#klib.describe.dist_plot">[docs]</a><span class="k">def</span> <span class="nf">dist_plot</span><span class="p">(</span>
+<div class="viewcode-block" id="dist_plot"><a class="viewcode-back" href="../../modules.html#klib.describe.dist_plot">[docs]</a><span class="k">def</span> <span class="nf">dist_plot</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">mean_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
     <span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
@@ -650,7 +660,7 @@
 
 
 <span class="c1"># Missing value plot</span>
-<div class="viewcode-block" id="missingval_plot"><a class="viewcode-back" href="../../klib.html#klib.describe.missingval_plot">[docs]</a><span class="k">def</span> <span class="nf">missingval_plot</span><span class="p">(</span>
+<div class="viewcode-block" id="missingval_plot"><a class="viewcode-back" href="../../modules.html#klib.describe.missingval_plot">[docs]</a><span class="k">def</span> <span class="nf">missingval_plot</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;PuBuGn&quot;</span><span class="p">,</span>
     <span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>

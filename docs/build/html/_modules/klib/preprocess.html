@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -82,7 +83,16 @@
             
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install and contribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation and Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Documentation and Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About klib</a></li>
 </ul>
 
             
@@ -233,7 +243,7 @@
         <span class="k">return</span> <span class="n">X</span>
 
 
-<div class="viewcode-block" id="cat_pipe"><a class="viewcode-back" href="../../klib.html#klib.preprocess.cat_pipe">[docs]</a><span class="k">def</span> <span class="nf">cat_pipe</span><span class="p">(</span>
+<div class="viewcode-block" id="cat_pipe"><a class="viewcode-back" href="../../modules.html#klib.preprocess.cat_pipe">[docs]</a><span class="k">def</span> <span class="nf">cat_pipe</span><span class="p">(</span>
     <span class="n">imputer</span><span class="o">=</span><span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;most_frequent&quot;</span><span class="p">),</span>
     <span class="n">encoder</span><span class="o">=</span><span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">),</span>
     <span class="n">scaler</span><span class="o">=</span><span class="n">MaxAbsScaler</span><span class="p">(),</span>
@@ -267,7 +277,7 @@
     <span class="k">return</span> <span class="n">cat_pipe</span></div>
 
 
-<div class="viewcode-block" id="feature_selection_pipe"><a class="viewcode-back" href="../../klib.html#klib.preprocess.feature_selection_pipe">[docs]</a><span class="k">def</span> <span class="nf">feature_selection_pipe</span><span class="p">(</span>
+<div class="viewcode-block" id="feature_selection_pipe"><a class="viewcode-back" href="../../modules.html#klib.preprocess.feature_selection_pipe">[docs]</a><span class="k">def</span> <span class="nf">feature_selection_pipe</span><span class="p">(</span>
     <span class="n">var_thresh</span><span class="o">=</span><span class="n">VarianceThreshold</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
     <span class="n">select_from_model</span><span class="o">=</span><span class="n">SelectFromModel</span><span class="p">(</span><span class="n">LassoCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">408</span><span class="p">),</span> <span class="n">threshold</span><span class="o">=</span><span class="s2">&quot;0.1*median&quot;</span><span class="p">),</span>
     <span class="n">select_percentile</span><span class="o">=</span><span class="n">SelectPercentile</span><span class="p">(</span><span class="n">f_classif</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mi">95</span><span class="p">),</span>
@@ -310,7 +320,7 @@
     <span class="k">return</span> <span class="n">feature_selection_pipe</span></div>
 
 
-<div class="viewcode-block" id="num_pipe"><a class="viewcode-back" href="../../klib.html#klib.preprocess.num_pipe">[docs]</a><span class="k">def</span> <span class="nf">num_pipe</span><span class="p">(</span>
+<div class="viewcode-block" id="num_pipe"><a class="viewcode-back" href="../../modules.html#klib.preprocess.num_pipe">[docs]</a><span class="k">def</span> <span class="nf">num_pipe</span><span class="p">(</span>
     <span class="n">imputer</span><span class="o">=</span><span class="n">IterativeImputer</span><span class="p">(</span>
         <span class="n">estimator</span><span class="o">=</span><span class="n">ExtraTreesRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">408</span><span class="p">),</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">408</span>
     <span class="p">),</span>
@@ -335,7 +345,7 @@
     <span class="k">return</span> <span class="n">num_pipe</span></div>
 
 
-<div class="viewcode-block" id="train_dev_test_split"><a class="viewcode-back" href="../../klib.html#klib.preprocess.train_dev_test_split">[docs]</a><span class="k">def</span> <span class="nf">train_dev_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">dev_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">408</span><span class="p">):</span>
+<div class="viewcode-block" id="train_dev_test_split"><a class="viewcode-back" href="../../modules.html#klib.preprocess.train_dev_test_split">[docs]</a><span class="k">def</span> <span class="nf">train_dev_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">dev_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">408</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Split a dataset and a label column into train, dev and test sets.</span>
 

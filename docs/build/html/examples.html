@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Documentation and Examples &mdash; klib 0.0.89 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="klib’s API" href="modules.html" />
+    <link rel="prev" title="Installation and contribution" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> klib
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation and Examples:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation and Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#missing-value-plot">Missing Value Plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#correlation-plots">Correlation Plots</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numerical-data-distribution-plot">Numerical Data Distribution Plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#categorical-data-plot">Categorical Data Plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-cleaning-and-aggregation">Data Cleaning and Aggregation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">klib’s API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About klib</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">klib</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Documentation and Examples</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="documentation-and-examples">
+<h1>Documentation and Examples<a class="headerlink" href="#documentation-and-examples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="missing-value-plot">
+<h4>Missing Value Plot<a class="headerlink" href="#missing-value-plot" title="Permalink to this headline">¶</a></h4>
+<p>This plot visualizes the missing values in a dataset. At the top it
+shows the aggregate for each column using a relative scale and absolute
+missing-value annotations, while on the right, summary statistics and
+individual row results are displayed. Using this plot allows to gain a
+quick overview over the structure of missing values and their relation
+in a dataset and easily determine which columns and rows to investigate
+/ drop.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">klib</span><span class="o">.</span><span class="n">missingval_plot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="c1"># default representation of missing values, other settings such as sorting are available</span>
+</pre></div>
+</div>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1100" height="1200"></p></div>
+<div class="section" id="correlation-plots">
+<h4>Correlation Plots<a class="headerlink" href="#correlation-plots" title="Permalink to this headline">¶</a></h4>
+<p>This plot visualizes the correlation between different features.
+Settings include the possibility to only display positive, negative,
+high or low correlations as well as specify an additional threshold.
+This works for Person, Spearman and Kendall correlation. Annotations and
+development settings can optionally be turned on or off.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">klib</span><span class="o">.</span><span class="n">corr_plot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;pos&#39;</span><span class="p">)</span> <span class="c1"># displaying only positive correlations, other settings include threshold, cmap...</span>
+<span class="n">klib</span><span class="o">.</span><span class="n">corr_plot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;neg&#39;</span><span class="p">)</span> <span class="c1"># displaying only negative correlations</span>
+</pre></div>
+</div>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="1130" height="520"></p><p>Further, as seen below, if a column is specified, either by name or by
+passing in a separate target List or pd.Series, the plot gives the
+correlation of all features with the specified target.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">klib</span><span class="o">.</span><span class="n">corr_plot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;wine&#39;</span><span class="p">)</span> <span class="c1"># default representation of correlations with the feature column</span>
+</pre></div>
+</div>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="1000" height="833"></p><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">klib</span><span class="o">.</span><span class="n">corr_mat</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="c1"># default representation of a correlation matrix</span>
+</pre></div>
+</div>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_corr_mat.png" alt="Corr Mat Example" width="808" height="369"></p></div>
+<div class="section" id="numerical-data-distribution-plot">
+<h4>Numerical Data Distribution Plot<a class="headerlink" href="#numerical-data-distribution-plot" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">klib</span><span class="o">.</span><span class="n">dist_plot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="c1"># default representation of a distribution plot, other settings include fill_range, histogram, ...</span>
+</pre></div>
+</div>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p></div>
+<div class="section" id="categorical-data-plot">
+<h4>Categorical Data Plot<a class="headerlink" href="#categorical-data-plot" title="Permalink to this headline">¶</a></h4>
+<p>This section shows an example of categorical data visualization. The
+function allows to dispaly the top and/or bottom values regarding their
+frequency in each column. Further, it gives an idea of the distribution
+of the values in the dataset. This plot comes in very handy during data
+analysis when considering changing datatypes to “category” or when
+planning to combine less frequent values into a seperate category before
+applying one-hot-encoding or similar functions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">klib</span><span class="o">.</span><span class="n">cat_plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># representation of the 4 most &amp; least common values in each categorical column</span>
+</pre></div>
+</div>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1100" height="1100"></p></div>
+<div class="section" id="data-cleaning-and-aggregation">
+<h4>Data Cleaning and Aggregation<a class="headerlink" href="#data-cleaning-and-aggregation" title="Permalink to this headline">¶</a></h4>
+<p>This sections describes the data cleaning and aggregation capabilities
+of klib. The functions have been shows to yield great results, even with
+dataframes as large as 20GB, drastically reducing the size and
+dimensions and therefore speeding up further calculations or reducing
+the time to save and load the data.</p>
+<p>For demonstration purposes, we apply the function to a dataset about US
+flight data, which has an initial size of about 51 MB.</p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets3.png" alt="Original Dataset" width="329" height="376"></p><div class="section" id="klib-data-cleaning">
+<h5>klib.data_cleaning()<a class="headerlink" href="#klib-data-cleaning" title="Permalink to this headline">¶</a></h5>
+<p>By applying <em>klib.data_cleaning()</em> <strong>the size reduces by about 44 MB
+(-85.2%)</strong>. This is achieved by dropping empty and single valued columns
+as well as empty and duplicate rows (neither found in this example).
+Additionally, the optimal data types are inferred and applied, which
+also increases memory efficiency. This kind of reduction is not
+uncommon. For larger datasets the reduction in size often surpasses 90%.</p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_data_cleaning_dtypes.png" alt="Change in dtypes" width="294" height="429"></p></div>
+<div class="section" id="klib-pool-duplicate-subsets">
+<h5>klib.pool_duplicate_subsets()<a class="headerlink" href="#klib-pool-duplicate-subsets" title="Permalink to this headline">¶</a></h5>
+<p>Further, <em>klib.pool_duplicate_subsets()</em> can be applied, what
+<strong>ultimately reduces the dataset to only 3.8 MB (from 51 MB originally).
+This is a reduction of roughly -92.5%</strong>.</p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets2.png" alt="Duplicate subsets" width="393" height="431"></p><p>This function “pools” columns together based on several settings.
+Specifically, the pooling is achieved by finding duplicates in subsets
+of the data and encoding the largest possible subset with sufficient
+duplicates with integers. These are then added to the original data what
+allows dropping the previously identified and now encoded columns. While
+the encoding itself does not lead to a loss in information, some details
+might get lost in the aggregation step. <em>While this is unlikely, it is
+advised to specifically exclude features that provide sufficient
+informational content by themselves as well as the target column by
+using the “exclude” setting.</em></p>
+<p>As can be seen in <em>cat_plot()</em> the “carrier” column is made up of a
+few very frequent values - the top 4 values make up roughly 75% - while
+in “tailnum” the top 4 values barely make up 2%. This allows “carrier”
+and similar columns to be bundled and encoded, while “tailnum” remains
+in the dataset. Using this procedure, 56006 duplicate rows are
+identified in the subset, i.e., <strong>56006 rows in 10 columns are encoded
+into a single column of dtype integer</strong>, greatly reducing the memory
+footprint and number of columns which should speed up model training.</p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets1.png" alt="Duplicate subsets2" width="945" height="424"></p><p>All of these functions were run with their relatively “soft” default
+settings. Many parameters are available allowing a more restrictive data
+cleaning where needed.</p>
+<p>Furthermore, the function <em>klib.mv_col_handling()</em> provides a
+sophisticated selection mechanism for columns with relatively many
+missing values. Instead of just dropping the data, these are converted
+into binary features (empty or not) checked for correlations among each
+other, with other features and afterwards for correlations with the
+label before a decision on ommitting them is made.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules.html" class="btn btn-neutral float-right" title="klib’s API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation and contribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Andreas Kanz
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

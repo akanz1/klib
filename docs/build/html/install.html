@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Install and contribution &mdash; klib 0.0.89 documentation</title>
+  <title>Installation and contribution &mdash; klib 0.0.89 documentation</title>
   
 
   
@@ -34,8 +34,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Documentation and Examples" href="examples.html" />
     <link rel="prev" title="Welcome to klib’s documentation!" href="index.html" /> 
 </head>
 
@@ -83,12 +85,21 @@
             
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Install and contribution</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation and contribution</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install">Install</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#contribute">Contribute</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation and Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Documentation and Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About klib</a></li>
 </ul>
 
             
@@ -135,7 +146,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Install and contribution</li>
+      <li>Installation and contribution</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -154,37 +165,41 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="install-and-contribution">
-<h1>Install and contribution<a class="headerlink" href="#install-and-contribution" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="installation-and-contribution">
+<h1>Installation and contribution<a class="headerlink" href="#installation-and-contribution" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>klib requires the following dependencies:</p>
 <ul class="simple">
-<li><p>python (&gt;=3.7)</p></li>
-<li><p>matplotlib &gt;= 2.1.2’,</p></li>
-<li><p>numpy &gt;= 1.13.3’,</p></li>
-<li><p>pandas &gt;= 1.0.0’,</p></li>
-<li><p>scikit-learn (&gt;=0.23)</p></li>
-<li><p>seaborn &gt;= 0.1.0’,</p></li>
+<li><p>python &gt;= 3.7</p></li>
+<li><p>matplotlib &gt;= 2.1.2</p></li>
+<li><p>numpy &gt;= 1.13.3</p></li>
+<li><p>pandas &gt;= 1.0.0</p></li>
+<li><p>scikit-learn &gt;= 0.23</p></li>
+<li><p>seaborn &gt;= 0.1.0</p></li>
 </ul>
 </div>
 <div class="section" id="install">
 <h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
-<p>klib is currently available on the PyPi. Use the package manager <cite>pip</cite> to install klib:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">klib</span>
+<p>Use the package manager <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> to
+install klib:</p>
+<p><a class="reference external" href="https://pypi.org/project/klib/"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/klib" /></a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install klib
+pip install --upgrade klib
 </pre></div>
 </div>
 <p>Alternatively, to install this package with conda run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">klib</span>
+<p><a class="reference external" href="https://anaconda.org/conda-forge/klib"><img alt="Conda Version" src="https://img.shields.io/conda/vn/conda-forge/klib" /></a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install -c conda-forge klib
 </pre></div>
 </div>
-<p>Lastly, should you prefer, you can fork/clone the repository and run the setup.py file. Use the following commands to get a copy from Github and install all dependencies:</p>
+<p>You can also fork/clone the repository and run the setup.py file. Use the following commands to get a copy from Github and install all dependencies:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">akanz1</span><span class="o">/</span><span class="n">klib</span><span class="o">.</span><span class="n">git</span>
 <span class="n">cd</span> <span class="n">into</span> <span class="n">package</span> <span class="n">root</span> <span class="nb">dir</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
 </pre></div>
 </div>
-<p>Or install using pip and GitHub:</p>
+<p>Or install directly from GitHub using pip:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">akanz1</span><span class="o">/</span><span class="n">klib</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
@@ -202,6 +217,8 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="examples.html" class="btn btn-neutral float-right" title="Documentation and Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to klib’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

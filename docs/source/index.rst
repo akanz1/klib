@@ -11,10 +11,11 @@ Welcome to klib's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
    :caption: Documentation and Examples:
 
-   auto_examples/index
-   api
+   examples
+   modules
 
 .. toctree::
    :maxdepth: 1
@@ -30,23 +31,24 @@ Welcome to klib's documentation!
 How to install and contribute.
 
 `Documentation and Examples <examples.html>`_
--------------------------------
+---------------------------------------------
 
 User guides, examples and best practices for the functions contained in klib.
 
-`API <api.html>`_
--------------------------------
+`Modules <modules.html>`_
+-------------------------
 
 Detailed information on all the functions and classes and how to use them. This includes the input types and shapes for all mandatory and optional parameters.
 
 
 `Changes, Updates and known Issues <changes.html>`_
-------------------------------
+---------------------------------------------------
 
-Log of the imbalanced-learn history.
+Changes, Updates and known Issues.
+
 
 `About klib <about.html>`_
---------------------------------------
+--------------------------
 
 Contact information and links.
 
