@@ -9,3 +9,4 @@ __pycache__/
 /misc/
 *.code-workspace
 *.egg-info/
+docs/build/
