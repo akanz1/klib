@@ -2,7 +2,4 @@
 Documentation and Examples
 ##########################
 
-Examples
-========
-
-.. include:: ../EXAMPLES.rst
+.. include:: ../README_EX.rst

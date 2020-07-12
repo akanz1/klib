@@ -37,7 +37,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="klib’s API" href="modules.html" />
+    <link rel="next" title="Modules" href="modules.html" />
     <link rel="prev" title="Installation and contribution" href="install.html" /> 
 </head>
 
@@ -91,19 +91,20 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation and Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#missing-value-plot">Missing Value Plot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#correlation-plots">Correlation Plots</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#numerical-data-distribution-plot">Numerical Data Distribution Plot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#categorical-data-plot">Categorical Data Plot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#data-cleaning-and-aggregation">Data Cleaning and Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#missing-value-plot">Missing Value Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#correlation-plots">Correlation Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numerical-data-distribution-plot">Numerical Data Distribution Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#categorical-data-plot">Categorical Data Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-cleaning-and-aggregation">Data Cleaning and Aggregation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#klib-data-cleaning">klib.data_cleaning()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#klib-pool-duplicate-subsets">klib.pool_duplicate_subsets()</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">klib’s API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Addtional Information</span></p>
 <ul>
@@ -177,10 +178,8 @@
 <h1>Documentation and Examples<a class="headerlink" href="#documentation-and-examples" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="missing-value-plot">
-<h4>Missing Value Plot<a class="headerlink" href="#missing-value-plot" title="Permalink to this headline">¶</a></h4>
+<h3>Missing Value Plot<a class="headerlink" href="#missing-value-plot" title="Permalink to this headline">¶</a></h3>
 <p>This plot visualizes the missing values in a dataset. At the top it
 shows the aggregate for each column using a relative scale and absolute
 missing-value annotations, while on the right, summary statistics and
@@ -193,7 +192,7 @@ in a dataset and easily determine which columns and rows to investigate
 </div>
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1100" height="1200"></p></div>
 <div class="section" id="correlation-plots">
-<h4>Correlation Plots<a class="headerlink" href="#correlation-plots" title="Permalink to this headline">¶</a></h4>
+<h3>Correlation Plots<a class="headerlink" href="#correlation-plots" title="Permalink to this headline">¶</a></h3>
 <p>This plot visualizes the correlation between different features.
 Settings include the possibility to only display positive, negative,
 high or low correlations as well as specify an additional threshold.
@@ -214,13 +213,13 @@ correlation of all features with the specified target.</p>
 </div>
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_corr_mat.png" alt="Corr Mat Example" width="808" height="369"></p></div>
 <div class="section" id="numerical-data-distribution-plot">
-<h4>Numerical Data Distribution Plot<a class="headerlink" href="#numerical-data-distribution-plot" title="Permalink to this headline">¶</a></h4>
+<h3>Numerical Data Distribution Plot<a class="headerlink" href="#numerical-data-distribution-plot" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">klib</span><span class="o">.</span><span class="n">dist_plot</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="c1"># default representation of a distribution plot, other settings include fill_range, histogram, ...</span>
 </pre></div>
 </div>
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p></div>
 <div class="section" id="categorical-data-plot">
-<h4>Categorical Data Plot<a class="headerlink" href="#categorical-data-plot" title="Permalink to this headline">¶</a></h4>
+<h3>Categorical Data Plot<a class="headerlink" href="#categorical-data-plot" title="Permalink to this headline">¶</a></h3>
 <p>This section shows an example of categorical data visualization. The
 function allows to dispaly the top and/or bottom values regarding their
 frequency in each column. Further, it gives an idea of the distribution
@@ -233,7 +232,7 @@ applying one-hot-encoding or similar functions.</p>
 </div>
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1100" height="1100"></p></div>
 <div class="section" id="data-cleaning-and-aggregation">
-<h4>Data Cleaning and Aggregation<a class="headerlink" href="#data-cleaning-and-aggregation" title="Permalink to this headline">¶</a></h4>
+<h3>Data Cleaning and Aggregation<a class="headerlink" href="#data-cleaning-and-aggregation" title="Permalink to this headline">¶</a></h3>
 <p>This sections describes the data cleaning and aggregation capabilities
 of klib. The functions have been shows to yield great results, even with
 dataframes as large as 20GB, drastically reducing the size and
@@ -242,7 +241,7 @@ the time to save and load the data.</p>
 <p>For demonstration purposes, we apply the function to a dataset about US
 flight data, which has an initial size of about 51 MB.</p>
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets3.png" alt="Original Dataset" width="329" height="376"></p><div class="section" id="klib-data-cleaning">
-<h5>klib.data_cleaning()<a class="headerlink" href="#klib-data-cleaning" title="Permalink to this headline">¶</a></h5>
+<h4>klib.data_cleaning()<a class="headerlink" href="#klib-data-cleaning" title="Permalink to this headline">¶</a></h4>
 <p>By applying <em>klib.data_cleaning()</em> <strong>the size reduces by about 44 MB
 (-85.2%)</strong>. This is achieved by dropping empty and single valued columns
 as well as empty and duplicate rows (neither found in this example).
@@ -251,7 +250,7 @@ also increases memory efficiency. This kind of reduction is not
 uncommon. For larger datasets the reduction in size often surpasses 90%.</p>
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_data_cleaning_dtypes.png" alt="Change in dtypes" width="294" height="429"></p></div>
 <div class="section" id="klib-pool-duplicate-subsets">
-<h5>klib.pool_duplicate_subsets()<a class="headerlink" href="#klib-pool-duplicate-subsets" title="Permalink to this headline">¶</a></h5>
+<h4>klib.pool_duplicate_subsets()<a class="headerlink" href="#klib-pool-duplicate-subsets" title="Permalink to this headline">¶</a></h4>
 <p>Further, <em>klib.pool_duplicate_subsets()</em> can be applied, what
 <strong>ultimately reduces the dataset to only 3.8 MB (from 51 MB originally).
 This is a reduction of roughly -92.5%</strong>.</p>
@@ -286,7 +285,6 @@ label before a decision on ommitting them is made.</p>
 </div>
 </div>
 </div>
-</div>
 
 
            </div>
@@ -296,7 +294,7 @@ label before a decision on ommitting them is made.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="modules.html" class="btn btn-neutral float-right" title="klib’s API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="install.html" class="btn btn-neutral float-left" title="Installation and contribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
