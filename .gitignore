@@ -1,5 +1,4 @@
-# Folders
-
+# Folders and files
 __pycache__/
 .pytest_cache
 .ipynb_checkpoints
@@ -9,4 +8,9 @@ __pycache__/
 /misc/
 *.code-workspace
 *.egg-info/
+
+# Sphinx
 docs/build/
+docs/source/_build
+docs/source/_static
+docs/source/_templates
