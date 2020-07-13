@@ -12,6 +12,7 @@
 #
 import os
 import sys
+from klib._version import __version__
 
 sys.path.insert(0, os.path.abspath("."))
 # sys.path.insert(0, os.path.abspath(".."))
@@ -27,8 +28,6 @@ copyright = "2020, Andreas Kanz"
 author = "Andreas Kanz"
 
 # The full version, including alpha/beta/rc tags
-from klib._version import __version__
-
 release = __version__
 
 
@@ -69,4 +68,4 @@ html_static_path = ["_static"]
 
 master_doc = "index"
 
-latex_engine = "xelatex"
+latex_engine = "pdflatex"
