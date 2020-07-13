@@ -42,5 +42,6 @@ jobs:
       run: |
         pip install coverage
         coverage run -m unittest discover
+        coerage report
     - uses: actions/checkout@master
     - uses: codecov/codecov-action@v1
