@@ -39,7 +39,7 @@ jobs:
         pip install pytest
         pytest
         pip install pytest-cov
-        py.test --cov-report=xml --cov=. tests/
+        pytest --cov=./ --cov-report=xml
     - name: Codecov
     - uses: actions/checkout@master
     - uses: codecov/codecov-action@v1
