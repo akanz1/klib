@@ -2,3 +2,4 @@ numpydoc
 sphinx
 sphinxcontrib.napoleon
 sphinxcontrib-napoleon
+sphinxcontrib-svg2pdfconverter

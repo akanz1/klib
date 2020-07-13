@@ -28,6 +28,7 @@ author = "Andreas Kanz"
 
 # The full version, including alpha/beta/rc tags
 from klib._version import __version__
+
 release = __version__
 
 
@@ -36,7 +37,14 @@ release = __version__
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["numpydoc", "sphinx.ext.autodoc", "sphinx.ext.coverage", "sphinx.ext.napoleon", "sphinx.ext.viewcode"]
+extensions = [
+    "numpydoc",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.coverage",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinxcontrib.rsvgconverter",
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -60,3 +68,5 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 master_doc = "index"
+
+latex_engine = "xelatex"
