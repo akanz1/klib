@@ -43,4 +43,7 @@ jobs:
         pip install coverage
         coverage run -m unittest discover
         coverage report
-    - uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v1
+      with:
+        file: .coverage
+        directory: ./
