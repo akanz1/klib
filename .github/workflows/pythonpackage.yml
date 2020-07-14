@@ -47,5 +47,4 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         file: .coverage
-        directory: ./
         flags: unittests
