@@ -54,16 +54,21 @@ class Test_data_cleaning(unittest.TestCase):
             [
                 [np.nan, np.nan, np.nan, np.nan, np.nan],
                 [pd.NA, pd.NA, pd.NA, pd.NA, pd.NA],
-                [pd.NA, "b", "c", "d", "e"],
-                [pd.NA, 6, 7, 8, 9],
-                [pd.NA, 2, 3, 4, pd.NA],
-                [pd.NA, 6, 7, pd.NA, pd.NA],
+                [pd.NA, "b", 6, "d", "e"],
+                [pd.NA, "b", 7, 8, 9],
+                [pd.NA, "c", 3, 4, pd.NA],
+                [pd.NA, "d", 7, pd.NA, pd.NA],
             ],
             columns=["c1", "c2", "c3", "c4", "c5"],
         )
 
     def test_data_cleaning(self):
         self.assertEqual(data_cleaning(self.df_data_cleaning).shape, (4, 4))
+        expected_results = ["string", "int8", "O", "O"]
+        for i, _ in enumerate(expected_results):
+            self.assertEqual(
+                data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes[i], expected_results[i]
+            )
 
 
 class Test_convert_dtypes(unittest.TestCase):
@@ -81,31 +86,31 @@ class Test_convert_dtypes(unittest.TestCase):
         )
 
     def test_convert_dtypes(self):
-        expected_results = ["Int8", "Float32", "string", "string", "category", "category"]
+        expected_results = ["int8", "float32", "string", "string", "category", "category"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(self.df_data_convert, cat_threshold=0.4).dtypes[i], expected_results[i]
             )
 
-        expected_results = ["Int8", "Float32", "string", "string", "object", "string"]
+        expected_results = ["int8", "float32", "string", "string", "object", "string"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(convert_datatypes(self.df_data_convert).dtypes[i], expected_results[i])
 
-        expected_results = ["Int8", "Float32", "string", "string", "object", "category"]
+        expected_results = ["int8", "float32", "string", "string", "object", "category"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(self.df_data_convert, cat_threshold=0.5, cat_exclude=[4]).dtypes[i],
                 expected_results[i],
             )
 
-        expected_results = ["Int8", "Float32", "string", "category", "object", "category"]
+        expected_results = ["int8", "float32", "string", "category", "object", "category"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(self.df_data_convert, cat_threshold=0.95, cat_exclude=[2, 4]).dtypes[i],
                 expected_results[i],
             )
 
-        expected_results = ["Int8", "Float32", "string", "string", "object", "string"]
+        expected_results = ["int8", "float32", "string", "string", "object", "string"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(
