@@ -34,7 +34,7 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
     Parameter
     ---------
     num: default, True
-        Select only numerica Columns. If num = False, only categorical columns are selected.
+        Select only numerical Columns. If num = False, only categorical columns are selected.
 
     Returns
     -------
@@ -88,7 +88,7 @@ def cat_pipe(
     imputer=SimpleImputer(strategy="most_frequent"),
     encoder=OneHotEncoder(handle_unknown="ignore"),
     scaler=MaxAbsScaler(),
-    encoder_info=PipeInfo(name="after encoding"),
+    encoder_info=PipeInfo(name="after encoding categorical data"),
 ):
     """
     Standard preprocessing operations on categorical data.
