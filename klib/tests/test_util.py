@@ -1,61 +1,89 @@
 import numpy as np
 import pandas as pd
 import unittest
-from ..utils import (_corr_selector,
-                     _drop_duplicates,
-                     _missing_vals,
-                     _validate_input_bool,
-                     _validate_input_int,
-                     _validate_input_range,
-                     _validate_input_smaller,
-                     _validate_input_sum)
+from ..utils import (
+    _corr_selector,
+    _drop_duplicates,
+    _missing_vals,
+    _validate_input_bool,
+    _validate_input_int,
+    _validate_input_range,
+    _validate_input_smaller,
+    _validate_input_sum,
+)
 
 
 class Test__corr_selector(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
-        cls.df_data_corr = pd.DataFrame([[1, 7, 2, 2, 4, 7],
-                                         [3, 8, 3, 3, 7, 1],
-                                         [5, 7, 9, 5, 1, 4],
-                                         [1, 7, 8, 6, 1, 8],
-                                         [1, 7, 5, 6, 2, 6],
-                                         [2, 7, 3, 3, 5, 3]])
+        cls.df_data_corr = pd.DataFrame(
+            [
+                [1, 7, 2, 2, 4, 7],
+                [3, 8, 3, 3, 7, 1],
+                [5, 7, 9, 5, 1, 4],
+                [1, 7, 8, 6, 1, 8],
+                [1, 7, 5, 6, 2, 6],
+                [2, 7, 3, 3, 5, 3],
+            ]
+        )
 
         cls.target = pd.Series([1, 2, 4, 7, 4, 2])
 
     def test__corr_selector_matrix(self):
         self.assertEqual(_corr_selector(self.df_data_corr.corr()).shape, (6, 6))
-        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='pos').isna().sum().sum(), 18)
-        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='pos', threshold=0.5).isna().sum().sum(), 26)
-        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='neg', threshold=-0.75).isna().sum().sum(), 32)
-        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='above', threshold=0.15).isna().sum().sum(), 4)
-        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split='below', threshold=0.85).isna().sum().sum(), 6)
+        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split="pos").isna().sum().sum(), 18)
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corr(), split="pos", threshold=0.5).isna().sum().sum(), 26
+        )
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corr(), split="neg", threshold=-0.75).isna().sum().sum(), 32
+        )
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corr(), split="above", threshold=0.15).isna().sum().sum(), 4
+        )
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corr(), split="below", threshold=0.85).isna().sum().sum(), 6
+        )
 
     def test__corr_selector_label(self):
-        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target)).shape, (6, ))
-        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target), split='pos').isna().sum(), 3)
-        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(
-            self.target), split='pos', threshold=0.8).isna().sum(), 4)
-        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(
-            self.target), split='neg', threshold=-0.7).isna().sum(), 5)
-        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(
-            self.target), split='above', threshold=0.2).isna().sum(), 1)
-        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(
-            self.target), split='below', threshold=0.8).isna().sum(), 2)
+        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target)).shape, (6,))
+        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target), split="pos").isna().sum(), 3)
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="pos", threshold=0.8).isna().sum(),
+            4,
+        )
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="neg", threshold=-0.7).isna().sum(),
+            5,
+        )
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="above", threshold=0.2)
+            .isna()
+            .sum(),
+            1,
+        )
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="below", threshold=0.8)
+            .isna()
+            .sum(),
+            2,
+        )
 
 
 class Test__drop_duplicates(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls: pd.DataFrame) -> pd.DataFrame:
-        cls.data_dupl_df = pd.DataFrame([[pd.NA, pd.NA, pd.NA, pd.NA],
-                                         [1, 2, 3, 4],
-                                         [1, 2, 3, 4],
-                                         [1, 2, 3, 4],
-                                         [2, 3, 4, 5],
-                                         [1, 2, 3, pd.NA],
-                                         [pd.NA, pd.NA, pd.NA, pd.NA]])
+        cls.data_dupl_df = pd.DataFrame(
+            [
+                [pd.NA, pd.NA, pd.NA, pd.NA],
+                [1, 2, 3, 4],
+                [1, 2, 3, 4],
+                [1, 2, 3, 4],
+                [2, 3, 4, 5],
+                [1, 2, 3, pd.NA],
+                [pd.NA, pd.NA, pd.NA, pd.NA],
+            ]
+        )
 
     def test__drop_dupl(self):
         # Test dropping of duplicate rows
@@ -67,13 +95,14 @@ class Test__drop_duplicates(unittest.TestCase):
 
 
 class Test__missing_vals(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
-        cls.data_mv_list = [[1, np.nan, 3, 4],
-                            [None, 4, 5, None],
-                            ['a', 'b', pd.NA, 'd'],
-                            [True, False, 7, pd.NaT]]
+        cls.data_mv_list = [
+            [1, np.nan, 3, 4],
+            [None, 4, 5, None],
+            ["a", "b", pd.NA, "d"],
+            [True, False, 7, pd.NaT],
+        ]
 
         cls.data_mv_df = pd.DataFrame(cls.data_mv_list)
 
@@ -81,49 +110,48 @@ class Test__missing_vals(unittest.TestCase):
 
     def test_mv_total(self):
         # Test total missing values
-        self.assertAlmostEqual(_missing_vals(self.data_mv_df)['mv_total'], 5)
-        self.assertAlmostEqual(_missing_vals(self.data_mv_array)['mv_total'], 5)
-        self.assertAlmostEqual(_missing_vals(self.data_mv_list)['mv_total'], 5)
+        self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_total"], 5)
+        self.assertAlmostEqual(_missing_vals(self.data_mv_array)["mv_total"], 5)
+        self.assertAlmostEqual(_missing_vals(self.data_mv_list)["mv_total"], 5)
 
     def test_mv_rows(self):
         # Test missing values for each row
         expected_results = [1, 2, 1, 1]
         for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(_missing_vals(self.data_mv_df)['mv_rows'][i], expected_results[i])
+            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_rows"][i], expected_results[i])
 
     def test_mv_cols(self):
         # Test missing values for each column
         expected_results = [1, 1, 1, 2]
         for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(_missing_vals(self.data_mv_df)['mv_cols'][i], expected_results[i])
+            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_cols"][i], expected_results[i])
 
     def test_mv_rows_ratio(self):
         # Test missing values ratio for each row
         expected_results = [0.25, 0.5, 0.25, 0.25]
         for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(_missing_vals(self.data_mv_df)['mv_rows_ratio'][i], expected_results[i])
+            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_rows_ratio"][i], expected_results[i])
 
         # Test if missing value ratio is between 0 and 1
         for i in range(len(self.data_mv_df)):
-            self.assertTrue(0 <= _missing_vals(self.data_mv_df)['mv_rows_ratio'][i] <= 1)
+            self.assertTrue(0 <= _missing_vals(self.data_mv_df)["mv_rows_ratio"][i] <= 1)
 
     def test_mv_cols_ratio(self):
         # Test missing values ratio for each column
-        expected_results = [1/4, 0.25, 0.25, 0.5]
+        expected_results = [1 / 4, 0.25, 0.25, 0.5]
         for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(_missing_vals(self.data_mv_df)['mv_cols_ratio'][i], expected_results[i])
+            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_cols_ratio"][i], expected_results[i])
 
         # Test if missing value ratio is between 0 and 1
         for i in range(len(self.data_mv_df)):
-            self.assertTrue(0 <= _missing_vals(self.data_mv_df)['mv_cols_ratio'][i] <= 1)
+            self.assertTrue(0 <= _missing_vals(self.data_mv_df)["mv_cols_ratio"][i] <= 1)
 
 
 class Test__validate_input(unittest.TestCase):
-
     def test__validate_input_bool(self):
         # Raises an exception if the input is not boolean
         with self.assertRaises(TypeError):
-            _validate_input_bool('True', None)
+            _validate_input_bool("True", None)
         with self.assertRaises(TypeError):
             _validate_input_bool(None, None)
         with self.assertRaises(TypeError):
@@ -136,7 +164,7 @@ class Test__validate_input(unittest.TestCase):
         with self.assertRaises(TypeError):
             _validate_input_int([1], None)
         with self.assertRaises(TypeError):
-            _validate_input_int('1', None)
+            _validate_input_int("1", None)
 
     def test__validate_input_smaller(self):
         # Raises an exception if the first value is larger than the second
@@ -149,20 +177,20 @@ class Test__validate_input(unittest.TestCase):
 
     def test__validate_input_range(self):
         with self.assertRaises(ValueError):
-            _validate_input_range(-0.1, 'value -0.1', 0, 1)
+            _validate_input_range(-0.1, "value -0.1", 0, 1)
 
         with self.assertRaises(ValueError):
-            _validate_input_range(1.1, 'value 1.1', 0, 1)
+            _validate_input_range(1.1, "value 1.1", 0, 1)
 
         with self.assertRaises(TypeError):
-            _validate_input_range('1', 'value string', 0, 1)
+            _validate_input_range("1", "value string", 0, 1)
 
     def test__validate_input_sum(self):
         with self.assertRaises(ValueError):
-            _validate_input_sum(1, 'Test Sum <= 1', 1.1)
+            _validate_input_sum(1, "Test Sum <= 1", 1.1)
         with self.assertRaises(ValueError):
-            _validate_input_sum(1, 'Test Sum <= 1', 0.3, 0.2, 0.4, 0.5)
+            _validate_input_sum(1, "Test Sum <= 1", 0.3, 0.2, 0.4, 0.5)
         with self.assertRaises(ValueError):
-            _validate_input_sum(-1, 'Test Sum <= -1', -0.2, -0.7)
+            _validate_input_sum(-1, "Test Sum <= -1", -0.2, -0.7)
         with self.assertRaises(ValueError):
-            _validate_input_sum(10, 'Test Sum <= 10', 20, -11, 2)
+            _validate_input_sum(10, "Test Sum <= 10", 20, -11, 2)

@@ -64,6 +64,9 @@ class Test_data_cleaning(unittest.TestCase):
 
     def test_data_cleaning(self):
         self.assertEqual(data_cleaning(self.df_data_cleaning).shape, (4, 4))
+        # c1 will be dropped despite in col_exclude because it is single valued
+        self.assertEqual(data_cleaning(self.df_data_cleaning, col_exclude=["c1"]).shape, (4, 4))
+
         expected_results = ["string", "int8", "O", "O"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
