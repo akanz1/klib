@@ -11,4 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       uses: lgeiger/black-action@v1.0.1
-      args: --line-length 110
+      with:
+        args: --line-length 110

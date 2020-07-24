@@ -112,7 +112,7 @@ def _diff_report(
             print("_______________________________________________________\n")
 
         print(f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}")
-        print(f"\nChanges:")
+        print("\nChanges:")
         print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
         print(f"     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows})")
         print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
