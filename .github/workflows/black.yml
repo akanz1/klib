@@ -12,4 +12,4 @@ jobs:
     steps:
       uses: lgeiger/black-action@v1.0.1
       with:
-        args: --line-length 110
+        args: ".   -l 100   --verbose "
