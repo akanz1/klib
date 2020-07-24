@@ -10,6 +10,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      uses: lgeiger/black-action@v1.0.1
-      with:
-        args: ".   -l 100   --verbose "
+      - uses: actions/checkout@v2
+      - name: Black Code Formatter
+        uses: lgeiger/black-action@v1.0.1
+        with:
+          args: "--line-length 110 --target-version py38 --check ."
