@@ -29,27 +29,21 @@ class Test_train_dev_test_split(unittest.TestCase):
         expected_results = [(8, 4), (1, 4), (1, 4), (8,), (1,), (1,)]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
-                train_dev_test_split(self.data_split, "Col2", random_state=1234)[
-                    i
-                ].shape,
+                train_dev_test_split(self.data_split, "Col2", random_state=1234)[i].shape,
                 expected_results[i],
             )
 
         expected_results = [(8, 4), (2, 4), (8,), (2,)]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
-                train_dev_test_split(
-                    self.data_split, target="Col2", dev_size=0, test_size=0.2
-                )[i].shape,
+                train_dev_test_split(self.data_split, target="Col2", dev_size=0, test_size=0.2)[i].shape,
                 expected_results[i],
             )
 
         expected_results = [(5, 4), (5, 4), (5,), (5,)]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
-                train_dev_test_split(
-                    self.data_split, target="Col2", dev_size=0.5, test_size=0
-                )[i].shape,
+                train_dev_test_split(self.data_split, target="Col2", dev_size=0.5, test_size=0)[i].shape,
                 expected_results[i],
             )
 
@@ -59,29 +53,26 @@ class Test_train_dev_test_split(unittest.TestCase):
         expected_results = [(6, 5), (2, 5), (2, 5), (6,), (2,), (2,)]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
-                train_dev_test_split(
-                    self.data_split,
-                    target=self.data_target,
-                    dev_size=0.2,
-                    test_size=0.2,
-                )[i].shape,
+                train_dev_test_split(self.data_split, target=self.data_target, dev_size=0.2, test_size=0.2,)[
+                    i
+                ].shape,
                 expected_results[i],
             )
 
         expected_results = [(8, 5), (2, 5), (8,), (2,)]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
-                train_dev_test_split(
-                    self.data_split, target=self.data_target, dev_size=0, test_size=0.2
-                )[i].shape,
+                train_dev_test_split(self.data_split, target=self.data_target, dev_size=0, test_size=0.2)[
+                    i
+                ].shape,
                 expected_results[i],
             )
 
         expected_results = [(5, 5), (5, 5), (5,), (5,)]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
-                train_dev_test_split(
-                    self.data_split, target=self.data_target, dev_size=0.5, test_size=0
-                )[i].shape,
+                train_dev_test_split(self.data_split, target=self.data_target, dev_size=0.5, test_size=0)[
+                    i
+                ].shape,
                 expected_results[i],
             )

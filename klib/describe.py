@@ -107,12 +107,8 @@ def cat_plot(
 
         # Barcharts
         ax_top = fig.add_subplot(gs[:1, count : count + 1])
-        ax_top.bar(
-            value_counts_idx_top, value_counts_top, color=bar_color_top, width=0.85
-        )
-        ax_top.bar(
-            value_counts_idx_bot, value_counts_bot, color=bar_color_bottom, width=0.85
-        )
+        ax_top.bar(value_counts_idx_top, value_counts_top, color=bar_color_top, width=0.85)
+        ax_top.bar(value_counts_idx_bot, value_counts_bot, color=bar_color_bottom, width=0.85)
         ax_top.set(frame_on=False)
         ax_top.tick_params(axis="x", labelrotation=90)
 
@@ -140,16 +136,11 @@ def cat_plot(
     ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
     ax_hm.set_yticklabels(ax_hm.get_yticks())
     ax_hm.set_xticklabels(
-        ax_hm.get_xticklabels(),
-        horizontalalignment="center",
-        fontweight="light",
-        fontsize="medium",
+        ax_hm.get_xticklabels(), horizontalalignment="center", fontweight="light", fontsize="medium",
     )
     ax_hm.tick_params(length=1, colors="#111111")
 
-    gs.figure.suptitle(
-        "Categorical data plot", x=0.47, y=0.925, fontsize=18, color="#111111"
-    )
+    gs.figure.suptitle("Categorical data plot", x=0.47, y=0.925, fontsize=18, color="#111111")
 
     return gs
 
@@ -157,9 +148,7 @@ def cat_plot(
 # Correlation Matrix
 def corr_mat(
     data: pd.DataFrame,
-    split: Optional[
-        str
-    ] = None,  # Optional[Literal['pos', 'neg', 'above', 'below']] = None,
+    split: Optional[str] = None,  # Optional[Literal['pos', 'neg', 'above', 'below']] = None,
     threshold: float = 0,
     target: Optional[Union[pd.DataFrame, pd.Series, np.ndarray, str]] = None,
     method: str = "pearson",  # Literal['pearson', 'spearman', 'kendall'] = "pearson",
@@ -315,14 +304,7 @@ in this case to avoid overlap.
 
     data = pd.DataFrame(data)
 
-    corr = corr_mat(
-        data,
-        split=split,
-        threshold=threshold,
-        target=target,
-        method=method,
-        colored=False,
-    )
+    corr = corr_mat(data, split=split, threshold=threshold, target=target, method=method, colored=False,)
 
     mask = np.zeros_like(corr, dtype=np.bool)
 
@@ -443,11 +425,7 @@ def dist_plot(
         else rug_kws.copy()
     )
     fill_kws = {"color": "brown", "alpha": 0.1} if fill_kws is None else fill_kws.copy()
-    font_kws = (
-        {"color": "#111111", "weight": "normal", "size": 11}
-        if font_kws is None
-        else font_kws.copy()
-    )
+    font_kws = {"color": "#111111", "weight": "normal", "size": 11} if font_kws is None else font_kws.copy()
 
     data = pd.DataFrame(data.copy()).dropna(axis=1, how="all")
     cols = list(data.select_dtypes(include=["number"]).columns)
@@ -488,10 +466,7 @@ def dist_plot(
         ax.fill_between(
             x,
             y,
-            where=(
-                (x >= np.quantile(col_data, fill_range[0]))
-                & (x <= np.quantile(col_data, fill_range[1]))
-            ),
+            where=((x >= np.quantile(col_data, fill_range[0])) & (x <= np.quantile(col_data, fill_range[1]))),
             label=f"{fill_range[0]*100:.1f}% - {fill_range[1]*100:.1f}%",
             **fill_kws,
         )
@@ -499,13 +474,7 @@ def dist_plot(
         mean = np.mean(col_data)
         std = scipy.stats.tstd(col_data)
         ax.vlines(
-            x=mean,
-            ymin=0,
-            ymax=np.interp(mean, x, y),
-            ls="dotted",
-            color=mean_color,
-            lw=2,
-            label="mean",
+            x=mean, ymin=0, ymax=np.interp(mean, x, y), ls="dotted", color=mean_color, lw=2, label="mean",
         )
         ax.vlines(
             x=np.median(col_data),
@@ -529,18 +498,10 @@ def dist_plot(
 
         # Annotations and legend
         ax.text(
-            0.01,
-            0.85,
-            f"Mean: {np.round(mean,2)}",
-            fontdict=font_kws,
-            transform=ax.transAxes,
+            0.01, 0.85, f"Mean: {np.round(mean,2)}", fontdict=font_kws, transform=ax.transAxes,
         )
         ax.text(
-            0.01,
-            0.7,
-            f"Std. dev: {np.round(std,2)}",
-            fontdict=font_kws,
-            transform=ax.transAxes,
+            0.01, 0.7, f"Std. dev: {np.round(std,2)}", fontdict=font_kws, transform=ax.transAxes,
         )
         ax.text(
             0.01,
@@ -557,11 +518,7 @@ def dist_plot(
             transform=ax.transAxes,
         )
         ax.text(
-            0.01,
-            0.25,
-            f"Count: {np.round(len(col_data))}",
-            fontdict=font_kws,
-            transform=ax.transAxes,
+            0.01, 0.25, f"Count: {np.round(len(col_data))}", fontdict=font_kws, transform=ax.transAxes,
         )
         ax.legend(loc="upper right")
 
@@ -608,11 +565,7 @@ def missingval_plot(
     if sort:
         mv_cols_sorted = data.isna().sum(axis=0).sort_values(ascending=False)
         final_cols = (
-            mv_cols_sorted.drop(
-                mv_cols_sorted[mv_cols_sorted.values == 0].keys().tolist()
-            )
-            .keys()
-            .tolist()
+            mv_cols_sorted.drop(mv_cols_sorted[mv_cols_sorted.values == 0].keys().tolist()).keys().tolist()
         )
         data = data[final_cols]
         print("Displaying only columns with missing values.")
@@ -667,10 +620,7 @@ def missingval_plot(
         ax2.set_yticks(np.round(ax2.get_yticks()[0::5], -1))
         ax2.set_yticklabels(ax2.get_yticks())
         ax2.set_xticklabels(
-            ax2.get_xticklabels(),
-            horizontalalignment="center",
-            fontweight="light",
-            fontsize="12",
+            ax2.get_xticklabels(), horizontalalignment="center", fontweight="light", fontsize="12",
         )
         ax2.tick_params(length=1, colors="#111111")
         for _, spine in ax2.spines.items():
@@ -695,11 +645,7 @@ def missingval_plot(
             fontdict=fontax3,
         )
         ax3.text(
-            0.025,
-            0.675,
-            f"Missing: {np.round(mv_total/1000,1)}K",
-            transform=ax3.transAxes,
-            fontdict=fontax3,
+            0.025, 0.675, f"Missing: {np.round(mv_total/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3,
         )
         ax3.text(
             0.025,
@@ -730,20 +676,12 @@ def missingval_plot(
         ax4.tick_params(axis="x", colors="#111111", length=1)
 
         ax4.scatter(
-            mv_rows,
-            range(len(mv_rows)),
-            s=mv_rows,
-            c=mv_rows,
-            cmap=cmap,
-            marker=".",
-            vmin=1,
+            mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap=cmap, marker=".", vmin=1,
         )
         ax4.set_ylim((0, len(mv_rows))[::-1])  # limit and invert y-axis
         ax4.set_xlim(0, max(mv_rows) + 0.5)
         ax4.grid(linestyle=":", linewidth=1)
 
-        gs.figure.suptitle(
-            "Missing value plot", x=0.45, y=0.94, fontsize=18, color="#111111"
-        )
+        gs.figure.suptitle("Missing value plot", x=0.45, y=0.94, fontsize=18, color="#111111")
 
         return gs
