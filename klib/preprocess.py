@@ -13,12 +13,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.experimental import enable_iterative_imputer  # noqa
 from sklearn.impute import SimpleImputer, IterativeImputer
-from sklearn.feature_selection import (
-    f_classif,
-    SelectFromModel,
-    SelectPercentile,
-    VarianceThreshold,
-)
+from sklearn.feature_selection import f_classif, SelectFromModel, SelectPercentile, VarianceThreshold
 from sklearn.linear_model import LassoCV
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
@@ -168,7 +163,7 @@ def feature_selection_pipe(
 
 def num_pipe(
     imputer=IterativeImputer(
-        estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408,
+        estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408
     ),
     scaler=RobustScaler(),
 ):
@@ -239,7 +234,7 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
         target_data = pd.Series(target)
 
     X_train, X_dev_test, y_train, y_dev_test = train_test_split(
-        data, target_data, test_size=dev_size + test_size, random_state=random_state, stratify=stratify,
+        data, target_data, test_size=dev_size + test_size, random_state=random_state, stratify=stratify
     )
 
     if (dev_size == 0) or (test_size == 0):

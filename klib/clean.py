@@ -84,7 +84,7 @@ by default 0.05
         ):
             data[col] = data[col].astype("category")
         data[col] = data[col].convert_dtypes(
-            infer_objects=True, convert_string=True, convert_integer=False, convert_boolean=True,
+            infer_objects=True, convert_string=True, convert_integer=False, convert_boolean=True
         )
 
     data = optimize_ints(data)
@@ -230,12 +230,10 @@ and memory usage (deep). Please be aware, that this can slow down the function b
         data_cleaned, dupl_rows = _drop_duplicates(data_cleaned)
     if convert_dtypes:
         data_cleaned = convert_datatypes(
-            data_cleaned, category=category, cat_threshold=cat_threshold, cat_exclude=cat_exclude,
+            data_cleaned, category=category, cat_threshold=cat_threshold, cat_exclude=cat_exclude
         )
 
-    _diff_report(
-        data, data_cleaned, dupl_rows=dupl_rows, single_val_cols=single_val_cols, show=show,
-    )
+    _diff_report(data, data_cleaned, dupl_rows=dupl_rows, single_val_cols=single_val_cols, show=show)
 
     return data_cleaned
 
@@ -539,7 +537,7 @@ by default None
 
         if max_ratio > subset_thresh:
             best_subset = itertools.islice(
-                itertools.combinations(check_list, len(check_list) - i), max_idx, max_idx + 1,
+                itertools.combinations(check_list, len(check_list) - i), max_idx, max_idx + 1
             )
             best_subset = data[list(list(best_subset)[0])]
             subset_cols = best_subset.columns.tolist()
@@ -588,9 +586,7 @@ subsets and stops when 'min_col_pool' is reached.
     data: pd.DataFrame
     """
 
-    def __init__(
-        self, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, return_details=True,
-    ):
+    def __init__(self, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, return_details=True):
         self.col_dupl_thresh = col_dupl_thresh
         self.subset_thresh = subset_thresh
         self.min_col_pool = min_col_pool
@@ -601,7 +597,7 @@ subsets and stops when 'min_col_pool' is reached.
 
     def transform(self, data, target=None):
         data, subset_cols = pool_duplicate_subsets(
-            data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, return_details=True,
+            data, col_dupl_thresh=0.2, subset_thresh=0.2, min_col_pool=3, return_details=True
         )
 
         print("Combined columns:", len(subset_cols), subset_cols)

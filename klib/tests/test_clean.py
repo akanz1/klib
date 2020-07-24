@@ -1,12 +1,7 @@
 import numpy as np
 import pandas as pd
 import unittest
-from ..clean import (
-    data_cleaning,
-    drop_missing,
-    convert_datatypes,
-    pool_duplicate_subsets,
-)
+from ..clean import data_cleaning, drop_missing, convert_datatypes, pool_duplicate_subsets
 
 
 class Test_drop_missing(unittest.TestCase):
@@ -30,7 +25,7 @@ class Test_drop_missing(unittest.TestCase):
         # Drop further columns based on threshold
         self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0.5).shape, (4, 3))
         self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_cols=0.5, col_exclude=["c1"]).shape, (4, 4),
+            drop_missing(self.df_data_drop, drop_threshold_cols=0.5, col_exclude=["c1"]).shape, (4, 4)
         )
         self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0.49).shape, (4, 2))
         self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_cols=0).shape, (0, 0))
@@ -42,13 +37,13 @@ class Test_drop_missing(unittest.TestCase):
         self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0.25).shape, (3, 4))
         self.assertEqual(drop_missing(self.df_data_drop, drop_threshold_rows=0.24).shape, (2, 4))
         self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_rows=0.24, col_exclude=["c1"]).shape, (2, 5),
+            drop_missing(self.df_data_drop, drop_threshold_rows=0.24, col_exclude=["c1"]).shape, (2, 5)
         )
         self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_rows=0.24, col_exclude=["c2"]).shape, (2, 4),
+            drop_missing(self.df_data_drop, drop_threshold_rows=0.24, col_exclude=["c2"]).shape, (2, 4)
         )
         self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_rows=0.51, col_exclude=["c1"]).shape, (3, 5),
+            drop_missing(self.df_data_drop, drop_threshold_rows=0.51, col_exclude=["c1"]).shape, (3, 5)
         )
 
 
@@ -75,7 +70,7 @@ class Test_data_cleaning(unittest.TestCase):
         expected_results = ["string", "int8", "O", "O"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
-                data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes[i], expected_results[i],
+                data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes[i], expected_results[i]
             )
 
 
@@ -94,17 +89,10 @@ class Test_convert_dtypes(unittest.TestCase):
         )
 
     def test_convert_dtypes(self):
-        expected_results = [
-            "int8",
-            "float32",
-            "string",
-            "string",
-            "category",
-            "category",
-        ]
+        expected_results = ["int8", "float32", "string", "string", "category", "category"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
-                convert_datatypes(self.df_data_convert, cat_threshold=0.4).dtypes[i], expected_results[i],
+                convert_datatypes(self.df_data_convert, cat_threshold=0.4).dtypes[i], expected_results[i]
             )
 
         expected_results = ["int8", "float32", "string", "string", "object", "string"]
@@ -118,14 +106,7 @@ class Test_convert_dtypes(unittest.TestCase):
                 expected_results[i],
             )
 
-        expected_results = [
-            "int8",
-            "float32",
-            "string",
-            "category",
-            "object",
-            "category",
-        ]
+        expected_results = ["int8", "float32", "string", "category", "object", "category"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(self.df_data_convert, cat_threshold=0.95, cat_exclude=[2, 4]).dtypes[i],
@@ -136,7 +117,7 @@ class Test_convert_dtypes(unittest.TestCase):
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(
-                    self.df_data_convert, category=False, cat_threshold=0.95, cat_exclude=[2, 4],
+                    self.df_data_convert, category=False, cat_threshold=0.95, cat_exclude=[2, 4]
                 ).dtypes[i],
                 expected_results[i],
             )
@@ -158,7 +139,5 @@ class Test_pool_duplicate_subsets(unittest.TestCase):
 
     def test_pool_duplicate_subsets(self):
         self.assertEqual(pool_duplicate_subsets(self.df_data_subsets).shape, (6, 3))
-        self.assertEqual(
-            pool_duplicate_subsets(self.df_data_subsets, col_dupl_thresh=1).shape, (6, 6),
-        )
+        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets, col_dupl_thresh=1).shape, (6, 6))
         self.assertEqual(pool_duplicate_subsets(self.df_data_subsets, subset_thresh=0).shape, (6, 2))

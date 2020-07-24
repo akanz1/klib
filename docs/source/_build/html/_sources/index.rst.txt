@@ -10,7 +10,7 @@ Welcome to klib's documentation!
 Readme
 ======
 .. mdinclude:: ../../README.md
- 
+
 
 
 Indices and tables

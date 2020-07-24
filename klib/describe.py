@@ -136,7 +136,7 @@ def cat_plot(
     ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
     ax_hm.set_yticklabels(ax_hm.get_yticks())
     ax_hm.set_xticklabels(
-        ax_hm.get_xticklabels(), horizontalalignment="center", fontweight="light", fontsize="medium",
+        ax_hm.get_xticklabels(), horizontalalignment="center", fontweight="light", fontsize="medium"
     )
     ax_hm.tick_params(length=1, colors="#111111")
 
@@ -304,7 +304,7 @@ in this case to avoid overlap.
 
     data = pd.DataFrame(data)
 
-    corr = corr_mat(data, split=split, threshold=threshold, target=target, method=method, colored=False,)
+    corr = corr_mat(data, split=split, threshold=threshold, target=target, method=method, colored=False)
 
     mask = np.zeros_like(corr, dtype=np.bool)
 
@@ -474,7 +474,7 @@ def dist_plot(
         mean = np.mean(col_data)
         std = scipy.stats.tstd(col_data)
         ax.vlines(
-            x=mean, ymin=0, ymax=np.interp(mean, x, y), ls="dotted", color=mean_color, lw=2, label="mean",
+            x=mean, ymin=0, ymax=np.interp(mean, x, y), ls="dotted", color=mean_color, lw=2, label="mean"
         )
         ax.vlines(
             x=np.median(col_data),
@@ -493,16 +493,12 @@ def dist_plot(
             label="\u03BC \u00B1 \u03C3",
         )
 
-        ax.set_ylim(0,)
+        ax.set_ylim(0)
         ax.set_xlim(ax.get_xlim()[0] * 1.15, ax.get_xlim()[1] * 1.15)
 
         # Annotations and legend
-        ax.text(
-            0.01, 0.85, f"Mean: {np.round(mean,2)}", fontdict=font_kws, transform=ax.transAxes,
-        )
-        ax.text(
-            0.01, 0.7, f"Std. dev: {np.round(std,2)}", fontdict=font_kws, transform=ax.transAxes,
-        )
+        ax.text(0.01, 0.85, f"Mean: {np.round(mean,2)}", fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.7, f"Std. dev: {np.round(std,2)}", fontdict=font_kws, transform=ax.transAxes)
         ax.text(
             0.01,
             0.55,
@@ -517,9 +513,7 @@ def dist_plot(
             fontdict=font_kws,
             transform=ax.transAxes,
         )
-        ax.text(
-            0.01, 0.25, f"Count: {np.round(len(col_data))}", fontdict=font_kws, transform=ax.transAxes,
-        )
+        ax.text(0.01, 0.25, f"Count: {np.round(len(col_data))}", fontdict=font_kws, transform=ax.transAxes)
         ax.legend(loc="upper right")
 
     return ax
@@ -620,7 +614,7 @@ def missingval_plot(
         ax2.set_yticks(np.round(ax2.get_yticks()[0::5], -1))
         ax2.set_yticklabels(ax2.get_yticks())
         ax2.set_xticklabels(
-            ax2.get_xticklabels(), horizontalalignment="center", fontweight="light", fontsize="12",
+            ax2.get_xticklabels(), horizontalalignment="center", fontweight="light", fontsize="12"
         )
         ax2.tick_params(length=1, colors="#111111")
         for _, spine in ax2.spines.items():
@@ -628,11 +622,7 @@ def missingval_plot(
             spine.set_color(spine_color)
 
         # ax3 - Summary
-        fontax3 = {
-            "color": "#111111",
-            "weight": "normal",
-            "size": 14,
-        }
+        fontax3 = {"color": "#111111", "weight": "normal", "size": 14}
         ax3.get_xaxis().set_visible(False)
         ax3.get_yaxis().set_visible(False)
         ax3.set(frame_on=False)
@@ -645,7 +635,7 @@ def missingval_plot(
             fontdict=fontax3,
         )
         ax3.text(
-            0.025, 0.675, f"Missing: {np.round(mv_total/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3,
+            0.025, 0.675, f"Missing: {np.round(mv_total/1000,1)}K", transform=ax3.transAxes, fontdict=fontax3
         )
         ax3.text(
             0.025,
@@ -675,9 +665,7 @@ def missingval_plot(
             spine.set_color(spine_color)
         ax4.tick_params(axis="x", colors="#111111", length=1)
 
-        ax4.scatter(
-            mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap=cmap, marker=".", vmin=1,
-        )
+        ax4.scatter(mv_rows, range(len(mv_rows)), s=mv_rows, c=mv_rows, cmap=cmap, marker=".", vmin=1)
         ax4.set_ylim((0, len(mv_rows))[::-1])  # limit and invert y-axis
         ax4.set_xlim(0, max(mv_rows) + 0.5)
         ax4.grid(linestyle=":", linewidth=1)

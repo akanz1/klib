@@ -33,23 +33,21 @@ class Test__corr_selector(unittest.TestCase):
         self.assertEqual(_corr_selector(self.df_data_corr.corr()).shape, (6, 6))
         self.assertEqual(_corr_selector(self.df_data_corr.corr(), split="pos").isna().sum().sum(), 18)
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="pos", threshold=0.5).isna().sum().sum(), 26,
+            _corr_selector(self.df_data_corr.corr(), split="pos", threshold=0.5).isna().sum().sum(), 26
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="neg", threshold=-0.75).isna().sum().sum(), 32,
+            _corr_selector(self.df_data_corr.corr(), split="neg", threshold=-0.75).isna().sum().sum(), 32
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="above", threshold=0.15).isna().sum().sum(), 4,
+            _corr_selector(self.df_data_corr.corr(), split="above", threshold=0.15).isna().sum().sum(), 4
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="below", threshold=0.85).isna().sum().sum(), 6,
+            _corr_selector(self.df_data_corr.corr(), split="below", threshold=0.85).isna().sum().sum(), 6
         )
 
     def test__corr_selector_label(self):
         self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target)).shape, (6,))
-        self.assertEqual(
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="pos").isna().sum(), 3,
-        )
+        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target), split="pos").isna().sum(), 3)
         self.assertEqual(
             _corr_selector(self.df_data_corr.corrwith(self.target), split="pos", threshold=0.8).isna().sum(),
             4,
