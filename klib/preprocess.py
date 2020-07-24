@@ -13,7 +13,12 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.experimental import enable_iterative_imputer  # noqa
 from sklearn.impute import SimpleImputer, IterativeImputer
-from sklearn.feature_selection import f_classif, SelectFromModel, SelectPercentile, VarianceThreshold
+from sklearn.feature_selection import (
+    f_classif,
+    SelectFromModel,
+    SelectPercentile,
+    VarianceThreshold,
+)
 from sklearn.linear_model import LassoCV
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
@@ -114,13 +119,17 @@ def cat_pipe(
     Pipeline
     """
 
-    cat_pipe = make_pipeline(ColumnSelector(num=False), imputer, encoder, encoder_info, scaler)
+    cat_pipe = make_pipeline(
+        ColumnSelector(num=False), imputer, encoder, encoder_info, scaler
+    )
     return cat_pipe
 
 
 def feature_selection_pipe(
     var_thresh=VarianceThreshold(threshold=0.1),
-    select_from_model=SelectFromModel(LassoCV(cv=4, random_state=408), threshold="0.1*median"),
+    select_from_model=SelectFromModel(
+        LassoCV(cv=4, random_state=408), threshold="0.1*median"
+    ),
     select_percentile=SelectPercentile(f_classif, percentile=95),
     var_thresh_info=PipeInfo(name="after var_thresh"),
     select_from_model_info=PipeInfo(name="after select_from_model"),
@@ -163,7 +172,8 @@ def feature_selection_pipe(
 
 def num_pipe(
     imputer=IterativeImputer(
-        estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408), random_state=408
+        estimator=ExtraTreesRegressor(n_estimators=25, n_jobs=4, random_state=408),
+        random_state=408,
     ),
     scaler=RobustScaler(),
 ):
@@ -186,7 +196,9 @@ def num_pipe(
     return num_pipe
 
 
-def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=None, random_state=408):
+def train_dev_test_split(
+    data, target, dev_size=0.1, test_size=0.1, stratify=None, random_state=408
+):
     """
     Split a dataset and a label column into train, dev and test sets.
 
@@ -234,7 +246,11 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
         target_data = pd.Series(target)
 
     X_train, X_dev_test, y_train, y_dev_test = train_test_split(
-        data, target_data, test_size=dev_size + test_size, random_state=random_state, stratify=stratify
+        data,
+        target_data,
+        test_size=dev_size + test_size,
+        random_state=random_state,
+        stratify=stratify,
     )
 
     if (dev_size == 0) or (test_size == 0):

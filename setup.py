@@ -19,14 +19,14 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8"
+        "Programming Language :: Python :: 3.8",
     ],
     install_requires=[
-        'matplotlib >= 2.1.2',
-        'numpy >= 1.13.3',
-        'pandas >= 1.0.0',
-        'seaborn >= 0.1.0',
-        'scikit-learn >= 0.23',
+        "matplotlib >= 2.1.2",
+        "numpy >= 1.13.3",
+        "pandas >= 1.0.0",
+        "seaborn >= 0.1.0",
+        "scikit-learn >= 0.23",
     ],
-    python_requires='>=3.7',
+    python_requires=">=3.7",
 )

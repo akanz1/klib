@@ -13,7 +13,9 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 def _corr_selector(
     corr: Union[pd.Series, pd.DataFrame],
-    split: Optional[str] = None,  # Optional[Literal["pos", "neg", "above", "below"]] = None,
+    split: Optional[
+        str
+    ] = None,  # Optional[Literal["pos", "neg", "above", "below"]] = None,
     threshold: float = 0,
 ) -> Union[pd.Series, pd.DataFrame]:
     """[summary]
@@ -36,10 +38,14 @@ def _corr_selector(
 
     if split == "pos":
         corr = corr.where((corr >= threshold) & (corr > 0))
-        print('Displaying positive correlations. Use "threshold" to further limit the results.')
+        print(
+            'Displaying positive correlations. Use "threshold" to further limit the results.'
+        )
     elif split == "neg":
         corr = corr.where((corr <= threshold) & (corr < 0))
-        print('Displaying negative correlations. Use "threshold" to further limit the results.')
+        print(
+            'Displaying negative correlations. Use "threshold" to further limit the results.'
+        )
     elif split == "above":
         corr = corr.where(np.abs(corr) >= threshold)
         print(f"Displaying absolute correlations above the threshold ({threshold}).")
@@ -111,15 +117,21 @@ def _diff_report(
             print(f"Memory usage: {data_cl_mem} MB")
             print("_______________________________________________________\n")
 
-        print(f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}")
+        print(
+            f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}"
+        )
         print(f"\nChanges:")
         print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
         print(f"     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows})")
         print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
-        print(f"     of which {len(single_val_cols)} single valued. (Columns: {single_val_cols})")
+        print(
+            f"     of which {len(single_val_cols)} single valued. (Columns: {single_val_cols})"
+        )
         print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
         mem_change = data_mem - data_cl_mem
-        print(f"Reduced memory by at least: {round(mem_change,2)} MB (-{round(100*mem_change/data_mem,1)}%)")
+        print(
+            f"Reduced memory by at least: {round(mem_change,2)} MB (-{round(100*mem_change/data_mem,1)}%)"
+        )
 
 
 def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
@@ -160,7 +172,9 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
     """
 
     data = pd.DataFrame(data).copy()
-    memory_usage = round(data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2)
+    memory_usage = round(
+        data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2
+    )
 
     return memory_usage
 
@@ -201,24 +215,34 @@ def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
 
 def _validate_input_bool(value, desc):
     if not (isinstance(value, bool)):
-        raise TypeError(f"Input value for '{desc}' is {type(value)} but should be a boolean.")
+        raise TypeError(
+            f"Input value for '{desc}' is {type(value)} but should be a boolean."
+        )
 
 
 def _validate_input_int(value, desc):
     if not isinstance(value, int):
-        raise TypeError(f"Input value for '{desc}' is {type(value)} but should be an integer.")
+        raise TypeError(
+            f"Input value for '{desc}' is {type(value)} but should be an integer."
+        )
 
 
 def _validate_input_range(value, desc, lower, upper):
     if value < lower or value > upper:
-        raise ValueError(f"'{desc}' = {value} but should be within the range {lower} <= '{desc}' <= {upper}.")
+        raise ValueError(
+            f"'{desc}' = {value} but should be within the range {lower} <= '{desc}' <= {upper}."
+        )
 
 
 def _validate_input_smaller(value1, value2, desc):
     if value1 > value2:
-        raise ValueError(f"The first input for '{desc}' should be smaller or equal to the second input.")
+        raise ValueError(
+            f"The first input for '{desc}' should be smaller or equal to the second input."
+        )
 
 
 def _validate_input_sum(limit, desc, *args):
     if sum(args) > limit:
-        raise ValueError(f"The sum of imput values provided for '{desc}' should be less or equal to {limit}.")
+        raise ValueError(
+            f"The sum of imput values provided for '{desc}' should be less or equal to {limit}."
+        )
