@@ -57,7 +57,7 @@ klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least comm
 
 ### Data Cleaning and Aggregation
 
-This sections describes the data cleaning and aggregation capabilities of <a href="https://github.com/akanz1/klib/">klib</a>. The functions have been shows to yield great results, even with dataframes as large as 20GB, drastically reducing the size and dimensions and therefore speeding up further calculations or reducing the time to save and load the data.
+This sections describes the data cleaning and aggregation capabilities of <a href="https://github.com/akanz1/klib/">klib</a>. The functions have been shown to yield great results, even with dataframes as large as 20GB, drastically reducing the size and dimensions and therefore speeding up further calculations or reducing the time to save and load the data.
 
 For demonstration purposes, we apply the function to a dataset about US flight data, which has an initial size of about 51 MB.
 
