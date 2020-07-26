@@ -239,7 +239,7 @@ def corr_plot(
     ----------
     data : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-information is used to label the plots
+        information is used to label the plots
     split : Optional[str], optional
         Type of split to be performed {None, 'pos', 'neg', 'above', 'below'}, by default None
             * None: visualize all correlations between the feature-columns
@@ -252,31 +252,31 @@ information is used to label the plots
         Value between 0 <= threshold <= 1, by default 0
     target : Optional[Union[pd.Series, str]], optional
         Specify target for correlation. E.g. label column to generate only the correlations between each feature \
-and the label, by default None
+        and the label, by default None
     method : str, optional
         method: {'pearson', 'spearman', 'kendall'}, by default "pearson"
             * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
             * spearman: ranked/ordinal correlation, measures monotonic relationships.
             * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive \
-but more robust in smaller dataets than 'spearman'.
+            but more robust in smaller dataets than 'spearman'.
 
     cmap : str, optional
         The mapping from data values to color space, matplotlib colormap name or object, or list of colors, by default \
-"BrBG"
+        "BrBG"
     figsize : Tuple, optional
         Use to control the figure size, by default (12, 10)
     annot : bool, optional
         Use to show or hide annotations, by default True
     dev : bool, optional
         Display figure settings in the plot by setting dev = True. If False, the settings are not displayed, by \
-default False
+        default False
 
     Keyword Arguments : optional
         Additional elements to control the visualization of the plot, e.g.:
 
             * mask: bool, default True
                 If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False \
-in this case to avoid overlap.
+                in this case to avoid overlap.
             * vmax: float, default is calculated from the given correlation coefficients.
                 Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
             * vmin: float, default is calculated from the given correlation coefficients.
