@@ -24,7 +24,7 @@ def _corr_selector(
         pd.Series or pd.DataFrame of correlations
     split : Optional[str], optional
         Type of split performed, by default None
-           * {None, 'pos', 'neg', 'above', 'below'}
+           * {None, 'pos', 'neg', 'high', 'low'}
     threshold : float, optional
         Value between 0 and 1 to set the correlation threshold, by default 0
 
@@ -40,10 +40,10 @@ def _corr_selector(
     elif split == "neg":
         corr = corr.where((corr <= threshold) & (corr < 0))
         print('Displaying negative correlations. Use "threshold" to further limit the results.')
-    elif split == "above":
+    elif split == "high":
         corr = corr.where(np.abs(corr) >= threshold)
         print(f"Displaying absolute correlations above the threshold ({threshold}).")
-    elif split == "below":
+    elif split == "low":
         corr = corr.where(np.abs(corr) <= threshold)
         print(f"Displaying absolute correlations below the threshold ({threshold}).")
 

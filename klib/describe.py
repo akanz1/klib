@@ -148,7 +148,7 @@ def cat_plot(
 # Correlation Matrix
 def corr_mat(
     data: pd.DataFrame,
-    split: Optional[str] = None,  # Optional[Literal['pos', 'neg', 'above', 'below']] = None,
+    split: Optional[str] = None,  # Optional[Literal['pos', 'neg', 'high', 'low']] = None,
     threshold: float = 0,
     target: Optional[Union[pd.DataFrame, pd.Series, np.ndarray, str]] = None,
     method: str = "pearson",  # Literal['pearson', 'spearman', 'kendall'] = "pearson",
@@ -163,7 +163,7 @@ def corr_mat(
     information is used to label the plots
     split : Optional[str], optional
         Type of split to be performed, by default None
-        {None, 'pos', 'neg', 'above', 'below'}
+        {None, 'pos', 'neg', 'high', 'low'}
     threshold : float, optional
         Value between 0 <= threshold <= 1, by default 0
     target : Optional[Union[pd.DataFrame, str]], optional
@@ -241,12 +241,12 @@ def corr_plot(
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
         information is used to label the plots
     split : Optional[str], optional
-        Type of split to be performed {None, 'pos', 'neg', 'above', 'below'}, by default None
+        Type of split to be performed {None, 'pos', 'neg', 'high', 'low'}, by default None
             * None: visualize all correlations between the feature-columns
             * pos: visualize all positive correlations between the feature-columns above the threshold
             * neg: visualize all negative correlations between the feature-columns below the threshold
-            * above: visualize all correlations between the feature-columns for which abs(corr) > threshold is True
-            * below: visualize all correlations between the feature-columns for which abs(corr) < threshold is True
+            * high: visualize all correlations between the feature-columns for which abs(corr) > threshold is True
+            * low: visualize all correlations between the feature-columns for which abs(corr) < threshold is True
 
     threshold : float, optional
         Value between 0 <= threshold <= 1, by default 0
@@ -433,6 +433,7 @@ def dist_plot(
 
     if len(cols) == 0:
         print("No columns with numeric data were detected.")
+        return
 
     elif len(cols) >= 20 and showall is False:
         print(
