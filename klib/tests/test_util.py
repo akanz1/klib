@@ -57,15 +57,11 @@ class Test__corr_selector(unittest.TestCase):
             5,
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="high", threshold=0.2)
-            .isna()
-            .sum(),
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="high", threshold=0.2).isna().sum(),
             1,
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="low", threshold=0.8)
-            .isna()
-            .sum(),
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="low", threshold=0.8).isna().sum(),
             2,
         )
 
