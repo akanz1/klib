@@ -39,10 +39,10 @@ class Test__corr_selector(unittest.TestCase):
             _corr_selector(self.df_data_corr.corr(), split="neg", threshold=-0.75).isna().sum().sum(), 32
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="above", threshold=0.15).isna().sum().sum(), 4
+            _corr_selector(self.df_data_corr.corr(), split="high", threshold=0.15).isna().sum().sum(), 4
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="below", threshold=0.85).isna().sum().sum(), 6
+            _corr_selector(self.df_data_corr.corr(), split="low", threshold=0.85).isna().sum().sum(), 6
         )
 
     def test__corr_selector_label(self):
@@ -57,13 +57,13 @@ class Test__corr_selector(unittest.TestCase):
             5,
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="above", threshold=0.2)
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="high", threshold=0.2)
             .isna()
             .sum(),
             1,
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="below", threshold=0.8)
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="low", threshold=0.8)
             .isna()
             .sum(),
             2,
