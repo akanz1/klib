@@ -83,6 +83,8 @@ def convert_datatypes(
             and data[col].dtype == "object"
         ):
             data[col] = data[col].astype("category")
+
+        # convert_ints = True if int(pd.__version__.replace(".", "")) >= 110 else False
         data[col] = data[col].convert_dtypes(
             infer_objects=True, convert_string=True, convert_integer=False, convert_boolean=True
         )
