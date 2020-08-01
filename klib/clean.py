@@ -8,6 +8,7 @@ Functions for data cleaning.
 import itertools
 import numpy as np
 import pandas as pd
+import re
 from sklearn.base import BaseEstimator, TransformerMixin
 from typing import List, Optional, Union
 
@@ -24,17 +25,94 @@ from klib.utils import (
 __all__ = ["convert_datatypes", "data_cleaning", "drop_missing", "mv_col_handling"]
 
 
-def optimize_ints(data: Union[pd.Series, pd.DataFrame]):
+def optimize_ints(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
     data = pd.DataFrame(data).copy()
     ints = data.select_dtypes(include=["int64"]).columns.tolist()
     data[ints] = data[ints].apply(pd.to_numeric, downcast="integer")
     return data
 
 
-def optimize_floats(data: Union[pd.Series, pd.DataFrame]):
+def optimize_floats(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
     data = pd.DataFrame(data).copy()
     floats = data.select_dtypes(include=["float64"]).columns.tolist()
     data[floats] = data[floats].apply(pd.to_numeric, downcast="float")
+    return data
+
+
+def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
+    """Cleans the column names of the provided Pandas Dataframe and optionally provides hints on the colum names.
+
+    Parameters
+    ----------
+    data : Union[pd.Series, pd.DataFrame]
+        Original Dataframe with columns to be cleaned
+    hints : bool, optional
+        Print out hints on column name duplication and colum name length, by default True
+
+    Returns
+    -------
+    pd.DataFrame
+        andas DataFrame with cleaned column names
+    """
+
+    for i, col in enumerate(data.columns):
+        matches = re.findall(re.compile("[a-z][A-Z]"), col)
+        for match in matches:
+            column = col.replace(match, match[0] + "_" + match[1])
+            data.rename(columns={data.columns[i]: column}, inplace=True)
+
+    for i, col in enumerate(data.columns):
+        matches = re.findall(re.compile("[a-z][A-Z]"), col)
+        column = col
+        for match in matches:
+            column = column.replace(match, match[0] + "_" + match[1])
+            data.rename(columns={data.columns[i]: column}, inplace=True)
+
+    data.columns = (
+        data.columns.str.replace("(", " ")
+        .str.replace(")", " ")
+        .str.replace("'", " ")
+        .str.replace('"', " ")
+        .str.replace("/", " ")
+        .str.replace("-", "")
+        .str.replace("+", " plus ")
+        .str.replace("-", " minus ")
+        .str.replace("*", " times ")
+        .str.replace("ä", "ae")
+        .str.replace("ö", "oe")
+        .str.replace("ü", "ue")
+        .str.replace("ß", "ss")
+        .str.replace("%", " percent ")
+        .str.replace("$", " dollar ")
+        .str.replace("€", " euro ")
+        .str.replace("@", " at ")
+        .str.replace("#", " number ")
+        .str.replace("&", " and ")
+        .str.lower()
+        .str.strip()
+        .str.replace("   ", " ")
+        .str.replace("  ", " ")
+        .str.replace(" ", "_")
+    )
+
+    dupl_idx = [i for i, x in enumerate(data.columns.duplicated()) if x]
+    if len(dupl_idx) > 0:
+        dupl_before = data.columns[dupl_idx].tolist()
+        data.columns = [
+            col if col not in data.columns[:i] else col + "_" + str(i) for i, col in enumerate(data.columns)
+        ]
+        if hints:
+            print(
+                f"- Duplicate column names detected! Columns with index {dupl_idx} and names {dupl_before}) have \n\
+            been renamed to {data.columns[dupl_idx].tolist()}."
+            )
+
+    long_col_names = [x for x in data.columns if len(x) > 25]
+    if len(long_col_names) > 0 and hints:
+        print(
+            f"- Long column names detected (>25 characters)! Consider renaming the following columns {long_col_names}."
+        )
+
     return data
 
 

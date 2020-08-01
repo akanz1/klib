@@ -1,7 +1,45 @@
 import numpy as np
 import pandas as pd
 import unittest
-from ..clean import data_cleaning, drop_missing, convert_datatypes, pool_duplicate_subsets
+from ..clean import clean_column_names, data_cleaning, drop_missing, convert_datatypes, pool_duplicate_subsets
+
+
+class Test_clean_column_names(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.df1 = pd.DataFrame(
+            {
+                "Asd 5$ & (3€)": [1, 2, 3],
+                "3+3": [2, 3, 4],
+                "AsdFer #9": [3, 4, 5],
+                '"asd"': [5, 6, 7],
+                "dupli": [5, 6, 8],
+                "also": [9, 2, 7],
+            }
+        )
+        cls.df2 = pd.DataFrame(
+            {"dupli": [3, 2, 1], "also": [4, 5, 7], "verylongColumnNamesareHardtoRead": [9, 2, 7]}
+        )
+        cls.df_clean_column_names = pd.concat([cls.df1, cls.df2], axis=1)
+
+    def test_clean_column_names(self):
+        expected_results = [
+            "asd_5_dollar_and_3_euro",
+            "3_plus_3",
+            "asd_fer_number_9",
+            "asd",
+            "dupli",
+            "also",
+            "dupli_6",
+            "also_7",
+            "verylong_column_namesare_hardto_read",
+        ]
+        for i, _ in enumerate(expected_results):
+            self.assertEqual(clean_column_names(self.df_clean_column_names).columns[i], expected_results[i])
+        for i, _ in enumerate(expected_results):
+            self.assertEqual(
+                clean_column_names(self.df_clean_column_names, hints=False).columns[i], expected_results[i]
+            )
 
 
 class Test_drop_missing(unittest.TestCase):
