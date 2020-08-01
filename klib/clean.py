@@ -40,7 +40,7 @@ def optimize_floats(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
 
 
 def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
-    """Cleans the column names of the provided Pandas Dataframe and optionally provides hints on duplicate and long \
+    """ Cleans the column names of the provided Pandas Dataframe and optionally provides hints on duplicate and long \
         column names.
 
     Parameters
@@ -55,12 +55,6 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
     pd.DataFrame
         andas DataFrame with cleaned column names
     """
-
-    for i, col in enumerate(data.columns):
-        matches = re.findall(re.compile("[a-z][A-Z]"), col)
-        for match in matches:
-            column = col.replace(match, match[0] + "_" + match[1])
-            data.rename(columns={data.columns[i]: column}, inplace=True)
 
     for i, col in enumerate(data.columns):
         matches = re.findall(re.compile("[a-z][A-Z]"), col)
@@ -285,7 +279,7 @@ def data_cleaning(
     See also
     --------
     convert_datatypes: Convert columns to best possible dtypes.
-    drop_missing : Flexibly drop columns and rows.a
+    drop_missing : Flexibly drop columns and rows.
     _memory_usage: Gives the total memory usage in megabytes.
     _missing_vals: Metrics about missing values in the dataset.
 
