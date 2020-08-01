@@ -22,7 +22,7 @@ from klib.utils import (
 )
 
 
-__all__ = ["convert_datatypes", "data_cleaning", "drop_missing", "mv_col_handling"]
+__all__ = ["clean_column_names", "convert_datatypes", "data_cleaning", "drop_missing", "mv_col_handling"]
 
 
 def optimize_ints(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
