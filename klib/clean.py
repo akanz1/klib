@@ -40,11 +40,12 @@ def optimize_floats(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
 
 
 def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
-    """Cleans the column names of the provided Pandas Dataframe and optionally provides hints on the colum names.
+    """Cleans the column names of the provided Pandas Dataframe and optionally provides hints on duplicate and long \
+        column names.
 
     Parameters
     ----------
-    data : Union[pd.Series, pd.DataFrame]
+    data : pd.DataFrame
         Original Dataframe with columns to be cleaned
     hints : bool, optional
         Print out hints on column name duplication and colum name length, by default True
@@ -236,6 +237,7 @@ def data_cleaning(
     category: bool = True,
     cat_threshold: float = 0.03,
     cat_exclude: Optional[List[Union[str, int]]] = None,
+    clean_col_names: bool = True,
     show: str = "changes",
 ) -> pd.DataFrame:
     """ Perform initial data cleaning tasks on a dataset, such as dropping single valued and empty rows, \
@@ -264,6 +266,8 @@ def data_cleaning(
         default 0.03
     cat_exclude : Optional[List[str]], optional
         List of columns to exclude from categorical conversion, by default None
+    clean_column_names: bool, optional
+        Cleans the column names and provides hints on duplicate and long names, by default True
     show : str, optional
         {'all', 'changes', None}, by default "changes"
         Specify verbosity of the output:
@@ -312,6 +316,8 @@ def data_cleaning(
         data_cleaned = convert_datatypes(
             data_cleaned, category=category, cat_threshold=cat_threshold, cat_exclude=cat_exclude
         )
+    if clean_col_names:
+        data_cleaned = clean_column_names(data_cleaned)
 
     _diff_report(data, data_cleaned, dupl_rows=dupl_rows, single_val_cols=single_val_cols, show=show)
 
