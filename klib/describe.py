@@ -74,6 +74,9 @@ def cat_plot(
     data = pd.DataFrame(data).copy()
     cols = data.select_dtypes(exclude=["number"]).columns.tolist()
     data = data[cols]
+    for col in data.columns:
+        if data[col].dtype.name == 'category':
+            data[col] = data[col].astype('str')
 
     if len(cols) == 0:
         print("No columns with categorical data were detected.")
@@ -82,7 +85,6 @@ def cat_plot(
     gs = fig.add_gridspec(nrows=6, ncols=len(cols), wspace=0.2)
 
     for count, col in enumerate(cols):
-        data[col].cat.add_categories([-2, 0, 2], inplace=True)
 
         n_unique = data[col].nunique(dropna=False)
         value_counts = data[col].value_counts()
