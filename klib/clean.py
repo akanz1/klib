@@ -68,10 +68,11 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         .str.replace(")", " ")
         .str.replace("'", " ")
         .str.replace('"', " ")
+        .str.replace(":", "_")
+        .str.replace(";", "_")
         .str.replace("/", " ")
         .str.replace("-", "")
         .str.replace("+", " plus ")
-        .str.replace("-", " minus ")
         .str.replace("*", " times ")
         .str.replace("ä", "ae")
         .str.replace("ö", "oe")
@@ -88,6 +89,8 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         .str.replace("   ", " ")
         .str.replace("  ", " ")
         .str.replace(" ", "_")
+        .str.replace("__", "_")
+        .str.replace("___", "_")
     )
 
     dupl_idx = [i for i, x in enumerate(data.columns.duplicated()) if x]
@@ -208,7 +211,7 @@ def drop_missing(
 
     data = pd.DataFrame(data).copy()
 
-    data_dropped = data.drop(columns=col_exclude)
+    data_dropped = data.drop(columns=col_exclude, errors="ignore")
     data_dropped = data_dropped.drop(
         columns=data_dropped.loc[:, _missing_vals(data)["mv_cols_ratio"] > drop_threshold_cols].columns
     ).dropna(axis=1, how="all")
@@ -326,28 +329,22 @@ class DataCleaner(BaseEstimator, TransformerMixin):
     ---------´
     drop_threshold_cols: float, default 0.9
         Drop columns with NA-ratio equal to or above the specified threshold.
-
     drop_threshold_rows: float, default 0.9
         Drop rows with NA-ratio equal to or above the specified threshold.
-
     drop_duplicates: bool, default True
         Drop duplicate rows, keeping the first occurence. This step comes after the dropping of missing values.
-
     convert_dtypes: bool, default True
         Convert dtypes using pd.convert_dtypes().
-
     col_exclude: list, default None
         Specify a list of columns to exclude from dropping.
-
     category: bool, default True
         Change dtypes of columns to "category". Set threshold using cat_threshold. Requires convert_dtypes=True
-
     cat_threshold: float, default 0.03
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical.
-
     cat_exclude: list, default None
         List of columns to exclude from categorical conversion.
-
+    clean_column_names: bool, optional
+        Cleans the column names and provides hints on duplicate and long names, by default True
     show: str, optional
         {'all', 'changes', None}, by default "changes"
         Specify verbosity of the output:
@@ -371,6 +368,7 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         category: bool = True,
         cat_threshold: float = 0.03,
         cat_exclude: Optional[List[Union[str, int]]] = None,
+        clean_col_names: bool = True,
         show: str = "changes",
     ):
         self.drop_threshold_cols = drop_threshold_cols
@@ -381,6 +379,7 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         self.category = category
         self.cat_threshold = cat_threshold
         self.cat_exclude = cat_exclude
+        self.clean_col_names = clean_col_names
         self.show = show
 
     def fit(self, data, target=None):
@@ -397,6 +396,7 @@ class DataCleaner(BaseEstimator, TransformerMixin):
             category=self.category,
             cat_threshold=self.cat_threshold,
             cat_exclude=self.cat_exclude,
+            clean_col_names=self.clean_col_names,
             show=self.show,
         )
         return data_cleaned
@@ -493,21 +493,17 @@ class MVColHandler(BaseEstimator, TransformerMixin):
     target: string, list, np.array or pd.Series, default None
         Specify target for correlation. E.g. label column to generate only the correlations between each feature \
         and the label.
-
     mv_threshold: float, default 0.1
         Value between 0 <= threshold <= 1. Features with a missing-value-ratio larger than mv_threshold are candidates \
         for dropping and undergo further analysis.
-
     corr_thresh_features: float, default 0.6
         Value between 0 <= threshold <= 1. Maximum correlation a previously identified features with a high mv-ratio \
         is allowed to have with another feature. If this threshold is overstepped, the feature undergoes further \
         analysis.
-
     corr_thresh_target: float, default 0.3
         Value between 0 <= threshold <= 1. Minimum required correlation of a remaining feature (i.e. feature with a \
         high mv-ratio and high correlation to another existing feature) with the target. If this threshold is not met \
         the feature is ultimately dropped.
-
     return_details: bool, default True
         Provdies flexibility to return intermediary results.
 
@@ -651,16 +647,13 @@ class SubsetPooler(BaseEstimator, TransformerMixin):
     col_dupl_ratio: float, default 0.2
         Columns with a ratio of duplicates higher than 'col_dupl_ratio' are considered in the further analysis. \
         Columns with a lower ratio are not considered for pooling.
-
     dupl_thresh: float, default 0.2
         The first subset with a duplicate threshold higher than 'dupl_thresh' is chosen and aggregated. If no subset \
         reaches the threshold, the algorithm continues with continuously smaller subsets until 'min_col_pool' is \
         reached.
-
     min_col_pool: integer, default 3
         Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \
         subsets and stops when 'min_col_pool' is reached.
-
     return_details: bool, default False
         Provdies flexibility to return intermediary results.
 

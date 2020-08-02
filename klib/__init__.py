@@ -18,7 +18,7 @@ from .clean import (
 from .describe import cat_plot, corr_mat, corr_plot, dist_plot, missingval_plot
 from .preprocess import feature_selection_pipe, num_pipe, cat_pipe, train_dev_test_split
 
-__version__ = __version__
+# __version__ = __version__
 
 __all__ = [
     "clean_column_names",
