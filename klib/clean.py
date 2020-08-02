@@ -70,6 +70,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         .str.replace(")", " ")
         .str.replace("'", " ")
         .str.replace('"', " ")
+        .str.replace(".", "_")
         .str.replace(":", "_")
         .str.replace(";", "_")
         .str.replace("/", " ")
