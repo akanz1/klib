@@ -16,7 +16,7 @@ def _corr_selector(
     split: Optional[str] = None,  # Optional[Literal["pos", "neg", "above", "below"]] = None,
     threshold: float = 0,
 ) -> Union[pd.Series, pd.DataFrame]:
-    """[summary]
+    """ Utility funciton to select the desired correlations.
 
     Parameters
     ----------
@@ -48,14 +48,14 @@ def _corr_selector(
         threshold = 0.3 if threshold <= 0 else threshold
         corr = corr.where(np.abs(corr) >= threshold)
         print(
-            f"Displaying absolute correlations above the threshold ({threshold})."
+            f"Displaying absolute correlations above the threshold ({threshold}). "
             'Specify a positive "threshold" to further limit the results.'
         )
     elif split == "low":
         threshold = 0.3 if threshold <= 0 else threshold
         corr = corr.where(np.abs(corr) <= threshold)
         print(
-            f"Displaying absolute correlations below the threshold ({threshold})."
+            f"Displaying absolute correlations below the threshold ({threshold}). "
             'Specify a positive "threshold" to further limit the results.'
         )
 
