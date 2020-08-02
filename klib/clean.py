@@ -305,6 +305,9 @@ def data_cleaning(
     data = pd.DataFrame(data).copy()
     data_cleaned = drop_missing(data, drop_threshold_cols, drop_threshold_rows, col_exclude=col_exclude)
 
+    if clean_col_names:
+        data_cleaned = clean_column_names(data_cleaned)
+
     single_val_cols = data_cleaned.columns[data_cleaned.nunique(dropna=False) == 1].tolist()
     data_cleaned = data_cleaned.drop(columns=single_val_cols)
 
@@ -316,8 +319,6 @@ def data_cleaning(
         data_cleaned = convert_datatypes(
             data_cleaned, category=category, cat_threshold=cat_threshold, cat_exclude=cat_exclude
         )
-    if clean_col_names:
-        data_cleaned = clean_column_names(data_cleaned)
 
     _diff_report(data, data_cleaned, dupl_rows=dupl_rows, single_val_cols=single_val_cols, show=show)
 
