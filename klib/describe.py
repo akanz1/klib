@@ -108,6 +108,9 @@ def cat_plot(
         data.loc[data[col].isin(value_counts_idx_bot), col] = -2
         data.loc[((data[col] != 2) & (data[col] != -2)), col] = 0
 
+        value_counts_idx_top = [elem[:20] for elem in value_counts_idx_top]
+        value_counts_idx_bot = [elem[:20] for elem in value_counts_idx_bot]
+
         # Barcharts
         ax_top = fig.add_subplot(gs[:1, count : count + 1])
         ax_top.bar(value_counts_idx_top, value_counts_top, color=bar_color_top, width=0.85)
