@@ -45,14 +45,14 @@ def _corr_selector(
             'Displaying negative correlations. Specify a negative "threshold" to further limit the results.'
         )
     elif split == "high":
-        threshold = 0.5 if threshold <= 0 else threshold
+        threshold = 0.3 if threshold <= 0 else threshold
         corr = corr.where(np.abs(corr) >= threshold)
         print(
             f"Displaying absolute correlations above the threshold ({threshold})."
             'Specify a positive "threshold" to further limit the results.'
         )
     elif split == "low":
-        threshold = 0.5 if threshold <= 0 else threshold
+        threshold = 0.3 if threshold <= 0 else threshold
         corr = corr.where(np.abs(corr) <= threshold)
         print(
             f"Displaying absolute correlations below the threshold ({threshold})."
