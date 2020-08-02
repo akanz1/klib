@@ -36,14 +36,16 @@ def _corr_selector(
 
     if split == "pos":
         corr = corr.where((corr >= threshold) & (corr > 0))
-        print('Displaying positive correlations. Use "threshold" to further limit the results.')
+        print('Displaying positive correlations. Use a positive "threshold" to further limit the results.')
     elif split == "neg":
         corr = corr.where((corr <= threshold) & (corr < 0))
-        print('Displaying negative correlations. Use "threshold" to further limit the results.')
+        print('Displaying negative correlations. Use a negative "threshold" to further limit the results.')
     elif split == "high":
+        threshold = 0.5 if threshold == 0 else threshold
         corr = corr.where(np.abs(corr) >= threshold)
         print(f"Displaying absolute correlations above the threshold ({threshold}).")
     elif split == "low":
+        threshold = 0.5 if threshold == 0 else threshold
         corr = corr.where(np.abs(corr) <= threshold)
         print(f"Displaying absolute correlations below the threshold ({threshold}).")
 
@@ -119,7 +121,7 @@ def _diff_report(
         print(f"     of which {len(single_val_cols)} single valued. (Columns: {single_val_cols})")
         print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
         mem_change = data_mem - data_cl_mem
-        print(f"Reduced memory by at least: {round(mem_change,2)} MB (-{round(100*mem_change/data_mem,1)}%)")
+        print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{round(100*mem_change/data_mem,2)}%)")
 
 
 def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
