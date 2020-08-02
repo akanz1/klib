@@ -8,7 +8,7 @@
 [![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/akanz1/klib/)
 [![codecov](https://codecov.io/gh/akanz1/klib/branch/master/graph/badge.svg)](https://codecov.io/gh/akanz1/klib)
 
-klib is a Python library for importing, cleaning, analyzing and preprocessing data. Future versions will include model creation and optimization to provide an end-to-end solution.
+klib is a Python library for importing, cleaning, analyzing and preprocessing data. While the focus is on these steps, future versions will include modules and functions for model creation and optimization to provide more of an end-to-end solution.
 
 ## Installation
 
