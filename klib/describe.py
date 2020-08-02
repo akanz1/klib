@@ -75,7 +75,7 @@ def cat_plot(
     cols = data.select_dtypes(exclude=["number"]).columns.tolist()
     data = data[cols]
     for col in data.columns:
-        if data[col].dtype.name == "category":
+        if data[col].dtype.name == "category" or data[col].dtype.name == "string":
             data[col] = data[col].astype("object")
 
     if len(cols) == 0:
