@@ -82,6 +82,7 @@ def cat_plot(
     gs = fig.add_gridspec(nrows=6, ncols=len(cols), wspace=0.2)
 
     for count, col in enumerate(cols):
+        data[col].cat.add_categories([-2, 0, 2], inplace=True)
 
         n_unique = data[col].nunique(dropna=False)
         value_counts = data[col].value_counts()
