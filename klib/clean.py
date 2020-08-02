@@ -104,8 +104,8 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         ]
         if hints:
             print(
-                f"- Duplicate column names detected! Columns with index {dupl_idx} and names {dupl_before}) have \n\
-            been renamed to {data.columns[dupl_idx].tolist()}."
+                f"- Duplicate column names detected! Columns with index {dupl_idx} and names {dupl_before}) have"
+                f"been renamed to {data.columns[dupl_idx].tolist()}."
             )
 
     long_col_names = [x for x in data.columns if len(x) > 25]
