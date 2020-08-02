@@ -53,8 +53,10 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-        andas DataFrame with cleaned column names
+        Pandas DataFrame with cleaned column names
     """
+
+    _validate_input_bool(hints, "hints")
 
     for i, col in enumerate(data.columns):
         matches = re.findall(re.compile("[a-z][A-Z]"), col)
