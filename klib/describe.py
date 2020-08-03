@@ -39,7 +39,6 @@ def cat_plot(
     bottom: int = 3,
     bar_color_top: str = "#5ab4ac",
     bar_color_bottom: str = "#d8b365",
-    # cmap: str = "BrBG",
 ):
     """ Two-dimensional visualization of the number and frequency of categorical features.
 
@@ -111,9 +110,9 @@ def cat_plot(
         if bottom == 0:
             value_counts_bot = value_counts_idx_bot = []
 
-        data.loc[data[col].isin(value_counts_idx_top), col] = 3
-        data.loc[data[col].isin(value_counts_idx_bot), col] = -3
-        data.loc[((data[col] != 3) & (data[col] != -3)), col] = 0
+        data.loc[data[col].isin(value_counts_idx_top), col] = 10
+        data.loc[data[col].isin(value_counts_idx_bot), col] = 0
+        data.loc[((data[col] != 10) & (data[col] != 0)), col] = 5
         data[col] = data[col].rolling(2, min_periods=1).mean()
 
         value_counts_idx_top = [elem[:20] for elem in value_counts_idx_top]
@@ -144,15 +143,15 @@ def cat_plot(
         )
 
     # Heatmap
-    # data = data.astype("int")
-    top_rgb = to_rgb(bar_color_top)
+    print(data)
+    color_bot_rgb = to_rgb("#d8b365")
     color_white = to_rgb("#FFFFFF")
-    bot_rgb = to_rgb(bar_color_bottom)
+    color_top_rgb = to_rgb("#5ab4ac")
     cat_plot_cmap = LinearSegmentedColormap.from_list(
-        "cat_plot_cmap", [bot_rgb, bot_rgb, color_white, top_rgb, top_rgb], N=100
+        "cat_plot_cmap", [color_bot_rgb, color_white, color_top_rgb], N=200
     )
     ax_hm = fig.add_subplot(gs[2:, :])
-    sns.heatmap(data, cmap=cat_plot_cmap, cbar=False, vmin=-4.25, vmax=4.25, ax=ax_hm)
+    sns.heatmap(data, cmap=cat_plot_cmap, cbar=False, vmin=0, vmax=10, ax=ax_hm)
     ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
     ax_hm.set_yticklabels(ax_hm.get_yticks())
     ax_hm.set_xticklabels(
