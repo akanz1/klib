@@ -143,7 +143,6 @@ def cat_plot(
         )
 
     # Heatmap
-    print(data)
     color_bot_rgb = to_rgb("#d8b365")
     color_white = to_rgb("#FFFFFF")
     color_top_rgb = to_rgb("#5ab4ac")
