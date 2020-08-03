@@ -35,16 +35,17 @@ conda install -c conda-forge klib
 import klib
 
 klib.describe # functions for visualizing datasets
-- klib.cat_plot() # returns a visualization of the number and frequency of categorical features.
+- klib.cat_plot() # returns a visualization of the number and frequency of categorical features
 - klib.corr_mat() # returns a color-encoded correlation matrix
 - klib.corr_plot() # returns a color-encoded heatmap, ideal for correlations
 - klib.dist_plot() # returns a distribution plot for every numeric feature
 - klib.missingval_plot() # returns a figure containing information about missing values
 
 klib.clean # functions for cleaning datasets
+- klib.clean_column_names() # cleans and standardizes column names, also called inside data_cleaning()
+- klib.convert_datatypes() # converts existing to more efficient dtypes, also called inside data_cleaning()
 - klib.data_cleaning() # performs datacleaning (drop duplicates & empty rows/columns, adjust dtypes,...) on a dataset
-- klib.convert_datatypes() # converts existing to more efficient dtypes, also called inside ".data_cleaning()"
-- klib.drop_missing() # drops missing values, also called in ".data_cleaning()"
+- klib.drop_missing() # drops missing values, also called in data_cleaning()
 - klib.mv_col_handling() # drops features with a high ratio of missing values based on their informational content
 - klib.pool_duplicate_subsets() # pools a subset of columns based on duplicate values with minimal loss of information
 
