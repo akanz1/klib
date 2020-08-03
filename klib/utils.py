@@ -231,6 +231,13 @@ def _validate_input_smaller(value1, value2, desc):
         raise ValueError(f"The first input for '{desc}' should be smaller or equal to the second input.")
 
 
-def _validate_input_sum(limit, desc, *args):
+def _validate_input_sum_smaller(limit, desc, *args):
     if sum(args) > limit:
         raise ValueError(f"The sum of imput values provided for '{desc}' should be less or equal to {limit}.")
+
+
+def _validate_input_sum_larger(limit, desc, *args):
+    if sum(args) < limit:
+        raise ValueError(
+            f"The sum of imput values provided for '{desc}' should be larger or equal to {limit}."
+        )

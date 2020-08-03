@@ -19,7 +19,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder, RobustScaler, MaxAbsScaler
 
-from klib.utils import _validate_input_int, _validate_input_range, _validate_input_sum
+from klib.utils import _validate_input_int, _validate_input_range, _validate_input_sum_smaller
 
 
 __all__ = ["feature_selection_pipe", "num_pipe", "cat_pipe", "train_dev_test_split"]
@@ -223,7 +223,7 @@ def train_dev_test_split(data, target, dev_size=0.1, test_size=0.1, stratify=Non
     _validate_input_range(dev_size, "dev_size", 0, 1)
     _validate_input_range(test_size, "test_size", 0, 1)
     _validate_input_int(random_state, "random_state")
-    _validate_input_sum(1, "Dev and test", dev_size, test_size)
+    _validate_input_sum_smaller(1, "Dev and test", dev_size, test_size)
 
     target_data = []
     if isinstance(target, str):

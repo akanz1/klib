@@ -19,8 +19,9 @@ from klib.utils import (
     _missing_vals,
     _validate_input_bool,
     _validate_input_int,
-    _validate_input_smaller,
     _validate_input_range,
+    _validate_input_smaller,
+    _validate_input_sum_larger,
 )
 
 
@@ -32,7 +33,7 @@ __all__ = ["cat_plot", "corr_mat", "corr_plot", "dist_plot", "missingval_plot"]
 # Categorical Plot
 def cat_plot(
     data: pd.DataFrame,
-    figsize: Tuple = (16, 16),
+    figsize: Tuple = (18, 18),
     top: int = 3,
     bottom: int = 3,
     bar_color_top: str = "#5ab4ac",
@@ -47,7 +48,7 @@ def cat_plot(
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots
     figsize : Tuple, optional
-        Use to control the figure size, by default (16, 16)
+        Use to control the figure size, by default (18, 18)
     top : int, optional
         Show the "top" most frequent values in a column, by default 3
     bottom : int, optional
@@ -70,6 +71,7 @@ def cat_plot(
     _validate_input_int(bottom, "bottom")
     _validate_input_range(top, "top", 0, data.shape[1])
     _validate_input_range(bottom, "bottom", 0, data.shape[1])
+    _validate_input_sum_larger(1, "top and bottom", top, bottom)
 
     data = pd.DataFrame(data).copy()
     cols = data.select_dtypes(exclude=["number"]).columns.tolist()
@@ -82,15 +84,19 @@ def cat_plot(
         print("No columns with categorical data were detected.")
 
     fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(nrows=6, ncols=len(cols), wspace=0.2)
+    gs = fig.add_gridspec(nrows=6, ncols=len(cols), wspace=0.21)
 
     for count, col in enumerate(cols):
 
-        n_unique = data[col].nunique(dropna=False)
+        n_unique = data[col].nunique(dropna=True)
         value_counts = data[col].value_counts()
         lim_top, lim_bot = top, bottom
 
         if n_unique < top + bottom:
+            lim_top = int(n_unique // 2)
+            lim_bot = int(n_unique // 2) + 1
+
+        if n_unique <= 2:
             lim_top = lim_bot = int(n_unique // 2)
 
         value_counts_top = value_counts[0:lim_top]
@@ -101,7 +107,7 @@ def cat_plot(
         if top == 0:
             value_counts_top = value_counts_idx_top = []
 
-        elif bottom == 0:
+        if bottom == 0:
             value_counts_bot = value_counts_idx_bot = []
 
         data.loc[data[col].isin(value_counts_idx_top), col] = 2
@@ -120,6 +126,7 @@ def cat_plot(
 
         # Summary stats
         ax_bottom = fig.add_subplot(gs[1:2, count : count + 1])
+        plt.subplots_adjust(hspace=0.075)
         ax_bottom.get_yaxis().set_visible(False)
         ax_bottom.get_xaxis().set_visible(False)
         ax_bottom.set(frame_on=False)
@@ -127,9 +134,8 @@ def cat_plot(
             0,
             0,
             f"Unique values: {n_unique}\n\n"
-            f"Top {top} vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n"
-            f"Bot {bottom} vals: {sum(value_counts_bot)} "
-            + f"({sum(value_counts_bot)/data.shape[0]*100:.1f}%)",
+            f"Top {lim_top} vals: {sum(value_counts_top)} ({sum(value_counts_top)/data.shape[0]*100:.1f}%)\n"
+            f"Bot {lim_bot} vals: {sum(value_counts_bot)} ({sum(value_counts_bot)/data.shape[0]*100:.1f}%)",
             transform=ax_bottom.transAxes,
             color="#111111",
             fontsize=11,
@@ -146,7 +152,7 @@ def cat_plot(
     )
     ax_hm.tick_params(length=1, colors="#111111")
 
-    gs.figure.suptitle("Categorical data plot", x=0.47, y=0.925, fontsize=18, color="#111111")
+    gs.figure.suptitle("Categorical data plot", x=0.5, y=0.91, fontsize=18, color="#111111")
 
     return gs
 
@@ -410,7 +416,7 @@ def dist_plot(
 
     Returns
     -------
-    [type]
+    pd.DataFrame
         [description]
     """
 

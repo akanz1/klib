@@ -9,7 +9,8 @@ from ..utils import (
     _validate_input_int,
     _validate_input_range,
     _validate_input_smaller,
-    _validate_input_sum,
+    _validate_input_sum_smaller,
+    _validate_input_sum_larger,
 )
 
 
@@ -181,12 +182,22 @@ class Test__validate_input(unittest.TestCase):
         with self.assertRaises(TypeError):
             _validate_input_range("1", "value string", 0, 1)
 
-    def test__validate_input_sum(self):
+    def test__validate_input_sum_smaller(self):
         with self.assertRaises(ValueError):
-            _validate_input_sum(1, "Test Sum <= 1", 1.1)
+            _validate_input_sum_smaller(1, "Test Sum <= 1", 1.01)
         with self.assertRaises(ValueError):
-            _validate_input_sum(1, "Test Sum <= 1", 0.3, 0.2, 0.4, 0.5)
+            _validate_input_sum_smaller(1, "Test Sum <= 1", 0.3, 0.2, 0.4, 0.5)
         with self.assertRaises(ValueError):
-            _validate_input_sum(-1, "Test Sum <= -1", -0.2, -0.7)
+            _validate_input_sum_smaller(-1, "Test Sum <= -1", -0.2, -0.7)
         with self.assertRaises(ValueError):
-            _validate_input_sum(10, "Test Sum <= 10", 20, -11, 2)
+            _validate_input_sum_smaller(10, "Test Sum <= 10", 20, -11, 2)
+
+    def test__validate_input_sum_larger(self):
+        with self.assertRaises(ValueError):
+            _validate_input_sum_larger(1, "Test Sum >= 1", 0.99)
+        with self.assertRaises(ValueError):
+            _validate_input_sum_larger(1, "Test Sum >= 1", 0.9, 0.05)
+        with self.assertRaises(ValueError):
+            _validate_input_sum_larger(-2, "Test Sum >=-2", -3)
+        with self.assertRaises(ValueError):
+            _validate_input_sum_larger(7, "Test Sum >= 7", 1, 2, 3)
