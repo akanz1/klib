@@ -217,7 +217,7 @@ def corr_mat(
             target_data = pd.Series(target)
             target = target_data.name
 
-        corr = pd.DataFrame(data.corrwith(target_data))
+        corr = pd.DataFrame(data.corrwith(target_data, method=method))
         corr = corr.sort_values(corr.columns[0], ascending=False)
         corr.columns = [target]
 
@@ -416,8 +416,8 @@ def dist_plot(
 
     Returns
     -------
-    pd.DataFrame
-        [description]
+    ax: matplotlib Axes
+        Returns the Axes object with the plot for further tweaking.
     """
 
     # Validate Inputs
