@@ -47,7 +47,7 @@ klib.dist_plot(df) # default representation of a distribution plot, other settin
 
 ### Categorical Data Plot
 
-This section shows an example of categorical data visualization. The function allows to dispaly the top and/or bottom values regarding their frequency in each column. Further, it gives an idea of the distribution of the values in the dataset. This plot comes in very handy during data analysis when considering changing datatypes to "category" or when planning to combine less frequent values into a seperate category before applying one-hot-encoding or similar functions.
+This section shows an example of categorical data visualization. The function allows to display the top and/or bottom values regarding their frequency in each column. Further, it gives an idea of the distribution of the values in the dataset. This plot comes in very handy during data analysis when considering changing datatypes to "category" or when planning to combine less frequent values into a seperate category before applying one-hot-encoding or similar functions.
 
 ```python
 klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least common values in each categorical column
