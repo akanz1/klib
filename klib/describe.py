@@ -143,9 +143,9 @@ def cat_plot(
         )
 
     # Heatmap
-    color_bot_rgb = to_rgb("#d8b365")
+    color_bot_rgb = to_rgb(bar_color_bottom)
     color_white = to_rgb("#FFFFFF")
-    color_top_rgb = to_rgb("#5ab4ac")
+    color_top_rgb = to_rgb(bar_color_top)
     cat_plot_cmap = LinearSegmentedColormap.from_list(
         "cat_plot_cmap", [color_bot_rgb, color_white, color_top_rgb], N=200
     )
