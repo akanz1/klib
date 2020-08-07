@@ -381,17 +381,15 @@ def corr_plot(
 def dist_plot(
     data: pd.DataFrame,
     mean_color: str = "orange",
-    figsize: Tuple = (14, 2),
+    figsize: Tuple = (16, 2),
     fill_range: Tuple = (0.025, 0.975),
-    hist: bool = False,
-    bins: int = 10,
     showall: bool = False,
     kde_kws: Dict[str, Any] = None,
     rug_kws: Dict[str, Any] = None,
     fill_kws: Dict[str, Any] = None,
     font_kws: Dict[str, Any] = None,
 ):
-    """ Two-dimensional visualization of the distribution of numerical features with at least 3 unique values.
+    """ Two-dimensional visualization of the distribution of non binary numerical features.
 
     Parameters
     ----------
@@ -401,14 +399,10 @@ def dist_plot(
     mean_color : str, optional
         Color of the vertical line indicating the mean of the data, by default "orange"
     figsize : Tuple, optional
-        Controls the figure size, by default (14, 2)
+        Controls the figure size, by default (16, 2)
     fill_range : Tuple, optional
         Set the quantiles for shading. Default spans 95% of the data, which is about two std. deviations \
         above and below the mean, by default (0.025, 0.975)
-    hist : bool, optional
-        Set to True to display histogram bars in the plot, by default False
-    bins : int, optional
-        Specification of the number of hist bins. Requires hist = True, by default 10
     showall : bool, optional
         Set to True to remove the output limit of 20 plots, by default False
     kde_kws : Dict[str, Any], optional
@@ -430,19 +424,16 @@ def dist_plot(
     _validate_input_range(fill_range[0], "fill_range_lower", 0, 1)
     _validate_input_range(fill_range[1], "fill_range_upper", 0, 1)
     _validate_input_smaller(fill_range[0], fill_range[1], "fill_range")
-    _validate_input_bool(hist, "hist")
-    _validate_input_int(bins, "bins")
-    _validate_input_range(bins, "bins", 0, data.shape[0])
     _validate_input_bool(showall, "showall")
 
     # Handle dictionary defaults
-    kde_kws = {"alpha": 0.7, "linewidth": 1.5, "bw": 0.6} if kde_kws is None else kde_kws.copy()
+    kde_kws = {"alpha": 0.75, "linewidth": 1.5, "bw": 0.3} if kde_kws is None else kde_kws.copy()
     rug_kws = (
-        {"color": "brown", "alpha": 0.5, "linewidth": 2, "height": 0.04}
+        {"color": "#ff3333", "alpha": 0.05, "linewidth": 4, "height": 0.075}
         if rug_kws is None
         else rug_kws.copy()
     )
-    fill_kws = {"color": "brown", "alpha": 0.1} if fill_kws is None else fill_kws.copy()
+    fill_kws = {"color": "#80d4ff", "alpha": 0.2} if fill_kws is None else fill_kws.copy()
     font_kws = {"color": "#111111", "weight": "normal", "size": 11} if font_kws is None else font_kws.copy()
 
     data = pd.DataFrame(data.copy()).dropna(axis=1, how="all")
@@ -457,8 +448,8 @@ def dist_plot(
 
     elif len(cols) >= 20 and showall is False:
         print(
-            f"Note: The number of numerical features is very large ({len(cols)}), please consider splitting the data. "
-            "Showing plots for the first 20 numerical features. Override this by setting showall=True."
+            f"Note: The number of non binary numerical features is very large ({len(cols)}), please consider splitting"
+            " the data. Showing plots for the first 20 numerical features. Override this by setting showall=True."
         )
         cols = cols[:20]
 
@@ -474,12 +465,10 @@ def dist_plot(
         _, ax = plt.subplots(figsize=figsize)
         ax = sns.distplot(
             col_data,
-            bins=bins,
-            hist=hist,
+            hist=False,
             rug=True,
             kde_kws=kde_kws,
             rug_kws=rug_kws,
-            hist_kws={"alpha": 0.5, "histtype": "step"},
         )
 
         # Vertical lines and fill
@@ -518,23 +507,23 @@ def dist_plot(
         ax.set_xlim(ax.get_xlim()[0] * 1.15, ax.get_xlim()[1] * 1.15)
 
         # Annotations and legend
-        ax.text(0.01, 0.85, f"Mean: {np.round(mean,2)}", fontdict=font_kws, transform=ax.transAxes)
-        ax.text(0.01, 0.7, f"Std. dev: {np.round(std,2)}", fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.85, f"Mean: {mean:.2f}", fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.7, f"Std. dev: {std:.2f}", fontdict=font_kws, transform=ax.transAxes)
         ax.text(
             0.01,
             0.55,
-            f"Skew: {np.round(scipy.stats.skew(col_data),2)}",
+            f"Skew: {scipy.stats.skew(col_data):.2f}",
             fontdict=font_kws,
             transform=ax.transAxes,
         )
         ax.text(
             0.01,
             0.4,
-            f"Kurtosis: {np.round(scipy.stats.kurtosis(col_data),2)}",  # Excess Kurtosis
+            f"Kurtosis: {scipy.stats.kurtosis(col_data):.2f}",  # Excess Kurtosis
             fontdict=font_kws,
             transform=ax.transAxes,
         )
-        ax.text(0.01, 0.25, f"Count: {np.round(len(col_data))}", fontdict=font_kws, transform=ax.transAxes)
+        ax.text(0.01, 0.25, f"Count: {len(col_data)}", fontdict=font_kws, transform=ax.transAxes)
         ax.legend(loc="upper right")
 
     return ax
