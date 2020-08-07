@@ -391,7 +391,7 @@ def dist_plot(
     fill_kws: Dict[str, Any] = None,
     font_kws: Dict[str, Any] = None,
 ):
-    """ Two-dimensional visualization of the distribution of numerical features.
+    """ Two-dimensional visualization of the distribution of numerical features with at least 3 unique values.
 
     Parameters
     ----------
@@ -448,6 +448,7 @@ def dist_plot(
     data = pd.DataFrame(data.copy()).dropna(axis=1, how="all")
     cols = list(data.select_dtypes(include=["number"]).columns)
     data = data[cols]
+    data = data.loc[:, data.nunique() > 2]
 
     if len(cols) == 0:
         print("No columns with numeric data were detected.")
@@ -461,10 +462,10 @@ def dist_plot(
         cols = cols[:20]
 
     for col in cols:
-        dropped_values = data[col].isna().sum()
-        if dropped_values > 0:
+        num_dropped_vals = data[col].isna().sum()
+        if num_dropped_vals > 0:
             col_data = data[col].dropna(axis=0)
-            print(f"Dropped {dropped_values} missing values from column {col}.")
+            print(f"Dropped {num_dropped_vals} missing values from column {col}.")
 
         else:
             col_data = data[col]
