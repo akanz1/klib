@@ -391,7 +391,7 @@ def dist_plot(
     fill_kws: Dict[str, Any] = None,
     font_kws: Dict[str, Any] = None,
 ):
-    """ Two-dimensional visualization of the distribution of numerical features.
+    """ Two-dimensional visualization of the distribution of numerical features with at least 3 unique values.
 
     Parameters
     ----------
@@ -436,7 +436,7 @@ def dist_plot(
     _validate_input_bool(showall, "showall")
 
     # Handle dictionary defaults
-    kde_kws = {"alpha": 0.7, "linewidth": 1.5} if kde_kws is None else kde_kws.copy()
+    kde_kws = {"alpha": 0.7, "linewidth": 1.5, "bw": 0.6} if kde_kws is None else kde_kws.copy()
     rug_kws = (
         {"color": "brown", "alpha": 0.5, "linewidth": 2, "height": 0.04}
         if rug_kws is None
@@ -446,6 +446,7 @@ def dist_plot(
     font_kws = {"color": "#111111", "weight": "normal", "size": 11} if font_kws is None else font_kws.copy()
 
     data = pd.DataFrame(data.copy()).dropna(axis=1, how="all")
+    data = data.loc[:, data.nunique() > 2]
     cols = list(data.select_dtypes(include=["number"]).columns)
     data = data[cols]
 
@@ -461,10 +462,10 @@ def dist_plot(
         cols = cols[:20]
 
     for col in cols:
-        dropped_values = data[col].isna().sum()
-        if dropped_values > 0:
+        num_dropped_vals = data[col].isna().sum()
+        if num_dropped_vals > 0:
             col_data = data[col].dropna(axis=0)
-            print(f"Dropped {dropped_values} missing values from column {col}.")
+            print(f"Dropped {num_dropped_vals} missing values from column {col}.")
 
         else:
             col_data = data[col]
