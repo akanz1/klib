@@ -263,7 +263,7 @@ def data_cleaning(
     col_exclude : Optional[List[str]], optional
         Specify a list of columns to exclude from dropping, by default None
     category : bool, optional
-        Enable changing dtypes of 'object' columns to "category". Set threshold using cat_threshold. Requires \
+        Enable changing dtypes of "object" columns to "category". Set threshold using cat_threshold. Requires \
         convert_dtypes=True, by default True
     cat_threshold : float, optional
         Ratio of unique values below which categories are inferred and column dtype is changed to categorical, by \
@@ -273,12 +273,12 @@ def data_cleaning(
     clean_column_names: bool, optional
         Cleans the column names and provides hints on duplicate and long names, by default True
     show : str, optional
-        {'all', 'changes', None}, by default "changes"
+        {"all", "changes", None}, by default "changes"
         Specify verbosity of the output:
 
-            * 'all': Print information about the data before and after cleaning as well as information about changes \
+            * "all": Print information about the data before and after cleaning as well as information about changes \
             and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
-            * 'changes': Print out differences in the data before and after cleaning.
+            * "changes": Print out differences in the data before and after cleaning.
             * None: No information about the data and the data cleaning is printed.
 
     Returns
@@ -354,11 +354,11 @@ class DataCleaner(BaseEstimator, TransformerMixin):
     clean_column_names: bool, optional
         Cleans the column names and provides hints on duplicate and long names, by default True
     show: str, optional
-        {'all', 'changes', None}, by default "changes"
+        {"all", "changes", None}, by default "changes"
         Specify verbosity of the output:
-            * 'all': Print information about the data before and after cleaning as well as information about changes \
+            * "all": Print information about the data before and after cleaning as well as information about changes \
             and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
-            * 'changes': Print out differences in the data before and after cleaning.
+            * "changes": Print out differences in the data before and after cleaning.
             * None: No information about the data and the data cleaning is printed.
 
     Returns
@@ -563,8 +563,8 @@ def pool_duplicate_subsets(
 ) -> pd.DataFrame:
     """ Checks for duplicates in subsets of columns and pools them. This can reduce the number of columns in the data \
         without loosing much information. Suitable columns are combined to subsets and tested for duplicates. In case \
-        sufficient duplicates can be found, the respective columns are aggregated into a 'pooled_var' column. \
-        Identical numbers in the 'pooled_var' column indicate identical information in the respective rows.
+        sufficient duplicates can be found, the respective columns are aggregated into a "pooled_var" column. \
+        Identical numbers in the "pooled_var" column indicate identical information in the respective rows.
 
         Note:  It is advised to exclude features that provide sufficient informational content by themselves as well \
         as the target column by using the "exclude" setting.
@@ -574,15 +574,15 @@ def pool_duplicate_subsets(
     data : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame
     col_dupl_thresh : float, optional
-        Columns with a ratio of duplicates higher than 'col_dupl_thresh' are considered in the further analysis. \
+        Columns with a ratio of duplicates higher than "col_dupl_thresh" are considered in the further analysis. \
         Columns with a lower ratio are not considered for pooling, by default 0.2
     subset_thresh : float, optional
-        The first subset with a duplicate threshold higher than 'subset_thresh' is chosen and aggregated. If no subset \
-        reaches the threshold, the algorithm continues with continuously smaller subsets until 'min_col_pool' is \
+        The first subset with a duplicate threshold higher than "subset_thresh" is chosen and aggregated. If no subset \
+        reaches the threshold, the algorithm continues with continuously smaller subsets until "min_col_pool" is \
         reached, by default 0.2
     min_col_pool : int, optional
         Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \
-        subsets and stops when 'min_col_pool' is reached, by default 3
+        subsets and stops when "min_col_pool" is reached, by default 3
     exclude : Optional[List[str]], optional
         List of column names to be excluded from the analysis. These columns are passed through without modification, \
         by default None
@@ -653,15 +653,15 @@ class SubsetPooler(BaseEstimator, TransformerMixin):
     Parameters
     ----------
     col_dupl_ratio: float, default 0.2
-        Columns with a ratio of duplicates higher than 'col_dupl_ratio' are considered in the further analysis. \
+        Columns with a ratio of duplicates higher than "col_dupl_ratio" are considered in the further analysis. \
         Columns with a lower ratio are not considered for pooling.
     dupl_thresh: float, default 0.2
-        The first subset with a duplicate threshold higher than 'dupl_thresh' is chosen and aggregated. If no subset \
-        reaches the threshold, the algorithm continues with continuously smaller subsets until 'min_col_pool' is \
+        The first subset with a duplicate threshold higher than "dupl_thresh" is chosen and aggregated. If no subset \
+        reaches the threshold, the algorithm continues with continuously smaller subsets until "min_col_pool" is \
         reached.
     min_col_pool: integer, default 3
         Minimum number of columns to pool. The algorithm attempts to combine as many columns as possible to suitable \
-        subsets and stops when 'min_col_pool' is reached.
+        subsets and stops when "min_col_pool" is reached.
     return_details: bool, default False
         Provdies flexibility to return intermediary results.
 

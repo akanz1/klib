@@ -24,7 +24,7 @@ def _corr_selector(
         pd.Series or pd.DataFrame of correlations
     split : Optional[str], optional
         Type of split performed, by default None
-           * {None, 'pos', 'neg', 'high', 'low'}
+           * {None, "pos", "neg", "high", "low"}
     threshold : float, optional
         Value between 0 and 1 to set the correlation threshold, by default 0
 
@@ -84,11 +84,11 @@ def _diff_report(
         List of single-valued column indices. I.e. columns where all cells contain the same value. \
         NaNs count as a separate value, by default None
     show : str, optional
-        {'all', 'changes', None}, by default "changes"
+        {"all", "changes", None}, by default "changes"
         Specify verbosity of the output:
-            * 'all': Print information about the data before and after cleaning as well as information about changes \
+            * "all": Print information about the data before and after cleaning as well as information about changes \
             and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
-            * 'changes': Print out differences in the data before and after cleaning.
+            * "changes": Print out differences in the data before and after cleaning.
             * None: No information about the data and the data cleaning is printed.
 
     Returns

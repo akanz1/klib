@@ -181,18 +181,18 @@ def corr_mat(
     information is used to label the plots
     split : Optional[str], optional
         Type of split to be performed, by default None
-        {None, 'pos', 'neg', 'high', 'low'}
+        {None, "pos", "neg", "high", "low"}
     threshold : float, optional
         Value between 0 <= threshold <= 1, by default 0
     target : Optional[Union[pd.DataFrame, str]], optional
         Specify target for correlation. E.g. label column to generate only the correlations between each feature \
         and the label, by default None
     method : str, optional
-        method: {'pearson', 'spearman', 'kendall'}, by default "pearson"
+        method: {"pearson", "spearman", "kendall"}, by default "pearson"
         * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
         * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but \
-            more robust in smaller dataets than 'spearman'
+            more robust in smaller dataets than "spearman"
     colored : bool, optional
         If True the negative values in the correlation matrix are colored in red, by default True
 
@@ -259,7 +259,7 @@ def corr_plot(
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
         information is used to label the plots
     split : Optional[str], optional
-        Type of split to be performed {None, 'pos', 'neg', 'high', 'low'}, by default None
+        Type of split to be performed {None, "pos", "neg", "high", "low"}, by default None
             * None: visualize all correlations between the feature-columns
             * pos: visualize all positive correlations between the feature-columns above the threshold
             * neg: visualize all negative correlations between the feature-columns below the threshold
@@ -272,11 +272,11 @@ def corr_plot(
         Specify target for correlation. E.g. label column to generate only the correlations between each feature \
         and the label, by default None
     method : str, optional
-        method: {'pearson', 'spearman', 'kendall'}, by default "pearson"
+        method: {"pearson", "spearman", "kendall"}, by default "pearson"
             * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
             * spearman: ranked/ordinal correlation, measures monotonic relationships.
             * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive \
-            but more robust in smaller dataets than 'spearman'.
+            but more robust in smaller dataets than "spearman".
 
     cmap : str, optional
         The mapping from data values to color space, matplotlib colormap name or object, or list of colors, by default \
@@ -301,11 +301,11 @@ def corr_plot(
                 Value between -1 <= vmin <= 1 or vmax, limits the range of the colorbar.
             * linewidths: float, default 0.5
                 Controls the line-width inbetween the squares.
-            * annot_kws: dict, default {'size' : 10}
+            * annot_kws: dict, default {"size" : 10}
                 Controls the font size of the annotations. Only available when annot = True.
-            * cbar_kws: dict, default {'shrink': .95, 'aspect': 30}
+            * cbar_kws: dict, default {"shrink": .95, "aspect": 30}
                 Controls the size of the colorbar.
-            * Many more kwargs are available, i.e. 'alpha' to control blending, or options to adjust labels, ticks ...
+            * Many more kwargs are available, i.e. "alpha" to control blending, or options to adjust labels, ticks ...
 
         Kwargs can be supplied through a dictionary of key-value pairs (see above).
 
@@ -406,13 +406,13 @@ def dist_plot(
     showall : bool, optional
         Set to True to remove the output limit of 20 plots, by default False
     kde_kws : Dict[str, Any], optional
-        Keyword arguments for kdeplot(), by default {'color': 'k', 'alpha': 0.7, 'linewidth': 1}
+        Keyword arguments for kdeplot(), by default {"color": "k", "alpha": 0.7, "linewidth": 1.5, "bw": 0.3}
     rug_kws : Dict[str, Any], optional
-        Keyword arguments for rugplot(), by default {'color': 'brown', 'alpha': 0.5, 'linewidth': 2, 'height': 0.04}
+        Keyword arguments for rugplot(), by default {"color": "#ff3333", "alpha": 0.05, "linewidth": 4, "height": 0.075}
     fill_kws : Dict[str, Any], optional
-        Keyword arguments to control the fill, by default {'color': 'brown', 'alpha': 0.1}
+        Keyword arguments to control the fill, by default {"color": "#80d4ff", "alpha": 0.2}
     font_kws : Dict[str, Any], optional
-        Keyword arguments to control the font, by default {'color':  '#111111', 'weight': 'normal', 'size': 11}
+        Keyword arguments to control the font, by default {"color":  "#111111", "weight": "normal", "size": 11}
 
     Returns
     -------
@@ -463,13 +463,7 @@ def dist_plot(
             col_data = data[col]
 
         _, ax = plt.subplots(figsize=figsize)
-        ax = sns.distplot(
-            col_data,
-            hist=False,
-            rug=True,
-            kde_kws=kde_kws,
-            rug_kws=rug_kws,
-        )
+        ax = sns.distplot(col_data, hist=False, rug=True, kde_kws=kde_kws, rug_kws=rug_kws,)
 
         # Vertical lines and fill
         x, y = ax.lines[0].get_xydata().T
@@ -510,11 +504,7 @@ def dist_plot(
         ax.text(0.01, 0.85, f"Mean: {mean:.2f}", fontdict=font_kws, transform=ax.transAxes)
         ax.text(0.01, 0.7, f"Std. dev: {std:.2f}", fontdict=font_kws, transform=ax.transAxes)
         ax.text(
-            0.01,
-            0.55,
-            f"Skew: {scipy.stats.skew(col_data):.2f}",
-            fontdict=font_kws,
-            transform=ax.transAxes,
+            0.01, 0.55, f"Skew: {scipy.stats.skew(col_data):.2f}", fontdict=font_kws, transform=ax.transAxes,
         )
         ax.text(
             0.01,
@@ -545,7 +535,7 @@ def missingval_plot(
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
     information is used to label the plots
     cmap : str, optional
-        Any valid colormap can be used. E.g. 'Greys', 'RdPu'. More information can be found in the matplotlib \
+        Any valid colormap can be used. E.g. "Greys", "RdPu". More information can be found in the matplotlib \
         documentation, by default "PuBuGn"
     figsize : Tuple, optional
         Use to control the figure size, by default (20, 20)
@@ -553,7 +543,7 @@ def missingval_plot(
         Sort columns based on missing values in descending order and drop columns without any missing values, \
         by default False
     spine_color : str, optional
-        Set to 'None' to hide the spines on all plots or use any valid matplotlib color argument, by default "#EEEEEE"
+        Set to "None" to hide the spines on all plots or use any valid matplotlib color argument, by default "#EEEEEE"
 
     Returns
     -------
