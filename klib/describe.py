@@ -449,6 +449,7 @@ def dist_plot(
     data = data.loc[:, data.nunique() > 2]
     cols = list(data.select_dtypes(include=["number"]).columns)
     data = data[cols]
+    data = data.loc[:, data.nunique() > 2]
 
     if len(cols) == 0:
         print("No columns with numeric data were detected.")
