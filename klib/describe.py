@@ -45,8 +45,8 @@ def cat_plot(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the \
+        index/column information is used to label the plots
     figsize : Tuple, optional
         Use to control the figure size, by default (18, 18)
     top : int, optional
@@ -177,22 +177,22 @@ def corr_mat(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the \
+        index/column information is used to label the plots
     split : Optional[str], optional
         Type of split to be performed, by default None
         {None, "pos", "neg", "high", "low"}
     threshold : float, optional
         Value between 0 <= threshold <= 1, by default 0
     target : Optional[Union[pd.DataFrame, str]], optional
-        Specify target for correlation. E.g. label column to generate only the correlations between each feature \
-        and the label, by default None
+        Specify target for correlation. E.g. label column to generate only the correlations between each \
+        feature and the label, by default None
     method : str, optional
         method: {"pearson", "spearman", "kendall"}, by default "pearson"
         * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
-        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive but \
-            more robust in smaller dataets than "spearman"
+        * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more \
+            expensive but more robust in smaller dataets than "spearman"
     colored : bool, optional
         If True the negative values in the correlation matrix are colored in red, by default True
 
@@ -256,45 +256,47 @@ def corr_plot(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-        information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the \
+        index/column information is used to label the plots
     split : Optional[str], optional
         Type of split to be performed {None, "pos", "neg", "high", "low"}, by default None
             * None: visualize all correlations between the feature-columns
             * pos: visualize all positive correlations between the feature-columns above the threshold
             * neg: visualize all negative correlations between the feature-columns below the threshold
-            * high: visualize all correlations between the feature-columns for which abs(corr) > threshold is True
-            * low: visualize all correlations between the feature-columns for which abs(corr) < threshold is True
+            * high: visualize all correlations between the feature-columns for which abs(corr) > threshold \
+                is True
+            * low: visualize all correlations between the feature-columns for which abs(corr) < threshold \
+                is True
 
     threshold : float, optional
         Value between 0 <= threshold <= 1, by default 0
     target : Optional[Union[pd.Series, str]], optional
-        Specify target for correlation. E.g. label column to generate only the correlations between each feature \
-        and the label, by default None
+        Specify target for correlation. E.g. label column to generate only the correlations between each \
+        feature and the label, by default None
     method : str, optional
         method: {"pearson", "spearman", "kendall"}, by default "pearson"
             * pearson: measures linear relationships and requires normally distributed and homoscedastic data.
             * spearman: ranked/ordinal correlation, measures monotonic relationships.
-            * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more expensive \
-            but more robust in smaller dataets than "spearman".
+            * kendall: ranked/ordinal correlation, measures monotonic relationships. Computationally more \
+                expensive but more robust in smaller dataets than "spearman".
 
     cmap : str, optional
-        The mapping from data values to color space, matplotlib colormap name or object, or list of colors, by default \
-        "BrBG"
+        The mapping from data values to color space, matplotlib colormap name or object, or list of colors, \
+        by default "BrBG"
     figsize : Tuple, optional
         Use to control the figure size, by default (12, 10)
     annot : bool, optional
         Use to show or hide annotations, by default True
     dev : bool, optional
-        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed, by \
-        default False
+        Display figure settings in the plot by setting dev = True. If False, the settings are not displayed, \
+        by default False
 
     Keyword Arguments : optional
         Additional elements to control the visualization of the plot, e.g.:
 
             * mask: bool, default True
-                If set to False the entire correlation matrix, including the upper triangle is shown. Set dev = False \
-                in this case to avoid overlap.
+                If set to False the entire correlation matrix, including the upper triangle is shown. Set \
+                dev = False in this case to avoid overlap.
             * vmax: float, default is calculated from the given correlation coefficients.
                 Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
             * vmin: float, default is calculated from the given correlation coefficients.
@@ -305,7 +307,8 @@ def corr_plot(
                 Controls the font size of the annotations. Only available when annot = True.
             * cbar_kws: dict, default {"shrink": .95, "aspect": 30}
                 Controls the size of the colorbar.
-            * Many more kwargs are available, i.e. "alpha" to control blending, or options to adjust labels, ticks ...
+            * Many more kwargs are available, i.e. "alpha" to control blending, or options to adjust labels, \
+                ticks ...
 
         Kwargs can be supplied through a dictionary of key-value pairs (see above).
 
@@ -394,8 +397,8 @@ def dist_plot(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the \
+        index/column information is used to label the plots
     mean_color : str, optional
         Color of the vertical line indicating the mean of the data, by default "orange"
     figsize : Tuple, optional
@@ -408,11 +411,13 @@ def dist_plot(
     kde_kws : Dict[str, Any], optional
         Keyword arguments for kdeplot(), by default {"color": "k", "alpha": 0.7, "linewidth": 1.5, "bw": 0.3}
     rug_kws : Dict[str, Any], optional
-        Keyword arguments for rugplot(), by default {"color": "#ff3333", "alpha": 0.05, "linewidth": 4, "height": 0.075}
+        Keyword arguments for rugplot(), by default {"color": "#ff3333", "alpha": 0.05, "linewidth": 4, \
+        "height": 0.075}
     fill_kws : Dict[str, Any], optional
         Keyword arguments to control the fill, by default {"color": "#80d4ff", "alpha": 0.2}
     font_kws : Dict[str, Any], optional
-        Keyword arguments to control the font, by default {"color":  "#111111", "weight": "normal", "size": 11}
+        Keyword arguments to control the font, by default {"color":  "#111111", "weight": "normal", "size": \
+        11}
 
     Returns
     -------
@@ -427,7 +432,7 @@ def dist_plot(
     _validate_input_bool(showall, "showall")
 
     # Handle dictionary defaults
-    kde_kws = {"alpha": 0.75, "linewidth": 1.5, "bw": 0.3} if kde_kws is None else kde_kws.copy()
+    kde_kws = {"alpha": 0.75, "linewidth": 1.5, "bw": 0.4} if kde_kws is None else kde_kws.copy()
     rug_kws = (
         {"color": "#ff3333", "alpha": 0.05, "linewidth": 4, "height": 0.075}
         if rug_kws is None
@@ -448,8 +453,9 @@ def dist_plot(
 
     elif len(cols) >= 20 and showall is False:
         print(
-            f"Note: The number of non binary numerical features is very large ({len(cols)}), please consider splitting"
-            " the data. Showing plots for the first 20 numerical features. Override this by setting showall=True."
+            f"Note: The number of non binary numerical features is very large ({len(cols)}), please consider"
+            " splitting the data. Showing plots for the first 20 numerical features. Override this by setting"
+            " showall=True."
         )
         cols = cols[:20]
 
@@ -532,18 +538,19 @@ def missingval_plot(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the index/column \
-    information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is provided, the \
+        index/column information is used to label the plots
     cmap : str, optional
-        Any valid colormap can be used. E.g. "Greys", "RdPu". More information can be found in the matplotlib \
-        documentation, by default "PuBuGn"
+        Any valid colormap can be used. E.g. "Greys", "RdPu". More information can be found in the \
+        matplotlib documentation, by default "PuBuGn"
     figsize : Tuple, optional
         Use to control the figure size, by default (20, 20)
     sort : bool, optional
-        Sort columns based on missing values in descending order and drop columns without any missing values, \
-        by default False
+        Sort columns based on missing values in descending order and drop columns without any missing \
+        values, by default False
     spine_color : str, optional
-        Set to "None" to hide the spines on all plots or use any valid matplotlib color argument, by default "#EEEEEE"
+        Set to "None" to hide the spines on all plots or use any valid matplotlib color argument, by default \
+        "#EEEEEE"
 
     Returns
     -------

@@ -69,8 +69,8 @@ def _diff_report(
     single_val_cols: Optional[List[str]] = None,
     show: Optional[str] = "changes",  # Optional[Literal["all", "changes"]] = "changes",
 ) -> None:
-    """ Provides information about changes between two datasets, such as dropped rows and columns, memory usage and \
-    missing values.
+    """ Provides information about changes between two datasets, such as dropped rows and columns, memory \
+        usage and missing values.
 
     Parameters
     ----------
@@ -86,8 +86,9 @@ def _diff_report(
     show : str, optional
         {"all", "changes", None}, by default "changes"
         Specify verbosity of the output:
-            * "all": Print information about the data before and after cleaning as well as information about changes \
-            and memory usage (deep). Please be aware, that this can slow down the function by quite a bit.
+            * "all": Print information about the data before and after cleaning as well as information about \
+            changes and memory usage (deep). Please be aware, that this can slow down the function by quite \
+            a bit.
             * "changes": Print out differences in the data before and after cleaning.
             * None: No information about the data and the data cleaning is printed.
 
