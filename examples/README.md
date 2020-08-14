@@ -2,6 +2,8 @@
 
 ## Examples
 
+Additional examples can be found on [Medium/TowardsDataScience](https://medium.com/@akanz).
+
 ### Missing Value Plot
 
 This plot visualizes the missing values in a dataset. At the top it shows the aggregate for each column using a relative scale and absolute missing-value annotations, while on the right, summary statistics and individual row results are displayed. Using this plot allows to gain a quick overview over the structure of missing values and their relation in a dataset and easily determine which columns and rows to investigate / drop.
