@@ -2,7 +2,7 @@
 
 ## Examples
 
-Additional examples can be found on [Medium/TowardsDataScience](https://medium.com/@akanz).
+Additional examples can be found on [Medium / TowardsDataScience](https://medium.com/@akanz).
 
 ### Missing Value Plot
 
