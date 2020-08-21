@@ -26,7 +26,8 @@ def _corr_selector(
         Type of split performed, by default None
            * {None, "pos", "neg", "high", "low"}
     threshold : float, optional
-        Value between 0 and 1 to set the correlation threshold, by default 0
+        Value between 0 and 1 to set the correlation threshold, by default 0 unless split = "high" \
+        or split = "low", in which case default is 0.3
 
     Returns
     -------

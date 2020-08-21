@@ -183,7 +183,8 @@ def corr_mat(
         Type of split to be performed, by default None
         {None, "pos", "neg", "high", "low"}
     threshold : float, optional
-        Value between 0 <= threshold <= 1, by default 0
+        Value between 0 and 1 to set the correlation threshold, by default 0 unless split = "high" \
+        or split = "low", in which case default is 0.3
     target : Optional[Union[pd.DataFrame, str]], optional
         Specify target for correlation. E.g. label column to generate only the correlations between each \
         feature and the label, by default None
@@ -269,7 +270,8 @@ def corr_plot(
                 is True
 
     threshold : float, optional
-        Value between 0 <= threshold <= 1, by default 0
+        Value between 0 and 1 to set the correlation threshold, by default 0 unless split = "high" \
+        or split = "low", in which case default is 0.3
     target : Optional[Union[pd.Series, str]], optional
         Specify target for correlation. E.g. label column to generate only the correlations between each \
         feature and the label, by default None
