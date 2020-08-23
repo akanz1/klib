@@ -15,6 +15,7 @@ class Test_clean_column_names(unittest.TestCase):
                 '"asd"': [5, 6, 7],
                 "dupli": [5, 6, 8],
                 "also": [9, 2, 7],
+                "-Ä-__some/(... \n ..))++$%/name/   .........": [2, 3, 7],
             }
         )
         cls.df2 = pd.DataFrame(
@@ -30,8 +31,9 @@ class Test_clean_column_names(unittest.TestCase):
             "asd",
             "dupli",
             "also",
-            "dupli_6",
-            "also_7",
+            "ae_some_plus_plus_dollar_percent_name",
+            "dupli_7",
+            "also_8",
             "verylong_column_namesare_hardto_read",
         ]
         for i, _ in enumerate(expected_results):
