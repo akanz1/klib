@@ -14,4 +14,4 @@ jobs:
       - name: Black Code Formatter
         uses: lgeiger/black-action@v1.0.1
         with:
-          args: "--line-length 110 --target-version py38 --check ."
+          args: "--line-length 88 --target-version py38 --check ."
