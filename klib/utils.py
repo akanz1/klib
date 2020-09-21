@@ -13,7 +13,9 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 def _corr_selector(
     corr: Union[pd.Series, pd.DataFrame],
-    split: Optional[str] = None,  # Optional[Literal["pos", "neg", "above", "below"]] = None,
+    split: Optional[
+        str
+    ] = None,  # Optional[Literal["pos", "neg", "above", "below"]] = None,
     threshold: float = 0,
 ) -> Union[pd.Series, pd.DataFrame]:
     """ Utility funciton to select the desired correlations.
@@ -26,8 +28,8 @@ def _corr_selector(
         Type of split performed, by default None
            * {None, "pos", "neg", "high", "low"}
     threshold : float, optional
-        Value between 0 and 1 to set the correlation threshold, by default 0 unless split = "high" \
-        or split = "low", in which case default is 0.3
+        Value between 0 and 1 to set the correlation threshold, by default 0 unless \
+        split = "high" or split = "low", in which case default is 0.3
 
     Returns
     -------
@@ -38,26 +40,28 @@ def _corr_selector(
     if split == "pos":
         corr = corr.where((corr >= threshold) & (corr > 0))
         print(
-            'Displaying positive correlations. Specify a positive "threshold" to further limit the results.'
+            'Displaying positive correlations. Specify a positive "threshold" to '
+            "limit the results further."
         )
     elif split == "neg":
         corr = corr.where((corr <= threshold) & (corr < 0))
         print(
-            'Displaying negative correlations. Specify a negative "threshold" to further limit the results.'
+            'Displaying negative correlations. Specify a negative "threshold" to '
+            "limit the results further."
         )
     elif split == "high":
         threshold = 0.3 if threshold <= 0 else threshold
         corr = corr.where(np.abs(corr) >= threshold)
         print(
             f"Displaying absolute correlations above the threshold ({threshold}). "
-            'Specify a positive "threshold" to further limit the results.'
+            'Specify a positive "threshold" to limit the results further.'
         )
     elif split == "low":
         threshold = 0.3 if threshold <= 0 else threshold
         corr = corr.where(np.abs(corr) <= threshold)
         print(
             f"Displaying absolute correlations below the threshold ({threshold}). "
-            'Specify a positive "threshold" to further limit the results.'
+            'Specify a positive "threshold" to limit the results further.'
         )
 
     return corr
@@ -70,26 +74,28 @@ def _diff_report(
     single_val_cols: Optional[List[str]] = None,
     show: Optional[str] = "changes",  # Optional[Literal["all", "changes"]] = "changes",
 ) -> None:
-    """ Provides information about changes between two datasets, such as dropped rows and columns, memory \
-        usage and missing values.
+    """ Provides information about changes between two datasets, such as dropped rows \
+        and columns, memory usage and missing values.
 
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. Input the initial dataset here
+        2D dataset that can be coerced into Pandas DataFrame. Input the initial \
+        dataset here
     data_cleaned : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. Input the cleaned / updated dataset here
+        2D dataset that can be coerced into Pandas DataFrame. Input the cleaned / \
+        updated dataset here
     dupl_rows : Optional[List[Union[str, int]]], optional
         List of duplicate row indices, by default None
     single_val_cols : Optional[List[str]], optional
-        List of single-valued column indices. I.e. columns where all cells contain the same value. \
-        NaNs count as a separate value, by default None
+        List of single-valued column indices. I.e. columns where all cells contain the \
+        same value. NaNs count as a separate value, by default None
     show : str, optional
         {"all", "changes", None}, by default "changes"
         Specify verbosity of the output:
-            * "all": Print information about the data before and after cleaning as well as information about \
-            changes and memory usage (deep). Please be aware, that this can slow down the function by quite \
-            a bit.
+            * "all": Print information about the data before and after cleaning as \
+                well as information about changes and memory usage (deep). Please be \
+                aware, that this can slow down the function by quite a bit.
             * "changes": Print out differences in the data before and after cleaning.
             * None: No information about the data and the data cleaning is printed.
 
@@ -125,15 +131,22 @@ def _diff_report(
             print(f"Memory usage: {str(data_cl_mem).rjust(7)} MB")
             print("_______________________________________________________\n")
 
-        print(f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}")
+        print(
+            f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}"
+        )
         print("\nChanges:")
         print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
         print(f"     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows[:250]})")
         print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
-        print(f"     of which {len(single_val_cols)} single valued. (Columns: {single_val_cols})")
+        print(
+            f"     of which {len(single_val_cols)} single valued. (Columns: {single_val_cols})"
+        )
         print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
         mem_change = data_mem - data_cl_mem
-        print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{round(100*mem_change/data_mem,2)}%)")
+        mem_perc = 100 * mem_change / data_mem
+        print(
+            f"Reduced memory by at least: {round(mem_change,3)} MB (-{round(mem_perc,2)}%)"
+        )
 
 
 def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
@@ -174,7 +187,9 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
     """
 
     data = pd.DataFrame(data).copy()
-    memory_usage = round(data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2)
+    memory_usage = round(
+        data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2
+    )
 
     return memory_usage
 
@@ -215,27 +230,37 @@ def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
 
 def _validate_input_bool(value, desc):
     if not (isinstance(value, bool)):
-        raise TypeError(f"Input value for '{desc}' is {type(value)} but should be a boolean.")
+        raise TypeError(
+            f"Input value for '{desc}' is {type(value)} but should be a boolean."
+        )
 
 
 def _validate_input_int(value, desc):
     if not isinstance(value, int):
-        raise TypeError(f"Input value for '{desc}' is {type(value)} but should be an integer.")
+        raise TypeError(
+            f"Input value for '{desc}' is {type(value)} but should be an integer."
+        )
 
 
 def _validate_input_range(value, desc, lower, upper):
     if value < lower or value > upper:
-        raise ValueError(f"'{desc}' = {value} but should be within the range {lower} <= '{desc}' <= {upper}.")
+        raise ValueError(
+            f"'{desc}' = {value} but should be within the range {lower} <= '{desc}' <= {upper}."
+        )
 
 
 def _validate_input_smaller(value1, value2, desc):
     if value1 > value2:
-        raise ValueError(f"The first input for '{desc}' should be smaller or equal to the second input.")
+        raise ValueError(
+            f"The first input for '{desc}' should be smaller or equal to the second input."
+        )
 
 
 def _validate_input_sum_smaller(limit, desc, *args):
     if sum(args) > limit:
-        raise ValueError(f"The sum of imput values provided for '{desc}' should be less or equal to {limit}.")
+        raise ValueError(
+            f"The sum of imput values provided for '{desc}' should be less or equal to {limit}."
+        )
 
 
 def _validate_input_sum_larger(limit, desc, *args):

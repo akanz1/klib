@@ -39,9 +39,10 @@ __all__ = [
     "__version__",
 ]
 
-# in future versions and especially with an increased number of functions, only the most frequently used functions will\
-# be imported into the namespace to be accessible from klib.function directly. The remaining functions can be found in \
-# the respective modules:
+# in future versions and especially with an increased number of functions, only the
+# most frequently used functions will be imported into the namespace to be accessible
+# from klib.function directly. The remaining functions can be found in the respective
+# modules:
 #     'clean',
 #    'describe',
 #    'preprocess',

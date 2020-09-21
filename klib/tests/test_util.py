@@ -32,37 +32,78 @@ class Test__corr_selector(unittest.TestCase):
 
     def test__corr_selector_matrix(self):
         self.assertEqual(_corr_selector(self.df_data_corr.corr()).shape, (6, 6))
-        self.assertEqual(_corr_selector(self.df_data_corr.corr(), split="pos").isna().sum().sum(), 18)
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="pos", threshold=0.5).isna().sum().sum(), 26
+            _corr_selector(self.df_data_corr.corr(), split="pos").isna().sum().sum(), 18
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="neg", threshold=-0.75).isna().sum().sum(), 32
+            _corr_selector(self.df_data_corr.corr(), split="pos", threshold=0.5)
+            .isna()
+            .sum()
+            .sum(),
+            26,
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="high", threshold=0.15).isna().sum().sum(), 4
+            _corr_selector(self.df_data_corr.corr(), split="neg", threshold=-0.75)
+            .isna()
+            .sum()
+            .sum(),
+            32,
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corr(), split="low", threshold=0.85).isna().sum().sum(), 6
-        )
-
-    def test__corr_selector_label(self):
-        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target)).shape, (6,))
-        self.assertEqual(_corr_selector(self.df_data_corr.corrwith(self.target), split="pos").isna().sum(), 3)
-        self.assertEqual(
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="pos", threshold=0.8).isna().sum(),
+            _corr_selector(self.df_data_corr.corr(), split="high", threshold=0.15)
+            .isna()
+            .sum()
+            .sum(),
             4,
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="neg", threshold=-0.7).isna().sum(),
+            _corr_selector(self.df_data_corr.corr(), split="low", threshold=0.85)
+            .isna()
+            .sum()
+            .sum(),
+            6,
+        )
+
+    def test__corr_selector_label(self):
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corrwith(self.target)).shape, (6,)
+        )
+        self.assertEqual(
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="pos")
+            .isna()
+            .sum(),
+            3,
+        )
+        self.assertEqual(
+            _corr_selector(
+                self.df_data_corr.corrwith(self.target), split="pos", threshold=0.8
+            )
+            .isna()
+            .sum(),
+            4,
+        )
+        self.assertEqual(
+            _corr_selector(
+                self.df_data_corr.corrwith(self.target), split="neg", threshold=-0.7
+            )
+            .isna()
+            .sum(),
             5,
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="high", threshold=0.2).isna().sum(),
+            _corr_selector(
+                self.df_data_corr.corrwith(self.target), split="high", threshold=0.2
+            )
+            .isna()
+            .sum(),
             1,
         )
         self.assertEqual(
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="low", threshold=0.8).isna().sum(),
+            _corr_selector(
+                self.df_data_corr.corrwith(self.target), split="low", threshold=0.8
+            )
+            .isna()
+            .sum(),
             2,
         )
 
@@ -86,7 +127,11 @@ class Test__drop_duplicates(unittest.TestCase):
         # Test dropping of duplicate rows
         self.assertAlmostEqual(_drop_duplicates(self.data_dupl_df)[0].shape, (4, 4))
         # Test if the resulting DataFrame is equal to using the pandas method
-        self.assertTrue(_drop_duplicates(self.data_dupl_df)[0].equals(self.data_dupl_df.drop_duplicates()))
+        self.assertTrue(
+            _drop_duplicates(self.data_dupl_df)[0].equals(
+                self.data_dupl_df.drop_duplicates()
+            )
+        )
         # Test number of duplicates
         self.assertEqual(len(_drop_duplicates(self.data_dupl_df)[1]), 3)
 
@@ -115,33 +160,45 @@ class Test__missing_vals(unittest.TestCase):
         # Test missing values for each row
         expected_results = [1, 2, 1, 1]
         for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_rows"][i], expected_results[i])
+            self.assertAlmostEqual(
+                _missing_vals(self.data_mv_df)["mv_rows"][i], expected_results[i]
+            )
 
     def test_mv_cols(self):
         # Test missing values for each column
         expected_results = [1, 1, 1, 2]
         for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_cols"][i], expected_results[i])
+            self.assertAlmostEqual(
+                _missing_vals(self.data_mv_df)["mv_cols"][i], expected_results[i]
+            )
 
     def test_mv_rows_ratio(self):
         # Test missing values ratio for each row
         expected_results = [0.25, 0.5, 0.25, 0.25]
         for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_rows_ratio"][i], expected_results[i])
+            self.assertAlmostEqual(
+                _missing_vals(self.data_mv_df)["mv_rows_ratio"][i], expected_results[i]
+            )
 
         # Test if missing value ratio is between 0 and 1
         for i in range(len(self.data_mv_df)):
-            self.assertTrue(0 <= _missing_vals(self.data_mv_df)["mv_rows_ratio"][i] <= 1)
+            self.assertTrue(
+                0 <= _missing_vals(self.data_mv_df)["mv_rows_ratio"][i] <= 1
+            )
 
     def test_mv_cols_ratio(self):
         # Test missing values ratio for each column
         expected_results = [1 / 4, 0.25, 0.25, 0.5]
         for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_cols_ratio"][i], expected_results[i])
+            self.assertAlmostEqual(
+                _missing_vals(self.data_mv_df)["mv_cols_ratio"][i], expected_results[i]
+            )
 
         # Test if missing value ratio is between 0 and 1
         for i in range(len(self.data_mv_df)):
-            self.assertTrue(0 <= _missing_vals(self.data_mv_df)["mv_cols_ratio"][i] <= 1)
+            self.assertTrue(
+                0 <= _missing_vals(self.data_mv_df)["mv_cols_ratio"][i] <= 1
+            )
 
 
 class Test__validate_input(unittest.TestCase):
