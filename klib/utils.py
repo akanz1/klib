@@ -132,21 +132,21 @@ def _diff_report(
             print("_______________________________________________________\n")
 
         print(
-            f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}"
+            f"Shape of cleaned data: {data_cleaned.shape}"
+            f"Remaining NAs: {data_cl_mv_tot}"
         )
         print("\nChanges:")
         print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
         print(f"     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows[:250]})")
         print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
         print(
-            f"     of which {len(single_val_cols)} single valued. (Columns: {single_val_cols})"
+            f"     of which {len(single_val_cols)} single valued."
+            f"     Columns: {single_val_cols}"
         )
         print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
         mem_change = data_mem - data_cl_mem
-        mem_perc = 100 * mem_change / data_mem
-        print(
-            f"Reduced memory by at least: {round(mem_change,3)} MB (-{round(mem_perc,2)}%)"
-        )
+        mem_perc = round(100 * mem_change / data_mem, 2)
+        print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)")
 
 
 def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
@@ -245,26 +245,26 @@ def _validate_input_int(value, desc):
 def _validate_input_range(value, desc, lower, upper):
     if value < lower or value > upper:
         raise ValueError(
-            f"'{desc}' = {value} but should be within the range {lower} <= '{desc}' <= {upper}."
+            f"'{desc}' = {value} but should be {lower} <= '{desc}' <= {upper}."
         )
 
 
 def _validate_input_smaller(value1, value2, desc):
     if value1 > value2:
         raise ValueError(
-            f"The first input for '{desc}' should be smaller or equal to the second input."
+            f"The first input for '{desc}' should be smaller or equal to the second."
         )
 
 
 def _validate_input_sum_smaller(limit, desc, *args):
     if sum(args) > limit:
         raise ValueError(
-            f"The sum of imput values provided for '{desc}' should be less or equal to {limit}."
+            f"The sum of input values for '{desc}' should be less or equal to {limit}."
         )
 
 
 def _validate_input_sum_larger(limit, desc, *args):
     if sum(args) < limit:
         raise ValueError(
-            f"The sum of imput values provided for '{desc}' should be larger or equal to {limit}."
+            f"The sum of input values for '{desc}' should be larger or equal to {limit}"
         )

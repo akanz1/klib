@@ -211,7 +211,8 @@ def corr_mat(
             Computationally more expensive but more robust in smaller dataets than \
             "spearman"
     colored : bool, optional
-        If True the negative values in the correlation matrix are colored in red, by default True
+        If True the negative values in the correlation matrix are colored in red, by \
+        default True
 
     Returns
     -------
@@ -268,7 +269,8 @@ def corr_plot(
     dev: bool = False,
     **kwargs,
 ):
-    """ Two-dimensional visualization of the correlation between feature-columns, excluding NA values.
+    """ Two-dimensional visualization of the correlation between feature-columns \
+        excluding NA values.
 
     Parameters
     ----------
@@ -320,14 +322,17 @@ def corr_plot(
             * mask: bool, default True
                 If set to False the entire correlation matrix, including the upper \
                 triangle is shown. Set dev = False in this case to avoid overlap.
-            * vmax: float, default is calculated from the given correlation coefficients.
+            * vmax: float, default is calculated from the given correlation \
+                coefficients.
                 Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
-            * vmin: float, default is calculated from the given correlation coefficients.
+            * vmin: float, default is calculated from the given correlation \
+                coefficients.
                 Value between -1 <= vmin <= 1 or vmax, limits the range of the colorbar.
             * linewidths: float, default 0.5
                 Controls the line-width inbetween the squares.
             * annot_kws: dict, default {"size" : 10}
-                Controls the font size of the annotations. Only available when annot = True.
+                Controls the font size of the annotations. Only available when \
+                annot = True.
             * cbar_kws: dict, default {"shrink": .95, "aspect": 30}
                 Controls the size of the colorbar.
             * Many more kwargs are available, i.e. "alpha" to control blending, or \
