@@ -45,8 +45,8 @@ def cat_plot(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is \
-        provided, the index/column information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
+        is provided, the index/column information is used to label the plots
     figsize : Tuple, optional
         Use to control the figure size, by default (18, 18)
     top : int, optional
@@ -54,7 +54,8 @@ def cat_plot(
     bottom : int, optional
         Show the "bottom" most frequent values in a column, by default 3
     bar_color_top : str, optional
-        Use to control the color of the bars indicating the most common values, by default "#5ab4ac"
+        Use to control the color of the bars indicating the most common values, by \
+        default "#5ab4ac"
     bar_color_bottom : str, optional
         Use to control the color of the bars indicating the least common values, by \
         default "#d8b365"
@@ -191,8 +192,8 @@ def corr_mat(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is \
-        provided, the index/column information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
+        is provided, the index/column information is used to label the plots
     split : Optional[str], optional
         Type of split to be performed, by default None
         {None, "pos", "neg", "high", "low"}
@@ -204,8 +205,8 @@ def corr_mat(
         correlations between each feature and the label, by default None
     method : str, optional
         method: {"pearson", "spearman", "kendall"}, by default "pearson"
-        * pearson: measures linear relationships and requires normally distributed and \
-            homoscedastic data.
+        * pearson: measures linear relationships and requires normally distributed \
+            and homoscedastic data.
         * spearman: ranked/ordinal correlation, measures monotonic relationships.
         * kendall: ranked/ordinal correlation, measures monotonic relationships. \
             Computationally more expensive but more robust in smaller dataets than \
@@ -275,8 +276,8 @@ def corr_plot(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is \
-        provided, the index/column information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
+        is provided, the index/column information is used to label the plots
     split : Optional[str], optional
         Type of split to be performed {None, "pos", "neg", "high", "low"}, by default \
         None
@@ -298,12 +299,12 @@ def corr_plot(
         correlations between each feature and the label, by default None
     method : str, optional
         method: {"pearson", "spearman", "kendall"}, by default "pearson"
-            * pearson: measures linear relationships and requires normally distributed \
-                and homoscedastic data.
+            * pearson: measures linear relationships and requires normally \
+                distributed and homoscedastic data.
             * spearman: ranked/ordinal correlation, measures monotonic relationships.
             * kendall: ranked/ordinal correlation, measures monotonic relationships. \
-                Computationally more expensive but more robust in smaller dataets than \
-                "spearman".
+                Computationally more expensive but more robust in smaller dataets \
+                than "spearman".
 
     cmap : str, optional
         The mapping from data values to color space, matplotlib colormap name or \
@@ -324,10 +325,10 @@ def corr_plot(
                 triangle is shown. Set dev = False in this case to avoid overlap.
             * vmax: float, default is calculated from the given correlation \
                 coefficients.
-                Value between -1 or vmin <= vmax <= 1, limits the range of the colorbar.
+                Value between -1 or vmin <= vmax <= 1, limits the range of the cbar.
             * vmin: float, default is calculated from the given correlation \
                 coefficients.
-                Value between -1 <= vmin <= 1 or vmax, limits the range of the colorbar.
+                Value between -1 <= vmin <= 1 or vmax, limits the range of the cbar.
             * linewidths: float, default 0.5
                 Controls the line-width inbetween the squares.
             * annot_kws: dict, default {"size" : 10}
@@ -432,8 +433,8 @@ def dist_plot(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is \
-        provided, the index/column information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
+        is provided, the index/column information is used to label the plots
     mean_color : str, optional
         Color of the vertical line indicating the mean of the data, by default "orange"
     figsize : Tuple, optional
@@ -501,8 +502,8 @@ def dist_plot(
     elif len(cols) >= 20 and showall is False:
         print(
             "Note: The number of non binary numerical features is very large "
-            f"({len(cols)}), please consider splitting the data. Showing plots for the "
-            "first 20 numerical features. Override this by setting showall=True."
+            f"({len(cols)}), please consider splitting the data. Showing plots for "
+            "the first 20 numerical features. Override this by setting showall=True."
         )
         cols = cols[:20]
 
@@ -610,8 +611,8 @@ def missingval_plot(
     Parameters
     ----------
     data : pd.DataFrame
-        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame is \
-        provided, the index/column information is used to label the plots
+        2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
+        is provided, the index/column information is used to label the plots
     cmap : str, optional
         Any valid colormap can be used. E.g. "Greys", "RdPu". More information can be \
         found in the matplotlib documentation, by default "PuBuGn"

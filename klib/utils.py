@@ -72,7 +72,7 @@ def _diff_report(
     data_cleaned: pd.DataFrame,
     dupl_rows: Optional[List[Union[str, int]]] = None,
     single_val_cols: Optional[List[str]] = None,
-    show: Optional[str] = "changes",  # Optional[Literal["all", "changes"]] = "changes",
+    show: Optional[str] = "changes",  # Optional[Literal["all", "changes"]] = "changes"
 ) -> None:
     """ Provides information about changes between two datasets, such as dropped rows \
         and columns, memory usage and missing values.
@@ -88,8 +88,8 @@ def _diff_report(
     dupl_rows : Optional[List[Union[str, int]]], optional
         List of duplicate row indices, by default None
     single_val_cols : Optional[List[str]], optional
-        List of single-valued column indices. I.e. columns where all cells contain the \
-        same value. NaNs count as a separate value, by default None
+        List of single-valued column indices. I.e. columns where all cells contain \
+        the same value. NaNs count as a separate value, by default None
     show : str, optional
         {"all", "changes", None}, by default "changes"
         Specify verbosity of the output:
@@ -266,5 +266,5 @@ def _validate_input_sum_smaller(limit, desc, *args):
 def _validate_input_sum_larger(limit, desc, *args):
     if sum(args) < limit:
         raise ValueError(
-            f"The sum of input values for '{desc}' should be larger or equal to {limit}"
+            f"The sum of input values for '{desc}' should be larger/equal to {limit}."
         )
