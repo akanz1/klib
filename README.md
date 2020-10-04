@@ -2,10 +2,10 @@
 
 [![Flake8 & PyTest](https://github.com/akanz1/klib/workflows/Flake8%20%F0%9F%90%8D%20PyTest%20%20%20%C2%B4/badge.svg)](https://github.com/akanz1/klib)
 [![Language](https://img.shields.io/github/languages/top/akanz1/klib)](https://pypi.org/project/klib/)
-[![Last Commit](https://badgen.net/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib/commits/master)
+[![Last Commit](https://badgen.net/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib/commits/main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=akanz1_klib&metric=alert_status)](https://sonarcloud.io/dashboard?id=akanz1_klib)
-[![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/akanz1/klib/)
-[![codecov](https://codecov.io/gh/akanz1/klib/branch/master/graph/badge.svg)](https://codecov.io/gh/akanz1/klib)
+[![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/akanz1/klib/)
+[![codecov](https://codecov.io/gh/akanz1/klib/branch/main/graph/badge.svg)](https://codecov.io/gh/akanz1/klib)
 
 klib is a Python library for importing, cleaning, analyzing and preprocessing data. While the focus is on these steps, future versions will include modules and functions for model creation and optimization to provide more of an end-to-end solution. Explanations on key functionalities can be found on [Medium / TowardsDataScience](https://medium.com/@akanz) or in the [examples](examples) section.
 
@@ -61,14 +61,14 @@ klib.preprocess # functions for data preprocessing (feature selection, scaling, 
 
 ## Examples
 
-Find all available examples as well as applications of the functions in **klib.clean()** with detailed descriptions <a href="https://github.com/akanz1/klib/tree/master/examples">here</a>.
+Find all available examples as well as applications of the functions in **klib.clean()** with detailed descriptions <a href="https://github.com/akanz1/klib/tree/main/examples">here</a>.
 
 
 ```python
 klib.missingval_plot(df) # default representation of missing values in a DataFrame, plenty of settings are available
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1000" height="1091"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1000" height="1091"></p>
 
 
 ```python
@@ -76,30 +76,30 @@ klib.corr_plot(df, split='pos') # displaying only positive correlations, other s
 klib.corr_plot(df, split='neg') # displaying only negative correlations
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="338"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="338"></p>
 
 
 ```python
 klib.corr_plot(df, target='wine') # default representation of correlations with the feature column
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="720" height="600"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="720" height="600"></p>
 
 
 ```python
 klib.dist_plot(df) # default representation of a distribution plot, other settings include fill_range, histogram, ...
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p>
 
 
 ```python
 klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least common values in each categorical column
 ```
 
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1000" height="1000"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1000" height="1000"></p>
 
-Further examples, as well as applications of the functions in **klib.clean()** can be found <a href="https://github.com/akanz1/klib/tree/master/examples#data-cleaning-and-aggretation">here</a>.
+Further examples, as well as applications of the functions in **klib.clean()** can be found <a href="https://github.com/akanz1/klib/tree/main/examples#data-cleaning-and-aggretation">here</a>.
 
 ## Contributing
 
