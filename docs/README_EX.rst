@@ -18,7 +18,7 @@ in a dataset and easily determine which columns and rows to investigate
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1100" height="1200"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1100" height="1200"></p>
 
 Correlation Plots
 ~~~~~~~~~~~~~~~~~
@@ -36,7 +36,7 @@ development settings can optionally be turned on or off.
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="1130" height="520"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="1130" height="520"></p>
 
 Further, as seen below, if a column is specified, either by name or by
 passing in a separate target List or pd.Series, the plot gives the
@@ -48,7 +48,7 @@ correlation of all features with the specified target.
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="1000" height="833"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="1000" height="833"></p>
 
 .. code:: python
 
@@ -56,7 +56,7 @@ correlation of all features with the specified target.
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_corr_mat.png" alt="Corr Mat Example" width="808" height="369"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_klib_corr_mat.png" alt="Corr Mat Example" width="808" height="369"></p>
 
 Numerical Data Distribution Plot
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,7 +67,7 @@ Numerical Data Distribution Plot
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p>
 
 Categorical Data Plot
 ~~~~~~~~~~~~~~~~~~~~~
@@ -86,7 +86,7 @@ applying one-hot-encoding or similar functions.
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1100" height="1100"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1100" height="1100"></p>
 
 Data Cleaning and Aggregation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,7 +102,7 @@ flight data, which has an initial size of about 51 MB.
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets3.png" alt="Original Dataset" width="329" height="376"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_klib_pool_duplicate_subsets3.png" alt="Original Dataset" width="329" height="376"></p>
 
 klib.data\_cleaning()
 ^^^^^^^^^^^^^^^^^^^^^
@@ -116,7 +116,7 @@ uncommon. For larger datasets the reduction in size often surpasses 90%.
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_data_cleaning_dtypes.png" alt="Change in dtypes" width="294" height="429"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_klib_data_cleaning_dtypes.png" alt="Change in dtypes" width="294" height="429"></p>
 
 klib.pool\_duplicate\_subsets()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -127,7 +127,7 @@ This is a reduction of roughly -92.5%**.
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets2.png" alt="Duplicate subsets" width="393" height="431"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_klib_pool_duplicate_subsets2.png" alt="Duplicate subsets" width="393" height="431"></p>
 
 This function "pools" columns together based on several settings.
 Specifically, the pooling is achieved by finding duplicates in subsets
@@ -151,7 +151,7 @@ footprint and number of columns which should speed up model training.
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_klib_pool_duplicate_subsets1.png" alt="Duplicate subsets2" width="945" height="424"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_klib_pool_duplicate_subsets1.png" alt="Duplicate subsets2" width="945" height="424"></p>
 
 All of these functions were run with their relatively "soft" default
 settings. Many parameters are available allowing a more restrictive data

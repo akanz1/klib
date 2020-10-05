@@ -74,7 +74,7 @@ Find all available examples as well as applications of the functions in
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1000" height="1091"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1000" height="1091"></p>
 
 
 .. code:: python
@@ -84,7 +84,7 @@ Find all available examples as well as applications of the functions in
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="338"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="338"></p>
 
 
 .. code:: python
@@ -93,7 +93,7 @@ Find all available examples as well as applications of the functions in
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="720" height="600"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="720" height="600"></p>
 
 
 .. code:: python
@@ -102,7 +102,7 @@ Find all available examples as well as applications of the functions in
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p>
 
 
 .. code:: python
@@ -111,7 +111,7 @@ Find all available examples as well as applications of the functions in
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/master/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1000" height="1000"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_cat_plot.png" alt="Cat Plot Example" width="1000" height="1000"></p>
 
 Further examples, as well as applications of the functions in
 **klib.clean()** can be found here.
@@ -135,10 +135,10 @@ License
 .. |Downloads| image:: https://img.shields.io/pypi/dm/klib
    :target: https://pypi.org/project/klib/
 .. |Last Commit| image:: https://badgen.net/github/last-commit/akanz1/klib
-   :target: https://github.com/akanz1/klib/commits/master
+   :target: https://github.com/akanz1/klib/commits/main
 .. |Quality Gate Status| image:: https://sonarcloud.io/api/project_badges/measure?project=akanz1_klib&metric=alert_status
    :target: https://sonarcloud.io/dashboard?id=akanz1_klib
-.. |Scrutinizer| image:: https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=master
+.. |Scrutinizer| image:: https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=main
    :target: https://scrutinizer-ci.com/g/akanz1/klib/
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/klib
    :target: https://pypi.org/project/klib/
