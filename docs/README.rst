@@ -134,7 +134,7 @@ License
    :target: https://pypi.org/project/klib/
 .. |Downloads| image:: https://img.shields.io/pypi/dm/klib
    :target: https://pypi.org/project/klib/
-.. |Last Commit| image:: https://badgen.net/github/last-commit/akanz1/klib
+.. |Last Commit| image:: https://badgen.net/github/last-commit/akanz1/klib/main
    :target: https://github.com/akanz1/klib/commits/main
 .. |Quality Gate Status| image:: https://sonarcloud.io/api/project_badges/measure?project=akanz1_klib&metric=alert_status
    :target: https://sonarcloud.io/dashboard?id=akanz1_klib

@@ -2,7 +2,7 @@
 
 [![Flake8 & PyTest](https://github.com/akanz1/klib/workflows/Flake8%20%F0%9F%90%8D%20PyTest%20%20%20%C2%B4/badge.svg)](https://github.com/akanz1/klib)
 [![Language](https://img.shields.io/github/languages/top/akanz1/klib)](https://pypi.org/project/klib/)
-[![Last Commit](https://badgen.net/github/last-commit/akanz1/klib)](https://github.com/akanz1/klib/commits/main)
+[![Last Commit](https://badgen.net/github/last-commit/akanz1/klib/main)](https://github.com/akanz1/klib/commits/main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=akanz1_klib&metric=alert_status)](https://sonarcloud.io/dashboard?id=akanz1_klib)
 [![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/akanz1/klib/)
 [![codecov](https://codecov.io/gh/akanz1/klib/branch/main/graph/badge.svg)](https://codecov.io/gh/akanz1/klib)
