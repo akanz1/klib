@@ -29,6 +29,8 @@ class Test_clean_column_names(unittest.TestCase):
                 "dupli": [3, 2, 1],
                 "also": [4, 5, 7],
                 "verylongColumnNamesareHardtoRead": [9, 2, 7],
+                "< total": [2, 6, 4],
+                "count >= 10": [6, 3, 2],
             }
         )
         cls.df_clean_column_names = pd.concat([cls.df1, cls.df2], axis=1)
@@ -45,6 +47,8 @@ class Test_clean_column_names(unittest.TestCase):
             "dupli_7",
             "also_8",
             "verylong_column_namesare_hardto_read",
+            "smaller_total",
+            "count_larger_equal_10",
         ]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
