@@ -18,10 +18,10 @@ class Test_clean_column_names(unittest.TestCase):
                 "Asd 5$ & (3€)": [1, 2, 3],
                 "3+3": [2, 3, 4],
                 "AsdFer #9": [3, 4, 5],
-                '"asd"': [5, 6, 7],
+                '"asdäöüß"': [5, 6, 7],
                 "dupli": [5, 6, 8],
                 "also": [9, 2, 7],
-                "-Ä-__some/(... \n ..))++$%/name/   .........": [2, 3, 7],
+                "-Ä-__________!?:;some/(... \n ..))(++$%/name/    -.....": [2, 3, 7],
             }
         )
         cls.df2 = pd.DataFrame(
@@ -29,7 +29,7 @@ class Test_clean_column_names(unittest.TestCase):
                 "dupli": [3, 2, 1],
                 "also": [4, 5, 7],
                 "verylongColumnNamesareHardtoRead": [9, 2, 7],
-                "< total": [2, 6, 4],
+                "< #total@": [2, 6, 4],
                 "count >= 10": [6, 3, 2],
             }
         )
@@ -39,15 +39,15 @@ class Test_clean_column_names(unittest.TestCase):
         expected_results = [
             "asd_5_dollar_and_3_euro",
             "3_plus_3",
-            "asd_fer_number_9",
-            "asd",
+            "asd_fer_hash_9",
+            "asdaeoeuess",
             "dupli",
             "also",
             "ae_some_plus_plus_dollar_percent_name",
             "dupli_7",
             "also_8",
             "verylong_column_namesare_hardto_read",
-            "smaller_total",
+            "smaller_hash_total_at",
             "count_larger_equal_10",
         ]
         for i, _ in enumerate(expected_results):

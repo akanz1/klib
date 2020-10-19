@@ -65,6 +65,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
 
     _validate_input_bool(hints, "hints")
 
+    # Handle CamelCase
     for i, col in enumerate(data.columns):
         matches = re.findall(re.compile("[a-z][A-Z]"), col)
         column = col
@@ -79,12 +80,8 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         .str.replace("'", "_")
         .str.replace('"', "_")
         .str.replace(".", "_")
-        .str.replace("!", "_")
-        .str.replace("?", "_")
-        .str.replace(":", "_")
-        .str.replace(";", "_")
         .str.replace("-", "_")
-        .str.replace("/", "_")
+        .str.replace(r"[!?:;/]", "_", regex=True)
         .str.replace("+", "_plus_")
         .str.replace("*", "_times_")
         .str.replace("<", "_smaller")
@@ -98,13 +95,10 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         .str.replace("$", "_dollar_")
         .str.replace("€", "_euro_")
         .str.replace("@", "_at_")
-        .str.replace("#", "_number_")
+        .str.replace("#", "_hash_")
         .str.replace("&", "_and_")
-        .str.replace("   ", " ")
-        .str.replace("  ", " ")
-        .str.replace(" ", "_")
-        .str.replace("___", "_")
-        .str.replace("__", "_")
+        .str.replace(r"\s+", "_", regex=True)
+        .str.replace(r"_+", "_", regex=True)
         .str.strip("_")
         .str.lower()
     )
@@ -126,8 +120,8 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
     long_col_names = [x for x in data.columns if len(x) > 25]
     if len(long_col_names) > 0 and hints:
         print(
-            "- Long column names detected (>25 characters)! Consider renaming the \
-                following columns "
+            "Long column names detected (>25 characters)! Consider renaming the \
+             following columns "
             f"{long_col_names}."
         )
 
