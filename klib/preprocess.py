@@ -8,28 +8,26 @@ Functions for data preprocessing.
 # Imports
 import numpy as np
 import pandas as pd
-
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.experimental import enable_iterative_imputer  # noqa
-from sklearn.impute import SimpleImputer, IterativeImputer
 from sklearn.feature_selection import (
-    f_classif,
     SelectFromModel,
     SelectPercentile,
     VarianceThreshold,
+    f_classif,
 )
+from sklearn.impute import IterativeImputer, SimpleImputer
 from sklearn.linear_model import LassoCV
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import OneHotEncoder, RobustScaler, MaxAbsScaler
+from sklearn.preprocessing import MaxAbsScaler, OneHotEncoder, RobustScaler
 
 from klib.utils import (
     _validate_input_int,
     _validate_input_range,
     _validate_input_sum_smaller,
 )
-
 
 __all__ = ["feature_selection_pipe", "num_pipe", "cat_pipe", "train_dev_test_split"]
 

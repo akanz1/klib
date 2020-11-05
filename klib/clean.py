@@ -6,11 +6,12 @@ Functions for data cleaning.
 
 # Imports
 import itertools
+import re
+from typing import List, Optional, Union
+
 import numpy as np
 import pandas as pd
-import re
 from sklearn.base import BaseEstimator, TransformerMixin
-from typing import List, Optional, Union
 
 from klib.describe import corr_mat
 from klib.utils import (
@@ -20,7 +21,6 @@ from klib.utils import (
     _validate_input_bool,
     _validate_input_range,
 )
-
 
 __all__ = [
     "clean_column_names",

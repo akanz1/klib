@@ -1,4 +1,5 @@
 import setuptools
+
 from klib import _version
 
 with open("README.md", "r") as fh:
@@ -17,16 +18,17 @@ setuptools.setup(
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
     install_requires=[
-        "matplotlib >= 2.1.2",
-        "numpy >= 1.13.3",
-        "pandas >= 1.0.0",
-        "seaborn >= 0.1.0",
+        "matplotlib >= 3.0.3",
+        "numpy >= 1.15.4",
+        "pandas >= 1.0.5",
+        "seaborn >= 0.10.1",
         "scikit-learn >= 0.23",
+        "scipy >= 1.0.0",
     ],
     python_requires=">=3.7",
 )

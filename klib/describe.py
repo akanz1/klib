@@ -4,17 +4,17 @@ Functions for descriptive analytics.
 :author: Andreas Kanz
 
 """
-
 # Imports
-from matplotlib.colors import LinearSegmentedColormap, to_rgb
+from typing import Any, Dict, Optional, Tuple, Union
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 import scipy
 import seaborn as sns
+from matplotlib.colors import LinearSegmentedColormap, to_rgb
 
-from typing import Any, Dict, Optional, Tuple, Union
 from klib.utils import (
     _corr_selector,
     _missing_vals,
@@ -24,7 +24,6 @@ from klib.utils import (
     _validate_input_smaller,
     _validate_input_sum_larger,
 )
-
 
 __all__ = ["cat_plot", "corr_mat", "corr_plot", "dist_plot", "missingval_plot"]
 
