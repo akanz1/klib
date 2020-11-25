@@ -51,7 +51,7 @@ df = pd.DataFrame(data)
 - klib.convert_datatypes(df) # converts existing to more efficient dtypes, also called inside data_cleaning()
 - klib.drop_missing(df) # drops missing values, also called in data_cleaning()
 - klib.mv_col_handling(df) # drops features with high ratio of missing vals based on informational content
-- klib.pool_duplicate_subsets(df) # pools subset of cols based on duplicates with minimal loss of information
+- klib.pool_duplicate_subsets(df) # pools subset of cols based on duplicates with min. loss of information
 
 # klib.preprocess functions for data preprocessing (feature selection, scaling, ...)
 - klib.train_dev_test_split(df) # splits a dataset and a label into train, optionally dev and test sets
