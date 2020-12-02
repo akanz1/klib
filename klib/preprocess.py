@@ -41,7 +41,8 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
     Parameter
     ---------
     num: default, True
-        Select only numerical Columns. If num = False, only categorical columns are selected.
+        Select only numerical Columns. If num = False, only categorical columns are \
+        selected.
 
     Returns
     -------
@@ -230,7 +231,8 @@ def train_dev_test_split(
         dataset to include in the test split.
 
     stratify: target column, default None
-        If not None, data is split in a stratified fashion, using the input as the class labels.
+        If not None, data is split in a stratified fashion, using the input as the \
+        class labels.
 
     random_state: integer, default 408
         Random_state is the seed used by the random number generator.
