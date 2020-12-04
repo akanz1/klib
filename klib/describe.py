@@ -80,6 +80,7 @@ def cat_plot(
 
     if len(cols) == 0:
         print("No columns with categorical data were detected.")
+        return None
 
     for col in data.columns:
         if data[col].dtype.name == "category" or data[col].dtype.name == "string":

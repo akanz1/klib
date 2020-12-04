@@ -137,7 +137,7 @@ def _diff_report(
         )
         print("\nChanges:")
         print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
-        print(f"     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows[:250]})")
+        print(f"     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows[:200]})")
         print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
         print(
             f"     of which {len(single_val_cols)} single valued."
@@ -146,7 +146,7 @@ def _diff_report(
         print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
         mem_change = data_mem - data_cl_mem
         mem_perc = round(100 * mem_change / data_mem, 2)
-        print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)")
+        print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)\n")
 
 
 def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
