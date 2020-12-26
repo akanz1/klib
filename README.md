@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/header.png" alt="klib Header" width="1717" height="607"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/header.png" alt="klib Header" width="859" height="304"></p>
 # klib
 
 [![Flake8 & PyTest](https://github.com/akanz1/klib/workflows/Flake8%20%F0%9F%90%8D%20PyTest%20%20%20%C2%B4/badge.svg)](https://github.com/akanz1/klib)
