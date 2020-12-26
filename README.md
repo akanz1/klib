@@ -1,3 +1,4 @@
+<p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/header.png" alt="klib Header" width="1717" height="607"></p>
 # klib
 
 [![Flake8 & PyTest](https://github.com/akanz1/klib/workflows/Flake8%20%F0%9F%90%8D%20PyTest%20%20%20%C2%B4/badge.svg)](https://github.com/akanz1/klib)
@@ -7,7 +8,7 @@
 [![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/akanz1/klib/)
 [![codecov](https://codecov.io/gh/akanz1/klib/branch/main/graph/badge.svg)](https://codecov.io/gh/akanz1/klib)
 
-klib is a Python library for importing, cleaning, analyzing and preprocessing data. While the focus is on these steps, future versions will include modules and functions for model creation and optimization to provide more of an end-to-end solution. Explanations on key functionalities can be found on [Medium / TowardsDataScience](https://medium.com/@akanz) or in the [examples](examples) section.
+klib is a Python library for importing, cleaning, analyzing and preprocessing data. Explanations on key functionalities can be found on [Medium / TowardsDataScience](https://medium.com/@akanz) or in the [examples](examples) section.
 
 ## Installation
 
