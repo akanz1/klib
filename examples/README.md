@@ -2,7 +2,9 @@
 
 ## Examples
 
-Additional examples can be found on [Medium / TowardsDataScience](https://medium.com/@akanz).
+Additional examples can be found on [Medium / TowardsDataScience](https://medium.com/@akanz) or in this YouTube video by [Data Professor](https://www.linkedin.com/company/dataprofessor/):
+
+<a href="https://youtu.be/URjJVEeZxxU"><img src="http://img.youtube.com/vi/URjJVEeZxxU/0.jpg" alt="How to Speed Up Data Cleaning and Exploratory Data Analysis in Python with klib" title="How to Speed Up Data Cleaning and Exploratory Data Analysis in Python with klib" width="400" /></a>
 
 ### Missing Value Plot
 
