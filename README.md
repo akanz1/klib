@@ -17,8 +17,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install klib.
 [![Downloads](https://pepy.tech/badge/klib/month)](https://pypi.org/project/klib/)
 
 ```bash
-pip install klib
-pip install --upgrade klib
+pip install -U klib
 ```
 
 Alternatively, to install this package with conda run:
