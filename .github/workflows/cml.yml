@@ -12,8 +12,8 @@ jobs:
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          pip install -U klib
           pip install -r requirements.txt
-          pip install --no-cache-dir -U klib
           python klib/scripts/performance.py
 
           cml-publish klib/scripts/boxplots.png --md >> report.md
