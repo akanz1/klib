@@ -12,7 +12,8 @@ jobs:
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pip install -vvv -U klib
+          sudo apt install python3.7
+          pip install -U klib
           pip install -r requirements.txt
           python klib/scripts/performance.py
 
