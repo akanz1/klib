@@ -56,19 +56,19 @@ def time_cat_plot():
 
 def main():
     df_times = pd.DataFrame()
-    df_times["data_cleaning"] = pd.Series([time_data_cleaning() for _ in range(10)])
-    df_times["missingval_plot"] = pd.Series([time_missingval_plot() for _ in range(6)])
-    df_times["dist_plot"] = pd.Series([time_dist_plot() for _ in range(6)])
-    df_times["cat_plot"] = pd.Series([time_cat_plot() for _ in range(8)])
+    df_times["data_cleaning"] = pd.Series([time_data_cleaning() for _ in range(12)])
+    df_times["missingval_plot"] = pd.Series([time_missingval_plot() for _ in range(7)])
+    df_times["dist_plot"] = pd.Series([time_dist_plot() for _ in range(7)])
+    df_times["cat_plot"] = pd.Series([time_cat_plot() for _ in range(7)])
     df_times = df_times.fillna(df_times.mean())
-    fig, ax = plt.subplots(nrows=1, ncols=4, figsize=(13, 6))
-    reference_values = [4, 8, 8.4, 7]
+    fig, ax = plt.subplots(nrows=1, ncols=4, figsize=(14, 7))
+    reference_values = [4.4, 8.5, 8.6, 8.4]
 
     for i, (col, ref) in enumerate(zip(df_times.columns, reference_values)):
         ax[i].boxplot(df_times[col])
         ax[i].set_title(" ".join(col.split("_")).title())
         ax[i].axhline(ref)
-    fig.suptitle("Performance", fontsize=14)
+    fig.suptitle("Performance", fontsize=16)
     fig.savefig("boxplots.png")
 
 
