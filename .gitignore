@@ -9,6 +9,7 @@ __pycache__/
 *.code-workspace
 *.egg-info/
 *.zip
+/klib/scripts/*.png
 
 # Sphinx
 docs/build/

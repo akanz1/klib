@@ -59,7 +59,6 @@ def main():
     df_times["data_cleaning"] = pd.Series([time_data_cleaning() for _ in range(8)])
     df_times["missingval_plot"] = pd.Series([time_missingval_plot() for _ in range(8)])
     df_times["dist_plot"] = pd.Series([time_dist_plot() for _ in range(3)])
-    print("----cat_plot----")
     df_times["cat_plot"] = pd.Series([time_cat_plot() for _ in range(8)])
     df_times = df_times.fillna(df_times.mean())
     fig, ax = plt.subplots(nrows=1, ncols=4, figsize=(13, 6))
