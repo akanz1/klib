@@ -8,6 +8,12 @@ jobs:
     container: docker://dvcorg/cml-py3:latest
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
       - name: cml_run
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
