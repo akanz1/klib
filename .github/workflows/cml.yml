@@ -16,11 +16,11 @@ jobs:
         run: python -c "import sys; print(sys.version)"
       - name: cml_run
         env:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{secrets.GITHUB_TOKEN}}
         run: |
           pip install -U klib
           pip install -r requirements.txt
           python klib/scripts/performance.py
 
-          cml-publish klib/scripts/boxplots.png --md >> report.md
+          cml-publish boxplots.png --md >> report.md
           cml-send-github-check report.md
