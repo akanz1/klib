@@ -62,7 +62,7 @@ def main():
     df_times["cat_plot"] = pd.Series([time_cat_plot() for _ in range(7)])
     df_times = df_times.fillna(df_times.mean())
     fig, ax = plt.subplots(nrows=1, ncols=4, figsize=(14, 7))
-    reference_values = [4.4, 8.5, 8.6, 8.4]
+    reference_values = [5, 10, 10, 10]
 
     for i, (col, ref) in enumerate(zip(df_times.columns, reference_values)):
         ax[i].boxplot(df_times[col])
