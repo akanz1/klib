@@ -8,6 +8,7 @@ __pycache__/
 /misc/
 *.code-workspace
 *.egg-info/
+*.zip
 
 # Sphinx
 docs/build/
