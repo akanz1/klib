@@ -1,7 +1,6 @@
 name: CML Performance Check
 on:
   push:
-    branches: [main, dev]
 
 jobs:
   run:
