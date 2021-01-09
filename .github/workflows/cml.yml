@@ -23,4 +23,4 @@ jobs:
           python klib/scripts/performance.py
 
           cml-publish klib/scripts/boxplots.png --md >> report.md
-          cml-send-comment report.md
+          cml-send-github-check report.md
