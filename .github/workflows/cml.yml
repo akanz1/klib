@@ -12,7 +12,7 @@ jobs:
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pip install -U klib
+          pip install -vvv -U klib
           pip install -r requirements.txt
           python klib/scripts/performance.py
 
