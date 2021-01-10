@@ -1,0 +1,26 @@
+name: CML Performance Check
+on:
+  push:
+
+jobs:
+  run:
+    runs-on: [ubuntu-latest]
+    container: docker://dvcorg/cml-py3:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update Python to 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: cml_run
+        env:
+          repo_token: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          pip install -U klib
+          pip install -r requirements.txt
+          python klib/scripts/performance.py
+
+          cml-publish boxplots.png --md >> report.md
+          cml-send-github-check report.md
