@@ -3,6 +3,4 @@ numpy
 pandas
 seaborn
 scikit-learn
-
-# Additional requirements for testing
 jinja2
