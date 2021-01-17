@@ -419,7 +419,7 @@ def corr_plot(
 def dist_plot(
     data: pd.DataFrame,
     mean_color: str = "orange",
-    figsize: Tuple = (16, 2),
+    size: int = 2.5,
     fill_range: Tuple = (0.025, 0.975),
     showall: bool = False,
     kde_kws: Dict[str, Any] = None,
@@ -436,19 +436,19 @@ def dist_plot(
         is provided, the index/column information is used to label the plots
     mean_color : str, optional
         Color of the vertical line indicating the mean of the data, by default "orange"
-    figsize : Tuple, optional
-        Controls the figure size, by default (16, 2)
+    size : int, optional
+        Controls the plot size, by default 2.5
     fill_range : Tuple, optional
         Set the quantiles for shading. Default spans 95% of the data, which is about \
         two std. deviations above and below the mean, by default (0.025, 0.975)
     showall : bool, optional
         Set to True to remove the output limit of 20 plots, by default False
     kde_kws : Dict[str, Any], optional
-        Keyword arguments for kdeplot(), by default {"color": "k", "alpha": 0.7, \
-        "linewidth": 1.5, "bw": 0.3}
+        Keyword arguments for kdeplot(), by default {"color": "k", "alpha": 0.75, \
+        "linewidth": 1.5, "bw_adjust": 0.8}
     rug_kws : Dict[str, Any], optional
         Keyword arguments for rugplot(), by default {"color": "#ff3333", \
-        "alpha": 0.05, "linewidth": 4, "height": 0.075}
+        "alpha": 0.15, "lw": 3, "height": 0.075}
     fill_kws : Dict[str, Any], optional
         Keyword arguments to control the fill, by default {"color": "#80d4ff", \
         "alpha": 0.2}
@@ -470,12 +470,12 @@ def dist_plot(
 
     # Handle dictionary defaults
     kde_kws = (
-        {"alpha": 0.75, "linewidth": 1.5, "bw": 0.4}
+        {"alpha": 0.75, "linewidth": 1.5, "bw_adjust": 0.8}
         if kde_kws is None
         else kde_kws.copy()
     )
     rug_kws = (
-        {"color": "#ff3333", "alpha": 0.15, "linewidth": 3, "height": 0.075}
+        {"color": "#ff3333", "alpha": 0.15, "lw": 3, "height": 0.075}
         if rug_kws is None
         else rug_kws.copy()
     )
@@ -512,18 +512,25 @@ def dist_plot(
         )
         cols = cols[:20]
 
+    g = None
     for col in cols:
         col_data = data[col].dropna(axis=0)
         col_df = df[col].dropna(axis=0)
 
-        _, ax = plt.subplots(figsize=figsize)
-        ax = sns.distplot(
-            col_data, hist=False, rug=True, kde_kws=kde_kws, rug_kws=rug_kws,
+        g = sns.displot(
+            col_data,
+            kind="kde",
+            rug=True,
+            height=size,
+            aspect=5,
+            legend=False,
+            rug_kws=rug_kws,
+            **kde_kws,
         )
 
         # Vertical lines and fill
-        x, y = ax.lines[0].get_xydata().T
-        ax.fill_between(
+        x, y = g.axes[0, 0].lines[0].get_xydata().T
+        g.axes[0, 0].fill_between(
             x,
             y,
             where=(
@@ -536,7 +543,7 @@ def dist_plot(
 
         mean = np.mean(col_df)
         std = scipy.stats.tstd(col_df)
-        ax.vlines(
+        g.axes[0, 0].vlines(
             x=mean,
             ymin=0,
             ymax=np.interp(mean, x, y),
@@ -545,7 +552,7 @@ def dist_plot(
             lw=2,
             label="mean",
         )
-        ax.vlines(
+        g.axes[0, 0].vlines(
             x=np.median(col_df),
             ymin=0,
             ymax=np.interp(np.median(col_df), x, y),
@@ -553,7 +560,7 @@ def dist_plot(
             color=".3",
             label="median",
         )
-        ax.vlines(
+        g.axes[0, 0].vlines(
             x=[mean - std, mean + std],
             ymin=0,
             ymax=[np.interp(mean - std, x, y), np.interp(mean + std, x, y)],
@@ -562,44 +569,51 @@ def dist_plot(
             label="\u03BC \u00B1 \u03C3",
         )
 
-        ax.set_ylim(0, ax.get_ylim()[1] * 1.1)
-        ax.set_xlim(ax.get_xlim()[0] - ax.get_xlim()[1] * 0.05, ax.get_xlim()[1] * 1.03)
+        g.axes[0, 0].set_ylim(0)
+        g.axes[0, 0].set_xlim(
+            g.axes[0, 0].get_xlim()[0] - g.axes[0, 0].get_xlim()[1] * 0.05,
+            g.axes[0, 0].get_xlim()[1] * 1.03,
+        )
 
         # Annotations and legend
-        ax.text(
-            0.005, 0.85, f"Mean: {mean:.2f}", fontdict=font_kws, transform=ax.transAxes
+        g.axes[0, 0].text(
+            0.005,
+            0.9,
+            f"Mean: {mean:.2f}",
+            fontdict=font_kws,
+            transform=g.axes[0, 0].transAxes,
         )
-        ax.text(
+        g.axes[0, 0].text(
             0.005,
             0.7,
             f"Std. dev: {std:.2f}",
             fontdict=font_kws,
-            transform=ax.transAxes,
+            transform=g.axes[0, 0].transAxes,
         )
-        ax.text(
+        g.axes[0, 0].text(
             0.005,
-            0.55,
+            0.5,
             f"Skew: {scipy.stats.skew(col_df):.2f}",
             fontdict=font_kws,
-            transform=ax.transAxes,
+            transform=g.axes[0, 0].transAxes,
         )
-        ax.text(
+        g.axes[0, 0].text(
             0.005,
-            0.4,
+            0.3,
             f"Kurtosis: {scipy.stats.kurtosis(col_df):.2f}",  # Excess Kurtosis
             fontdict=font_kws,
-            transform=ax.transAxes,
+            transform=g.axes[0, 0].transAxes,
         )
-        ax.text(
+        g.axes[0, 0].text(
             0.005,
-            0.25,
+            0.1,
             f"Count: {len(col_df)}",
             fontdict=font_kws,
-            transform=ax.transAxes,
+            transform=g.axes[0, 0].transAxes,
         )
-        ax.legend(loc="upper right")
+        g.axes[0, 0].legend(loc="upper right")
 
-    return ax
+    return g.axes[0, 0]
 
 
 # Missing value plot
