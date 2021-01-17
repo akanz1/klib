@@ -475,7 +475,7 @@ def dist_plot(
         else kde_kws.copy()
     )
     rug_kws = (
-        {"color": "#ff3333", "alpha": 0.05, "linewidth": 4, "height": 0.075}
+        {"color": "#ff3333", "alpha": 0.15, "linewidth": 3, "height": 0.075}
         if rug_kws is None
         else rug_kws.copy()
     )
@@ -489,10 +489,16 @@ def dist_plot(
     )
 
     data = pd.DataFrame(data.copy()).dropna(axis=1, how="all")
+    df = data.copy()
     data = data.loc[:, data.nunique() > 2]
+    if data.shape[0] > 10000:
+        data = data.sample(n=10000, random_state=408)
+        print(
+            "Large dataset detected, using 10000 random samples for the plots. Summary"
+            " statistics are still based on the entire dataset."
+        )
     cols = list(data.select_dtypes(include=["number"]).columns)
     data = data[cols]
-    data = data.loc[:, data.nunique() > 2]
 
     if len(cols) == 0:
         print("No columns with numeric data were detected.")
@@ -507,13 +513,8 @@ def dist_plot(
         cols = cols[:20]
 
     for col in cols:
-        num_dropped_vals = data[col].isna().sum()
-        if num_dropped_vals > 0:
-            col_data = data[col].dropna(axis=0)
-            print(f"Dropped {num_dropped_vals} missing values from column {col}.")
-
-        else:
-            col_data = data[col]
+        col_data = data[col].dropna(axis=0)
+        col_df = df[col].dropna(axis=0)
 
         _, ax = plt.subplots(figsize=figsize)
         ax = sns.distplot(
@@ -526,15 +527,15 @@ def dist_plot(
             x,
             y,
             where=(
-                (x >= np.quantile(col_data, fill_range[0]))
-                & (x <= np.quantile(col_data, fill_range[1]))
+                (x >= np.quantile(col_df, fill_range[0]))
+                & (x <= np.quantile(col_df, fill_range[1]))
             ),
             label=f"{fill_range[0]*100:.1f}% - {fill_range[1]*100:.1f}%",
             **fill_kws,
         )
 
-        mean = np.mean(col_data)
-        std = scipy.stats.tstd(col_data)
+        mean = np.mean(col_df)
+        std = scipy.stats.tstd(col_df)
         ax.vlines(
             x=mean,
             ymin=0,
@@ -545,9 +546,9 @@ def dist_plot(
             label="mean",
         )
         ax.vlines(
-            x=np.median(col_data),
+            x=np.median(col_df),
             ymin=0,
-            ymax=np.interp(np.median(col_data), x, y),
+            ymax=np.interp(np.median(col_df), x, y),
             ls=":",
             color=".3",
             label="median",
@@ -561,34 +562,38 @@ def dist_plot(
             label="\u03BC \u00B1 \u03C3",
         )
 
-        ax.set_ylim(0)
-        ax.set_xlim(ax.get_xlim()[0] * 1.15, ax.get_xlim()[1] * 1.15)
+        ax.set_ylim(0, ax.get_ylim()[1] * 1.1)
+        ax.set_xlim(ax.get_xlim()[0] - ax.get_xlim()[1] * 0.05, ax.get_xlim()[1] * 1.03)
 
         # Annotations and legend
         ax.text(
-            0.01, 0.85, f"Mean: {mean:.2f}", fontdict=font_kws, transform=ax.transAxes
+            0.005, 0.85, f"Mean: {mean:.2f}", fontdict=font_kws, transform=ax.transAxes
         )
         ax.text(
-            0.01, 0.7, f"Std. dev: {std:.2f}", fontdict=font_kws, transform=ax.transAxes
+            0.005,
+            0.7,
+            f"Std. dev: {std:.2f}",
+            fontdict=font_kws,
+            transform=ax.transAxes,
         )
         ax.text(
-            0.01,
+            0.005,
             0.55,
-            f"Skew: {scipy.stats.skew(col_data):.2f}",
+            f"Skew: {scipy.stats.skew(col_df):.2f}",
             fontdict=font_kws,
             transform=ax.transAxes,
         )
         ax.text(
-            0.01,
+            0.005,
             0.4,
-            f"Kurtosis: {scipy.stats.kurtosis(col_data):.2f}",  # Excess Kurtosis
+            f"Kurtosis: {scipy.stats.kurtosis(col_df):.2f}",  # Excess Kurtosis
             fontdict=font_kws,
             transform=ax.transAxes,
         )
         ax.text(
-            0.01,
+            0.005,
             0.25,
-            f"Count: {len(col_data)}",
+            f"Count: {len(col_df)}",
             fontdict=font_kws,
             transform=ax.transAxes,
         )
