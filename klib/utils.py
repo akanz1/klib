@@ -26,7 +26,7 @@ def _corr_selector(
         pd.Series or pd.DataFrame of correlations
     split : Optional[str], optional
         Type of split performed, by default None
-           * {None, "pos", "neg", "high", "low"}
+            * {None, "pos", "neg", "high", "low"}
     threshold : float, optional
         Value between 0 and 1 to set the correlation threshold, by default 0 unless \
         split = "high" or split = "low", in which case default is 0.3
