@@ -5,10 +5,10 @@ Measuring the performance of key functionality.
 """
 
 import functools
+import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
 from time import perf_counter
-import matplotlib.pyplot as plt
 
 import klib
 
