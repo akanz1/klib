@@ -150,7 +150,7 @@ def _diff_report(
 
 
 def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
-    """ Provides information on and drops duplicate rows.
+    """Provides information on and drops duplicate rows.
 
     Parameters
     ----------
@@ -171,7 +171,7 @@ def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
 
 
 def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
-    """ Gives the total memory usage in megabytes.
+    """Gives the total memory usage in megabytes.
 
     Parameters
     ----------
@@ -195,7 +195,7 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
 
 
 def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
-    """ Gives metrics of missing values in the dataset.
+    """Gives metrics of missing values in the dataset.
 
     Parameters
     ----------

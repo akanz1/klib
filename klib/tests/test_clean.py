@@ -1,11 +1,12 @@
 import numpy as np
 import pandas as pd
 import unittest
+
 from ..clean import (
     clean_column_names,
+    convert_datatypes,
     data_cleaning,
     drop_missing,
-    convert_datatypes,
     pool_duplicate_subsets,
 )
 

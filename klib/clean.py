@@ -172,9 +172,6 @@ def convert_datatypes(
         ):
             data[col] = data[col].astype("category")
 
-        # convert_ints = True if int(pd.__version__.replace(".", "")) >= 110 else False
-        # convert_integer does not work as expected until pandas 1.1.0 while
-        # convert_string is still experimental
         data[col] = data[col].convert_dtypes(
             infer_objects=True,
             convert_string=True,

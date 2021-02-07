@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import unittest
+
 from ..utils import (
     _corr_selector,
     _drop_duplicates,
@@ -9,8 +10,8 @@ from ..utils import (
     _validate_input_int,
     _validate_input_range,
     _validate_input_smaller,
-    _validate_input_sum_smaller,
     _validate_input_sum_larger,
+    _validate_input_sum_smaller,
 )
 
 
