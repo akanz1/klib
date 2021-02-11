@@ -60,8 +60,7 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
 
         if self.num:
             return X[temp.select_dtypes(include=["number"]).columns.tolist()]
-        else:
-            return X[temp.select_dtypes(exclude=["number"]).columns.tolist()]
+        return X[temp.select_dtypes(exclude=["number"]).columns.tolist()]
 
 
 class PipeInfo(BaseEstimator, TransformerMixin):
@@ -266,13 +265,11 @@ def train_dev_test_split(
 
     if (dev_size == 0) or (test_size == 0):
         return X_train, X_dev_test, y_train, y_dev_test
-
-    else:
-        X_dev, X_test, y_dev, y_test = train_test_split(
-            X_dev_test,
-            y_dev_test,
-            test_size=test_size / (dev_size + test_size),
-            random_state=random_state,
-            stratify=y_dev_test,
-        )
-        return X_train, X_dev, X_test, y_train, y_dev, y_test
+    X_dev, X_test, y_dev, y_test = train_test_split(
+        X_dev_test,
+        y_dev_test,
+        test_size=test_size / (dev_size + test_size),
+        random_state=random_state,
+        stratify=y_dev_test,
+    )
+    return X_train, X_dev, X_test, y_train, y_dev, y_test

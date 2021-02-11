@@ -751,7 +751,8 @@ class SubsetPooler(BaseEstimator, TransformerMixin):
     def fit(self, data, target=None):
         return self
 
-    def transform(self, data, target=None):
+    @staticmethod
+    def transform(data, target=None):
         data, subset_cols = pool_duplicate_subsets(
             data,
             col_dupl_thresh=0.2,
