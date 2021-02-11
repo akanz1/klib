@@ -252,8 +252,7 @@ def corr_mat(
 
     if colored:
         return corr.style.applymap(color_negative_red).format("{:.2f}", na_rep="-")
-    else:
-        return corr
+    return corr
 
 
 # Correlation matrix / heatmap
@@ -504,7 +503,7 @@ def dist_plot(
         print("No columns with numeric data were detected.")
         return
 
-    elif len(cols) >= 20 and showall is False:
+    if len(cols) >= 20 and showall is False:
         print(
             "Note: The number of non binary numerical features is very large "
             f"({len(cols)}), please consider splitting the data. Showing plots for "
