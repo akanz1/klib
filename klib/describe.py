@@ -672,123 +672,123 @@ def missingval_plot(
     if mv_total == 0:
         print("No missing values found in the dataset.")
         return None
-    else:
-        # Create figure and axes
-        fig = plt.figure(figsize=figsize)
-        gs = fig.add_gridspec(nrows=6, ncols=6, left=0.1, wspace=0.05)
-        ax1 = fig.add_subplot(gs[:1, :5])
-        ax2 = fig.add_subplot(gs[1:, :5])
-        ax3 = fig.add_subplot(gs[:1, 5:])
-        ax4 = fig.add_subplot(gs[1:, 5:])
 
-        # ax1 - Barplot
-        colors = plt.get_cmap(cmap)(mv_cols / np.max(mv_cols))  # color bars by height
-        ax1.bar(range(len(mv_cols)), np.round((mv_cols_ratio) * 100, 2), color=colors)
-        ax1.get_xaxis().set_visible(False)
-        ax1.set(frame_on=False, xlim=(-0.5, len(mv_cols) - 0.5))
-        ax1.set_ylim(0, np.max(mv_cols_ratio) * 100)
-        ax1.grid(linestyle=":", linewidth=1)
-        ax1.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=0))
-        ax1.tick_params(axis="y", colors="#111111", length=1)
+    # Create figure and axes
+    fig = plt.figure(figsize=figsize)
+    gs = fig.add_gridspec(nrows=6, ncols=6, left=0.1, wspace=0.05)
+    ax1 = fig.add_subplot(gs[:1, :5])
+    ax2 = fig.add_subplot(gs[1:, :5])
+    ax3 = fig.add_subplot(gs[:1, 5:])
+    ax4 = fig.add_subplot(gs[1:, 5:])
 
-        # annotate values on top of the bars
-        for rect, label in zip(ax1.patches, mv_cols):
-            height = rect.get_height()
-            ax1.text(
-                0.1 + rect.get_x() + rect.get_width() / 2,
-                height + 0.5,
-                label,
-                ha="center",
-                va="bottom",
-                rotation="90",
-                alpha=0.5,
-                fontsize="11",
-            )
+    # ax1 - Barplot
+    colors = plt.get_cmap(cmap)(mv_cols / np.max(mv_cols))  # color bars by height
+    ax1.bar(range(len(mv_cols)), np.round((mv_cols_ratio) * 100, 2), color=colors)
+    ax1.get_xaxis().set_visible(False)
+    ax1.set(frame_on=False, xlim=(-0.5, len(mv_cols) - 0.5))
+    ax1.set_ylim(0, np.max(mv_cols_ratio) * 100)
+    ax1.grid(linestyle=":", linewidth=1)
+    ax1.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=0))
+    ax1.tick_params(axis="y", colors="#111111", length=1)
 
-        ax1.set_frame_on(True)
-        for _, spine in ax1.spines.items():
-            spine.set_visible(True)
-            spine.set_color(spine_color)
-        ax1.spines["top"].set_color(None)
-
-        # ax2 - Heatmap
-        sns.heatmap(data.isna(), cbar=False, cmap="binary", ax=ax2)
-        ax2.set_yticks(np.round(ax2.get_yticks()[0::5], -1))
-        ax2.set_yticklabels(ax2.get_yticks())
-        ax2.set_xticklabels(
-            ax2.get_xticklabels(),
-            horizontalalignment="center",
-            fontweight="light",
-            fontsize="12",
-        )
-        ax2.tick_params(length=1, colors="#111111")
-        for _, spine in ax2.spines.items():
-            spine.set_visible(True)
-            spine.set_color(spine_color)
-
-        # ax3 - Summary
-        fontax3 = {"color": "#111111", "weight": "normal", "size": 14}
-        ax3.get_xaxis().set_visible(False)
-        ax3.get_yaxis().set_visible(False)
-        ax3.set(frame_on=False)
-
-        ax3.text(
-            0.025,
-            0.875,
-            f"Total: {np.round(total_datapoints/1000,1)}K",
-            transform=ax3.transAxes,
-            fontdict=fontax3,
-        )
-        ax3.text(
-            0.025,
-            0.675,
-            f"Missing: {np.round(mv_total/1000,1)}K",
-            transform=ax3.transAxes,
-            fontdict=fontax3,
-        )
-        ax3.text(
-            0.025,
-            0.475,
-            f"Relative: {np.round(mv_total/total_datapoints*100,1)}%",
-            transform=ax3.transAxes,
-            fontdict=fontax3,
-        )
-        ax3.text(
-            0.025,
-            0.275,
-            f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%",
-            transform=ax3.transAxes,
-            fontdict=fontax3,
-        )
-        ax3.text(
-            0.025,
-            0.075,
-            f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%",
-            transform=ax3.transAxes,
-            fontdict=fontax3,
+    # annotate values on top of the bars
+    for rect, label in zip(ax1.patches, mv_cols):
+        height = rect.get_height()
+        ax1.text(
+            0.1 + rect.get_x() + rect.get_width() / 2,
+            height + 0.5,
+            label,
+            ha="center",
+            va="bottom",
+            rotation="90",
+            alpha=0.5,
+            fontsize="11",
         )
 
-        # ax4 - Scatter plot
-        ax4.get_yaxis().set_visible(False)
-        for _, spine in ax4.spines.items():
-            spine.set_color(spine_color)
-        ax4.tick_params(axis="x", colors="#111111", length=1)
+    ax1.set_frame_on(True)
+    for _, spine in ax1.spines.items():
+        spine.set_visible(True)
+        spine.set_color(spine_color)
+    ax1.spines["top"].set_color(None)
 
-        ax4.scatter(
-            mv_rows,
-            range(len(mv_rows)),
-            s=mv_rows,
-            c=mv_rows,
-            cmap=cmap,
-            marker=".",
-            vmin=1,
-        )
-        ax4.set_ylim((0, len(mv_rows))[::-1])  # limit and invert y-axis
-        ax4.set_xlim(0, max(mv_rows) + 0.5)
-        ax4.grid(linestyle=":", linewidth=1)
+    # ax2 - Heatmap
+    sns.heatmap(data.isna(), cbar=False, cmap="binary", ax=ax2)
+    ax2.set_yticks(np.round(ax2.get_yticks()[0::5], -1))
+    ax2.set_yticklabels(ax2.get_yticks())
+    ax2.set_xticklabels(
+        ax2.get_xticklabels(),
+        horizontalalignment="center",
+        fontweight="light",
+        fontsize="12",
+    )
+    ax2.tick_params(length=1, colors="#111111")
+    for _, spine in ax2.spines.items():
+        spine.set_visible(True)
+        spine.set_color(spine_color)
 
-        gs.figure.suptitle(
-            "Missing value plot", x=0.45, y=0.94, fontsize=18, color="#111111"
-        )
+    # ax3 - Summary
+    fontax3 = {"color": "#111111", "weight": "normal", "size": 14}
+    ax3.get_xaxis().set_visible(False)
+    ax3.get_yaxis().set_visible(False)
+    ax3.set(frame_on=False)
 
-        return gs
+    ax3.text(
+        0.025,
+        0.875,
+        f"Total: {np.round(total_datapoints/1000,1)}K",
+        transform=ax3.transAxes,
+        fontdict=fontax3,
+    )
+    ax3.text(
+        0.025,
+        0.675,
+        f"Missing: {np.round(mv_total/1000,1)}K",
+        transform=ax3.transAxes,
+        fontdict=fontax3,
+    )
+    ax3.text(
+        0.025,
+        0.475,
+        f"Relative: {np.round(mv_total/total_datapoints*100,1)}%",
+        transform=ax3.transAxes,
+        fontdict=fontax3,
+    )
+    ax3.text(
+        0.025,
+        0.275,
+        f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%",
+        transform=ax3.transAxes,
+        fontdict=fontax3,
+    )
+    ax3.text(
+        0.025,
+        0.075,
+        f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%",
+        transform=ax3.transAxes,
+        fontdict=fontax3,
+    )
+
+    # ax4 - Scatter plot
+    ax4.get_yaxis().set_visible(False)
+    for _, spine in ax4.spines.items():
+        spine.set_color(spine_color)
+    ax4.tick_params(axis="x", colors="#111111", length=1)
+
+    ax4.scatter(
+        mv_rows,
+        range(len(mv_rows)),
+        s=mv_rows,
+        c=mv_rows,
+        cmap=cmap,
+        marker=".",
+        vmin=1,
+    )
+    ax4.set_ylim((0, len(mv_rows))[::-1])  # limit and invert y-axis
+    ax4.set_xlim(0, max(mv_rows) + 0.5)
+    ax4.grid(linestyle=":", linewidth=1)
+
+    gs.figure.suptitle(
+        "Missing value plot", x=0.45, y=0.94, fontsize=18, color="#111111"
+    )
+
+    return gs

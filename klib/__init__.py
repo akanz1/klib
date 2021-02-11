@@ -1,7 +1,8 @@
 """
 Data Science Module for Python
 ==================================
-klib is an easy to use Python library of customized functions for cleaning and analyzing data.
+klib is an easy to use Python library of customized functions for cleaning and \
+analyzing data.
 """
 
 __author__ = """Andreas Kanz"""
@@ -16,9 +17,7 @@ from .clean import (
     pool_duplicate_subsets,
 )
 from .describe import cat_plot, corr_mat, corr_plot, dist_plot, missingval_plot
-from .preprocess import feature_selection_pipe, num_pipe, cat_pipe, train_dev_test_split
-
-# __version__ = __version__
+from .preprocess import cat_pipe, feature_selection_pipe, num_pipe, train_dev_test_split
 
 __all__ = [
     "clean_column_names",
@@ -39,10 +38,10 @@ __all__ = [
     "__version__",
 ]
 
-# in future versions and especially with an increased number of functions, only the
+# In future versions and especially with an increased number of functions, only the
 # most frequently used functions will be imported into the namespace to be accessible
 # from klib.function directly. The remaining functions can be found in the respective
 # modules:
-#     'clean',
-#    'describe',
-#    'preprocess',
+#    - klib.clean
+#    - klib.describe
+#    - klib.preprocess
