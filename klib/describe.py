@@ -83,7 +83,7 @@ def cat_plot(
         return None
 
     for col in data.columns:
-        if data[col].dtype.name == "category" or data[col].dtype.name == "string":
+        if data[col].dtype.name in ("category", "string"):
             data[col] = data[col].astype("object")
 
     fig = plt.figure(figsize=figsize)
@@ -671,6 +671,7 @@ def missingval_plot(
 
     if mv_total == 0:
         print("No missing values found in the dataset.")
+        return None
     else:
         # Create figure and axes
         fig = plt.figure(figsize=figsize)

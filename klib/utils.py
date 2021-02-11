@@ -229,7 +229,7 @@ def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
 
 
 def _validate_input_bool(value, desc):
-    if not (isinstance(value, bool)):
+    if not isinstance(value, bool):
         raise TypeError(
             f"Input value for '{desc}' is {type(value)} but should be a boolean."
         )

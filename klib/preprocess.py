@@ -111,7 +111,7 @@ def cat_pipe(
 
     scaler: default, MaxAbsScaler()
         Scale each feature by its maximum absolute value. MaxAbsScaler() does not \
-         shift/center the data, and thus does not destroy any sparsity. It is \
+        shift/center the data, and thus does not destroy any sparsity. It is \
         recommended to check for outliers before applying MaxAbsScaler().
 
     encoder_info:
@@ -125,10 +125,10 @@ def cat_pipe(
     Pipeline
     """
 
-    cat_pipe = make_pipeline(
+    categorical_pipe = make_pipeline(
         ColumnSelector(num=False), imputer, encoder, encoder_info, scaler
     )
-    return cat_pipe
+    return categorical_pipe
 
 
 def feature_selection_pipe(
@@ -168,7 +168,7 @@ def feature_selection_pipe(
     Pipeline
     """
 
-    feature_selection_pipe = make_pipeline(
+    feature_select_pipe = make_pipeline(
         var_thresh,
         var_thresh_info,
         select_from_model,
@@ -176,7 +176,7 @@ def feature_selection_pipe(
         select_percentile,
         select_percentile_info,
     )
-    return feature_selection_pipe
+    return feature_select_pipe
 
 
 def num_pipe(
@@ -201,8 +201,8 @@ def num_pipe(
     Pipeline
     """
 
-    num_pipe = make_pipeline(ColumnSelector(), imputer, scaler)
-    return num_pipe
+    numerical_pipe = make_pipeline(ColumnSelector(), imputer, scaler)
+    return numerical_pipe
 
 
 def train_dev_test_split(
