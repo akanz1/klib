@@ -501,7 +501,7 @@ def dist_plot(
 
     if len(cols) == 0:
         print("No columns with numeric data were detected.")
-        return
+        return None
 
     if len(cols) >= 20 and showall is False:
         print(
