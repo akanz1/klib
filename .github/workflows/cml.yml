@@ -4,14 +4,14 @@ on:
 
 jobs:
   run:
-    runs-on: [ubuntu-latest]
+    runs-on: [self-hosted]
     container: docker://dvcorg/cml-py3:latest
     steps:
       - uses: actions/checkout@v2
       - name: Update Python to 3.8
         uses: actions/setup-python@v1
         with:
-          python-version: '3.8'
+          python-version: "3.8"
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
       - name: cml_run
