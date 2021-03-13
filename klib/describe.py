@@ -58,8 +58,6 @@ def cat_plot(
     bar_color_bottom : str, optional
         Use to control the color of the bars indicating the least common values, by \
         default "#d8b365"
-    cmap : str, optional
-        The mapping from data values to color space, by default "BrBG"
 
     Returns
     -------
