@@ -130,7 +130,7 @@ class Test__drop_duplicates(unittest.TestCase):
         # Test if the resulting DataFrame is equal to using the pandas method
         self.assertTrue(
             _drop_duplicates(self.data_dupl_df)[0].equals(
-                self.data_dupl_df.drop_duplicates()
+                self.data_dupl_df.drop_duplicates().reset_index(drop=True)
             )
         )
         # Test number of duplicates
