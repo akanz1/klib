@@ -663,30 +663,33 @@ def pool_duplicate_subsets(
 
     subset_cols = []
     for i in range(data.shape[1] + 1 - min_col_pool):
+        # Consider only columns with lots of duplicates
         check_list = [
             col
             for col in data.columns
             if data.duplicated(subset=col).mean() > col_dupl_thresh
         ]
 
-        if len(check_list) > 0:
+        # Identify all possible combinations for the current interation
+        if check_list:
             combinations = itertools.combinations(check_list, len(check_list) - i)
         else:
             continue
 
+        # Check subsets for all possible combinations
         ratios = [
             *map(lambda comb: data.duplicated(subset=list(comb)).mean(), combinations)
         ]
-
-        max_ratio = max(ratios)
         max_idx = np.argmax(ratios)
 
-        if max_ratio > subset_thresh:
+        if max(ratios) > subset_thresh:
+            # Get the best possible iterator and process the data
             best_subset = itertools.islice(
                 itertools.combinations(check_list, len(check_list) - i),
                 max_idx,
                 max_idx + 1,
             )
+
             best_subset = data[list(list(best_subset)[0])]
             subset_cols = best_subset.columns.tolist()
 
@@ -695,9 +698,9 @@ def pool_duplicate_subsets(
                 .reset_index()
                 .rename(columns={"index": "pooled_vars"})
             )
-            data = data.merge(
-                unique_subset, how="left", on=best_subset.columns.tolist()
-            ).drop(columns=best_subset.columns.tolist())
+            data = data.merge(unique_subset, how="left", on=subset_cols).drop(
+                columns=subset_cols
+            )
             data.index = pd.RangeIndex(len(data))
             break
 
