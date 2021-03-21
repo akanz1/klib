@@ -165,7 +165,7 @@ def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
 
     data = pd.DataFrame(data).copy()
     dupl_rows = data[data.duplicated()].index.tolist()
-    data = data.drop(dupl_rows, axis="index")
+    data = data.drop(dupl_rows, axis="index").reset_index(drop=True)
 
     return data, dupl_rows
 
