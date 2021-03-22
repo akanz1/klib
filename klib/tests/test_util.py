@@ -11,7 +11,7 @@ from ..utils import (
     _validate_input_range,
     _validate_input_smaller,
     _validate_input_sum_larger,
-    _validate_input_sum_smaller,
+    _validate_input_sum_smaller
 )
 
 
@@ -160,29 +160,25 @@ class Test__missing_vals(unittest.TestCase):
     def test_mv_rows(self):
         # Test missing values for each row
         expected_results = [1, 2, 1, 1]
-        for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(
-                _missing_vals(self.data_mv_df)["mv_rows"][i], expected_results[i]
-            )
+        for i, result in enumerate(expected_results):
+            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_rows"][i], result)
 
     def test_mv_cols(self):
         # Test missing values for each column
         expected_results = [1, 1, 1, 2]
-        for i, _ in enumerate(expected_results):
-            self.assertAlmostEqual(
-                _missing_vals(self.data_mv_df)["mv_cols"][i], expected_results[i]
-            )
+        for i, result in enumerate(expected_results):
+            self.assertAlmostEqual(_missing_vals(self.data_mv_df)["mv_cols"][i], result)
 
     def test_mv_rows_ratio(self):
         # Test missing values ratio for each row
         expected_results = [0.25, 0.5, 0.25, 0.25]
-        for i, _ in enumerate(expected_results):
+        for i, result in enumerate(expected_results):
             self.assertAlmostEqual(
-                _missing_vals(self.data_mv_df)["mv_rows_ratio"][i], expected_results[i]
+                _missing_vals(self.data_mv_df)["mv_rows_ratio"][i], result
             )
 
         # Test if missing value ratio is between 0 and 1
-        for i in range(len(self.data_mv_df)):
+        for i, _ in enumerate(self.data_mv_df):
             self.assertTrue(
                 0 <= _missing_vals(self.data_mv_df)["mv_rows_ratio"][i] <= 1
             )
@@ -190,13 +186,13 @@ class Test__missing_vals(unittest.TestCase):
     def test_mv_cols_ratio(self):
         # Test missing values ratio for each column
         expected_results = [1 / 4, 0.25, 0.25, 0.5]
-        for i, _ in enumerate(expected_results):
+        for i, result in enumerate(expected_results):
             self.assertAlmostEqual(
-                _missing_vals(self.data_mv_df)["mv_cols_ratio"][i], expected_results[i]
+                _missing_vals(self.data_mv_df)["mv_cols_ratio"][i], result
             )
 
         # Test if missing value ratio is between 0 and 1
-        for i in range(len(self.data_mv_df)):
+        for i, _ in enumerate(self.data_mv_df):
             self.assertTrue(
                 0 <= _missing_vals(self.data_mv_df)["mv_cols_ratio"][i] <= 1
             )
