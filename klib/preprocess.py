@@ -65,9 +65,11 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
 
 class PipeInfo(BaseEstimator, TransformerMixin):
     """
-    Prints intermediary information about the dataset from within a pipeline. Include \
-    at any point in a Pipeline to print out the shape of the dataset at this point and \
-    to receive an indication of the progress within the pipeline.
+    Prints intermediary information about the dataset from within a pipeline.
+    
+    Include at any point in a Pipeline to print out the shape of the dataset at this \
+    point and to receive an indication of the progress within the pipeline.
+    
     Set to 'None' to avoid printing the shape of the dataset. This parameter can also \
     be set as a hyperparameter, e.g. 'pipeline__pipeinfo-1': [None] or \
     'pipeline__pipeinfo-1__name': ['my_custom_name'].
@@ -124,7 +126,6 @@ def cat_pipe(
     -------
     Pipeline
     """
-
     categorical_pipe = make_pipeline(
         ColumnSelector(num=False), imputer, encoder, encoder_info, scaler
     )
@@ -167,7 +168,6 @@ def feature_selection_pipe(
     -------
     Pipeline
     """
-
     feature_select_pipe = make_pipeline(
         var_thresh,
         var_thresh_info,
@@ -200,7 +200,6 @@ def num_pipe(
     -------
     Pipeline
     """
-
     numerical_pipe = make_pipeline(ColumnSelector(), imputer, scaler)
     return numerical_pipe
 
@@ -213,7 +212,6 @@ def train_dev_test_split(
 
     Parameters
     ----------
-
     data: 2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
     is provided, the index/column information is used to label the plots.
 
@@ -240,7 +238,6 @@ def train_dev_test_split(
     -------
     tuple: Tuple containing train-dev-test split of inputs.
     """
-
     # Validate Inputs
     _validate_input_range(dev_size, "dev_size", 0, 1)
     _validate_input_range(test_size, "test_size", 0, 1)

@@ -39,7 +39,8 @@ def cat_plot(
     bar_color_top: str = "#5ab4ac",
     bar_color_bottom: str = "#d8b365",
 ):
-    """ Two-dimensional visualization of the number and frequency of categorical features.
+    """Two-dimensional visualization of the number and frequency of categorical \
+        features.
 
     Parameters
     ----------
@@ -64,7 +65,6 @@ def cat_plot(
     Gridspec
         gs: Figure with array of Axes objects
     """
-
     # Validate Inputs
     _validate_input_int(top, "top")
     _validate_input_int(bottom, "bottom")
@@ -184,7 +184,7 @@ def corr_mat(
     method: str = "pearson",  # Literal['pearson', 'spearman', 'kendall'] = "pearson",
     colored: bool = True,
 ) -> Union[pd.DataFrame, Any]:
-    """ Returns a color-encoded correlation matrix.
+    """Return a color-encoded correlation matrix.
 
     Parameters
     ----------
@@ -218,7 +218,6 @@ def corr_mat(
         If colored = True - corr: Pandas Styler object
         If colored = False - corr: Pandas DataFrame
     """
-
     # Validate Inputs
     _validate_input_range(threshold, "threshold", -1, 1)
     _validate_input_bool(colored, "colored")
@@ -266,7 +265,7 @@ def corr_plot(
     dev: bool = False,
     **kwargs,
 ):
-    """ Two-dimensional visualization of the correlation between feature-columns \
+    """Two-dimensional visualization of the correlation between feature-columns \
         excluding NA values.
 
     Parameters
@@ -342,7 +341,6 @@ def corr_plot(
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
     """
-
     # Validate Inputs
     _validate_input_range(threshold, "threshold", -1, 1)
     _validate_input_bool(annot, "annot")
@@ -424,7 +422,8 @@ def dist_plot(
     fill_kws: Dict[str, Any] = None,
     font_kws: Dict[str, Any] = None,
 ):
-    """ Two-dimensional visualization of the distribution of non binary numerical features.
+    """Two-dimensional visualization of the distribution of non binary numerical \
+        features.
 
     Parameters
     ----------
@@ -458,7 +457,6 @@ def dist_plot(
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
     """
-
     # Validate Inputs
     _validate_input_range(fill_range[0], "fill_range_lower", 0, 1)
     _validate_input_range(fill_range[1], "fill_range_upper", 0, 1)
@@ -621,7 +619,7 @@ def missingval_plot(
     sort: bool = False,
     spine_color: str = "#EEEEEE",
 ):
-    """ Two-dimensional visualization of the missing values in a dataset.
+    """Two-dimensional visualization of the missing values in a dataset.
 
     Parameters
     ----------
@@ -645,7 +643,6 @@ def missingval_plot(
     GridSpec
         gs: Figure with array of Axes objects
     """
-
     # Validate Inputs
     _validate_input_bool(sort, "sort")
 

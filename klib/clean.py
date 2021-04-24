@@ -45,7 +45,7 @@ def optimize_floats(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
 
 
 def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
-    """ Cleans the column names of the provided Pandas Dataframe and optionally \
+    """Clean the column names of the provided Pandas Dataframe and optionally \
         provides hints on duplicate and long column names.
 
     Parameters
@@ -61,7 +61,6 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
     pd.DataFrame
         Pandas DataFrame with cleaned column names
     """
-
     _validate_input_bool(hints, "hints")
 
     # Handle CamelCase
@@ -132,7 +131,8 @@ def convert_datatypes(
     cat_threshold: float = 0.05,
     cat_exclude: Optional[List[Union[str, int]]] = None,
 ) -> pd.DataFrame:
-    """ Converts columns to best possible dtypes using dtypes supporting pd.NA.
+    """Convert columns to best possible dtypes using dtypes supporting pd.NA.
+    
     Temporarily not converting to integers due to an issue in pandas. This is expected \
         to be fixed in pandas 1.1. See https://github.com/pandas-dev/pandas/issues/33803
 
@@ -154,7 +154,6 @@ def convert_datatypes(
     pd.DataFrame
         Pandas DataFrame with converted Datatypes
     """
-
     # Validate Inputs
     _validate_input_bool(category, "Category")
     _validate_input_range(cat_threshold, "cat_threshold", 0, 1)
@@ -191,7 +190,7 @@ def drop_missing(
     drop_threshold_rows: float = 1,
     col_exclude: Optional[List[str]] = None,
 ) -> pd.DataFrame:
-    """ Drops completely empty columns and rows by default and optionally provides \
+    """Drop completely empty columns and rows by default and optionally provides \
         flexibility to loosen restrictions to drop additional non-empty columns and \
         rows based on the fraction of NA-values.
 
@@ -217,7 +216,6 @@ def drop_missing(
     -----
     Columns are dropped first
     """
-
     # Validate Inputs
     _validate_input_range(drop_threshold_cols, "drop_threshold_cols", 0, 1)
     _validate_input_range(drop_threshold_rows, "drop_threshold_rows", 0, 1)
@@ -257,7 +255,7 @@ def data_cleaning(
     clean_col_names: bool = True,
     show: str = "changes",
 ) -> pd.DataFrame:
-    """ Perform initial data cleaning tasks on a dataset, such as dropping single \
+    """Perform initial data cleaning tasks on a dataset, such as dropping single \
         valued and empty rows, empty columns as well as optimizing the datatypes.
 
     Parameters
@@ -303,7 +301,7 @@ def data_cleaning(
     pd.DataFrame
         Cleaned Pandas DataFrame
 
-    See also
+    See Also
     --------
     convert_datatypes: Convert columns to best possible dtypes.
     drop_missing : Flexibly drop columns and rows.
@@ -315,7 +313,6 @@ def data_cleaning(
     The category dtype is not grouped in the summary, unless it contains exactly the \
     same categories.
     """
-
     # Validate Inputs
     _validate_input_range(drop_threshold_cols, "drop_threshold_cols", 0, 1)
     _validate_input_range(drop_threshold_rows, "drop_threshold_rows", 0, 1)
@@ -361,11 +358,11 @@ def data_cleaning(
 
 
 class DataCleaner(BaseEstimator, TransformerMixin):
-    """ Wrapper for data_cleaning(). Allows data_cleaning() to be put into a pipeline \
+    """Wrapper for data_cleaning(). Allows data_cleaning() to be put into a pipeline \
     with similar functions (e.g. using MVColHandler() or SubsetPooler()).
 
-    Parameters:
-    ---------´
+    Parameters
+    ----------
     drop_threshold_cols: float, default 0.9
         Drop columns with NA-ratio equal to or above the specified threshold.
     drop_threshold_rows: float, default 0.9
@@ -454,9 +451,11 @@ def mv_col_handling(
     corr_thresh_target: float = 0.3,
     return_details: bool = False,
 ) -> pd.DataFrame:
-    """ Converts columns with a high ratio of missing values into binary features and \
+    """Convert columns with a high ratio of missing values into binary features and \
     eventually drops them based on their correlation with other features and the \
-    target variable. This function follows a three step process:
+    target variable.
+    
+    This function follows a three step process:
     - 1) Identify features with a high ratio of missing values (above 'mv_threshold').
     - 2) Identify high correlations of these features among themselves and with \
         other features in the dataset (above 'corr_thresh_features').
@@ -500,7 +499,6 @@ def mv_col_handling(
     cols_mv: Columns with missing values included in the analysis
     drop_cols: List of dropped columns
     """
-
     # Validate Inputs
     _validate_input_range(mv_threshold, "mv_threshold", 0, 1)
     _validate_input_range(corr_thresh_features, "corr_thresh_features", 0, 1)
@@ -539,7 +537,7 @@ def mv_col_handling(
 
 
 class MVColHandler(BaseEstimator, TransformerMixin):
-    """ Wrapper for mv_col_handling(). Allows mv_col_handling() to be put into a \
+    """Wrapper for mv_col_handling(). Allows mv_col_handling() to be put into a \
         pipeline with similar functions (e.g. using DataCleaner() or SubsetPooler()).
 
     Parameters
@@ -608,7 +606,7 @@ def pool_duplicate_subsets(
     exclude: Optional[List[str]] = None,
     return_details=False,
 ) -> pd.DataFrame:
-    """ Checks for duplicates in subsets of columns and pools them. This can reduce \
+    """Check for duplicates in subsets of columns and pools them. This can reduce \
         the number of columns in the data without loosing much information. Suitable \
         columns are combined to subsets and tested for duplicates. In case sufficient \
         duplicates can be found, the respective columns are aggregated into a \
@@ -650,7 +648,6 @@ def pool_duplicate_subsets(
     optional:
     subset_cols: List of columns used as subset
     """
-
     # Input validation
     _validate_input_range(col_dupl_thresh, "col_dupl_thresh", 0, 1)
     _validate_input_range(subset_thresh, "subset_thresh", 0, 1)
@@ -713,7 +710,7 @@ def pool_duplicate_subsets(
 
 
 class SubsetPooler(BaseEstimator, TransformerMixin):
-    """ Wrapper for pool_duplicate_subsets(). Allows pool_duplicate_subsets() to be \
+    """Wrapper for pool_duplicate_subsets(). Allows pool_duplicate_subsets() to be \
         put into a pipeline with similar functions (e.g. using DataCleaner() or \
         MVColHandler()).
 
@@ -734,7 +731,7 @@ class SubsetPooler(BaseEstimator, TransformerMixin):
     return_details: bool, default False
         Provdies flexibility to return intermediary results.
 
-    Returns:
+    Returns
     -------
     data: pd.DataFrame
     """

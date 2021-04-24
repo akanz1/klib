@@ -18,7 +18,7 @@ def _corr_selector(
     ] = None,  # Optional[Literal["pos", "neg", "above", "below"]] = None,
     threshold: float = 0,
 ) -> Union[pd.Series, pd.DataFrame]:
-    """ Utility funciton to select the desired correlations.
+    """Select the desired correlations using this utility function.
 
     Parameters
     ----------
@@ -36,7 +36,6 @@ def _corr_selector(
     pd.DataFrame
         List or matrix of (filtered) correlations
     """
-
     if split == "pos":
         corr = corr.where((corr >= threshold) & (corr > 0))
         print(
@@ -74,7 +73,7 @@ def _diff_report(
     single_val_cols: Optional[List[str]] = None,
     show: Optional[str] = "changes",  # Optional[Literal["all", "changes"]] = "changes"
 ) -> None:
-    """ Provides information about changes between two datasets, such as dropped rows \
+    """Provide information about changes between two datasets, such as dropped rows \
         and columns, memory usage and missing values.
 
     Parameters
@@ -104,7 +103,6 @@ def _diff_report(
     None
         Print statement highlighting the datasets or changes between the two datasets.
     """
-
     if show in ["changes", "all"]:
         dupl_rows = [] if dupl_rows is None else dupl_rows.copy()
         single_val_cols = [] if single_val_cols is None else single_val_cols.copy()
@@ -150,7 +148,7 @@ def _diff_report(
 
 
 def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
-    """Provides information on and drops duplicate rows.
+    """Provide information on and drops duplicate rows.
 
     Parameters
     ----------
@@ -162,7 +160,6 @@ def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
     Tuple[pd.DataFrame, List]
         Deduplicated Pandas DataFrame and Index Object of rows dropped
     """
-
     data = pd.DataFrame(data).copy()
     dupl_rows = data[data.duplicated()].index.tolist()
     data = data.drop(dupl_rows, axis="index").reset_index(drop=True)
@@ -171,7 +168,7 @@ def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
 
 
 def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
-    """Gives the total memory usage in megabytes.
+    """Give the total memory usage in megabytes.
 
     Parameters
     ----------
@@ -185,7 +182,6 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
     float
         Memory usage in megabytes
     """
-
     data = pd.DataFrame(data).copy()
     memory_usage = round(
         data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2
@@ -195,7 +191,7 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
 
 
 def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
-    """Gives metrics of missing values in the dataset.
+    """Give metrics of missing values in the dataset.
 
     Parameters
     ----------
@@ -211,7 +207,6 @@ def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
         mv_rows_ratio: float, ratio of missing values for each row
         mv_cols_ratio: float, ratio of missing values for each column
     """
-
     data = pd.DataFrame(data).copy()
     mv_rows = data.isna().sum(axis=1)
     mv_cols = data.isna().sum(axis=0)
