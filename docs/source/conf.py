@@ -37,6 +37,7 @@ extensions = [
     "numpydoc",
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
+    "sphinx.ext.imgconverter",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinxcontrib.rsvgconverter",
