@@ -1,11 +1,11 @@
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/header.png" alt="klib Header" width="859" height="304"></p>
 
-<!-- [![Flake8 & PyTest](https://github.com/akanz1/klib/workflows/Flake8%20%F0%9F%90%8D%20PyTest%20%20%20%C2%B4/badge.svg)](https://github.com/akanz1/klib) -->
+[![Flake8 & PyTest](https://github.com/akanz1/klib/workflows/Flake8%20%F0%9F%90%8D%20PyTest%20%20%20%C2%B4/badge.svg)](https://github.com/akanz1/klib)
 [![Language](https://img.shields.io/github/languages/top/akanz1/klib)](https://pypi.org/project/klib/)
 [![Last Commit](https://badgen.net/github/last-commit/akanz1/klib/main)](https://github.com/akanz1/klib/commits/main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=akanz1_klib&metric=alert_status)](https://sonarcloud.io/dashboard?id=akanz1_klib)
 [![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/akanz1/klib/)
-<!-- [![codecov](https://codecov.io/gh/akanz1/klib/branch/main/graph/badge.svg)](https://codecov.io/gh/akanz1/klib) -->
+[![codecov](https://codecov.io/gh/akanz1/klib/branch/main/graph/badge.svg)](https://codecov.io/gh/akanz1/klib)
 
 **klib** is a Python library for importing, cleaning, analyzing and preprocessing data. Explanations on key functionalities can be found on [Medium / TowardsDataScience](https://medium.com/@akanz) in the [examples](examples) section or on [YouTube (Data Professor)](https://www.youtube.com/watch?v=URjJVEeZxxU).
 
@@ -23,7 +23,7 @@ pip install -U klib
 Alternatively, to install this package with conda run:
 
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/klib)](https://anaconda.org/conda-forge/klib)
-<!-- [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/klib.svg)](https://anaconda.org/conda-forge/klib) -->
+[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/klib.svg)](https://anaconda.org/conda-forge/klib)
 
 ```bash
 conda install -c conda-forge klib
