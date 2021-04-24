@@ -7,11 +7,12 @@ Prerequisites
 
 klib requires the following dependencies:
 
+* matplotlib >= 3.0.3
+* numpy >= 1.15.4
+* pandas >= 1.1
 * python >= 3.7
-* matplotlib >= 2.1.2
-* numpy >= 1.13.3
-* pandas >= 1.1.0
 * scikit-learn >= 0.23
+* scipy >= 1.0.0
 * seaborn >= 0.11.1
 
 Install

@@ -68,14 +68,18 @@ Examples
 Find all available examples as well as applications of the functions in
 **klib.clean()** with detailed descriptions here.
 
+This plot visualizes the missing values in a dataset. At the top it shows the aggregate for each column using a relative scale and absolute missing-value annotations, while on the right, summary statistics and individual row results are displayed. Using this plot allows to gain a quick overview over the structure of missing values and their relation in a dataset and easily determine which columns and rows to investigate / drop.
+
 .. code:: python
 
-    klib.missingval_plot(df) # default representation of missing values in a DataFrame, plenty of settings are available
+    klib.missingval_plot(df) # default representation of missing values, other settings such as sorting are available
 
 .. raw:: html
 
-   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1000" height="1091"></p>
+   <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1100" height="1200"></p>
 
+
+This plot visualizes the correlation between different features. Settings include the possibility to only display positive, negative, high or low correlations as well as specify an additional threshold. This works for Person, Spearman and Kendall correlation. Annotations and development settings can optionally be turned on or off.
 
 .. code:: python
 
@@ -86,6 +90,7 @@ Find all available examples as well as applications of the functions in
 
    <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="338"></p>
 
+Further, as seen below, if a column is specified, either by name or by passing in a separate target List or pd.Series, the plot gives the correlation of all features with the specified target.
 
 .. code:: python
 

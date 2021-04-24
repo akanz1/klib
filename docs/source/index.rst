@@ -22,7 +22,6 @@ Welcome to klib's documentation!
    :hidden:
    :caption: Addtional Information
 
-   changelog
    about
 
 `Getting started <install.html>`_
