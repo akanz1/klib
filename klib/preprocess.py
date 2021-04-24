@@ -66,10 +66,10 @@ class ColumnSelector(BaseEstimator, TransformerMixin):
 class PipeInfo(BaseEstimator, TransformerMixin):
     """
     Prints intermediary information about the dataset from within a pipeline.
-    
+
     Include at any point in a Pipeline to print out the shape of the dataset at this \
     point and to receive an indication of the progress within the pipeline.
-    
+
     Set to 'None' to avoid printing the shape of the dataset. This parameter can also \
     be set as a hyperparameter, e.g. 'pipeline__pipeinfo-1': [None] or \
     'pipeline__pipeinfo-1__name': ['my_custom_name'].

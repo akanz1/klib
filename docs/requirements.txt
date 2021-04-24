@@ -1,6 +1,6 @@
 m2r2
 numpydoc
-sphinx
+sphinx>=3.2.1
 sphinxcontrib-napoleon
 sphinxcontrib-svg2pdfconverter
 sphinxcontrib.napoleon

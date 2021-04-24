@@ -132,7 +132,7 @@ def convert_datatypes(
     cat_exclude: Optional[List[Union[str, int]]] = None,
 ) -> pd.DataFrame:
     """Convert columns to best possible dtypes using dtypes supporting pd.NA.
-    
+
     Temporarily not converting to integers due to an issue in pandas. This is expected \
         to be fixed in pandas 1.1. See https://github.com/pandas-dev/pandas/issues/33803
 
@@ -454,7 +454,7 @@ def mv_col_handling(
     """Convert columns with a high ratio of missing values into binary features and \
     eventually drops them based on their correlation with other features and the \
     target variable.
-    
+
     This function follows a three step process:
     - 1) Identify features with a high ratio of missing values (above 'mv_threshold').
     - 2) Identify high correlations of these features among themselves and with \
