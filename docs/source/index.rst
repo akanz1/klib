@@ -29,21 +29,17 @@ Welcome to klib's documentation!
 
 How to install and contribute.
 
+
 `Documentation and Examples <examples.html>`_
 ---------------------------------------------
 
 User guides, examples and best practices for the functions contained in klib.
 
+
 `Modules <modules.html>`_
 -------------------------
 
 Detailed information on all the functions and classes and how to use them. This includes the input types and shapes for all mandatory and optional parameters.
-
-
-`Changes, Updates and known Issues <changes.html>`_
----------------------------------------------------
-
-Changes, Updates and known Issues.
 
 
 `About klib <about.html>`_
