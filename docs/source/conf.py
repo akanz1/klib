@@ -37,9 +37,10 @@ extensions = [
     "numpydoc",
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
+    # "sphinx.ext.imgconverter",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
-    "sphinx.ext.imgconverter",
+    "sphinxcontrib.rsvgconverter",
 ]
 
 source_suffix = [".rst", ".md"]
