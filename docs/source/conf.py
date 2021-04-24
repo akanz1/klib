@@ -12,6 +12,7 @@
 #
 import os
 import sys
+
 from klib._version import __version__
 
 sys.path.insert(0, os.path.abspath("."))
@@ -24,7 +25,7 @@ sys.path.insert(0, os.path.abspath("."))
 # -- Project information -----------------------------------------------------
 
 project = "klib"
-copyright = "2020, Andreas Kanz"
+copyright = "2021, Andreas Kanz"
 author = "Andreas Kanz"
 
 # The full version, including alpha/beta/rc tags
