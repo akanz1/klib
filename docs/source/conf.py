@@ -38,6 +38,7 @@ release = __version__
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "m2r2",
     "numpydoc",
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",

@@ -52,7 +52,7 @@ Changes, Updates and known Issues.
 Contact information and links.
 
 
-.. include:: ../README.rst
+.. mdinclude:: ../../README.md
 
 
 Indices and tables
