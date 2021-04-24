@@ -39,6 +39,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinx.ext.imgconverter",
 ]
 
 source_suffix = [".rst", ".md"]
