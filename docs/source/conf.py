@@ -66,3 +66,5 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 master_doc = "index"
+
+latex_engine = "lualatex"
