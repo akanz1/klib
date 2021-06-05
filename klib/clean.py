@@ -102,7 +102,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
     )
 
     dupl_idx = [i for i, x in enumerate(data.columns.duplicated()) if x]
-    if len(dupl_idx) > 0:
+    if dupl_idx:
         dupl_before = data.columns[dupl_idx].tolist()
         data.columns = [
             col if col not in data.columns[:i] else col + "_" + str(i)
@@ -116,7 +116,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
             )
 
     long_col_names = [x for x in data.columns if len(x) > 25]
-    if len(long_col_names) > 0 and hints:
+    if long_col_names and hints:
         print(
             "Long column names detected (>25 characters). Consider renaming the "
             f"following columns {long_col_names}."

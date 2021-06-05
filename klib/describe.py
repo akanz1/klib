@@ -495,11 +495,11 @@ def dist_plot(
     cols = list(data.select_dtypes(include=["number"]).columns)
     data = data[cols]
 
-    if len(cols) == 0:
+    if not cols:
         print("No columns with numeric data were detected.")
         return None
 
-    if len(cols) >= 20 and showall is False:
+    if len(cols) >= 20 and not showall:
         print(
             "Note: The number of non binary numerical features is very large "
             f"({len(cols)}), please consider splitting the data. Showing plots for "
