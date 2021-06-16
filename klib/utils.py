@@ -103,48 +103,50 @@ def _diff_report(
     None
         Print statement highlighting the datasets or changes between the two datasets.
     """
-    if show in ["changes", "all"]:
-        dupl_rows = [] if dupl_rows is None else dupl_rows.copy()
-        single_val_cols = [] if single_val_cols is None else single_val_cols.copy()
-        data_mem = _memory_usage(data, deep=False)
-        data_cl_mem = _memory_usage(data_cleaned, deep=False)
-        data_mv_tot = _missing_vals(data)["mv_total"]
-        data_cl_mv_tot = _missing_vals(data_cleaned)["mv_total"]
+    if show not in ["changes", "all"]:
+        return
 
-        if show == "all":
-            data_mem = _memory_usage(data, deep=True)
-            data_cl_mem = _memory_usage(data_cleaned, deep=True)
-            print("Before data cleaning:\n")
-            print(f"dtypes:\n{data.dtypes.value_counts()}")
-            print(f"\nNumber of rows: {str(data.shape[0]).rjust(8)}")
-            print(f"Number of cols: {str(data.shape[1]).rjust(8)}")
-            print(f"Missing values: {str(data_mv_tot).rjust(8)}")
-            print(f"Memory usage: {str(data_mem).rjust(7)} MB")
-            print("_______________________________________________________\n")
-            print("After data cleaning:\n")
-            print(f"dtypes:\n{data_cleaned.dtypes.value_counts()}")
-            print(f"\nNumber of rows: {str(data_cleaned.shape[0]).rjust(8)}")
-            print(f"Number of cols: {str(data_cleaned.shape[1]).rjust(8)}")
-            print(f"Missing values: {str(data_cl_mv_tot).rjust(8)}")
-            print(f"Memory usage: {str(data_cl_mem).rjust(7)} MB")
-            print("_______________________________________________________\n")
+    dupl_rows = [] if dupl_rows is None else dupl_rows.copy()
+    single_val_cols = [] if single_val_cols is None else single_val_cols.copy()
+    data_mem = _memory_usage(data, deep=False)
+    data_cl_mem = _memory_usage(data_cleaned, deep=False)
+    data_mv_tot = _missing_vals(data)["mv_total"]
+    data_cl_mv_tot = _missing_vals(data_cleaned)["mv_total"]
 
-        print(
-            f"Shape of cleaned data: {data_cleaned.shape}"
-            f"Remaining NAs: {data_cl_mv_tot}"
-        )
-        print("\nChanges:")
-        print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
-        print(f"     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows[:200]})")
-        print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
-        print(
-            f"     of which {len(single_val_cols)} single valued."
-            f"     Columns: {single_val_cols}"
-        )
-        print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
-        mem_change = data_mem - data_cl_mem
-        mem_perc = round(100 * mem_change / data_mem, 2)
-        print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)\n")
+    if show == "all":
+        data_mem = _memory_usage(data, deep=True)
+        data_cl_mem = _memory_usage(data_cleaned, deep=True)
+        print("Before data cleaning:\n")
+        print(f"dtypes:\n{data.dtypes.value_counts()}")
+        print(f"\nNumber of rows: {str(data.shape[0]).rjust(8)}")
+        print(f"Number of cols: {str(data.shape[1]).rjust(8)}")
+        print(f"Missing values: {str(data_mv_tot).rjust(8)}")
+        print(f"Memory usage: {str(data_mem).rjust(7)} MB")
+        print("_______________________________________________________\n")
+        print("After data cleaning:\n")
+        print(f"dtypes:\n{data_cleaned.dtypes.value_counts()}")
+        print(f"\nNumber of rows: {str(data_cleaned.shape[0]).rjust(8)}")
+        print(f"Number of cols: {str(data_cleaned.shape[1]).rjust(8)}")
+        print(f"Missing values: {str(data_cl_mv_tot).rjust(8)}")
+        print(f"Memory usage: {str(data_cl_mem).rjust(7)} MB")
+        print("_______________________________________________________\n")
+
+    print(
+        f"Shape of cleaned data: {data_cleaned.shape}"
+        f"Remaining NAs: {data_cl_mv_tot}"
+    )
+    print("\nChanges:")
+    print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
+    print(f"     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows[:200]})")
+    print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
+    print(
+        f"     of which {len(single_val_cols)} single valued."
+        f"     Columns: {single_val_cols}"
+    )
+    print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
+    mem_change = data_mem - data_cl_mem
+    mem_perc = round(100 * mem_change / data_mem, 2)
+    print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)\n")
 
 
 def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
@@ -183,11 +185,9 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
         Memory usage in megabytes
     """
     data = pd.DataFrame(data).copy()
-    memory_usage = round(
+    return round(
         data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2
     )
-
-    return memory_usage
 
 
 def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:

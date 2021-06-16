@@ -28,8 +28,7 @@ def timer(func):
     def wrapper(*args, **kwargs):
         time_start = perf_counter()
         func(*args, **kwargs)
-        duration = perf_counter() - time_start
-        return duration
+        return perf_counter() - time_start
 
     return wrapper
 

@@ -126,10 +126,9 @@ def cat_pipe(
     -------
     Pipeline
     """
-    categorical_pipe = make_pipeline(
+    return make_pipeline(
         ColumnSelector(num=False), imputer, encoder, encoder_info, scaler
     )
-    return categorical_pipe
 
 
 def feature_selection_pipe(
@@ -168,7 +167,7 @@ def feature_selection_pipe(
     -------
     Pipeline
     """
-    feature_select_pipe = make_pipeline(
+    return make_pipeline(
         var_thresh,
         var_thresh_info,
         select_from_model,
@@ -176,7 +175,6 @@ def feature_selection_pipe(
         select_percentile,
         select_percentile_info,
     )
-    return feature_select_pipe
 
 
 def num_pipe(
@@ -200,8 +198,7 @@ def num_pipe(
     -------
     Pipeline
     """
-    numerical_pipe = make_pipeline(ColumnSelector(), imputer, scaler)
-    return numerical_pipe
+    return make_pipeline(ColumnSelector(), imputer, scaler)
 
 
 def train_dev_test_split(
