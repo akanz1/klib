@@ -234,12 +234,11 @@ def drop_missing(
 
     data = pd.concat([data_dropped, data_exclude], axis=1)
 
-    data_cleaned = data.drop(
+    return data.drop(
         index=data.loc[
             _missing_vals(data)["mv_rows_ratio"] > drop_threshold_rows, :
         ].index
     ).dropna(axis=0, how="all")
-    return data_cleaned
 
 
 def data_cleaning(
@@ -427,7 +426,7 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, data, target=None):
-        data_cleaned = data_cleaning(
+        return data_cleaning(
             data,
             drop_threshold_cols=self.drop_threshold_cols,
             drop_threshold_rows=self.drop_threshold_rows,
@@ -440,7 +439,6 @@ class DataCleaner(BaseEstimator, TransformerMixin):
             clean_col_names=self.clean_col_names,
             show=self.show,
         )
-        return data_cleaned
 
 
 def mv_col_handling(
