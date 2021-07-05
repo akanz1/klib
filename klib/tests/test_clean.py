@@ -7,7 +7,7 @@ from ..clean import (
     convert_datatypes,
     data_cleaning,
     drop_missing,
-    pool_duplicate_subsets
+    pool_duplicate_subsets,
 )
 
 
