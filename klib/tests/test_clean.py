@@ -7,7 +7,7 @@ from ..clean import (
     convert_datatypes,
     data_cleaning,
     drop_missing,
-    pool_duplicate_subsets,
+    pool_duplicate_subsets
 )
 
 
@@ -181,7 +181,7 @@ class Test_convert_dtypes(unittest.TestCase):
     def test_convert_dtypes(self):
         expected_results = [
             "int8",
-            "float32",
+            "Float32",
             "string",
             "string",
             "category",
@@ -193,13 +193,27 @@ class Test_convert_dtypes(unittest.TestCase):
                 expected_results[i],
             )
 
-        expected_results = ["int8", "float32", "string", "string", "object", "string"]
+        expected_results = [
+            "int8",
+            "Float32",
+            "string",
+            "string",
+            "object",
+            "string",
+        ]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(self.df_data_convert).dtypes[i], expected_results[i]
             )
 
-        expected_results = ["int8", "float32", "string", "string", "object", "category"]
+        expected_results = [
+            "int8",
+            "Float32",
+            "string",
+            "string",
+            "object",
+            "category",
+        ]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(
@@ -210,7 +224,7 @@ class Test_convert_dtypes(unittest.TestCase):
 
         expected_results = [
             "int8",
-            "float32",
+            "Float32",
             "string",
             "category",
             "object",
@@ -224,7 +238,7 @@ class Test_convert_dtypes(unittest.TestCase):
                 expected_results[i],
             )
 
-        expected_results = ["int8", "float32", "string", "string", "object", "string"]
+        expected_results = ["int8", "Float32", "string", "string", "object", "string"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(
