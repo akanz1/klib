@@ -65,13 +65,11 @@ df = pd.DataFrame(data)
 
 Find all available examples as well as applications of the functions in **klib.clean()** with detailed descriptions <a href="https://github.com/akanz1/klib/tree/main/examples">here</a>.
 
-
 ```python
 klib.missingval_plot(df) # default representation of missing values in a DataFrame, plenty of settings are available
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_mv_plot.png" alt="Missingvalue Plot Example" width="1000" height="1091"></p>
-
 
 ```python
 klib.corr_plot(df, split='pos') # displaying only positive correlations, other settings include threshold, cmap...
@@ -80,20 +78,17 @@ klib.corr_plot(df, split='neg') # displaying only negative correlations
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_corr_plot.png" alt="Corr Plot Example" width="720" height="338"></p>
 
-
 ```python
 klib.corr_plot(df, target='wine') # default representation of correlations with the feature column
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="720" height="600"></p>
 
-
 ```python
 klib.dist_plot(df) # default representation of a distribution plot, other settings include fill_range, histogram, ...
 ```
 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_dist_plot.png" alt="Dist Plot Example" width="910" height="130"></p>
-
 
 ```python
 klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least common values in each categorical column
@@ -104,6 +99,8 @@ klib.cat_plot(data, top=4, bottom=4) # representation of the 4 most & least comm
 Further examples, as well as applications of the functions in **klib.clean()** can be found <a href="https://github.com/akanz1/klib/tree/main/examples#data-cleaning-and-aggretation">here</a>.
 
 ## Contributing
+
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/akanz1/klib)
 
 Pull requests and ideas, especially for further functions are welcome. For major changes or feedback, please open an issue first to discuss what you would like to change.
 
