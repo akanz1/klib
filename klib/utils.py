@@ -8,14 +8,12 @@ Utilities and auxiliary functions.
 # Imports
 import numpy as np
 import pandas as pd
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 
 def _corr_selector(
     corr: Union[pd.Series, pd.DataFrame],
-    split: Optional[
-        str
-    ] = None,  # Optional[Literal["pos", "neg", "above", "below"]] = None,
+    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
     threshold: float = 0,
 ) -> Union[pd.Series, pd.DataFrame]:
     """Select the desired correlations using this utility function.
@@ -185,9 +183,7 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
         Memory usage in megabytes
     """
     data = pd.DataFrame(data).copy()
-    return round(
-        data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2
-    )
+    return round(data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2)
 
 
 def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
