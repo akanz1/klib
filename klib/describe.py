@@ -99,7 +99,7 @@ def cat_plot(
         if n_unique <= 2:
             lim_top = lim_bot = int(n_unique // 2)
 
-        value_counts_top = value_counts[0:lim_top]
+        value_counts_top = value_counts[:lim_top]
         value_counts_idx_top = value_counts_top.index.tolist()
         value_counts_bot = value_counts[-lim_bot:]
         value_counts_idx_bot = value_counts_bot.index.tolist()
@@ -683,7 +683,7 @@ def missingval_plot(
     ax1.set(frame_on=False, xlim=(-0.5, len(mv_cols) - 0.5))
     ax1.set_ylim(0, np.max(mv_cols_ratio) * 100)
     ax1.grid(linestyle=":", linewidth=1)
-    ax1.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=0))
+    ax1.yaxis.set_major_formatter(ticker.PercentFormatter(decimals=1))
     ax1.tick_params(axis="y", colors="#111111", length=1)
 
     # annotate values on top of the bars
