@@ -8,12 +8,14 @@ Utilities and auxiliary functions.
 # Imports
 import numpy as np
 import pandas as pd
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 def _corr_selector(
     corr: Union[pd.Series, pd.DataFrame],
-    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
+    split: Optional[
+        str
+    ] = None,  # Optional[Literal["pos", "neg", "high", "low"]] = None, Req:Python 3.8
     threshold: float = 0,
 ) -> Union[pd.Series, pd.DataFrame]:
     """Select the desired correlations using this utility function.
