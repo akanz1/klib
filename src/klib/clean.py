@@ -4,13 +4,13 @@ Functions for data cleaning.
 :author: Andreas Kanz
 """
 
-# Imports
 import itertools
+import re
+from typing import List, Optional, Union
+
 import numpy as np
 import pandas as pd
-import re
 from sklearn.base import BaseEstimator, TransformerMixin
-from typing import List, Optional, Union
 
 from klib.describe import corr_mat
 from klib.utils import (

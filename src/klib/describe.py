@@ -5,7 +5,8 @@ Functions for descriptive analytics.
 
 """
 
-# Imports
+from typing import Any, Dict, Optional, Tuple, Union
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
@@ -13,7 +14,6 @@ import pandas as pd
 import scipy
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap, to_rgb
-from typing import Any, Dict, Optional, Tuple, Union
 
 from klib.utils import (
     _corr_selector,

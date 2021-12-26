@@ -22,6 +22,9 @@ Jinja2 = "^3.0.3"
 [tool.poetry.dev-dependencies]
 black = "^21.12b0"
 pylint = "^2.12.2"
+pydocstyle = "^6.1.1"
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -35,3 +38,43 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
 ]
+
+
+[tool.black]
+target_version = ['py37', 'py38', 'py39', 'py310']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+skip_gitignore = true
+
+[tool.pydocstyle]
+match_dir = "[^(?!tests|\\.)].*"     # not tests and not a folder that starts with a dot
+match = "^(?!(__init__|setup)).*py$" # py files which do not start with __init__ or setup
+convention = "numpy"
+
+# Testing
+
+[tool.pytest.ini_options]
+required_plugins = ["pytest-cov"]
+addopts = """
+--color=yes \
+--code-highlight=yes \
+--verbose \
+--junitxml=tests/reports/junit.xml \
+--cov-report term-missing:skip-covered \
+--cov-report=xml:tests/reports/coverage.xml \
+--cov-report=html:tests/reports/htmlcov \
+--cov=. -ra"""
+minversion = "6.0"
+testpaths = ["tests/"]
+
+[tool.coverage.run]
+omit = ["tests/*", "*/test_*.py", "*/__*__.py", "*_version.py"]
+
+[run]
+branch = true
+data_file = "tests/.coverage"
+
+[tool.coverage.report]
+fail_under = 0

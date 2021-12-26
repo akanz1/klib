@@ -1,6 +1,7 @@
+import unittest
+
 import numpy as np
 import pandas as pd
-import unittest
 
 from klib.clean import (
     clean_column_names,

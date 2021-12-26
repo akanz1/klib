@@ -1,0 +1,18 @@
+# Folders and files
+__pycache__/
+.pytest_cache
+.ipynb_checkpoints
+.vscode/
+/build/
+/dist/
+/misc/
+*.code-workspace
+*.egg-info/
+*.zip
+/klib/scripts/*.png
+
+# Sphinx
+docs/build/
+docs/source/_build
+docs/source/_static
+docs/source/_templates

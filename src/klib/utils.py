@@ -5,10 +5,10 @@ Utilities and auxiliary functions.
 
 """
 
-# Imports
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import numpy as np
 import pandas as pd
-from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 def _corr_selector(

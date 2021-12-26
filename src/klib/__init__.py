@@ -37,11 +37,3 @@ __all__ = [
     "train_dev_test_split",
     "__version__",
 ]
-
-# In future versions and especially with an increased number of functions, only the
-# most frequently used functions will be imported into the namespace to be accessible
-# from klib.function directly. The remaining functions can be found in the respective
-# modules:
-#    - klib.clean
-#    - klib.describe
-#    - klib.preprocess
