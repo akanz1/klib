@@ -35,7 +35,7 @@ classifiers = ["Operating System :: OS Independent"]
 
 
 [tool.black]
-target_version = ['py37', 'py38', 'py39', 'py310']
+target_version = ['py37', 'py38', 'py39'] # , 'py310'
 
 [tool.isort]
 profile = "black"
