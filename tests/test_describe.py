@@ -1,8 +1,9 @@
-import numpy as np
-import pandas as pd
 import unittest
 
-from ..describe import corr_mat
+import numpy as np
+import pandas as pd
+
+from klib.describe import corr_mat
 
 
 class Test_corr_mat(unittest.TestCase):

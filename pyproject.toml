@@ -1,0 +1,88 @@
+[tool.poetry]
+name = "klib"
+version = "0.2.3"
+description = "Customized data preprocessing functions for frequent tasks."
+authors = ["Andreas Kanz <andreas@akanz.de>"]
+license = "MIT"
+readme = "README.md"
+
+packages = [{ include = "klib", from = "src" }]
+include = [{ path = "tests", format = "sdist" }]
+
+[tool.poetry.dependencies]
+python = ">=3.7.1,<3.11"
+matplotlib = "^3.0.3"
+numpy = "^1.16.3"
+pandas = "^1.1.2"
+scikit-learn = "^0.23.1"
+scipy = "^1.1.0"
+seaborn = "^0.11.1"
+Jinja2 = "^3.0.3"
+
+[tool.poetry.dev-dependencies]
+black = "^21.12b0"
+pylint = "^2.12.2"
+pydocstyle = "^6.1.1"
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+ipykernel = "^6.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+classifiers = ["Operating System :: OS Independent"]
+
+
+[tool.black]
+target_version = ['py37', 'py38', 'py39'] # , 'py310'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+skip_gitignore = true
+
+[tool.pylint.reports]
+output-format = "colorized"
+
+[tool.pylint.messages_control]
+disable = """
+    missing-function-docstring,
+    invalid-name,
+    too-many-arguments,
+    too-many-locals,
+    too-many-statements,
+    too-many-instance-attributes,
+"""
+
+[tool.pylint.similarities]
+min-similarity-lines = 8
+
+[tool.pydocstyle]
+match_dir = "[^(?!tests|\\.)].*"     # not tests and not a folder that starts with a dot
+match = "^(?!(__init__|setup)).*py$" # py files which do not start with __init__ or setup
+convention = "numpy"
+
+# Testing
+
+[tool.pytest.ini_options]
+required_plugins = ["pytest-cov"]
+addopts = """
+--color=yes \
+--code-highlight=yes \
+--verbose \
+--junitxml=tests/reports/junit.xml \
+--cov-report term-missing:skip-covered \
+--cov-report=xml:tests/reports/coverage.xml \
+--cov-report=html:tests/reports/htmlcov \
+--cov=. -ra"""
+minversion = "6.0"
+testpaths = ["tests/"]
+
+[tool.coverage.run]
+omit = ["tests/*", "*/test_*.py", "*/__*__.py", "*_version.py"]
+branch = true
+data_file = "tests/.coverage"
+
+[tool.coverage.report]
+fail_under = 0

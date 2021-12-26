@@ -13,7 +13,7 @@
 import os
 import sys
 
-from klib._version import __version__
+# from klib._version import __version__
 
 sys.path.insert(0, os.path.abspath("."))
 
@@ -24,7 +24,7 @@ copyright = "2021, Andreas Kanz"
 author = "Andreas Kanz"
 
 # The full version, including alpha/beta/rc tags
-release = __version__
+# release = __version__
 
 
 # -- General configuration ---------------------------------------------------

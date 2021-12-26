@@ -5,10 +5,11 @@ Measuring the performance of key functionality.
 """
 
 import functools
-import matplotlib.pyplot as plt
-import pandas as pd
 from pathlib import Path
 from time import perf_counter
+
+import matplotlib.pyplot as plt
+import pandas as pd
 
 import klib
 
@@ -16,7 +17,6 @@ import klib
 base_path = Path(__file__).resolve().parents[2]
 print(base_path)
 data_path = base_path / "examples"
-export_path = base_path / "klib/scripts/"
 
 # Data Import
 filepath = data_path / "NFL_DATASET.csv"
@@ -64,7 +64,7 @@ def main():
     reference_values = [5, 10, 10, 10]
 
     for i, (col, ref) in enumerate(zip(df_times.columns, reference_values)):
-        ax[i].boxplot(df_times[col])
+        ax[i].boxplot(df_times[col])  # pylint: disable=unsubscriptable-object
         ax[i].set_title(" ".join(col.split("_")).title())
         ax[i].axhline(ref)
     fig.suptitle("Performance", fontsize=16)

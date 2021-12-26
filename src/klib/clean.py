@@ -4,13 +4,13 @@ Functions for data cleaning.
 :author: Andreas Kanz
 """
 
-# Imports
 import itertools
+import re
+from typing import List, Optional, Union
+
 import numpy as np
 import pandas as pd
-import re
 from sklearn.base import BaseEstimator, TransformerMixin
-from typing import List, Optional, Union
 
 from klib.describe import corr_mat
 from klib.utils import (
@@ -30,14 +30,14 @@ __all__ = [
 ]
 
 
-def optimize_ints(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
+def _optimize_ints(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
     data = pd.DataFrame(data).copy()
     ints = data.select_dtypes(include=["int64"]).columns.tolist()
     data[ints] = data[ints].apply(pd.to_numeric, downcast="integer")
     return data
 
 
-def optimize_floats(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
+def _optimize_floats(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
     data = pd.DataFrame(data).copy()
     floats = data.select_dtypes(include=["float64"]).columns.tolist()
     data[floats] = data[floats].apply(pd.to_numeric, downcast="float")
@@ -178,8 +178,8 @@ def convert_datatypes(
             convert_boolean=True,
         )
 
-    data = optimize_ints(data)
-    data = optimize_floats(data)
+    data = _optimize_ints(data)
+    data = _optimize_floats(data)
 
     return data
 
@@ -422,10 +422,12 @@ class DataCleaner(BaseEstimator, TransformerMixin):
         self.clean_col_names = clean_col_names
         self.show = show
 
-    def fit(self, data, target=None):
+    def fit(self, data, target=None):  # pylint: disable=unused-argument
+        """Palceholder method"""
         return self
 
-    def transform(self, data, target=None):
+    def transform(self, data, target=None):  # pylint: disable=unused-argument
+        """Transform the data"""
         return data_cleaning(
             data,
             drop_threshold_cols=self.drop_threshold_cols,
@@ -577,10 +579,12 @@ class MVColHandler(BaseEstimator, TransformerMixin):
         self.corr_thresh_target = corr_thresh_target
         self.return_details = return_details
 
-    def fit(self, data, target=None):
+    def fit(self, data, target=None):  # pylint: disable=unused-argument
+        """Placeholder method"""
         return self
 
-    def transform(self, data, target=None):
+    def transform(self, data, target=None):  # pylint: disable=unused-argument
+        """Transform the data"""
         data, cols_mv, dropped_cols = mv_col_handling(
             data,
             target=self.target,
@@ -746,11 +750,13 @@ class SubsetPooler(BaseEstimator, TransformerMixin):
         self.min_col_pool = min_col_pool
         self.return_details = return_details
 
-    def fit(self, data, target=None):
+    def fit(self, data, target=None):  # pylint: disable=unused-argument
+        """Palceholder method"""
         return self
 
     @staticmethod
-    def transform(data, target=None):
+    def transform(data, target=None):  # pylint: disable=unused-argument
+        """Transform the data"""
         data, subset_cols = pool_duplicate_subsets(
             data,
             col_dupl_thresh=0.2,
