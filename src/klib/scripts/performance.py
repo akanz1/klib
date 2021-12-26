@@ -17,7 +17,6 @@ import klib
 base_path = Path(__file__).resolve().parents[2]
 print(base_path)
 data_path = base_path / "examples"
-export_path = base_path / "klib/scripts/"
 
 # Data Import
 filepath = data_path / "NFL_DATASET.csv"

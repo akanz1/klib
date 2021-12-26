@@ -690,8 +690,8 @@ def missingval_plot(
     for rect, label in zip(ax1.patches, mv_cols):
         height = rect.get_height()
         ax1.text(
-            0.1 + rect.get_x() + rect.get_width() / 2,
-            height + 0.5,
+            rect.get_x() + rect.get_width() / 2,
+            height + min(height, 3),
             label,
             ha="center",
             va="bottom",
