@@ -19,10 +19,12 @@ jobs:
         with:
           python-version: "3.9.*"
       - name: Build and publish 📦 to PyPI
+        env:
+          PUBLISH_TOKEN: ${{ secrets.POETRY_PUBLISH_TOKEN }}
         run: |
           python -m pip install --upgrade pip
           python -m pip install poetry
           poetry config virtualenvs.in-project true
           poetry install -v
-          poetry config pypi-token.pypi $poetry_publish_token
+          poetry config pypi-token.pypi $PUBLISH_TOKEN
           poetry publish --build
