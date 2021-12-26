@@ -1,6 +1,0 @@
-[run]
-relative_files = True
-omit =
-        */__init__.py
-        *_version.py
-        */test_*.py

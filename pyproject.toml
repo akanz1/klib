@@ -71,8 +71,6 @@ testpaths = ["tests/"]
 
 [tool.coverage.run]
 omit = ["tests/*", "*/test_*.py", "*/__*__.py", "*_version.py"]
-
-[run]
 branch = true
 data_file = "tests/.coverage"
 
