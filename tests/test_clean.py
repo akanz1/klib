@@ -151,7 +151,7 @@ class Test_data_cleaning(unittest.TestCase):
         )
 
     def test_data_cleaning(self):
-        self.assertEqual(data_cleaning(self.df_data_cleaning).shape, (4, 4))
+        self.assertEqual(data_cleaning(self.df_data_cleaning, show="all").shape, (4, 4))
         # c1 will be dropped despite in col_exclude because it is single valued
         self.assertEqual(
             data_cleaning(self.df_data_cleaning, col_exclude=["c1"]).shape, (4, 4)
@@ -263,7 +263,8 @@ class Test_pool_duplicate_subsets(unittest.TestCase):
                 [1, 7, "u", "f", pd.NA, "p"],
                 [1, 7, "u", "z", pd.NA, "p"],
                 [2, 7, "g", "z", pd.NA, "p"],
-            ]
+            ],
+            columns=["c1", "c2", "c3", "c4", "c5", "c6"],
         )
 
     def test_pool_duplicate_subsets(self):
@@ -272,6 +273,28 @@ class Test_pool_duplicate_subsets(unittest.TestCase):
             pool_duplicate_subsets(self.df_data_subsets, col_dupl_thresh=1).shape,
             (6, 6),
         )
+
         self.assertEqual(
             pool_duplicate_subsets(self.df_data_subsets, subset_thresh=0).shape, (6, 2)
+        )
+
+        self.assertEqual(
+            pool_duplicate_subsets(self.df_data_subsets, return_details=True)[0].shape,
+            (6, 3),
+        )
+        self.assertEqual(
+            pool_duplicate_subsets(self.df_data_subsets, return_details=True)[1],
+            ["c1", "c2", "c3", "c5"],
+        )
+
+        self.assertEqual(
+            pool_duplicate_subsets(self.df_data_subsets, exclude=["c1"]).shape,
+            (6, 4),
+        )
+
+        self.assertEqual(
+            pool_duplicate_subsets(
+                self.df_data_subsets, exclude=["c1"], return_details=True
+            )[1],
+            ["c2", "c5", "c6"],
         )
