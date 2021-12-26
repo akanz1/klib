@@ -42,6 +42,22 @@ profile = "black"
 multi_line_output = 3
 skip_gitignore = true
 
+[tool.pylint.reports]
+output-format = "colorized"
+
+[tool.pylint.messages_control]
+disable = """
+    missing-function-docstring,
+    invalid-name,
+    too-many-arguments,
+    too-many-locals,
+    too-many-statements,
+    too-many-instance-attributes,
+"""
+
+[tool.pylint.similarities]
+min-similarity-lines = 8
+
 [tool.pydocstyle]
 match_dir = "[^(?!tests|\\.)].*"     # not tests and not a folder that starts with a dot
 match = "^(?!(__init__|setup)).*py$" # py files which do not start with __init__ or setup

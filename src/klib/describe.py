@@ -8,11 +8,11 @@ Functions for descriptive analytics.
 from typing import Any, Dict, Optional, Tuple, Union
 
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 import scipy
 import seaborn as sns
+from matplotlib import ticker
 from matplotlib.colors import LinearSegmentedColormap, to_rgb
 
 from klib.utils import (
@@ -224,7 +224,7 @@ def corr_mat(
 
     def color_negative_red(val):
         color = "#FF3344" if val < 0 else None
-        return "color: %s" % color
+        return f"color: {color}"
 
     data = pd.DataFrame(data)
 

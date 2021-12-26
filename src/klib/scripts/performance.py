@@ -64,7 +64,7 @@ def main():
     reference_values = [5, 10, 10, 10]
 
     for i, (col, ref) in enumerate(zip(df_times.columns, reference_values)):
-        ax[i].boxplot(df_times[col])
+        ax[i].boxplot(df_times[col])  # pylint: disable=unsubscriptable-object
         ax[i].set_title(" ".join(col.split("_")).title())
         ax[i].axhline(ref)
     fig.suptitle("Performance", fontsize=16)
