@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import unittest
 
-from ..clean import (
+from klib.clean import (
     clean_column_names,
     convert_datatypes,
     data_cleaning,

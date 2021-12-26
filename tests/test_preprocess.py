@@ -1,7 +1,7 @@
 import pandas as pd
 import unittest
 
-from ..preprocess import train_dev_test_split
+from klib.preprocess import train_dev_test_split
 
 
 class Test_train_dev_test_split(unittest.TestCase):
