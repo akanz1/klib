@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "klib"
-version = "0.2.3"
+version = "0.2.4"
 description = "Customized data preprocessing functions for frequent tasks."
 authors = ["Andreas Kanz <andreas@akanz.de>"]
 license = "MIT"
@@ -36,7 +36,7 @@ classifiers = ["Operating System :: OS Independent"]
 
 
 [tool.black]
-target_version = ['py37', 'py38', 'py39'] # , 'py310'
+target_version = ['py37', 'py38', 'py39', 'py310']
 
 [tool.isort]
 profile = "black"
