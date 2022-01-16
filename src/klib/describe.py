@@ -691,7 +691,7 @@ def missingval_plot(
         height = rect.get_height()
         ax1.text(
             rect.get_x() + rect.get_width() / 2,
-            height + min(height, 3),
+            height + max(np.log(1 + height / 6), 0.075),
             label,
             ha="center",
             va="bottom",
