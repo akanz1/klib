@@ -17,12 +17,6 @@ from klib.clean import (
     pool_duplicate_subsets,
 )
 from klib.describe import cat_plot, corr_mat, corr_plot, dist_plot, missingval_plot
-from klib.preprocess import (
-    cat_pipe,
-    feature_selection_pipe,
-    num_pipe,
-    train_dev_test_split,
-)
 
 __all__ = [
     "clean_column_names",
@@ -36,9 +30,5 @@ __all__ = [
     "corr_plot",
     "dist_plot",
     "missingval_plot",
-    "feature_selection_pipe",
-    "num_pipe",
-    "cat_pipe",
-    "train_dev_test_split",
     "__version__",
 ]
