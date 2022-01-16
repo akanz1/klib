@@ -10,7 +10,6 @@ from typing import List, Optional, Union
 
 import numpy as np
 import pandas as pd
-from sklearn.base import BaseEstimator, TransformerMixin
 
 from klib.describe import corr_mat
 from klib.utils import (
@@ -356,93 +355,6 @@ def data_cleaning(
     return data_cleaned
 
 
-class DataCleaner(BaseEstimator, TransformerMixin):
-    """Wrapper for data_cleaning(). Allows data_cleaning() to be put into a pipeline \
-    with similar functions (e.g. using MVColHandler() or SubsetPooler()).
-
-    Parameters
-    ----------
-    drop_threshold_cols: float, default 0.9
-        Drop columns with NA-ratio equal to or above the specified threshold.
-    drop_threshold_rows: float, default 0.9
-        Drop rows with NA-ratio equal to or above the specified threshold.
-    drop_duplicates: bool, default True
-        Drop duplicate rows, keeping the first occurence. This step comes after the \
-        dropping of missing values.
-    convert_dtypes: bool, default True
-        Convert dtypes using pd.convert_dtypes().
-    col_exclude: list, default None
-        Specify a list of columns to exclude from dropping.
-    category: bool, default True
-        Change dtypes of columns to "category". Set threshold using cat_threshold. \
-        Requires convert_dtypes=True
-    cat_threshold: float, default 0.03
-        Ratio of unique values below which categories are inferred and column dtype is \
-        changed to categorical.
-    cat_exclude: list, default None
-        List of columns to exclude from categorical conversion.
-    clean_column_names: bool, optional
-        Cleans the column names and provides hints on duplicate and long names, by \
-        default True
-    show: str, optional
-        {"all", "changes", None}, by default "changes"
-        Specify verbosity of the output:
-            * "all": Print information about the data before and after cleaning as \
-            well as information about changes and memory usage (deep). Please be \
-            aware, that this can slow down the function by quite a bit.
-            * "changes": Print out differences in the data before and after cleaning.
-            * None: No information about the data and the data cleaning is printed.
-
-    Returns
-    -------
-    data_cleaned: Pandas DataFrame
-    """
-
-    def __init__(
-        self,
-        drop_threshold_cols: float = 0.9,
-        drop_threshold_rows: float = 0.9,
-        drop_duplicates: bool = True,
-        convert_dtypes: bool = True,
-        col_exclude: Optional[List[str]] = None,
-        category: bool = True,
-        cat_threshold: float = 0.03,
-        cat_exclude: Optional[List[Union[str, int]]] = None,
-        clean_col_names: bool = True,
-        show: str = "changes",
-    ):
-        self.drop_threshold_cols = drop_threshold_cols
-        self.drop_threshold_rows = drop_threshold_rows
-        self.drop_duplicates = drop_duplicates
-        self.convert_dtypes = convert_dtypes
-        self.col_exclude = col_exclude
-        self.category = category
-        self.cat_threshold = cat_threshold
-        self.cat_exclude = cat_exclude
-        self.clean_col_names = clean_col_names
-        self.show = show
-
-    def fit(self, data, target=None):  # pylint: disable=unused-argument
-        """Palceholder method"""
-        return self
-
-    def transform(self, data, target=None):  # pylint: disable=unused-argument
-        """Transform the data"""
-        return data_cleaning(
-            data,
-            drop_threshold_cols=self.drop_threshold_cols,
-            drop_threshold_rows=self.drop_threshold_rows,
-            drop_duplicates=self.drop_duplicates,
-            convert_dtypes=self.convert_dtypes,
-            col_exclude=self.col_exclude,
-            category=self.category,
-            cat_threshold=self.cat_threshold,
-            cat_exclude=self.cat_exclude,
-            clean_col_names=self.clean_col_names,
-            show=self.show,
-        )
-
-
 def mv_col_handling(
     data: pd.DataFrame,
     target: Optional[Union[str, pd.Series, List]] = None,
@@ -534,70 +446,6 @@ def mv_col_handling(
         return data, cols_mv, drop_cols
 
     return data
-
-
-class MVColHandler(BaseEstimator, TransformerMixin):
-    """Wrapper for mv_col_handling(). Allows mv_col_handling() to be put into a \
-        pipeline with similar functions (e.g. using DataCleaner() or SubsetPooler()).
-
-    Parameters
-    ----------
-    target: string, list, np.array or pd.Series, default None
-        Specify target for correlation. E.g. label column to generate only the \
-        correlations between each feature and the label.
-    mv_threshold: float, default 0.1
-        Value between 0 <= threshold <= 1. Features with a missing-value-ratio larger \
-        than mv_threshold are candidates for dropping and undergo further analysis.
-    corr_thresh_features: float, default 0.6
-        Value between 0 <= threshold <= 1. Maximum correlation a previously identified \
-        features with a high mv-ratio is allowed to have with another feature. If this \
-        threshold is overstepped, the feature undergoes further analysis.
-    corr_thresh_target: float, default 0.3
-        Value between 0 <= threshold <= 1. Minimum required correlation of a remaining \
-        feature (i.e. feature with a high mv-ratio and high correlation to another \
-        existing feature) with the target. If this threshold is not met the feature is \
-        ultimately dropped.
-    return_details: bool, default True
-        Provdies flexibility to return intermediary results.
-
-    Returns
-    -------
-    data: Updated Pandas DataFrame
-    """
-
-    def __init__(
-        self,
-        target: Optional[Union[str, pd.Series, List]] = None,
-        mv_threshold: float = 0.1,
-        corr_thresh_features: float = 0.6,
-        corr_thresh_target: float = 0.3,
-        return_details: bool = True,
-    ):
-        self.target = target
-        self.mv_threshold = mv_threshold
-        self.corr_thresh_features = corr_thresh_features
-        self.corr_thresh_target = corr_thresh_target
-        self.return_details = return_details
-
-    def fit(self, data, target=None):  # pylint: disable=unused-argument
-        """Placeholder method"""
-        return self
-
-    def transform(self, data, target=None):  # pylint: disable=unused-argument
-        """Transform the data"""
-        data, cols_mv, dropped_cols = mv_col_handling(
-            data,
-            target=self.target,
-            mv_threshold=self.mv_threshold,
-            corr_thresh_features=self.corr_thresh_features,
-            corr_thresh_target=self.corr_thresh_target,
-            return_details=self.return_details,
-        )
-
-        print(f"\nFeatures with MV-ratio > {self.mv_threshold}: {len(cols_mv)}")
-        print("Features dropped:", len(dropped_cols), dropped_cols)
-
-        return data
 
 
 def pool_duplicate_subsets(
@@ -709,62 +557,3 @@ def pool_duplicate_subsets(
         return data, subset_cols
 
     return data
-
-
-class SubsetPooler(BaseEstimator, TransformerMixin):
-    """Wrapper for pool_duplicate_subsets(). Allows pool_duplicate_subsets() to be \
-        put into a pipeline with similar functions (e.g. using DataCleaner() or \
-        MVColHandler()).
-
-    Parameters
-    ----------
-    col_dupl_ratio: float, default 0.2
-        Columns with a ratio of duplicates higher than "col_dupl_ratio" are considered \
-        in the further analysis. Columns with a lower ratio are not considered for \
-        pooling.
-    dupl_thresh: float, default 0.2
-        The first subset with a duplicate threshold higher than "dupl_thresh" is \
-        chosen and aggregated. If no subset reaches the threshold, the algorithm \
-        continues with continuously smaller subsets until "min_col_pool" is reached.
-    min_col_pool: integer, default 3
-        Minimum number of columns to pool. The algorithm attempts to combine as many \
-        columns as possible to suitable subsets and stops when "min_col_pool" is \
-        reached.
-    return_details: bool, default False
-        Provdies flexibility to return intermediary results.
-
-    Returns
-    -------
-    data: pd.DataFrame
-    """
-
-    def __init__(
-        self,
-        col_dupl_thresh=0.2,
-        subset_thresh=0.2,
-        min_col_pool=3,
-        return_details=True,
-    ):
-        self.col_dupl_thresh = col_dupl_thresh
-        self.subset_thresh = subset_thresh
-        self.min_col_pool = min_col_pool
-        self.return_details = return_details
-
-    def fit(self, data, target=None):  # pylint: disable=unused-argument
-        """Palceholder method"""
-        return self
-
-    @staticmethod
-    def transform(data, target=None):  # pylint: disable=unused-argument
-        """Transform the data"""
-        data, subset_cols = pool_duplicate_subsets(
-            data,
-            col_dupl_thresh=0.2,
-            subset_thresh=0.2,
-            min_col_pool=3,
-            return_details=True,
-        )
-
-        print("Combined columns:", len(subset_cols), subset_cols)
-
-        return data
