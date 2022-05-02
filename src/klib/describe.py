@@ -157,7 +157,7 @@ def cat_plot(
     )
     ax_hm = fig.add_subplot(gs[2:, :])
     sns.heatmap(data, cmap=cat_plot_cmap, cbar=False, vmin=0, vmax=10, ax=ax_hm)
-    ax_hm.set_yticks(np.round(ax_hm.get_yticks()[0::5], -1))
+    ax_hm.set_yticks(np.round(ax_hm.get_yticks()[::5], -1))
     ax_hm.set_yticklabels(ax_hm.get_yticks())
     ax_hm.set_xticklabels(
         ax_hm.get_xticklabels(),
@@ -708,7 +708,7 @@ def missingval_plot(
 
     # ax2 - Heatmap
     sns.heatmap(data.isna(), cbar=False, cmap="binary", ax=ax2)
-    ax2.set_yticks(np.round(ax2.get_yticks()[0::5], -1))
+    ax2.set_yticks(np.round(ax2.get_yticks()[::5], -1))
     ax2.set_yticklabels(ax2.get_yticks())
     ax2.set_xticklabels(
         ax2.get_xticklabels(),

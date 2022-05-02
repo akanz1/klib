@@ -67,7 +67,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         matches = re.findall(re.compile("[a-z][A-Z]"), col)
         column = col
         for match in matches:
-            column = column.replace(match, match[0] + "_" + match[1])
+            column = column.replace(match, f"{match[0]}_{match[1]}")
             data.rename(columns={data.columns[i]: column}, inplace=True)
 
     data.columns = (
@@ -104,9 +104,10 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
     if dupl_idx:
         dupl_before = data.columns[dupl_idx].tolist()
         data.columns = [
-            col if col not in data.columns[:i] else col + "_" + str(i)
+            col if col not in data.columns[:i] else f"{col}_{str(i)}"
             for i, col in enumerate(data.columns)
         ]
+
         if hints:
             print(
                 f"Duplicate column names detected! Columns with index {dupl_idx} and "
@@ -421,7 +422,7 @@ def mv_col_handling(
     mv_ratios = _missing_vals(data_local)["mv_cols_ratio"]
     cols_mv = mv_ratios[mv_ratios > mv_threshold].index.tolist()
     data_local[cols_mv] = (
-        data_local[cols_mv].applymap(lambda x: 1 if not pd.isnull(x) else x).fillna(0)
+        data_local[cols_mv].applymap(lambda x: x if pd.isnull(x) else 1).fillna(0)
     )
 
     high_corr_features = []
