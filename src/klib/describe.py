@@ -47,7 +47,7 @@ def cat_plot(
     data : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
         is provided, the index/column information is used to label the plots
-    figsize : Tuple[float, float], optional
+    figsize : tuple[float, float], optional
         Use to control the figure size, by default (18, 18)
     top : int, optional
         Show the "top" most frequent values in a column, by default 3
@@ -304,7 +304,7 @@ def corr_plot(
     cmap : str, optional
         The mapping from data values to color space, matplotlib colormap name or \
         object, or list of colors, by default "BrBG"
-    figsize : Tuple[float, float], optional
+    figsize : tuple[float, float], optional
         Use to control the figure size, by default (12, 10)
     annot : bool, optional
         Use to show or hide annotations, by default True
@@ -434,21 +434,21 @@ def dist_plot(
         Color of the vertical line indicating the mean of the data, by default "orange"
     size : float, optional
         Controls the plot size, by default 3
-    fill_range : Tuple, optional
+    fill_range : tuple, optional
         Set the quantiles for shading. Default spans 95% of the data, which is about \
         two std. deviations above and below the mean, by default (0.025, 0.975)
     showall : bool, optional
         Set to True to remove the output limit of 20 plots, by default False
-    kde_kws : Dict[str, Any], optional
+    kde_kws : dict[str, Any], optional
         Keyword arguments for kdeplot(), by default {"color": "k", "alpha": 0.75, \
         "linewidth": 1.5, "bw_adjust": 0.8}
-    rug_kws : Dict[str, Any], optional
+    rug_kws : dict[str, Any], optional
         Keyword arguments for rugplot(), by default {"color": "#ff3333", \
         "alpha": 0.15, "lw": 3, "height": 0.075}
-    fill_kws : Dict[str, Any], optional
+    fill_kws : dict[str, Any], optional
         Keyword arguments to control the fill, by default {"color": "#80d4ff", \
         "alpha": 0.2}
-    font_kws : Dict[str, Any], optional
+    font_kws : dict[str, Any], optional
         Keyword arguments to control the font, by default {"color":  "#111111", \
         "weight": "normal", "size": 11}
 
@@ -629,7 +629,7 @@ def missingval_plot(
     cmap : str, optional
         Any valid colormap can be used. E.g. "Greys", "RdPu". More information can be \
         found in the matplotlib documentation, by default "PuBuGn"
-    figsize : Tuple, optional
+    figsize : tuple, optional
         Use to control the figure size, by default (20, 20)
     sort : bool, optional
         Sort columns based on missing values in descending order and drop columns \
