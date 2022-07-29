@@ -5,24 +5,26 @@ Utilities and auxiliary functions.
 
 """
 
-from typing import Any, Dict, List, Optional, Tuple, Union
+from __future__ import annotations
+
+from typing import Any
+from typing import Literal
+from typing import Optional
 
 import numpy as np
 import pandas as pd
 
 
 def _corr_selector(
-    corr: Union[pd.Series, pd.DataFrame],
-    split: Optional[
-        str
-    ] = None,  # Optional[Literal["pos", "neg", "high", "low"]] = None, Req:Python 3.8
+    corr: pd.Series | pd.DataFrame,
+    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
     threshold: float = 0,
-) -> Union[pd.Series, pd.DataFrame]:
+) -> pd.Series | pd.DataFrame:
     """Select the desired correlations using this utility function.
 
     Parameters
     ----------
-    corr : Union[pd.Series, pd.DataFrame]
+    corr : pd.Series | pd.DataFrame
         pd.Series or pd.DataFrame of correlations
     split : Optional[str], optional
         Type of split performed, by default None
@@ -69,9 +71,9 @@ def _corr_selector(
 def _diff_report(
     data: pd.DataFrame,
     data_cleaned: pd.DataFrame,
-    dupl_rows: Optional[List[Union[str, int]]] = None,
-    single_val_cols: Optional[List[str]] = None,
-    show: Optional[str] = "changes",  # Optional[Literal["all", "changes"]] = "changes"
+    dupl_rows: Optional[list[str | int]] = None,
+    single_val_cols: Optional[list[str]] = None,
+    show: Optional[Literal["all", "changes"]] = "changes",
 ) -> None:
     """Provide information about changes between two datasets, such as dropped rows \
         and columns, memory usage and missing values.
@@ -84,7 +86,7 @@ def _diff_report(
     data_cleaned : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame. Input the cleaned / \
         updated dataset here
-    dupl_rows : Optional[List[Union[str, int]]], optional
+    dupl_rows : Optional[list[str | int]], optional
         List of duplicate row indices, by default None
     single_val_cols : Optional[List[str]], optional
         List of single-valued column indices. I.e. columns where all cells contain \
@@ -149,7 +151,7 @@ def _diff_report(
     print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)\n")
 
 
-def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
+def _drop_duplicates(data: pd.DataFrame) -> tuple[pd.DataFrame, list[str | int]]:
     """Provide information on and drops duplicate rows.
 
     Parameters
@@ -184,11 +186,10 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
     float
         Memory usage in megabytes
     """
-    data = pd.DataFrame(data).copy()
     return round(data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2)
 
 
-def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
+def _missing_vals(data: pd.DataFrame) -> dict[str, Any]:
     """Give metrics of missing values in the dataset.
 
     Parameters
@@ -221,14 +222,14 @@ def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
     }
 
 
-def _validate_input_bool(value, desc):
+def _validate_input_bool(value: bool, desc):
     if not isinstance(value, bool):
         raise TypeError(
             f"Input value for '{desc}' is {type(value)} but should be a boolean."
         )
 
 
-def _validate_input_int(value, desc):
+def _validate_input_int(value: int, desc):
     if not isinstance(value, int):
         raise TypeError(
             f"Input value for '{desc}' is {type(value)} but should be an integer."
