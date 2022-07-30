@@ -101,8 +101,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         .str.lower()
     )
 
-    dupl_idx = [i for i, x in enumerate(data.columns.duplicated()) if x]
-    if dupl_idx:
+    if dupl_idx := [i for i, x in enumerate(data.columns.duplicated()) if x]:
         dupl_before = data.columns[dupl_idx].tolist()
         data.columns = [
             col if col not in data.columns[:i] else f"{col}_{str(i)}"
@@ -444,10 +443,7 @@ def mv_col_handling(
         drop_cols = corrs.loc[abs(corrs.iloc[:, 0]) < corr_thresh_target].index.tolist()
         data = data.drop(columns=drop_cols)
 
-    if return_details:
-        return data, cols_mv, drop_cols
-
-    return data
+    return (data, cols_mv, drop_cols) if return_details else data
 
 
 def pool_duplicate_subsets(
@@ -555,7 +551,4 @@ def pool_duplicate_subsets(
 
     data = pd.concat([data, pd.DataFrame(excluded_cols)], axis=1)
 
-    if return_details:
-        return data, subset_cols
-
-    return data
+    return (data, subset_cols) if return_details else data
