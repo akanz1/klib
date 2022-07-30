@@ -141,8 +141,8 @@ def cat_plot(
             0,
             0,
             f"Unique values: {n_unique}\n\n"
-            f"Top {lim_top} vals: {sum_top} ({sum_top/data.shape[0]*100:.1f}%)\n"
-            f"Bot {lim_bot} vals: {sum_bot} ({sum_bot/data.shape[0]*100:.1f}%)",
+            f"Top {lim_top}: {sum_top} ({sum_top/data.shape[0]*100:.1f}%)\n"
+            f"Bot {lim_bot}: {sum_bot} ({sum_bot/data.shape[0]*100:.1f}%)",
             transform=ax_bottom.transAxes,
             color="#111111",
             fontsize=11,
