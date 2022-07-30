@@ -8,6 +8,7 @@ Functions for descriptive analytics.
 from __future__ import annotations
 
 from typing import Any
+from typing import Literal
 from typing import Optional
 
 import matplotlib.pyplot as plt
@@ -30,7 +31,6 @@ from klib.utils import _validate_input_sum_larger
 __all__ = ["cat_plot", "corr_mat", "corr_plot", "dist_plot", "missingval_plot"]
 
 
-# Categorical Plot
 def cat_plot(
     data: pd.DataFrame,
     figsize: tuple[float, float] = (18, 18),
@@ -173,17 +173,14 @@ def cat_plot(
     return gs
 
 
-# Correlation Matrix
 def corr_mat(
     data: pd.DataFrame,
-    split: Optional[
-        str
-    ] = None,  # Optional[Literal['pos', 'neg', 'high', 'low']] = None,
+    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
     threshold: float = 0,
     target: Optional[pd.DataFrame | pd.Series | np.ndarray | str] = None,
-    method: str = "pearson",  # Literal['pearson', 'spearman', 'kendall'] = "pearson",
+    method: Literal["pearson", "spearman", "kendall"] = "pearson",
     colored: bool = True,
-) -> pd.DataFrame | Any:
+) -> pd.DataFrame | pd.Series:
     """Return a color-encoded correlation matrix.
 
     Parameters
@@ -191,7 +188,7 @@ def corr_mat(
     data : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
         is provided, the index/column information is used to label the plots
-    split : Optional[str], optional
+    split : Optional[Literal['pos', 'neg', 'high', 'low']], optional
         Type of split to be performed, by default None
         {None, "pos", "neg", "high", "low"}
     threshold : float, optional
@@ -200,7 +197,7 @@ def corr_mat(
     target : Optional[pd.DataFrame | str], optional
         Specify target for correlation. E.g. label column to generate only the \
         correlations between each feature and the label, by default None
-    method : str, optional
+    method : Literal['pearson', 'spearman', 'kendall'], optional
         method: {"pearson", "spearman", "kendall"}, by default "pearson"
         * pearson: measures linear relationships and requires normally distributed \
             and homoscedastic data.
@@ -252,13 +249,12 @@ def corr_mat(
     return corr
 
 
-# Correlation matrix / heatmap
 def corr_plot(
     data: pd.DataFrame,
-    split: Optional[str] = None,
+    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
     threshold: float = 0,
     target: Optional[pd.Series | str] = None,
-    method: str = "pearson",
+    method: Literal["pearson", "spearman", "kendall"] = "pearson",
     cmap: str = "BrBG",
     figsize: tuple[float, float] = (12, 10),
     annot: bool = True,
@@ -292,7 +288,7 @@ def corr_plot(
     target : Optional[pd.Series | str], optional
         Specify target for correlation. E.g. label column to generate only the \
         correlations between each feature and the label, by default None
-    method : str, optional
+    method : Literal['pearson', 'spearman', 'kendall'], optional
         method: {"pearson", "spearman", "kendall"}, by default "pearson"
             * pearson: measures linear relationships and requires normally \
                 distributed and homoscedastic data.
@@ -410,7 +406,6 @@ def corr_plot(
     return ax
 
 
-# Distribution plot
 def dist_plot(
     data: pd.DataFrame,
     mean_color: str = "orange",
@@ -611,7 +606,6 @@ def dist_plot(
     return g.axes[0, 0]
 
 
-# Missing value plot
 def missingval_plot(
     data: pd.DataFrame,
     cmap: str = "PuBuGn",

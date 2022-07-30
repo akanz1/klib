@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import itertools
 import re
+from typing import Literal
 from typing import Optional
 
 import numpy as np
@@ -252,7 +253,7 @@ def data_cleaning(
     cat_threshold: float = 0.03,
     cat_exclude: Optional[list[str | int]] = None,
     clean_col_names: bool = True,
-    show: str = "changes",
+    show: Optional[Literal["all", "changes"]] = "changes",
 ) -> pd.DataFrame:
     """Perform initial data cleaning tasks on a dataset, such as dropping single \
         valued and empty rows, empty columns as well as optimizing the datatypes.
@@ -285,7 +286,7 @@ def data_cleaning(
     clean_column_names: bool, optional
         Cleans the column names and provides hints on duplicate and long names, by \
         default True
-    show : str, optional
+    show : Optional[Literal["all", "changes"]], optional
         {"all", "changes", None}, by default "changes"
         Specify verbosity of the output:
 
