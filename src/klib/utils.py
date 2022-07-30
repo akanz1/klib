@@ -190,6 +190,8 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
 
 
 class MVResult(TypedDict):
+    """TypedDict for the return value of _missing_vals."""
+
     mv_total: int
     mv_rows: int
     mv_cols: int
