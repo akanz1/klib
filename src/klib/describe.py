@@ -5,7 +5,11 @@ Functions for descriptive analytics.
 
 """
 
-from typing import Any, Dict, Optional, Tuple, Union
+from __future__ import annotations
+
+from typing import Any
+from typing import Literal
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,27 +17,23 @@ import pandas as pd
 import scipy
 import seaborn as sns
 from matplotlib import ticker
-from matplotlib.colors import LinearSegmentedColormap, to_rgb
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import to_rgb
 
-from klib.utils import (
-    _corr_selector,
-    _missing_vals,
-    _validate_input_bool,
-    _validate_input_int,
-    _validate_input_range,
-    _validate_input_smaller,
-    _validate_input_sum_larger,
-)
+from klib.utils import _corr_selector
+from klib.utils import _missing_vals
+from klib.utils import _validate_input_bool
+from klib.utils import _validate_input_int
+from klib.utils import _validate_input_range
+from klib.utils import _validate_input_smaller
+from klib.utils import _validate_input_sum_larger
 
 __all__ = ["cat_plot", "corr_mat", "corr_plot", "dist_plot", "missingval_plot"]
 
 
-# Functions
-
-# Categorical Plot
 def cat_plot(
     data: pd.DataFrame,
-    figsize: Tuple = (18, 18),
+    figsize: tuple[float, float] = (18, 18),
     top: int = 3,
     bottom: int = 3,
     bar_color_top: str = "#5ab4ac",
@@ -47,7 +47,7 @@ def cat_plot(
     data : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
         is provided, the index/column information is used to label the plots
-    figsize : Tuple, optional
+    figsize : tuple[float, float], optional
         Use to control the figure size, by default (18, 18)
     top : int, optional
         Show the "top" most frequent values in a column, by default 3
@@ -141,8 +141,8 @@ def cat_plot(
             0,
             0,
             f"Unique values: {n_unique}\n\n"
-            f"Top {lim_top} vals: {sum_top} ({sum_top/data.shape[0]*100:.1f}%)\n"
-            f"Bot {lim_bot} vals: {sum_bot} ({sum_bot/data.shape[0]*100:.1f}%)",
+            f"Top {lim_top}: {sum_top} ({sum_top/data.shape[0]*100:.1f}%)\n"
+            f"Bot {lim_bot}: {sum_bot} ({sum_bot/data.shape[0]*100:.1f}%)",
             transform=ax_bottom.transAxes,
             color="#111111",
             fontsize=11,
@@ -173,17 +173,14 @@ def cat_plot(
     return gs
 
 
-# Correlation Matrix
 def corr_mat(
     data: pd.DataFrame,
-    split: Optional[
-        str
-    ] = None,  # Optional[Literal['pos', 'neg', 'high', 'low']] = None,
+    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
     threshold: float = 0,
-    target: Optional[Union[pd.DataFrame, pd.Series, np.ndarray, str]] = None,
-    method: str = "pearson",  # Literal['pearson', 'spearman', 'kendall'] = "pearson",
+    target: Optional[pd.DataFrame | pd.Series | np.ndarray | str] = None,
+    method: Literal["pearson", "spearman", "kendall"] = "pearson",
     colored: bool = True,
-) -> Union[pd.DataFrame, Any]:
+) -> pd.DataFrame | pd.Series:
     """Return a color-encoded correlation matrix.
 
     Parameters
@@ -191,16 +188,16 @@ def corr_mat(
     data : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame. If a Pandas DataFrame \
         is provided, the index/column information is used to label the plots
-    split : Optional[str], optional
+    split : Optional[Literal['pos', 'neg', 'high', 'low']], optional
         Type of split to be performed, by default None
         {None, "pos", "neg", "high", "low"}
     threshold : float, optional
         Value between 0 and 1 to set the correlation threshold, by default 0 unless \
         split = "high" or split = "low", in which case default is 0.3
-    target : Optional[Union[pd.DataFrame, str]], optional
+    target : Optional[pd.DataFrame | str], optional
         Specify target for correlation. E.g. label column to generate only the \
         correlations between each feature and the label, by default None
-    method : str, optional
+    method : Literal['pearson', 'spearman', 'kendall'], optional
         method: {"pearson", "spearman", "kendall"}, by default "pearson"
         * pearson: measures linear relationships and requires normally distributed \
             and homoscedastic data.
@@ -214,7 +211,7 @@ def corr_mat(
 
     Returns
     -------
-    Union[pd.DataFrame, pd.Styler]
+    pd.DataFrame | pd.Styler
         If colored = True - corr: Pandas Styler object
         If colored = False - corr: Pandas DataFrame
     """
@@ -252,15 +249,14 @@ def corr_mat(
     return corr
 
 
-# Correlation matrix / heatmap
 def corr_plot(
     data: pd.DataFrame,
-    split: Optional[str] = None,
+    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
     threshold: float = 0,
-    target: Optional[Union[pd.Series, str]] = None,
-    method: str = "pearson",
+    target: Optional[pd.Series | str] = None,
+    method: Literal["pearson", "spearman", "kendall"] = "pearson",
     cmap: str = "BrBG",
-    figsize: Tuple = (12, 10),
+    figsize: tuple[float, float] = (12, 10),
     annot: bool = True,
     dev: bool = False,
     **kwargs,
@@ -289,10 +285,10 @@ def corr_plot(
     threshold : float, optional
         Value between 0 and 1 to set the correlation threshold, by default 0 unless \
             split = "high" or split = "low", in which case default is 0.3
-    target : Optional[Union[pd.Series, str]], optional
+    target : Optional[pd.Series | str], optional
         Specify target for correlation. E.g. label column to generate only the \
         correlations between each feature and the label, by default None
-    method : str, optional
+    method : Literal['pearson', 'spearman', 'kendall'], optional
         method: {"pearson", "spearman", "kendall"}, by default "pearson"
             * pearson: measures linear relationships and requires normally \
                 distributed and homoscedastic data.
@@ -304,7 +300,7 @@ def corr_plot(
     cmap : str, optional
         The mapping from data values to color space, matplotlib colormap name or \
         object, or list of colors, by default "BrBG"
-    figsize : Tuple, optional
+    figsize : tuple[float, float], optional
         Use to control the figure size, by default (12, 10)
     annot : bool, optional
         Use to show or hide annotations, by default True
@@ -357,10 +353,10 @@ def corr_plot(
         colored=False,
     )
 
-    mask = np.zeros_like(corr, dtype=np.bool)
+    mask = np.zeros_like(corr, dtype=bool)
 
     if target is None:
-        mask = np.triu(np.ones_like(corr, dtype=np.bool))
+        mask = np.triu(np.ones_like(corr, dtype=bool))
 
     vmax = np.round(np.nanmax(corr.where(~mask)) - 0.05, 2)
     vmin = np.round(np.nanmin(corr.where(~mask)) + 0.05, 2)
@@ -410,17 +406,16 @@ def corr_plot(
     return ax
 
 
-# Distribution plot
 def dist_plot(
     data: pd.DataFrame,
     mean_color: str = "orange",
-    size: int = 2.5,
-    fill_range: Tuple = (0.025, 0.975),
+    size: int = 3,
+    fill_range: tuple = (0.025, 0.975),
     showall: bool = False,
-    kde_kws: Dict[str, Any] = None,
-    rug_kws: Dict[str, Any] = None,
-    fill_kws: Dict[str, Any] = None,
-    font_kws: Dict[str, Any] = None,
+    kde_kws: Optional[dict[str, Any]] = None,
+    rug_kws: Optional[dict[str, Any]] = None,
+    fill_kws: Optional[dict[str, Any]] = None,
+    font_kws: Optional[dict[str, Any]] = None,
 ):
     """Two-dimensional visualization of the distribution of non binary numerical \
         features.
@@ -432,23 +427,23 @@ def dist_plot(
         is provided, the index/column information is used to label the plots
     mean_color : str, optional
         Color of the vertical line indicating the mean of the data, by default "orange"
-    size : int, optional
-        Controls the plot size, by default 2.5
-    fill_range : Tuple, optional
+    size : float, optional
+        Controls the plot size, by default 3
+    fill_range : tuple, optional
         Set the quantiles for shading. Default spans 95% of the data, which is about \
         two std. deviations above and below the mean, by default (0.025, 0.975)
     showall : bool, optional
         Set to True to remove the output limit of 20 plots, by default False
-    kde_kws : Dict[str, Any], optional
+    kde_kws : dict[str, Any], optional
         Keyword arguments for kdeplot(), by default {"color": "k", "alpha": 0.75, \
         "linewidth": 1.5, "bw_adjust": 0.8}
-    rug_kws : Dict[str, Any], optional
+    rug_kws : dict[str, Any], optional
         Keyword arguments for rugplot(), by default {"color": "#ff3333", \
         "alpha": 0.15, "lw": 3, "height": 0.075}
-    fill_kws : Dict[str, Any], optional
+    fill_kws : dict[str, Any], optional
         Keyword arguments to control the fill, by default {"color": "#80d4ff", \
         "alpha": 0.2}
-    font_kws : Dict[str, Any], optional
+    font_kws : dict[str, Any], optional
         Keyword arguments to control the font, by default {"color":  "#111111", \
         "weight": "normal", "size": 11}
 
@@ -611,11 +606,10 @@ def dist_plot(
     return g.axes[0, 0]
 
 
-# Missing value plot
 def missingval_plot(
     data: pd.DataFrame,
     cmap: str = "PuBuGn",
-    figsize: Tuple = (20, 20),
+    figsize: tuple = (20, 20),
     sort: bool = False,
     spine_color: str = "#EEEEEE",
 ):
@@ -629,7 +623,7 @@ def missingval_plot(
     cmap : str, optional
         Any valid colormap can be used. E.g. "Greys", "RdPu". More information can be \
         found in the matplotlib documentation, by default "PuBuGn"
-    figsize : Tuple, optional
+    figsize : tuple, optional
         Use to control the figure size, by default (20, 20)
     sort : bool, optional
         Sort columns based on missing values in descending order and drop columns \

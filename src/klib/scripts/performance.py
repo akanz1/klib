@@ -14,7 +14,7 @@ import pandas as pd
 import klib
 
 # Paths
-base_path = Path(__file__).resolve().parents[2]
+base_path = Path(__file__).resolve().parents[3]
 print(base_path)
 data_path = base_path / "examples"
 

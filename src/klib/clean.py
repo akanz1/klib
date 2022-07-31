@@ -4,21 +4,22 @@ Functions for data cleaning.
 :author: Andreas Kanz
 """
 
+from __future__ import annotations
+
 import itertools
 import re
-from typing import List, Optional, Union
+from typing import Literal
+from typing import Optional
 
 import numpy as np
 import pandas as pd
 
 from klib.describe import corr_mat
-from klib.utils import (
-    _diff_report,
-    _drop_duplicates,
-    _missing_vals,
-    _validate_input_bool,
-    _validate_input_range,
-)
+from klib.utils import _diff_report
+from klib.utils import _drop_duplicates
+from klib.utils import _missing_vals
+from klib.utils import _validate_input_bool
+from klib.utils import _validate_input_range
 
 __all__ = [
     "clean_column_names",
@@ -29,14 +30,14 @@ __all__ = [
 ]
 
 
-def _optimize_ints(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
-    data = pd.DataFrame(data).copy()
-    ints = data.select_dtypes(include=["int64"]).columns.tolist()
-    data[ints] = data[ints].apply(pd.to_numeric, downcast="integer")
-    return data
+def _optimize_ints(data: pd.Series | pd.DataFrame) -> pd.DataFrame:
+    df = pd.DataFrame(data).copy()
+    ints = df.select_dtypes(include=["int64"]).columns.tolist()
+    df[ints] = df[ints].apply(pd.to_numeric, downcast="integer")
+    return df
 
 
-def _optimize_floats(data: Union[pd.Series, pd.DataFrame]) -> pd.DataFrame:
+def _optimize_floats(data: pd.Series | pd.DataFrame) -> pd.DataFrame:
     data = pd.DataFrame(data).copy()
     floats = data.select_dtypes(include=["float64"]).columns.tolist()
     data[floats] = data[floats].apply(pd.to_numeric, downcast="float")
@@ -100,8 +101,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         .str.lower()
     )
 
-    dupl_idx = [i for i, x in enumerate(data.columns.duplicated()) if x]
-    if dupl_idx:
+    if dupl_idx := [i for i, x in enumerate(data.columns.duplicated()) if x]:
         dupl_before = data.columns[dupl_idx].tolist()
         data.columns = [
             col if col not in data.columns[:i] else f"{col}_{str(i)}"
@@ -129,7 +129,7 @@ def convert_datatypes(
     data: pd.DataFrame,
     category: bool = True,
     cat_threshold: float = 0.05,
-    cat_exclude: Optional[List[Union[str, int]]] = None,
+    cat_exclude: Optional[list[str | int]] = None,
 ) -> pd.DataFrame:
     """Convert columns to best possible dtypes using dtypes supporting pd.NA.
 
@@ -146,7 +146,7 @@ def convert_datatypes(
     cat_threshold : float, optional
         Ratio of unique values below which categories are inferred and column dtype is \
         changed to categorical, by default 0.05
-    cat_exclude : Optional[List[Union[str, int]]], optional
+    cat_exclude : Optional[list[str | int]], optional
         List of columns to exclude from categorical conversion, by default None
 
     Returns
@@ -188,7 +188,7 @@ def drop_missing(
     data: pd.DataFrame,
     drop_threshold_cols: float = 1,
     drop_threshold_rows: float = 1,
-    col_exclude: Optional[List[str]] = None,
+    col_exclude: Optional[list[str]] = None,
 ) -> pd.DataFrame:
     """Drop completely empty columns and rows by default and optionally provides \
         flexibility to loosen restrictions to drop additional non-empty columns and \
@@ -203,7 +203,7 @@ def drop_missing(
         default 1
     drop_threshold_rows : float, optional
         Drop rows with NA-ratio equal to or above the specified threshold, by default 1
-    col_exclude : Optional[List[str]], optional
+    col_exclude : Optional[list[str]], optional
         Specify a list of columns to exclude from dropping. The excluded columns do \
         not affect the drop thresholds, by default None
 
@@ -247,12 +247,12 @@ def data_cleaning(
     drop_threshold_rows: float = 0.9,
     drop_duplicates: bool = True,
     convert_dtypes: bool = True,
-    col_exclude: Optional[List[str]] = None,
+    col_exclude: Optional[list[str]] = None,
     category: bool = True,
     cat_threshold: float = 0.03,
-    cat_exclude: Optional[List[Union[str, int]]] = None,
+    cat_exclude: Optional[list[str | int]] = None,
     clean_col_names: bool = True,
-    show: str = "changes",
+    show: Optional[Literal["all", "changes"]] = "changes",
 ) -> pd.DataFrame:
     """Perform initial data cleaning tasks on a dataset, such as dropping single \
         valued and empty rows, empty columns as well as optimizing the datatypes.
@@ -272,7 +272,7 @@ def data_cleaning(
         dropping of missing values, by default True
     convert_dtypes : bool, optional
         Convert dtypes using pd.convert_dtypes(), by default True
-    col_exclude : Optional[List[str]], optional
+    col_exclude : Optional[list[str]], optional
         Specify a list of columns to exclude from dropping, by default None
     category : bool, optional
         Enable changing dtypes of "object" columns to "category". Set threshold using \
@@ -280,12 +280,12 @@ def data_cleaning(
     cat_threshold : float, optional
         Ratio of unique values below which categories are inferred and column dtype is \
         changed to categorical, by default 0.03
-    cat_exclude : Optional[List[str]], optional
+    cat_exclude : Optional[list[str]], optional
         List of columns to exclude from categorical conversion, by default None
     clean_column_names: bool, optional
         Cleans the column names and provides hints on duplicate and long names, by \
         default True
-    show : str, optional
+    show : Optional[Literal["all", "changes"]], optional
         {"all", "changes", None}, by default "changes"
         Specify verbosity of the output:
 
@@ -358,12 +358,12 @@ def data_cleaning(
 
 def mv_col_handling(
     data: pd.DataFrame,
-    target: Optional[Union[str, pd.Series, List]] = None,
+    target: Optional[str | pd.Series | list[str]] = None,
     mv_threshold: float = 0.1,
     corr_thresh_features: float = 0.5,
     corr_thresh_target: float = 0.3,
     return_details: bool = False,
-) -> pd.DataFrame:
+) -> pd.DataFrame | tuple[pd.DataFrame, list[str], list[str]]:
     """Convert columns with a high ratio of missing values into binary features and \
     eventually drops them based on their correlation with other features and the \
     target variable.
@@ -383,7 +383,7 @@ def mv_col_handling(
     ----------
     data : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame
-    target : Optional[Union[str, pd.Series, List]], optional
+    target : Optional[str | pd.Series | list]], optional
         Specify target for correlation. I.e. label column to generate only the \
         correlations between each feature and the label, by default None
     mv_threshold : float, optional
@@ -443,10 +443,7 @@ def mv_col_handling(
         drop_cols = corrs.loc[abs(corrs.iloc[:, 0]) < corr_thresh_target].index.tolist()
         data = data.drop(columns=drop_cols)
 
-    if return_details:
-        return data, cols_mv, drop_cols
-
-    return data
+    return (data, cols_mv, drop_cols) if return_details else data
 
 
 def pool_duplicate_subsets(
@@ -454,9 +451,9 @@ def pool_duplicate_subsets(
     col_dupl_thresh: float = 0.2,
     subset_thresh: float = 0.2,
     min_col_pool: int = 3,
-    exclude: Optional[List[str]] = None,
+    exclude: Optional[list[str]] = None,
     return_details=False,
-) -> pd.DataFrame:
+) -> pd.DataFrame | tuple[pd.DataFrame, list[str]]:
     """Check for duplicates in subsets of columns and pools them. This can reduce \
         the number of columns in the data without loosing much information. Suitable \
         columns are combined to subsets and tested for duplicates. In case sufficient \
@@ -485,7 +482,7 @@ def pool_duplicate_subsets(
         Minimum number of columns to pool. The algorithm attempts to combine as many \
         columns as possible to suitable subsets and stops when "min_col_pool" is \
         reached, by default 3
-    exclude : Optional[List[str]], optional
+    exclude : Optional[list[str]], optional
         List of column names to be excluded from the analysis. These columns are \
         passed through without modification, by default None
     return_details : bool, optional
@@ -554,7 +551,4 @@ def pool_duplicate_subsets(
 
     data = pd.concat([data, pd.DataFrame(excluded_cols)], axis=1)
 
-    if return_details:
-        return data, subset_cols
-
-    return data
+    return (data, subset_cols) if return_details else data

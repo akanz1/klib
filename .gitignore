@@ -127,3 +127,4 @@ cython_debug/
 
 /misc/
 .vscode/
+.DS_Store

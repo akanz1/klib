@@ -5,24 +5,26 @@ Utilities and auxiliary functions.
 
 """
 
-from typing import Any, Dict, List, Optional, Tuple, Union
+from __future__ import annotations
+
+from typing import Literal
+from typing import Optional
+from typing import TypedDict
 
 import numpy as np
 import pandas as pd
 
 
 def _corr_selector(
-    corr: Union[pd.Series, pd.DataFrame],
-    split: Optional[
-        str
-    ] = None,  # Optional[Literal["pos", "neg", "high", "low"]] = None, Req:Python 3.8
+    corr: pd.Series | pd.DataFrame,
+    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
     threshold: float = 0,
-) -> Union[pd.Series, pd.DataFrame]:
+) -> pd.Series | pd.DataFrame:
     """Select the desired correlations using this utility function.
 
     Parameters
     ----------
-    corr : Union[pd.Series, pd.DataFrame]
+    corr : pd.Series | pd.DataFrame
         pd.Series or pd.DataFrame of correlations
     split : Optional[str], optional
         Type of split performed, by default None
@@ -69,9 +71,9 @@ def _corr_selector(
 def _diff_report(
     data: pd.DataFrame,
     data_cleaned: pd.DataFrame,
-    dupl_rows: Optional[List[Union[str, int]]] = None,
-    single_val_cols: Optional[List[str]] = None,
-    show: Optional[str] = "changes",  # Optional[Literal["all", "changes"]] = "changes"
+    dupl_rows: Optional[list[str | int]] = None,
+    single_val_cols: Optional[list[str]] = None,
+    show: Optional[Literal["all", "changes"]] = "changes",
 ) -> None:
     """Provide information about changes between two datasets, such as dropped rows \
         and columns, memory usage and missing values.
@@ -84,7 +86,7 @@ def _diff_report(
     data_cleaned : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame. Input the cleaned / \
         updated dataset here
-    dupl_rows : Optional[List[Union[str, int]]], optional
+    dupl_rows : Optional[list[str | int]], optional
         List of duplicate row indices, by default None
     single_val_cols : Optional[List[str]], optional
         List of single-valued column indices. I.e. columns where all cells contain \
@@ -116,28 +118,19 @@ def _diff_report(
     if show == "all":
         data_mem = _memory_usage(data, deep=True)
         data_cl_mem = _memory_usage(data_cleaned, deep=True)
-        print("Before data cleaning:\n")
-        print(f"dtypes:\n{data.dtypes.value_counts()}")
-        print(f"\nNumber of rows: {str(data.shape[0]).rjust(8)}")
-        print(f"Number of cols: {str(data.shape[1]).rjust(8)}")
-        print(f"Missing values: {str(data_mv_tot).rjust(8)}")
-        print(f"Memory usage: {str(data_mem).rjust(7)} MB")
-        print("_______________________________________________________\n")
-        print("After data cleaning:\n")
-        print(f"dtypes:\n{data_cleaned.dtypes.value_counts()}")
-        print(f"\nNumber of rows: {str(data_cleaned.shape[0]).rjust(8)}")
-        print(f"Number of cols: {str(data_cleaned.shape[1]).rjust(8)}")
-        print(f"Missing values: {str(data_cl_mv_tot).rjust(8)}")
-        print(f"Memory usage: {str(data_cl_mem).rjust(7)} MB")
-        print("_______________________________________________________\n")
+        _print_cleaning_details("Before data cleaning:\n", data, data_mv_tot, data_mem)
+        _print_cleaning_details(
+            "After data cleaning:\n", data_cleaned, data_cl_mv_tot, data_cl_mem
+        )
 
     print(
-        f"Shape of cleaned data: {data_cleaned.shape}"
-        f"Remaining NAs: {data_cl_mv_tot}"
+        f"Shape of cleaned data: {data_cleaned.shape} - "
+        f"Remaining NAs: {data_cl_mv_tot}\n"
     )
-    print("\nChanges:")
     print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
-    print(f"     of which {len(dupl_rows)} duplicates. (Rows: {dupl_rows[:200]})")
+    print(
+        f"     of which {len(dupl_rows)} duplicates. (Rows (first 150 shown): {dupl_rows[:150]})\n"
+    )
     print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
     print(
         f"     of which {len(single_val_cols)} single valued."
@@ -149,7 +142,17 @@ def _diff_report(
     print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)\n")
 
 
-def _drop_duplicates(data: pd.DataFrame) -> Tuple[pd.DataFrame, Any]:
+def _print_cleaning_details(arg0, arg1, arg2, arg3):
+    print(arg0)
+    print(f"dtypes:\n{arg1.dtypes.value_counts()}")
+    print(f"\nNumber of rows: {str(arg1.shape[0]).rjust(8)}")
+    print(f"Number of cols: {str(arg1.shape[1]).rjust(8)}")
+    print(f"Missing values: {str(arg2).rjust(8)}")
+    print(f"Memory usage: {str(arg3).rjust(7)} MB")
+    print("_______________________________________________________\n")
+
+
+def _drop_duplicates(data: pd.DataFrame) -> tuple[pd.DataFrame, list[str | int]]:
     """Provide information on and drops duplicate rows.
 
     Parameters
@@ -184,11 +187,20 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
     float
         Memory usage in megabytes
     """
-    data = pd.DataFrame(data).copy()
-    return round(data.memory_usage(index=True, deep=deep).sum() / (1024 ** 2), 2)
+    return round(data.memory_usage(index=True, deep=deep).sum() / (1024**2), 2)
 
 
-def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
+class MVResult(TypedDict):
+    """TypedDict for the return value of _missing_vals."""
+
+    mv_total: int
+    mv_rows: int
+    mv_cols: int
+    mv_rows_ratio: float
+    mv_cols_ratio: float
+
+
+def _missing_vals(data: pd.DataFrame) -> MVResult:
     """Give metrics of missing values in the dataset.
 
     Parameters
@@ -206,11 +218,11 @@ def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
         mv_cols_ratio: float, ratio of missing values for each column
     """
     data = pd.DataFrame(data).copy()
-    mv_rows = data.isna().sum(axis=1)
-    mv_cols = data.isna().sum(axis=0)
-    mv_total = data.isna().sum().sum()
-    mv_rows_ratio = mv_rows / data.shape[1]
-    mv_cols_ratio = mv_cols / data.shape[0]
+    mv_total: int = data.isna().sum().sum()
+    mv_rows: int = data.isna().sum(axis=1)
+    mv_cols: int = data.isna().sum(axis=0)
+    mv_rows_ratio: float = mv_rows / data.shape[1]
+    mv_cols_ratio: float = mv_cols / data.shape[0]
 
     return {
         "mv_total": mv_total,
@@ -221,14 +233,14 @@ def _missing_vals(data: pd.DataFrame) -> Dict[str, Any]:
     }
 
 
-def _validate_input_bool(value, desc):
+def _validate_input_bool(value: bool, desc):
     if not isinstance(value, bool):
         raise TypeError(
             f"Input value for '{desc}' is {type(value)} but should be a boolean."
         )
 
 
-def _validate_input_int(value, desc):
+def _validate_input_int(value: int, desc):
     if not isinstance(value, int):
         raise TypeError(
             f"Input value for '{desc}' is {type(value)} but should be an integer."

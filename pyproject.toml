@@ -10,7 +10,7 @@ packages = [{ include = "klib", from = "src" }]
 include = [{ path = "tests", format = "sdist" }]
 
 [tool.poetry.dependencies]
-python = ">=3.7.1,<3.11"
+python = ">=3.8.0,<3.12"
 matplotlib = "^3.0.3"
 numpy = "^1.16.3"
 pandas = "^1.1.2"
@@ -19,13 +19,15 @@ seaborn = "^0.11.1"
 Jinja2 = "^3.0.3"
 
 [tool.poetry.dev-dependencies]
-black = "^21.12b0"
+black = "^22.3.0"
 pylint = "^2.12.2"
 pydocstyle = "^6.1.1"
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
 ipykernel = "^6.6.0"
 mkdocs = "^1.2.3"
+mypy = "^0.971"
+data-science-types = "^0.2.23"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -39,8 +41,8 @@ target_version = ['py37', 'py38', 'py39', 'py310']
 
 [tool.isort]
 profile = "black"
-multi_line_output = 3
 skip_gitignore = true
+force_single_line = true
 
 [tool.pylint.reports]
 output-format = "colorized"
