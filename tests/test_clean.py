@@ -3,13 +3,11 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from klib.clean import (
-    clean_column_names,
-    convert_datatypes,
-    data_cleaning,
-    drop_missing,
-    pool_duplicate_subsets,
-)
+from klib.clean import clean_column_names
+from klib.clean import convert_datatypes
+from klib.clean import data_cleaning
+from klib.clean import drop_missing
+from klib.clean import pool_duplicate_subsets
 
 
 class Test_clean_column_names(unittest.TestCase):
@@ -147,7 +145,7 @@ class Test_data_cleaning(unittest.TestCase):
                 [pd.NA, "c", 3, 4, pd.NA],
                 [pd.NA, "d", 7, pd.NA, pd.NA],
             ],
-            columns=["c1", "c2", "c3", "c4", "c5"],
+            columns=["c1", "c2", "c3", "c 4", "c5"],
         )
 
     def test_data_cleaning(self):
@@ -157,10 +155,27 @@ class Test_data_cleaning(unittest.TestCase):
             data_cleaning(self.df_data_cleaning, col_exclude=["c1"]).shape, (4, 4)
         )
 
+        self.assertEqual(
+            data_cleaning(
+                self.df_data_cleaning,
+                show="changes",
+                clean_col_names=False,
+                drop_duplicates=False,
+            ).columns.tolist(),
+            ["c2", "c3", "c 4", "c5"],
+        )
+
         expected_results = ["string", "int8", "O", "O"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes[i],
+                expected_results[i],
+            )
+
+        expected_results = ["O", "O", "O", "O"]
+        for i, _ in enumerate(expected_results):
+            self.assertEqual(
+                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes[i],
                 expected_results[i],
             )
 

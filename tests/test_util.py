@@ -3,17 +3,15 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from klib.utils import (
-    _corr_selector,
-    _drop_duplicates,
-    _missing_vals,
-    _validate_input_bool,
-    _validate_input_int,
-    _validate_input_range,
-    _validate_input_smaller,
-    _validate_input_sum_larger,
-    _validate_input_sum_smaller,
-)
+from klib.utils import _corr_selector
+from klib.utils import _drop_duplicates
+from klib.utils import _missing_vals
+from klib.utils import _validate_input_bool
+from klib.utils import _validate_input_int
+from klib.utils import _validate_input_range
+from klib.utils import _validate_input_smaller
+from klib.utils import _validate_input_sum_larger
+from klib.utils import _validate_input_sum_smaller
 
 
 class Test__corr_selector(unittest.TestCase):
