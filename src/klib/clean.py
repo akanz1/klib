@@ -3,7 +3,6 @@ Functions for data cleaning.
 
 :author: Andreas Kanz
 """
-
 from __future__ import annotations
 
 import itertools
@@ -13,7 +12,6 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
-
 from klib.describe import corr_mat
 from klib.utils import _diff_report
 from klib.utils import _drop_duplicates
@@ -172,10 +170,8 @@ def convert_datatypes(
             data[col] = data[col].astype("category")
 
         data[col] = data[col].convert_dtypes(
-            infer_objects=True,
-            convert_string=True,
             convert_integer=False,
-            convert_boolean=True,
+            convert_floating=False,
         )
 
     data = _optimize_ints(data)

@@ -4,7 +4,6 @@ Utilities and auxiliary functions.
 :author: Andreas Kanz
 
 """
-
 from __future__ import annotations
 
 from typing import Literal
@@ -129,7 +128,7 @@ def _diff_report(
     )
     print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
     print(
-        f"     of which {len(dupl_rows)} duplicates. (Rows (first 150 shown): {dupl_rows[:150]})\n"
+        f"     of which {len(dupl_rows)} duplicates. (Rows (first 150 shown): {dupl_rows[:150]})\n"  # noqa
     )
     print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
     print(
