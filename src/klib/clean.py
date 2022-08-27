@@ -5,8 +5,6 @@ Functions for data cleaning.
 """
 from __future__ import annotations
 
-from __future__ import annotations
-
 import itertools
 import re
 from typing import Literal
@@ -14,6 +12,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+
 from klib.describe import corr_mat
 from klib.utils import _diff_report
 from klib.utils import _drop_duplicates
