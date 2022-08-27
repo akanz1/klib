@@ -4,7 +4,6 @@ Functions for descriptive analytics.
 :author: Andreas Kanz
 
 """
-
 from __future__ import annotations
 
 from typing import Any
@@ -16,10 +15,6 @@ import numpy as np
 import pandas as pd
 import scipy
 import seaborn as sns
-from matplotlib import ticker
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.colors import to_rgb
-
 from klib.utils import _corr_selector
 from klib.utils import _missing_vals
 from klib.utils import _validate_input_bool
@@ -27,6 +22,9 @@ from klib.utils import _validate_input_int
 from klib.utils import _validate_input_range
 from klib.utils import _validate_input_smaller
 from klib.utils import _validate_input_sum_larger
+from matplotlib import ticker
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import to_rgb
 
 __all__ = ["cat_plot", "corr_mat", "corr_plot", "dist_plot", "missingval_plot"]
 

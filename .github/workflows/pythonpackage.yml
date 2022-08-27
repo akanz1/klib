@@ -28,9 +28,9 @@ jobs:
           poetry config virtualenvs.in-project true
           poetry install -v
 
-      - name: Lint with pylint
+      - name: Lint
         run: |
-          poetry run pylint src/
+          poetry run flake8 src/
 
       - name: Test with pytest and generate coverage report
         run: |

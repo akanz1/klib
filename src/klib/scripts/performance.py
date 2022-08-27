@@ -3,15 +3,13 @@ Measuring the performance of key functionality.
 
 :author: Andreas Kanz
 """
-
 import functools
 from pathlib import Path
 from time import perf_counter
 
+import klib
 import matplotlib.pyplot as plt
 import pandas as pd
-
-import klib
 
 # Paths
 base_path = Path(__file__).resolve().parents[3]

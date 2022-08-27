@@ -3,7 +3,6 @@ Functions for data cleaning.
 
 :author: Andreas Kanz
 """
-
 from __future__ import annotations
 
 import itertools
@@ -172,10 +171,8 @@ def convert_datatypes(
             data[col] = data[col].astype("category")
 
         data[col] = data[col].convert_dtypes(
-            infer_objects=True,
-            convert_string=True,
             convert_integer=False,
-            convert_boolean=True,
+            convert_floating=False,
         )
 
     data = _optimize_ints(data)

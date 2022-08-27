@@ -165,10 +165,27 @@ class Test_data_cleaning(unittest.TestCase):
             ["c2", "c3", "c 4", "c5"],
         )
 
+        self.assertEqual(
+            data_cleaning(
+                self.df_data_cleaning,
+                show="changes",
+                clean_col_names=False,
+                drop_duplicates=False,
+            ).columns.tolist(),
+            ["c2", "c3", "c 4", "c5"],
+        )
+
         expected_results = ["string", "int8", "O", "O"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes[i],
+                expected_results[i],
+            )
+
+        expected_results = ["O", "O", "O", "O"]
+        for i, _ in enumerate(expected_results):
+            self.assertEqual(
+                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes[i],
                 expected_results[i],
             )
 
@@ -197,7 +214,7 @@ class Test_convert_dtypes(unittest.TestCase):
     def test_convert_dtypes(self):
         expected_results = [
             "int8",
-            "Float32",
+            "float32",
             "string",
             "string",
             "category",
@@ -211,7 +228,7 @@ class Test_convert_dtypes(unittest.TestCase):
 
         expected_results = [
             "int8",
-            "Float32",
+            "float32",
             "string",
             "string",
             "object",
@@ -224,7 +241,7 @@ class Test_convert_dtypes(unittest.TestCase):
 
         expected_results = [
             "int8",
-            "Float32",
+            "float32",
             "string",
             "string",
             "object",
@@ -240,7 +257,7 @@ class Test_convert_dtypes(unittest.TestCase):
 
         expected_results = [
             "int8",
-            "Float32",
+            "float32",
             "string",
             "category",
             "object",
@@ -254,7 +271,7 @@ class Test_convert_dtypes(unittest.TestCase):
                 expected_results[i],
             )
 
-        expected_results = ["int8", "Float32", "string", "string", "object", "string"]
+        expected_results = ["int8", "float32", "string", "string", "object", "string"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(
