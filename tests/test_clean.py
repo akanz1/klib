@@ -145,7 +145,7 @@ class Test_data_cleaning(unittest.TestCase):
                 [pd.NA, "c", 3, 4, pd.NA],
                 [pd.NA, "d", 7, pd.NA, pd.NA],
             ],
-            columns=["c1", "c2", "c3", "c  4", "c5"],
+            columns=["c1", "c2", "c3", "c 4", "c5"],
         )
 
     def test_data_cleaning(self):
