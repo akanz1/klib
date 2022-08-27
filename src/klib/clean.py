@@ -5,6 +5,8 @@ Functions for data cleaning.
 """
 from __future__ import annotations
 
+from __future__ import annotations
+
 import itertools
 import re
 from typing import Literal

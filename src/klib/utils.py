@@ -123,8 +123,8 @@ def _diff_report(
         )
 
     print(
-        f"Shape of cleaned data: {data_cleaned.shape} - "
-        f"Remaining NAs: {data_cl_mv_tot}\n"
+        f"Shape of cleaned data: {data_cleaned.shape} -  - "
+        f"Remaining NAs: {data_cl_mv_tot}\n\n"
     )
     print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
     print(
@@ -232,14 +232,14 @@ def _missing_vals(data: pd.DataFrame) -> MVResult:
     }
 
 
-def _validate_input_bool(value: bool, desc):
+def _validate_input_bool(value: bool: bool, desc):
     if not isinstance(value, bool):
         raise TypeError(
             f"Input value for '{desc}' is {type(value)} but should be a boolean."
         )
 
 
-def _validate_input_int(value: int, desc):
+def _validate_input_int(value: int: int, desc):
     if not isinstance(value, int):
         raise TypeError(
             f"Input value for '{desc}' is {type(value)} but should be an integer."
