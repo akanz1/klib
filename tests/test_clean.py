@@ -2,6 +2,7 @@ import unittest
 
 import numpy as np
 import pandas as pd
+
 from klib.clean import clean_column_names
 from klib.clean import convert_datatypes
 from klib.clean import data_cleaning
@@ -213,7 +214,7 @@ class Test_convert_dtypes(unittest.TestCase):
     def test_convert_dtypes(self):
         expected_results = [
             "int8",
-            "Float32",
+            "float32",
             "string",
             "string",
             "category",
@@ -227,7 +228,7 @@ class Test_convert_dtypes(unittest.TestCase):
 
         expected_results = [
             "int8",
-            "Float32",
+            "float32",
             "string",
             "string",
             "object",
@@ -240,7 +241,7 @@ class Test_convert_dtypes(unittest.TestCase):
 
         expected_results = [
             "int8",
-            "Float32",
+            "float32",
             "string",
             "string",
             "object",
@@ -256,7 +257,7 @@ class Test_convert_dtypes(unittest.TestCase):
 
         expected_results = [
             "int8",
-            "Float32",
+            "float32",
             "string",
             "category",
             "object",
@@ -270,7 +271,7 @@ class Test_convert_dtypes(unittest.TestCase):
                 expected_results[i],
             )
 
-        expected_results = ["int8", "Float32", "string", "string", "object", "string"]
+        expected_results = ["int8", "float32", "string", "string", "object", "string"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 convert_datatypes(
