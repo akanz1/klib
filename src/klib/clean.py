@@ -328,6 +328,7 @@ def data_cleaning(
     single_val_cols = data_cleaned.columns[
         data_cleaned.nunique(dropna=False) == 1
     ].tolist()
+    single_val_cols = [col for col in single_val_cols if col not in col_exclude]
     data_cleaned = data_cleaned.drop(columns=single_val_cols)
 
     dupl_rows = None
