@@ -309,6 +309,9 @@ def data_cleaning(
     The category dtype is not grouped in the summary, unless it contains exactly the \
     same categories.
     """
+    if col_exclude is None:
+        col_exclude = []
+
     # Validate Inputs
     _validate_input_range(drop_threshold_cols, "drop_threshold_cols", 0, 1)
     _validate_input_range(drop_threshold_rows, "drop_threshold_rows", 0, 1)

@@ -138,21 +138,21 @@ class Test_data_cleaning(unittest.TestCase):
     def setUpClass(cls):
         cls.df_data_cleaning = pd.DataFrame(
             [
-                [np.nan, np.nan, np.nan, np.nan, np.nan],
-                [pd.NA, pd.NA, pd.NA, pd.NA, pd.NA],
-                [pd.NA, "b", 6, "d", "e"],
-                [pd.NA, "b", 7, 8, 9],
-                [pd.NA, "c", 3, 4, pd.NA],
-                [pd.NA, "d", 7, pd.NA, pd.NA],
+                [np.nan, np.nan, np.nan, np.nan, np.nan, 1],
+                [pd.NA, pd.NA, pd.NA, pd.NA, pd.NA, 1],
+                [pd.NA, "b", 6, "d", "e", 1],
+                [pd.NA, "b", 7, 8, 9, 1],
+                [pd.NA, "c", 3, 4, pd.NA, 1],
+                [pd.NA, "d", 7, pd.NA, pd.NA, 1],
             ],
-            columns=["c1", "c2", "c3", "c 4", "c5"],
+            columns=["c1", "c2", "c3", "c 4", "c5", "c6"],
         )
 
     def test_data_cleaning(self):
-        self.assertEqual(data_cleaning(self.df_data_cleaning, show="all").shape, (4, 4))
-        # c1 will be dropped despite in col_exclude because it is single valued
+        self.assertEqual(data_cleaning(self.df_data_cleaning, show="all").shape, (5, 4))
+
         self.assertEqual(
-            data_cleaning(self.df_data_cleaning, col_exclude=["c1"]).shape, (4, 4)
+            data_cleaning(self.df_data_cleaning, col_exclude=["c6"]).shape, (5, 5)
         )
 
         self.assertEqual(
@@ -175,7 +175,7 @@ class Test_data_cleaning(unittest.TestCase):
             ["c2", "c3", "c 4", "c5"],
         )
 
-        expected_results = ["string", "int8", "O", "O"]
+        expected_results = ["string", "float32", "O", "O"]
         for i, _ in enumerate(expected_results):
             self.assertEqual(
                 data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes[i],
