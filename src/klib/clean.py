@@ -453,7 +453,7 @@ def pool_duplicate_subsets(
     subset_thresh: float = 0.2,
     min_col_pool: int = 3,
     exclude: Optional[list[str]] = None,
-    return_details=False,
+    return_details: bool = False,
 ) -> pd.DataFrame | tuple[pd.DataFrame, list[str]]:
     """Check for duplicates in subsets of columns and pools them. This can reduce \
         the number of columns in the data without loosing much information. Suitable \
@@ -510,28 +510,27 @@ def pool_duplicate_subsets(
     subset_cols = []
     for i in range(data.shape[1] + 1 - min_col_pool):
         # Consider only columns with lots of duplicates
-        check_list = [
+        check = [
             col
             for col in data.columns
             if data.duplicated(subset=col).mean() > col_dupl_thresh
         ]
 
         # Identify all possible combinations for the current interation
-        if check_list:
-            combinations = itertools.combinations(check_list, len(check_list) - i)
+        if check:
+            combinations = itertools.combinations(check, len(check) - i)
         else:
             continue
 
         # Check subsets for all possible combinations
-        ratios = [
-            *map(lambda comb: data.duplicated(subset=list(comb)).mean(), combinations)
-        ]
+        ratios = [*(data.duplicated(subset=list(comb)).mean() for comb in combinations)]
+
         max_idx = np.argmax(ratios)
 
         if max(ratios) > subset_thresh:
             # Get the best possible iterator and process the data
             best_subset = itertools.islice(
-                itertools.combinations(check_list, len(check_list) - i),
+                itertools.combinations(check, len(check) - i),
                 max_idx,
                 max_idx + 1,
             )
