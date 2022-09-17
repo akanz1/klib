@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "klib"
-version = "1.0.2"
+version = "1.0.3"
 description = "Customized data preprocessing functions for frequent tasks."
 authors = ["Andreas Kanz <andreas@akanz.de>"]
 license = "MIT"
@@ -35,9 +35,6 @@ reorder-python-imports = "^3.8.2"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-classifiers = ["Operating System :: OS Independent"]
-
 
 [tool.black]
 target_version = ['py37', 'py38', 'py39', 'py310']
