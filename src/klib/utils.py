@@ -272,3 +272,9 @@ def _validate_input_sum_larger(limit, desc, *args):
         raise ValueError(
             f"The sum of input values for '{desc}' should be larger/equal to {limit}."
         )
+
+def _validate_input_num_data(value: pd.DataFrame, desc):
+    if value.select_dtypes(include=np.number).empty:
+        raise TypeError(
+            f"Input value for '{desc}' should contain at least one numerical column."
+        )

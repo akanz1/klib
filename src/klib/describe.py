@@ -26,6 +26,7 @@ from klib.utils import _validate_input_int
 from klib.utils import _validate_input_range
 from klib.utils import _validate_input_smaller
 from klib.utils import _validate_input_sum_larger
+from klib.utils import _validate_input_num_data
 
 __all__ = ["cat_plot", "corr_mat", "corr_plot", "dist_plot", "missingval_plot"]
 
@@ -223,6 +224,8 @@ def corr_mat(
         return f"color: {color}"
 
     data = pd.DataFrame(data)
+
+    _validate_input_num_data(data, "data")
 
     if isinstance(target, (str, list, pd.Series, np.ndarray)):
         target_data = []
