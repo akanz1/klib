@@ -2,11 +2,13 @@ import unittest
 
 import numpy as np
 import pandas as pd
+
 from klib.utils import _corr_selector
 from klib.utils import _drop_duplicates
 from klib.utils import _missing_vals
 from klib.utils import _validate_input_bool
 from klib.utils import _validate_input_int
+from klib.utils import _validate_input_num_data
 from klib.utils import _validate_input_range
 from klib.utils import _validate_input_smaller
 from klib.utils import _validate_input_sum_larger
@@ -253,3 +255,11 @@ class Test__validate_input(unittest.TestCase):
             _validate_input_sum_larger(-2, "Test Sum >=-2", -3)
         with self.assertRaises(ValueError):
             _validate_input_sum_larger(7, "Test Sum >= 7", 1, 2, 3)
+
+    def test__validate_input_num_data(self):
+        with self.assertRaises(TypeError):
+            _validate_input_num_data(pd.DataFrame({"col1": ["a", "b", "c"]}), None)
+
+        _validate_input_num_data(
+            pd.DataFrame({"col1": [1, 2, 3]}), None
+        )  # No exception
