@@ -93,12 +93,12 @@ def cat_plot(
 
         if n_unique < top + bottom:
             if bottom > top:
-                lim_top = int(n_unique // 2) if int(n_unique // 2) < top else top
+                lim_top = min(int(n_unique // 2), top)
                 lim_bot = n_unique - lim_top
             else:
-                lim_bot = int(n_unique // 2) if int(n_unique // 2) < bottom else bottom
+                lim_bot = min(int(n_unique // 2), bottom)
                 lim_top = n_unique - lim_bot
-    
+
         value_counts_top = value_counts[:lim_top]
         value_counts_idx_top = value_counts_top.index.tolist()
         value_counts_bot = value_counts[-lim_bot:] if lim_bot > 0 else pd.DataFrame()
