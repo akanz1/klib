@@ -15,6 +15,10 @@ import numpy as np
 import pandas as pd
 import scipy
 import seaborn as sns
+from matplotlib import ticker
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import to_rgb
+
 from klib.utils import _corr_selector
 from klib.utils import _missing_vals
 from klib.utils import _validate_input_bool
@@ -23,9 +27,6 @@ from klib.utils import _validate_input_num_data
 from klib.utils import _validate_input_range
 from klib.utils import _validate_input_smaller
 from klib.utils import _validate_input_sum_larger
-from matplotlib import ticker
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.colors import to_rgb
 
 __all__ = ["cat_plot", "corr_mat", "corr_plot", "dist_plot", "missingval_plot"]
 
@@ -92,15 +93,16 @@ def cat_plot(
         lim_top, lim_bot = top, bottom
 
         if n_unique < top + bottom:
-            lim_top = int(n_unique // 2)
-            lim_bot = int(n_unique // 2) + 1
-
-        if n_unique <= 2:
-            lim_top = lim_bot = int(n_unique // 2)
+            if bottom > top:
+                lim_top = min(int(n_unique // 2), top)
+                lim_bot = n_unique - lim_top
+            else:
+                lim_bot = min(int(n_unique // 2), bottom)
+                lim_top = n_unique - lim_bot
 
         value_counts_top = value_counts[:lim_top]
         value_counts_idx_top = value_counts_top.index.tolist()
-        value_counts_bot = value_counts[-lim_bot:]
+        value_counts_bot = value_counts[-lim_bot:] if lim_bot > 0 else pd.DataFrame()
         value_counts_idx_bot = value_counts_bot.index.tolist()
 
         if top == 0:
