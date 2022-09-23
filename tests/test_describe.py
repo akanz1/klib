@@ -2,6 +2,7 @@ import unittest
 
 import numpy as np
 import pandas as pd
+
 from klib.describe import corr_mat
 
 
@@ -13,10 +14,10 @@ class Test_corr_mat(unittest.TestCase):
             columns=["Col1", "Col2", "Col3", "Col4", "Col5"],
         )
 
-        cls.data_corr_list = [1, 2, -3, 4, 5]
-        cls.data_corr_target_series = pd.Series([1, 2, -3, 4, 5], name="Target Series")
-        cls.data_corr_target_array = np.array([1, 2, -3, 4, 5])
-        cls.data_corr_target_list = [1, 2, -3, 4, 5]
+        cls.data_corr_list = [1, 2, -3]
+        cls.data_corr_target_series = pd.Series([1, 2, -3], name="Target Series")
+        cls.data_corr_target_array = np.array([1, 2, -3])
+        cls.data_corr_target_list = [1, 2, -3]
 
     def test_output_type(self):
         # Test conversion from pd.io.formats.style.Styler to pd.core.frame.DataFrame
