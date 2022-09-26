@@ -980,7 +980,7 @@ py = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "reorder-python-imports"
-version = "3.8.2"
+version = "3.8.3"
 description = "Tool for reordering python imports"
 category = "dev"
 optional = false
@@ -1187,7 +1187,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<3.12"
-content-hash = "cb3c33c0f56edf183653dd09d8a95f90840d7dcbfa7d5c4cad6dd35f1ba34d61"
+content-hash = "392632d1e21747b06d6266a436cb12263708b823b8f1d87916c5f0f9a29eeeb8"
 
 [metadata.files]
 appnope = [
@@ -2182,8 +2182,8 @@ pyzmq = [
     {file = "pyzmq-24.0.1.tar.gz", hash = "sha256:216f5d7dbb67166759e59b0479bca82b8acf9bed6015b526b8eb10143fb08e77"},
 ]
 reorder-python-imports = [
-    {file = "reorder_python_imports-3.8.2-py2.py3-none-any.whl", hash = "sha256:c362190fc61f28c9ed3657de0ae702694ce97f90da54617716b23d70b4d4771c"},
-    {file = "reorder_python_imports-3.8.2.tar.gz", hash = "sha256:bc5bd5e01548423fdcf62da767b28d5df6e613b03f9f795438f72b08b75dfba8"},
+    {file = "reorder_python_imports-3.8.3-py2.py3-none-any.whl", hash = "sha256:783f9575f76dd21ae5de974edf514cebc2b6904bbfe7cda515c24f1815fa22bf"},
+    {file = "reorder_python_imports-3.8.3.tar.gz", hash = "sha256:cb622aa0ea505972b59cc01aa26c08fb17d39a8fc62ff488288908725927d968"},
 ]
 scipy = [
     {file = "scipy-1.9.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:c61b4a91a702e8e04aeb0bfc40460e1f17a640977c04dda8757efb0199c75332"},
