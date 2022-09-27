@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "klib"
-version = "1.0.4"
+version = "1.0.5"
 description = "Customized data preprocessing functions for frequent tasks."
 authors = ["Andreas Kanz <andreas@akanz.de>"]
 license = "MIT"
