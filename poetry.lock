@@ -573,8 +573,8 @@ python-versions = ">=3.8"
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
     {version = ">=1.20.3", markers = "python_version < \"3.10\""},
+    {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
 ]
 python-dateutil = ">=2.8.1"
 pytz = ">=2020.1"
@@ -889,7 +889,7 @@ py = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "reorder-python-imports"
-version = "3.8.5"
+version = "3.9.0"
 description = "Tool for reordering python imports"
 category = "dev"
 optional = false
@@ -1078,7 +1078,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<3.12"
-content-hash = "aa5f4fb7e82590368b1fadf790f152398c6f829db2fa7dc7915fe9ea38e55710"
+content-hash = "577f69ff8d28acf59849d6bb652208ded3b83382ada3cf433de69101514ef517"
 
 [metadata.files]
 appnope = [
@@ -2045,8 +2045,8 @@ pyzmq = [
     {file = "pyzmq-24.0.1.tar.gz", hash = "sha256:216f5d7dbb67166759e59b0479bca82b8acf9bed6015b526b8eb10143fb08e77"},
 ]
 reorder-python-imports = [
-    {file = "reorder_python_imports-3.8.5-py2.py3-none-any.whl", hash = "sha256:6c36b84add1a8125479e1de97a21b7797ee6df51530b5340857d65c79d6882ac"},
-    {file = "reorder_python_imports-3.8.5.tar.gz", hash = "sha256:5e018dceb889688eafd41a1b217420f810e0400f5a26c679a08f7f9de956ca3b"},
+    {file = "reorder_python_imports-3.9.0-py2.py3-none-any.whl", hash = "sha256:3f9c16e8781f54c944756d0d1eb34a8c863554f7a4eb3693f574fe19b1a29b56"},
+    {file = "reorder_python_imports-3.9.0.tar.gz", hash = "sha256:49292ed537829a6bece9fb3746fc1bbe98f52643be5de01a4e13680268a5b0ec"},
 ]
 scipy = [
     {file = "scipy-1.9.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:1884b66a54887e21addf9c16fb588720a8309a57b2e258ae1c7986d4444d3bc0"},
