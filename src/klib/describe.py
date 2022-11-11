@@ -68,8 +68,6 @@ def cat_plot(
     # Validate Inputs
     _validate_input_int(top, "top")
     _validate_input_int(bottom, "bottom")
-    _validate_input_range(top, "top", 0, data.shape[1])
-    _validate_input_range(bottom, "bottom", 0, data.shape[1])
     _validate_input_sum_larger(1, "top and bottom", top, bottom)
 
     data = pd.DataFrame(data).copy()
