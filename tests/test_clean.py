@@ -63,12 +63,12 @@ class Test_clean_column_names(unittest.TestCase):
                 expected_results[i],
             )
 
-        capturedOutput = io.StringIO()
-        sys.stdout = capturedOutput
+        captured_output = io.StringIO()
+        sys.stdout = captured_output
         clean_column_names(self.df_clean_column_names, hints=True)
         sys.stdout = sys.__stdout__
         self.assertEqual(
-            capturedOutput.getvalue(),
+            captured_output.getvalue(),
             "Long column names detected (>25 characters). Consider renaming the "
             "following columns ['ae_some_plus_plus_dollar_percent_name', 'verylong_column_namesare_hardto_read'].\n",
         )
