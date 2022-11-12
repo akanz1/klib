@@ -1,3 +1,5 @@
+import io
+import sys
 import unittest
 
 import numpy as np
@@ -60,6 +62,16 @@ class Test_clean_column_names(unittest.TestCase):
                 clean_column_names(self.df_clean_column_names, hints=False).columns[i],
                 expected_results[i],
             )
+
+        capturedOutput = io.StringIO()
+        sys.stdout = capturedOutput
+        clean_column_names(self.df_clean_column_names, hints=True)
+        sys.stdout = sys.__stdout__
+        self.assertEqual(
+            capturedOutput.getvalue(),
+            "Long column names detected (>25 characters). Consider renaming the "
+            "following columns ['ae_some_plus_plus_dollar_percent_name', 'verylong_column_namesare_hardto_read'].\n",
+        )
 
 
 class Test_drop_missing(unittest.TestCase):
@@ -150,6 +162,7 @@ class Test_data_cleaning(unittest.TestCase):
 
     def test_data_cleaning(self):
         self.assertEqual(data_cleaning(self.df_data_cleaning, show="all").shape, (5, 4))
+        self.assertEqual(data_cleaning(self.df_data_cleaning, show=None).shape, (5, 4))
 
         self.assertEqual(
             data_cleaning(self.df_data_cleaning, col_exclude=["c6"]).shape, (5, 5)
