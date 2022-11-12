@@ -236,12 +236,14 @@ def corr_mat(
             target_data = pd.Series(target)
             target = target_data.name
 
-        corr = pd.DataFrame(data.corrwith(target_data, method=method))
+        corr = pd.DataFrame(
+            data.corrwith(target_data, method=method, numeric_only=True)
+        )
         corr = corr.sort_values(corr.columns[0], ascending=False)
         corr.columns = [target]
 
     else:
-        corr = data.corr(method=method)
+        corr = data.corr(method=method, numeric_only=True)
 
     corr = _corr_selector(corr, split=split, threshold=threshold)
 
