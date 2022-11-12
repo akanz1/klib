@@ -692,7 +692,7 @@ def missingval_plot(
             label,
             ha="center",
             va="bottom",
-            rotation="90",
+            rotation=90,
             alpha=0.5,
             fontsize="11",
         )
