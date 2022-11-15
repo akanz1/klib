@@ -7,7 +7,7 @@
 [![Scrutinizer](https://scrutinizer-ci.com/g/akanz1/klib/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/akanz1/klib/)
 [![codecov](https://codecov.io/gh/akanz1/klib/branch/main/graph/badge.svg)](https://codecov.io/gh/akanz1/klib)
 
-**klib** is a Python library for importing, cleaning, analyzing and preprocessing data. Explanations on key functionalities can be found on [Medium / TowardsDataScience](https://medium.com/@akanz) in the [examples](examples) section or on [YouTube (Data Professor)](https://www.youtube.com/watch?v=URjJVEeZxxU).
+**klib** is a Python library for importing, cleaning, analyzing and preprocessing data. Explanations on key functionalities can be found on [Medium / TowardsDataScience](https://medium.com/@akanz) and in the [examples](examples) section. Additionally, there are great introductions and overviews of the functionality on [PythonBytes](https://pythonbytes.fm/episodes/show/240/this-is-github-your-pilot-speaking) or on [YouTube (Data Professor)](https://www.youtube.com/watch?v=URjJVEeZxxU).
 
 ## Installation
 
