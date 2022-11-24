@@ -1,5 +1,4 @@
-"""
-Functions for descriptive analytics.
+"""Functions for descriptive analytics.
 
 :author: Andreas Kanz
 
@@ -18,6 +17,7 @@ import seaborn as sns
 from matplotlib import ticker
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.colors import to_rgb
+from matplotlib.gridspec import GridSpec
 
 from klib.utils import _corr_selector
 from klib.utils import _missing_vals
@@ -38,7 +38,7 @@ def cat_plot(
     bottom: int = 3,
     bar_color_top: str = "#5ab4ac",
     bar_color_bottom: str = "#d8b365",
-):
+) -> GridSpec:
     """Two-dimensional visualization of the number and frequency of categorical \
         features.
 
@@ -263,7 +263,7 @@ def corr_plot(
     annot: bool = True,
     dev: bool = False,
     **kwargs,
-):
+) -> plt.Axes:
     """Two-dimensional visualization of the correlation between feature-columns \
         excluding NA values.
 
@@ -311,7 +311,7 @@ def corr_plot(
         Display figure settings in the plot by setting dev = True. If False, the \
         settings are not displayed, by default False
 
-    Keyword Arguments : optional
+    kwargs : optional
         Additional elements to control the visualization of the plot, e.g.:
 
             * mask: bool, default True
@@ -615,7 +615,7 @@ def missingval_plot(
     figsize: tuple = (20, 20),
     sort: bool = False,
     spine_color: str = "#EEEEEE",
-):
+) -> GridSpec:
     """Two-dimensional visualization of the missing values in a dataset.
 
     Parameters

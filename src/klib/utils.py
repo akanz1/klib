@@ -141,7 +141,7 @@ def _diff_report(
     print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)\n")
 
 
-def _print_cleaning_details(arg0, arg1, arg2, arg3):
+def _print_cleaning_details(arg0, arg1, arg2, arg3) -> None:
     print(arg0)
     print(f"dtypes:\n{arg1.dtypes.value_counts()}")
     print(f"\nNumber of rows: {str(arg1.shape[0]).rjust(8)}")
@@ -232,49 +232,49 @@ def _missing_vals(data: pd.DataFrame) -> MVResult:
     }
 
 
-def _validate_input_bool(value: bool, desc):
+def _validate_input_bool(value: bool, desc) -> None:
     if not isinstance(value, bool):
         raise TypeError(
             f"Input value for '{desc}' is {type(value)} but should be a boolean."
         )
 
 
-def _validate_input_int(value: int, desc):
+def _validate_input_int(value: int, desc) -> None:
     if not isinstance(value, int):
         raise TypeError(
             f"Input value for '{desc}' is {type(value)} but should be an integer."
         )
 
 
-def _validate_input_range(value, desc, lower, upper):
+def _validate_input_range(value, desc, lower, upper) -> None:
     if value < lower or value > upper:
         raise ValueError(
             f"'{desc}' = {value} but should be {lower} <= '{desc}' <= {upper}."
         )
 
 
-def _validate_input_smaller(value1, value2, desc):
+def _validate_input_smaller(value1, value2, desc) -> None:
     if value1 > value2:
         raise ValueError(
             f"The first input for '{desc}' should be smaller or equal to the second."
         )
 
 
-def _validate_input_sum_smaller(limit, desc, *args):
+def _validate_input_sum_smaller(limit, desc, *args) -> None:
     if sum(args) > limit:
         raise ValueError(
             f"The sum of input values for '{desc}' should be less or equal to {limit}."
         )
 
 
-def _validate_input_sum_larger(limit, desc, *args):
+def _validate_input_sum_larger(limit, desc, *args) -> None:
     if sum(args) < limit:
         raise ValueError(
             f"The sum of input values for '{desc}' should be larger/equal to {limit}."
         )
 
 
-def _validate_input_num_data(value: pd.DataFrame, desc):
+def _validate_input_num_data(value: pd.DataFrame, desc) -> None:
     if value.select_dtypes(include=["number"]).empty:
         raise TypeError(
             f"Input value for '{desc}' should contain at least one numerical column."

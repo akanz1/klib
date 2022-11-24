@@ -1,2 +1,3 @@
-"""Current version of klib"""
-__version__ = "1.0.6"
+"""Current version of klib."""
+
+__version__ = "1.0.7"

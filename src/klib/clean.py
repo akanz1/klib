@@ -1,5 +1,4 @@
-"""
-Functions for data cleaning.
+"""Functions for data cleaning.
 
 :author: Andreas Kanz
 """
@@ -279,7 +278,7 @@ def data_cleaning(
         changed to categorical, by default 0.03
     cat_exclude : Optional[list[str]], optional
         List of columns to exclude from categorical conversion, by default None
-    clean_column_names: bool, optional
+    clean_col_names: bool, optional
         Cleans the column names and provides hints on duplicate and long names, by \
         default True
     show : Optional[Literal["all", "changes"]], optional
