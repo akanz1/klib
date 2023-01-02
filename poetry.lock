@@ -947,7 +947,7 @@ test = ["asv", "gmpy2", "mpmath", "pytest", "pytest-cov", "pytest-xdist", "sciki
 
 [[package]]
 name = "seaborn"
-version = "0.12.1"
+version = "0.12.2"
 description = "Statistical data visualization"
 category = "main"
 optional = false
@@ -955,11 +955,11 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 matplotlib = ">=3.1,<3.6.1 || >3.6.1"
-numpy = ">=1.17"
+numpy = ">=1.17,<1.24.0 || >1.24.0"
 pandas = ">=0.25"
 
 [package.extras]
-dev = ["flake8", "mypy", "pandas-stubs", "pre-commit", "pytest", "pytest-cov", "pytest-xdist"]
+dev = ["flake8", "flit", "mypy", "pandas-stubs", "pre-commit", "pytest", "pytest-cov", "pytest-xdist"]
 docs = ["ipykernel", "nbconvert", "numpydoc", "pydata_sphinx_theme (==0.10.0rc2)", "pyyaml", "sphinx-copybutton", "sphinx-design", "sphinx-issues"]
 stats = ["scipy (>=1.3)", "statsmodels (>=0.10)"]
 
@@ -2107,8 +2107,8 @@ scipy = [
     {file = "scipy-1.9.3.tar.gz", hash = "sha256:fbc5c05c85c1a02be77b1ff591087c83bc44579c6d2bd9fb798bb64ea5e1a027"},
 ]
 seaborn = [
-    {file = "seaborn-0.12.1-py3-none-any.whl", hash = "sha256:a9eb39cba095fcb1e4c89a7fab1c57137d70a715a7f2eefcd41c9913c4d4ed65"},
-    {file = "seaborn-0.12.1.tar.gz", hash = "sha256:bb1eb1d51d3097368c187c3ef089c0288ec1fe8aa1c69fb324c68aa1d02df4c1"},
+    {file = "seaborn-0.12.2-py3-none-any.whl", hash = "sha256:ebf15355a4dba46037dfd65b7350f014ceb1f13c05e814eda2c9f5fd731afc08"},
+    {file = "seaborn-0.12.2.tar.gz", hash = "sha256:374645f36509d0dcab895cba5b47daf0586f77bfe3b36c97c607db7da5be0139"},
 ]
 setuptools = [
     {file = "setuptools-65.5.1-py3-none-any.whl", hash = "sha256:d0b9a8433464d5800cbe05094acf5c6d52a91bfac9b52bcfc4d41382be5d5d31"},
