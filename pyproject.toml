@@ -14,9 +14,9 @@ Jinja2 = "^3.0.3"
 matplotlib = "^3.0.3"
 numpy = "^1.16.3"
 pandas = "^1.2.0"
-python = ">=3.8.0,<3.12"
+python = ">=3.8.0"
 scipy = "^1.1.0"
-seaborn = ">=0.11.2,<0.13.0"
+seaborn = ">=0.11.2"
 
 [tool.poetry.dev-dependencies]
 black = "^22.12.0"
