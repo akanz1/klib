@@ -19,45 +19,26 @@ scipy = "^1.1.0"
 seaborn = ">=0.11.2"
 
 [tool.poetry.dev-dependencies]
-black = "^22.12.0"
-data-science-types = "^0.2.23"
-flake8 = "^5.0.4"
+black = "^23.3.0"
 ipykernel = "^6.19.4"
-mypy = "^0.991"
-pre-commit = "^2.21.0"
+mypy = "^1.3.0"
+pre-commit = "^3.3.2"
 pydocstyle = "^6.2.3"
-pylint = "^2.15.9"
-pytest = "^7.2.0"
-pytest-cov = "^4.0.0"
-reorder-python-imports = "^3.9.0"
+pytest = "^7.3.1"
+pytest-cov = "^4.1.0"
+ruff = "^0.0.270"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-target_version = ['py37', 'py38', 'py39', 'py310']
+target_version = ['py37', 'py38', 'py39', 'py310', 'py311']
 
 [tool.isort]
 profile = "black"
 skip_gitignore = true
 force_single_line = true
-
-[tool.pylint.reports]
-output-format = "colorized"
-
-[tool.pylint.messages_control]
-disable = """
-    missing-function-docstring,
-    invalid-name,
-    too-many-arguments,
-    too-many-locals,
-    too-many-statements,
-    too-many-instance-attributes,
-"""
-
-[tool.pylint.similarities]
-min-similarity-lines = 8
 
 [tool.pydocstyle]
 match_dir = "[^(?!tests|\\.)].*"     # not tests and not a folder that starts with a dot
@@ -87,3 +68,87 @@ data_file = "tests/.coverage"
 
 [tool.coverage.report]
 fail_under = 0
+
+[tool.ruff]
+fix = true
+unfixable = [
+    "C408",
+    "D200",
+    "D400",
+    "D415",
+    "E712",
+    "E731",
+    "ERA001",
+    "F841",
+    "PT001",
+    "PT004",
+    "PT022",
+    "PT023",
+    "RUF100",
+    "SIM108",
+]
+
+select = [
+    "A",
+    "ANN",
+    "ARG",
+    "B",
+    "BLE",
+    "C",
+    "C4",
+    "C90",
+    "COM",
+    "D",
+    "DJ",
+    "DTZ",
+    "E",
+    "EM",
+    "ERA",
+    "EXE",
+    "F",
+    "FBT",
+    "G",
+    "I",
+    "ICN",
+    "INP",
+    "ISC",
+    "N",
+    "NPY",
+    "PD",
+    "PGH",
+    "PIE",
+    "PL",
+    "PT",
+    "PTH",
+    "PYI",
+    "Q",
+    "RET",
+    "RSE",
+    "RUF",
+    "S",
+    "SIM",
+    "SLF",
+    "T",
+    "T10",
+    "T20",
+    "TCH",
+    "TID",
+    "TRY",
+    "UP",
+    "W",
+    "YTT",
+]
+
+ignore = ["T201", "FBT001", "FBT002", "PLR0913"]
+
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.mccabe]
+max-complexity = 6
+
+[tool.ruff.per-file-ignores]
+"test**" = ["ANN", "D", "S101", "PLR", "PT009", "N", "E501"]
+"**/scripts/**" = ["ANN", "D", "S101", "PLR", "PT009", "N", "E501"]
+[tool.ruff.isort]
+force-single-line = true

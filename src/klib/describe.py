@@ -7,7 +7,6 @@ from __future__ import annotations
 
 from typing import Any
 from typing import Literal
-from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,7 +16,7 @@ import seaborn as sns
 from matplotlib import ticker
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.colors import to_rgb
-from matplotlib.gridspec import GridSpec
+from matplotlib.gridspec import GridSpec  # noqa: TCH002
 
 from klib.utils import _corr_selector
 from klib.utils import _missing_vals
@@ -31,7 +30,7 @@ from klib.utils import _validate_input_sum_larger
 __all__ = ["cat_plot", "corr_mat", "corr_plot", "dist_plot", "missingval_plot"]
 
 
-def cat_plot(
+def cat_plot(  # noqa: C901, PLR0915
     data: pd.DataFrame,
     figsize: tuple[float, float] = (18, 18),
     top: int = 3,
@@ -39,8 +38,7 @@ def cat_plot(
     bar_color_top: str = "#5ab4ac",
     bar_color_bottom: str = "#d8b365",
 ) -> GridSpec:
-    """Two-dimensional visualization of the number and frequency of categorical \
-        features.
+    """Two-dimensional visualization of number and frequency of categorical features.
 
     Parameters
     ----------
@@ -111,7 +109,7 @@ def cat_plot(
 
         data.loc[data[col].isin(value_counts_idx_top), col] = 10
         data.loc[data[col].isin(value_counts_idx_bot), col] = 0
-        data.loc[((data[col] != 10) & (data[col] != 0)), col] = 5
+        data.loc[((data[col] != 10) & (data[col] != 0)), col] = 5  # noqa: PLR2004
         data[col] = data[col].rolling(2, min_periods=1).mean()
 
         value_counts_idx_top = [elem[:20] for elem in value_counts_idx_top]
@@ -122,10 +120,16 @@ def cat_plot(
         # Barcharts
         ax_top = fig.add_subplot(gs[:1, count : count + 1])
         ax_top.bar(
-            value_counts_idx_top, value_counts_top, color=bar_color_top, width=0.85
+            value_counts_idx_top,
+            value_counts_top,
+            color=bar_color_top,
+            width=0.85,
         )
         ax_top.bar(
-            value_counts_idx_bot, value_counts_bot, color=bar_color_bottom, width=0.85
+            value_counts_idx_bot,
+            value_counts_bot,
+            color=bar_color_bottom,
+            width=0.85,
         )
         ax_top.set(frame_on=False)
         ax_top.tick_params(axis="x", labelrotation=90)
@@ -133,8 +137,8 @@ def cat_plot(
         # Summary stats
         ax_bottom = fig.add_subplot(gs[1:2, count : count + 1])
         plt.subplots_adjust(hspace=0.075)
-        ax_bottom.get_yaxis().set_visible(False)
-        ax_bottom.get_xaxis().set_visible(False)
+        ax_bottom.get_yaxis().set_visible(False)  # noqa: FBT003
+        ax_bottom.get_xaxis().set_visible(False)  # noqa: FBT003
         ax_bottom.set(frame_on=False)
         ax_bottom.text(
             0,
@@ -152,7 +156,9 @@ def cat_plot(
     color_white = to_rgb("#FFFFFF")
     color_top_rgb = to_rgb(bar_color_top)
     cat_plot_cmap = LinearSegmentedColormap.from_list(
-        "cat_plot_cmap", [color_bot_rgb, color_white, color_top_rgb], N=200
+        "cat_plot_cmap",
+        [color_bot_rgb, color_white, color_top_rgb],
+        N=200,
     )
     ax_hm = fig.add_subplot(gs[2:, :])
     sns.heatmap(data, cmap=cat_plot_cmap, cbar=False, vmin=0, vmax=10, ax=ax_hm)
@@ -166,7 +172,11 @@ def cat_plot(
     )
     ax_hm.tick_params(length=1, colors="#111111")
     gs.figure.suptitle(
-        "Categorical data plot", x=0.5, y=0.91, fontsize=18, color="#111111"
+        "Categorical data plot",
+        x=0.5,
+        y=0.91,
+        fontsize=18,
+        color="#111111",
     )
 
     return gs
@@ -174,9 +184,9 @@ def cat_plot(
 
 def corr_mat(
     data: pd.DataFrame,
-    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
+    split: Literal["pos", "neg", "high", "low"] | None = None,
     threshold: float = 0,
-    target: Optional[pd.DataFrame | pd.Series | np.ndarray | str] = None,
+    target: pd.DataFrame | pd.Series | np.ndarray | str | None = None,
     method: Literal["pearson", "spearman", "kendall"] = "pearson",
     colored: bool = True,
 ) -> pd.DataFrame | pd.Series:
@@ -237,7 +247,7 @@ def corr_mat(
             target = target_data.name
 
         corr = pd.DataFrame(
-            data.corrwith(target_data, method=method, numeric_only=True)
+            data.corrwith(target_data, method=method, numeric_only=True),
         )
         corr = corr.sort_values(corr.columns[0], ascending=False)
         corr.columns = [target]
@@ -254,18 +264,17 @@ def corr_mat(
 
 def corr_plot(
     data: pd.DataFrame,
-    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
+    split: Literal["pos", "neg", "high", "low"] | None = None,
     threshold: float = 0,
-    target: Optional[pd.Series | str] = None,
+    target: pd.Series | str | None = None,
     method: Literal["pearson", "spearman", "kendall"] = "pearson",
     cmap: str = "BrBG",
     figsize: tuple[float, float] = (12, 10),
     annot: bool = True,
     dev: bool = False,
-    **kwargs,
+    **kwargs,  # noqa: ANN003
 ) -> plt.Axes:
-    """Two-dimensional visualization of the correlation between feature-columns \
-        excluding NA values.
+    """2D visualization of the correlation between feature-columns excluding NA values.
 
     Parameters
     ----------
@@ -415,13 +424,12 @@ def dist_plot(
     size: int = 3,
     fill_range: tuple = (0.025, 0.975),
     showall: bool = False,
-    kde_kws: Optional[dict[str, Any]] = None,
-    rug_kws: Optional[dict[str, Any]] = None,
-    fill_kws: Optional[dict[str, Any]] = None,
-    font_kws: Optional[dict[str, Any]] = None,
-):
-    """Two-dimensional visualization of the distribution of non binary numerical \
-        features.
+    kde_kws: dict[str, Any] | None = None,
+    rug_kws: dict[str, Any] | None = None,
+    fill_kws: dict[str, Any] | None = None,
+    font_kws: dict[str, Any] | None = None,
+) -> None | Any:
+    """2D visualization of the distribution of non binary numerical features.
 
     Parameters
     ----------
@@ -482,13 +490,13 @@ def dist_plot(
     )
 
     data = pd.DataFrame(data.copy()).dropna(axis=1, how="all")
-    df = data.copy()
-    data = data.loc[:, data.nunique() > 2]
-    if data.shape[0] > 10000:
+    df = data.copy()  # noqa: PD901
+    data = data.loc[:, data.nunique() > 2]  # noqa: PLR2004
+    if data.shape[0] > 10000:  # noqa: PLR2004
         data = data.sample(n=10000, random_state=408)
         print(
             "Large dataset detected, using 10000 random samples for the plots. Summary"
-            " statistics are still based on the entire dataset."
+            " statistics are still based on the entire dataset.",
         )
     cols = list(data.select_dtypes(include=["number"]).columns)
     data = data[cols]
@@ -497,11 +505,11 @@ def dist_plot(
         print("No columns with numeric data were detected.")
         return None
 
-    if len(cols) >= 20 and not showall:
+    if len(cols) >= 20 and not showall:  # noqa: PLR2004
         print(
             "Note: The number of non binary numerical features is very large "
             f"({len(cols)}), please consider splitting the data. Showing plots for "
-            "the first 20 numerical features. Override this by setting showall=True."
+            "the first 20 numerical features. Override this by setting showall=True.",
         )
         cols = cols[:20]
 
@@ -609,7 +617,7 @@ def dist_plot(
     return g.axes[0, 0]
 
 
-def missingval_plot(
+def missingval_plot(  # noqa: C901, PLR0915
     data: pd.DataFrame,
     cmap: str = "PuBuGn",
     figsize: tuple = (20, 20),
@@ -649,7 +657,7 @@ def missingval_plot(
         mv_cols_sorted = data.isna().sum(axis=0).sort_values(ascending=False)
         final_cols = (
             mv_cols_sorted.drop(
-                mv_cols_sorted[mv_cols_sorted.values == 0].keys().tolist()
+                mv_cols_sorted[mv_cols_sorted.to_numpy() == 0].keys().tolist(),
             )
             .keys()
             .tolist()
@@ -676,7 +684,7 @@ def missingval_plot(
     # ax1 - Barplot
     colors = plt.get_cmap(cmap)(mv_cols / np.max(mv_cols))  # color bars by height
     ax1.bar(range(len(mv_cols)), np.round((mv_cols_ratio) * 100, 2), color=colors)
-    ax1.get_xaxis().set_visible(False)
+    ax1.get_xaxis().set_visible(False)  # noqa: FBT003
     ax1.set(frame_on=False, xlim=(-0.5, len(mv_cols) - 0.5))
     ax1.set_ylim(0, np.max(mv_cols_ratio) * 100)
     ax1.grid(linestyle=":", linewidth=1)
@@ -684,7 +692,7 @@ def missingval_plot(
     ax1.tick_params(axis="y", colors="#111111", length=1)
 
     # annotate values on top of the bars
-    for rect, label in zip(ax1.patches, mv_cols):
+    for rect, label in zip(ax1.patches, mv_cols, strict=True):
         height = rect.get_height()
         ax1.text(
             rect.get_x() + rect.get_width() / 2,
@@ -697,9 +705,9 @@ def missingval_plot(
             fontsize="11",
         )
 
-    ax1.set_frame_on(True)
+    ax1.set_frame_on(True)  # noqa: FBT003
     for _, spine in ax1.spines.items():
-        spine.set_visible(True)
+        spine.set_visible(True)  # noqa: FBT003
         spine.set_color(spine_color)
     ax1.spines["top"].set_color(None)
 
@@ -715,13 +723,13 @@ def missingval_plot(
     )
     ax2.tick_params(length=1, colors="#111111")
     for _, spine in ax2.spines.items():
-        spine.set_visible(True)
+        spine.set_visible(True)  # noqa: FBT003
         spine.set_color(spine_color)
 
     # ax3 - Summary
     fontax3 = {"color": "#111111", "weight": "normal", "size": 14}
-    ax3.get_xaxis().set_visible(False)
-    ax3.get_yaxis().set_visible(False)
+    ax3.get_xaxis().set_visible(False)  # noqa: FBT003
+    ax3.get_yaxis().set_visible(False)  # noqa: FBT003
     ax3.set(frame_on=False)
 
     ax3.text(
@@ -761,7 +769,7 @@ def missingval_plot(
     )
 
     # ax4 - Scatter plot
-    ax4.get_yaxis().set_visible(False)
+    ax4.get_yaxis().set_visible(False)  # noqa: FBT003
     for _, spine in ax4.spines.items():
         spine.set_color(spine_color)
     ax4.tick_params(axis="x", colors="#111111", length=1)
@@ -780,7 +788,11 @@ def missingval_plot(
     ax4.grid(linestyle=":", linewidth=1)
 
     gs.figure.suptitle(
-        "Missing value plot", x=0.45, y=0.94, fontsize=18, color="#111111"
+        "Missing value plot",
+        x=0.45,
+        y=0.94,
+        fontsize=18,
+        color="#111111",
     )
 
     return gs

@@ -7,7 +7,6 @@ from __future__ import annotations
 import itertools
 import re
 from typing import Literal
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -29,7 +28,7 @@ __all__ = [
 
 
 def _optimize_ints(data: pd.Series | pd.DataFrame) -> pd.DataFrame:
-    df = pd.DataFrame(data).copy()
+    df = pd.DataFrame(data).copy()  # noqa: PD901
     ints = df.select_dtypes(include=["int64"]).columns.tolist()
     df[ints] = df[ints].apply(pd.to_numeric, downcast="integer")
     return df
@@ -43,8 +42,9 @@ def _optimize_floats(data: pd.Series | pd.DataFrame) -> pd.DataFrame:
 
 
 def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
-    """Clean the column names of the provided Pandas Dataframe and optionally \
-        provides hints on duplicate and long column names.
+    """Clean the column names of the provided Pandas Dataframe.
+
+    Optionally provides hints on duplicate and long column names.
 
     Parameters
     ----------
@@ -67,7 +67,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
         column = col
         for match in matches:
             column = column.replace(match, f"{match[0]}_{match[1]}")
-            data.rename(columns={data.columns[i]: column}, inplace=True)
+            data = data.rename(columns={data.columns[i]: column})
 
     data.columns = (
         data.columns.str.replace("\n", "_", regex=False)
@@ -105,20 +105,24 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
             col if col not in data.columns[:i] else f"{col}_{str(i)}"
             for i, col in enumerate(data.columns)
         ]
-
+        print_statement = ""
         if hints:
-            print(
+            # add string to print statement
+            print_statement = (
                 f"Duplicate column names detected! Columns with index {dupl_idx} and "
-                f"names {dupl_before}) have been renamed to "
-                f"{data.columns[dupl_idx].tolist()}."
+                f"names {dupl_before} have been renamed to "
+                f"{data.columns[dupl_idx].tolist()}.",
             )
 
-    long_col_names = [x for x in data.columns if len(x) > 25]
-    if long_col_names and hints:
-        print(
-            "Long column names detected (>25 characters). Consider renaming the "
-            f"following columns {long_col_names}."
-        )
+            if long_col_names := [
+                x for x in data.columns if len(x) > 25  # noqa: PLR2004
+            ]:
+                print_statement += (
+                    "Long column names detected (>25 characters). Consider renaming "
+                    f"the following columns {long_col_names}.",
+                )
+
+            print(print_statement)
 
     return data
 
@@ -127,7 +131,7 @@ def convert_datatypes(
     data: pd.DataFrame,
     category: bool = True,
     cat_threshold: float = 0.05,
-    cat_exclude: Optional[list[str | int]] = None,
+    cat_exclude: list[str | int] | None = None,
 ) -> pd.DataFrame:
     """Convert columns to best possible dtypes using dtypes supporting pd.NA.
 
@@ -184,11 +188,12 @@ def drop_missing(
     data: pd.DataFrame,
     drop_threshold_cols: float = 1,
     drop_threshold_rows: float = 1,
-    col_exclude: Optional[list[str]] = None,
+    col_exclude: list[str] | None = None,
 ) -> pd.DataFrame:
-    """Drop completely empty columns and rows by default and optionally provides \
-        flexibility to loosen restrictions to drop additional non-empty columns and \
-        rows based on the fraction of NA-values.
+    """Drop completely empty columns and rows by default.
+
+    Optionally provides flexibility to loosen restrictions to drop additional \
+    non-empty columns and rows based on the fraction of NA-values.
 
     Parameters
     ----------
@@ -224,16 +229,18 @@ def drop_missing(
     data_dropped = data.drop(columns=col_exclude, errors="ignore")
     data_dropped = data_dropped.drop(
         columns=data_dropped.loc[
-            :, _missing_vals(data)["mv_cols_ratio"] > drop_threshold_cols
-        ].columns
+            :,
+            _missing_vals(data)["mv_cols_ratio"] > drop_threshold_cols,
+        ].columns,
     ).dropna(axis=1, how="all")
 
     data = pd.concat([data_dropped, data_exclude], axis=1)
 
     return data.drop(
         index=data.loc[
-            _missing_vals(data)["mv_rows_ratio"] > drop_threshold_rows, :
-        ].index
+            _missing_vals(data)["mv_rows_ratio"] > drop_threshold_rows,
+            :,
+        ].index,
     ).dropna(axis=0, how="all")
 
 
@@ -243,15 +250,17 @@ def data_cleaning(
     drop_threshold_rows: float = 0.9,
     drop_duplicates: bool = True,
     convert_dtypes: bool = True,
-    col_exclude: Optional[list[str]] = None,
+    col_exclude: list[str] | None = None,
     category: bool = True,
     cat_threshold: float = 0.03,
-    cat_exclude: Optional[list[str | int]] = None,
+    cat_exclude: list[str | int] | None = None,
     clean_col_names: bool = True,
-    show: Optional[Literal["all", "changes"]] = "changes",
+    show: Literal["all", "changes"] | None = "changes",
 ) -> pd.DataFrame:
-    """Perform initial data cleaning tasks on a dataset, such as dropping single \
-        valued and empty rows, empty columns as well as optimizing the datatypes.
+    """Perform initial data cleaning tasks on a dataset.
+
+    For example dropping single valued and empty rows, empty columns as well as \
+    optimizing the datatypes.
 
     Parameters
     ----------
@@ -321,7 +330,10 @@ def data_cleaning(
 
     data = pd.DataFrame(data).copy()
     data_cleaned = drop_missing(
-        data, drop_threshold_cols, drop_threshold_rows, col_exclude=col_exclude
+        data,
+        drop_threshold_cols,
+        drop_threshold_rows,
+        col_exclude=col_exclude,
     )
 
     if clean_col_names:
@@ -358,14 +370,15 @@ def data_cleaning(
 
 def mv_col_handling(
     data: pd.DataFrame,
-    target: Optional[str | pd.Series | list[str]] = None,
+    target: str | pd.Series | list[str] | None = None,
     mv_threshold: float = 0.1,
     corr_thresh_features: float = 0.5,
     corr_thresh_target: float = 0.3,
     return_details: bool = False,
 ) -> pd.DataFrame | tuple[pd.DataFrame, list[str], list[str]]:
-    """Convert columns with a high ratio of missing values into binary features and \
-    eventually drops them based on their correlation with other features and the \
+    """Convert columns with a high ratio of missing values into binary features.
+
+    Eventually drops them based on their correlation with other features and the \
     target variable.
 
     This function follows a three step process:
@@ -422,7 +435,7 @@ def mv_col_handling(
     mv_ratios = _missing_vals(data_local)["mv_cols_ratio"]
     cols_mv = mv_ratios[mv_ratios > mv_threshold].index.tolist()
     data_local[cols_mv] = (
-        data_local[cols_mv].applymap(lambda x: x if pd.isnull(x) else 1).fillna(0)
+        data_local[cols_mv].applymap(lambda x: x if pd.isna(x) else 1).fillna(0)
     )
 
     high_corr_features = []
@@ -451,19 +464,20 @@ def pool_duplicate_subsets(
     col_dupl_thresh: float = 0.2,
     subset_thresh: float = 0.2,
     min_col_pool: int = 3,
-    exclude: Optional[list[str]] = None,
+    exclude: list[str] | None = None,
     return_details: bool = False,
 ) -> pd.DataFrame | tuple[pd.DataFrame, list[str]]:
-    """Check for duplicates in subsets of columns and pools them. This can reduce \
-        the number of columns in the data without loosing much information. Suitable \
-        columns are combined to subsets and tested for duplicates. In case sufficient \
-        duplicates can be found, the respective columns are aggregated into a \
-        "pooled_var" column. Identical numbers in the "pooled_var" column indicate \
-        identical information in the respective rows.
+    """Check for duplicates in subsets of columns and pools them.
 
-        Note:  It is advised to exclude features that provide sufficient informational \
-        content by themselves as well as the target column by using the "exclude" \
-        setting.
+    This can reduce the number of columns in the data without loosing much \
+    information. Suitable columns are combined to subsets and tested for duplicates. \
+    In case sufficient duplicates can be found, the respective columns are aggregated \
+    into a "pooled_var" column. Identical numbers in the "pooled_var" column indicate \
+    identical information in the respective rows.
+
+    Note:  It is advised to exclude features that provide sufficient informational \
+    content by themselves as well as the target column by using the "exclude" \
+    setting.
 
     Parameters
     ----------
@@ -543,7 +557,7 @@ def pool_duplicate_subsets(
                 .rename(columns={"index": "pooled_vars"})
             )
             data = data.merge(unique_subset, how="left", on=subset_cols).drop(
-                columns=subset_cols
+                columns=subset_cols,
             )
             data.index = pd.RangeIndex(len(data))
             break

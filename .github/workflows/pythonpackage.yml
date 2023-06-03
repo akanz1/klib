@@ -1,4 +1,4 @@
-name: pylint 🐍 pytest   ´
+name: Ruff 🐍 Pytest   ´
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"] # "3.12-dev"
         platform: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.platform }}
@@ -28,9 +28,9 @@ jobs:
           poetry config virtualenvs.in-project true
           poetry install -v
 
-      - name: Lint
+      - name: Ruff
         run: |
-          poetry run flake8 src/
+          poetry run ruff check .
 
       - name: Test with pytest and generate coverage report
         run: |

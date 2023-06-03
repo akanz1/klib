@@ -1,5 +1,4 @@
-"""
-Measuring the performance of key functionality.
+"""Measuring the performance of key functionality.
 
 :author: Andreas Kanz
 """
@@ -7,9 +6,10 @@ import functools
 from pathlib import Path
 from time import perf_counter
 
-import klib
 import matplotlib.pyplot as plt
 import pandas as pd
+
+import klib
 
 # Paths
 base_path = Path(__file__).resolve().parents[3]
@@ -61,8 +61,10 @@ def main():
     fig, ax = plt.subplots(nrows=1, ncols=4, figsize=(14, 7))
     reference_values = [5, 10, 10, 10]
 
-    for i, (col, ref) in enumerate(zip(df_times.columns, reference_values)):
-        ax[i].boxplot(df_times[col])  # pylint: disable=unsubscriptable-object
+    for i, (col, ref) in enumerate(
+        zip(df_times.columns, reference_values, strict=True),
+    ):
+        ax[i].boxplot(df_times[col])
         ax[i].set_title(" ".join(col.split("_")).title())
         ax[i].axhline(ref)
     fig.suptitle("Performance", fontsize=16)
