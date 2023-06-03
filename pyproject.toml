@@ -143,7 +143,7 @@ select = [
 ignore = ["T201", "FBT001", "FBT002", "PLR0913"]
 
 line-length = 88
-target-version = "py310"
+target-version = "py38"
 
 [tool.ruff.mccabe]
 max-complexity = 6
