@@ -30,7 +30,7 @@ jobs:
 
       - name: Lint
         run: |
-          poetry run flake8 src/
+          poetry run ruff check .
 
       - name: Test with pytest and generate coverage report
         run: |

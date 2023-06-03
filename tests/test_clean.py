@@ -4,7 +4,6 @@ import unittest
 
 import numpy as np
 import pandas as pd
-
 from klib.clean import clean_column_names
 from klib.clean import convert_datatypes
 from klib.clean import data_cleaning
@@ -23,8 +22,8 @@ class Test_clean_column_names(unittest.TestCase):
                 '"asdäöüß"': [5, 6, 7],
                 "dupli": [5, 6, 8],
                 "also": [9, 2, 7],
-                "-Ä-__________!?:;some/(... \n ..))(++$%/name/    -.....": [2, 3, 7],
-            }
+                "-ä-__________!?:;some/(... \n ..))(++$%/name/    -.....": [2, 3, 7],
+            },
         )
         cls.df2 = pd.DataFrame(
             {
@@ -33,7 +32,7 @@ class Test_clean_column_names(unittest.TestCase):
                 "verylongColumnNamesareHardtoRead": [9, 2, 7],
                 "< #total@": [2, 6, 4],
                 "count >= 10": [6, 3, 2],
-            }
+            },
         )
         cls.df_clean_column_names = pd.concat([cls.df1, cls.df2], axis=1)
 
@@ -53,24 +52,23 @@ class Test_clean_column_names(unittest.TestCase):
             "count_larger_equal_10",
         ]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
-                clean_column_names(self.df_clean_column_names).columns[i],
-                expected_results[i],
+            assert (
+                clean_column_names(self.df_clean_column_names).columns[i]
+                == expected_results[i]
             )
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
-                clean_column_names(self.df_clean_column_names, hints=False).columns[i],
-                expected_results[i],
+            assert (
+                clean_column_names(self.df_clean_column_names, hints=False).columns[i]
+                == expected_results[i]
             )
 
+    def test_clean_column_names_prints(self):
         captured_output = io.StringIO()
         sys.stdout = captured_output
         clean_column_names(self.df_clean_column_names, hints=True)
         sys.stdout = sys.__stdout__
-        self.assertEqual(
-            captured_output.getvalue(),
-            "Long column names detected (>25 characters). Consider renaming the "
-            "following columns ['ae_some_plus_plus_dollar_percent_name', 'verylong_column_namesare_hardto_read'].\n",
+        assert captured_output.getvalue() == (
+            "(\"Duplicate column names detected! Columns with index [7, 8] and names ['dupli', 'also'] have been renamed to ['dupli_7', 'also_8'].\", \"Long column names detected (>25 characters). Consider renaming the following columns ['ae_some_plus_plus_dollar_percent_name', 'verylong_column_namesare_hardto_read'].\")\n"
         )
 
 
@@ -90,59 +88,39 @@ class Test_drop_missing(unittest.TestCase):
         )
 
     def test_drop_missing(self):
-        self.assertEqual(drop_missing(self.df_data_drop).shape, (4, 4))
+        assert drop_missing(self.df_data_drop).shape == (4, 4)
 
         # Drop further columns based on threshold
-        self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_cols=0.5).shape, (4, 3)
-        )
-        self.assertEqual(
-            drop_missing(
-                self.df_data_drop, drop_threshold_cols=0.5, col_exclude=["c1"]
-            ).shape,
-            (4, 4),
-        )
-        self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_cols=0.49).shape, (4, 2)
-        )
-        self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_cols=0).shape, (0, 0)
-        )
+        assert drop_missing(self.df_data_drop, drop_threshold_cols=0.5).shape == (4, 3)
+        assert drop_missing(
+            self.df_data_drop,
+            drop_threshold_cols=0.5,
+            col_exclude=["c1"],
+        ).shape == (4, 4)
+        assert drop_missing(self.df_data_drop, drop_threshold_cols=0.49).shape == (4, 2)
+        assert drop_missing(self.df_data_drop, drop_threshold_cols=0).shape == (0, 0)
 
         # Drop further rows based on threshold
-        self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_rows=0.67).shape, (4, 4)
-        )
-        self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_rows=0.5).shape, (4, 4)
-        )
-        self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_rows=0.49).shape, (3, 4)
-        )
-        self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_rows=0.25).shape, (3, 4)
-        )
-        self.assertEqual(
-            drop_missing(self.df_data_drop, drop_threshold_rows=0.24).shape, (2, 4)
-        )
-        self.assertEqual(
-            drop_missing(
-                self.df_data_drop, drop_threshold_rows=0.24, col_exclude=["c1"]
-            ).shape,
-            (2, 5),
-        )
-        self.assertEqual(
-            drop_missing(
-                self.df_data_drop, drop_threshold_rows=0.24, col_exclude=["c2"]
-            ).shape,
-            (2, 4),
-        )
-        self.assertEqual(
-            drop_missing(
-                self.df_data_drop, drop_threshold_rows=0.51, col_exclude=["c1"]
-            ).shape,
-            (3, 5),
-        )
+        assert drop_missing(self.df_data_drop, drop_threshold_rows=0.67).shape == (4, 4)
+        assert drop_missing(self.df_data_drop, drop_threshold_rows=0.5).shape == (4, 4)
+        assert drop_missing(self.df_data_drop, drop_threshold_rows=0.49).shape == (3, 4)
+        assert drop_missing(self.df_data_drop, drop_threshold_rows=0.25).shape == (3, 4)
+        assert drop_missing(self.df_data_drop, drop_threshold_rows=0.24).shape == (2, 4)
+        assert drop_missing(
+            self.df_data_drop,
+            drop_threshold_rows=0.24,
+            col_exclude=["c1"],
+        ).shape == (2, 5)
+        assert drop_missing(
+            self.df_data_drop,
+            drop_threshold_rows=0.24,
+            col_exclude=["c2"],
+        ).shape == (2, 4)
+        assert drop_missing(
+            self.df_data_drop,
+            drop_threshold_rows=0.51,
+            col_exclude=["c1"],
+        ).shape == (3, 5)
 
 
 class Test_data_cleaning(unittest.TestCase):
@@ -161,52 +139,44 @@ class Test_data_cleaning(unittest.TestCase):
         )
 
     def test_data_cleaning(self):
-        self.assertEqual(data_cleaning(self.df_data_cleaning, show="all").shape, (5, 4))
-        self.assertEqual(data_cleaning(self.df_data_cleaning, show=None).shape, (5, 4))
+        assert data_cleaning(self.df_data_cleaning, show="all").shape == (5, 4)
+        assert data_cleaning(self.df_data_cleaning, show=None).shape == (5, 4)
 
-        self.assertEqual(
-            data_cleaning(self.df_data_cleaning, col_exclude=["c6"]).shape, (5, 5)
-        )
+        assert data_cleaning(self.df_data_cleaning, col_exclude=["c6"]).shape == (5, 5)
 
-        self.assertEqual(
-            data_cleaning(
-                self.df_data_cleaning,
-                show="changes",
-                clean_col_names=False,
-                drop_duplicates=False,
-            ).columns.tolist(),
-            ["c2", "c3", "c 4", "c5"],
-        )
+        assert data_cleaning(
+            self.df_data_cleaning,
+            show="changes",
+            clean_col_names=False,
+            drop_duplicates=False,
+        ).columns.tolist() == ["c2", "c3", "c 4", "c5"]
 
-        self.assertEqual(
-            data_cleaning(
-                self.df_data_cleaning,
-                show="changes",
-                clean_col_names=False,
-                drop_duplicates=False,
-            ).columns.tolist(),
-            ["c2", "c3", "c 4", "c5"],
-        )
+        assert data_cleaning(
+            self.df_data_cleaning,
+            show="changes",
+            clean_col_names=False,
+            drop_duplicates=False,
+        ).columns.tolist() == ["c2", "c3", "c 4", "c5"]
 
         expected_results = ["string", "float32", "O", "O"]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
-                data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes[i],
-                expected_results[i],
+            assert (
+                data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes[i]
+                == expected_results[i]
             )
 
         expected_results = ["O", "O", "O", "O"]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
-                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes[i],
-                expected_results[i],
+            assert (
+                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes[i]
+                == expected_results[i]
             )
 
         expected_results = ["O", "O", "O", "O"]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
-                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes[i],
-                expected_results[i],
+            assert (
+                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes[i]
+                == expected_results[i]
             )
 
 
@@ -221,7 +191,7 @@ class Test_convert_dtypes(unittest.TestCase):
                 [1, 7.0, "u", "f", pd.NA, "p"],
                 [1, 7.0, "u", "f", pd.NA, "p"],
                 [2, 7.0, "g", "a", pd.NA, "p"],
-            ]
+            ],
         )
 
     def test_convert_dtypes(self):
@@ -234,9 +204,9 @@ class Test_convert_dtypes(unittest.TestCase):
             "category",
         ]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
-                convert_datatypes(self.df_data_convert, cat_threshold=0.4).dtypes[i],
-                expected_results[i],
+            assert (
+                convert_datatypes(self.df_data_convert, cat_threshold=0.4).dtypes[i]
+                == expected_results[i]
             )
 
         expected_results = [
@@ -248,8 +218,8 @@ class Test_convert_dtypes(unittest.TestCase):
             "string",
         ]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
-                convert_datatypes(self.df_data_convert).dtypes[i], expected_results[i]
+            assert (
+                convert_datatypes(self.df_data_convert).dtypes[i] == expected_results[i]
             )
 
         expected_results = [
@@ -261,11 +231,13 @@ class Test_convert_dtypes(unittest.TestCase):
             "category",
         ]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
+            assert (
                 convert_datatypes(
-                    self.df_data_convert, cat_threshold=0.5, cat_exclude=[4]
-                ).dtypes[i],
-                expected_results[i],
+                    self.df_data_convert,
+                    cat_threshold=0.5,
+                    cat_exclude=[4],
+                ).dtypes[i]
+                == expected_results[i]
             )
 
         expected_results = [
@@ -277,23 +249,25 @@ class Test_convert_dtypes(unittest.TestCase):
             "category",
         ]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
+            assert (
                 convert_datatypes(
-                    self.df_data_convert, cat_threshold=0.95, cat_exclude=[2, 4]
-                ).dtypes[i],
-                expected_results[i],
+                    self.df_data_convert,
+                    cat_threshold=0.95,
+                    cat_exclude=[2, 4],
+                ).dtypes[i]
+                == expected_results[i]
             )
 
         expected_results = ["int8", "float32", "string", "string", "object", "string"]
         for i, _ in enumerate(expected_results):
-            self.assertEqual(
+            assert (
                 convert_datatypes(
                     self.df_data_convert,
                     category=False,
                     cat_threshold=0.95,
                     cat_exclude=[2, 4],
-                ).dtypes[i],
-                expected_results[i],
+                ).dtypes[i]
+                == expected_results[i]
             )
 
 
@@ -313,33 +287,34 @@ class Test_pool_duplicate_subsets(unittest.TestCase):
         )
 
     def test_pool_duplicate_subsets(self):
-        self.assertEqual(pool_duplicate_subsets(self.df_data_subsets).shape, (6, 3))
-        self.assertEqual(
-            pool_duplicate_subsets(self.df_data_subsets, col_dupl_thresh=1).shape,
-            (6, 6),
+        assert pool_duplicate_subsets(self.df_data_subsets).shape == (6, 3)
+        assert pool_duplicate_subsets(
+            self.df_data_subsets,
+            col_dupl_thresh=1,
+        ).shape == (6, 6)
+
+        assert pool_duplicate_subsets(self.df_data_subsets, subset_thresh=0).shape == (
+            6,
+            2,
         )
 
-        self.assertEqual(
-            pool_duplicate_subsets(self.df_data_subsets, subset_thresh=0).shape, (6, 2)
+        assert pool_duplicate_subsets(self.df_data_subsets, return_details=True)[
+            0
+        ].shape == (6, 3)
+        assert pool_duplicate_subsets(self.df_data_subsets, return_details=True)[1] == [
+            "c1",
+            "c2",
+            "c3",
+            "c5",
+        ]
+
+        assert pool_duplicate_subsets(self.df_data_subsets, exclude=["c1"]).shape == (
+            6,
+            4,
         )
 
-        self.assertEqual(
-            pool_duplicate_subsets(self.df_data_subsets, return_details=True)[0].shape,
-            (6, 3),
-        )
-        self.assertEqual(
-            pool_duplicate_subsets(self.df_data_subsets, return_details=True)[1],
-            ["c1", "c2", "c3", "c5"],
-        )
-
-        self.assertEqual(
-            pool_duplicate_subsets(self.df_data_subsets, exclude=["c1"]).shape,
-            (6, 4),
-        )
-
-        self.assertEqual(
-            pool_duplicate_subsets(
-                self.df_data_subsets, exclude=["c1"], return_details=True
-            )[1],
-            ["c2", "c5", "c6"],
-        )
+        assert pool_duplicate_subsets(
+            self.df_data_subsets,
+            exclude=["c1"],
+            return_details=True,
+        )[1] == ["c2", "c5", "c6"]

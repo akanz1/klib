@@ -1,5 +1,4 @@
-"""
-Utilities and auxiliary functions.
+"""Utilities and auxiliary functions.
 
 :author: Andreas Kanz
 
@@ -7,7 +6,6 @@ Utilities and auxiliary functions.
 from __future__ import annotations
 
 from typing import Literal
-from typing import Optional
 from typing import TypedDict
 
 import numpy as np
@@ -16,7 +14,7 @@ import pandas as pd
 
 def _corr_selector(
     corr: pd.Series | pd.DataFrame,
-    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
+    split: Literal["pos", "neg", "high", "low"] | None = None,
     threshold: float = 0,
 ) -> pd.Series | pd.DataFrame:
     """Select the desired correlations using this utility function.
@@ -41,27 +39,27 @@ def _corr_selector(
         corr = corr.where((corr >= threshold) & (corr > 0))
         print(
             'Displaying positive correlations. Specify a positive "threshold" to '
-            "limit the results further."
+            "limit the results further.",
         )
     elif split == "neg":
         corr = corr.where((corr <= threshold) & (corr < 0))
         print(
             'Displaying negative correlations. Specify a negative "threshold" to '
-            "limit the results further."
+            "limit the results further.",
         )
     elif split == "high":
         threshold = 0.3 if threshold <= 0 else threshold
         corr = corr.where(np.abs(corr) >= threshold)
         print(
             f"Displaying absolute correlations above the threshold ({threshold}). "
-            'Specify a positive "threshold" to limit the results further.'
+            'Specify a positive "threshold" to limit the results further.',
         )
     elif split == "low":
         threshold = 0.3 if threshold <= 0 else threshold
         corr = corr.where(np.abs(corr) <= threshold)
         print(
             f"Displaying absolute correlations below the threshold ({threshold}). "
-            'Specify a positive "threshold" to limit the results further.'
+            'Specify a positive "threshold" to limit the results further.',
         )
 
     return corr
@@ -70,12 +68,13 @@ def _corr_selector(
 def _diff_report(
     data: pd.DataFrame,
     data_cleaned: pd.DataFrame,
-    dupl_rows: Optional[list[str | int]] = None,
-    single_val_cols: Optional[list[str]] = None,
-    show: Optional[Literal["all", "changes"]] = "changes",
+    dupl_rows: list[str | int] | None = None,
+    single_val_cols: list[str] | None = None,
+    show: Literal["all", "changes"] | None = "changes",
 ) -> None:
-    """Provide information about changes between two datasets, such as dropped rows \
-        and columns, memory usage and missing values.
+    """Provide information about changes between two datasets.
+
+    This includes dropped rows and columns, memory usage and missing values.
 
     Parameters
     ----------
@@ -119,21 +118,24 @@ def _diff_report(
         data_cl_mem = _memory_usage(data_cleaned, deep=True)
         _print_cleaning_details("Before data cleaning:\n", data, data_mv_tot, data_mem)
         _print_cleaning_details(
-            "After data cleaning:\n", data_cleaned, data_cl_mv_tot, data_cl_mem
+            "After data cleaning:\n",
+            data_cleaned,
+            data_cl_mv_tot,
+            data_cl_mem,
         )
 
     print(
         f"Shape of cleaned data: {data_cleaned.shape} - "
-        f"Remaining NAs: {data_cl_mv_tot}\n\n"
+        f"Remaining NAs: {data_cl_mv_tot}\n\n",
     )
     print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
     print(
-        f"     of which {len(dupl_rows)} duplicates. (Rows (first 150 shown): {dupl_rows[:150]})\n"  # noqa
+        f"     of which {len(dupl_rows)} duplicates. (Rows (first 150 shown): {dupl_rows[:150]})\n",  # noqa: E501
     )
     print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
     print(
         f"     of which {len(single_val_cols)} single valued."
-        f"     Columns: {single_val_cols}"
+        f"     Columns: {single_val_cols}",
     )
     print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
     mem_change = data_mem - data_cl_mem
@@ -141,13 +143,18 @@ def _diff_report(
     print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)\n")
 
 
-def _print_cleaning_details(arg0, arg1, arg2, arg3) -> None:
-    print(arg0)
-    print(f"dtypes:\n{arg1.dtypes.value_counts()}")
-    print(f"\nNumber of rows: {str(arg1.shape[0]).rjust(8)}")
-    print(f"Number of cols: {str(arg1.shape[1]).rjust(8)}")
-    print(f"Missing values: {str(arg2).rjust(8)}")
-    print(f"Memory usage: {str(arg3).rjust(7)} MB")
+def _print_cleaning_details(
+    header: str,
+    data: pd.DataFrame | pd.Series,
+    missing_vals: int,
+    mem_usage: float,
+) -> None:
+    print(header)
+    print(f"dtypes:\n{data.dtypes.value_counts()}")
+    print(f"\nNumber of rows: {str(data.shape[0]).rjust(8)}")
+    print(f"Number of cols: {str(data.shape[1]).rjust(8)}")
+    print(f"Missing values: {str(missing_vals).rjust(8)}")
+    print(f"Memory usage: {str(mem_usage).rjust(7)} MB")
     print("_______________________________________________________\n")
 
 
@@ -232,50 +239,45 @@ def _missing_vals(data: pd.DataFrame) -> MVResult:
     }
 
 
-def _validate_input_bool(value: bool, desc) -> None:
+def _validate_input_bool(value: bool, desc: str) -> None:
     if not isinstance(value, bool):
-        raise TypeError(
-            f"Input value for '{desc}' is {type(value)} but should be a boolean."
-        )
+        msg = f"Input value for '{desc}' is {type(value)} but should be a boolean."
+        raise TypeError(msg)
 
 
-def _validate_input_int(value: int, desc) -> None:
+def _validate_input_int(value: int, desc: str) -> None:
     if not isinstance(value, int):
-        raise TypeError(
-            f"Input value for '{desc}' is {type(value)} but should be an integer."
-        )
+        msg = f"Input value for '{desc}' is {type(value)} but should be an integer."
+        raise TypeError(msg)
 
 
-def _validate_input_range(value, desc, lower, upper) -> None:
+def _validate_input_range(value: int, desc: str, lower: int, upper: int) -> None:
     if value < lower or value > upper:
-        raise ValueError(
-            f"'{desc}' = {value} but should be {lower} <= '{desc}' <= {upper}."
-        )
+        msg = f"'{desc}' = {value} but should be {lower} <= '{desc}' <= {upper}."
+        raise ValueError(msg)
 
 
-def _validate_input_smaller(value1, value2, desc) -> None:
+def _validate_input_smaller(value1: int, value2: int, desc: str) -> None:
     if value1 > value2:
-        raise ValueError(
-            f"The first input for '{desc}' should be smaller or equal to the second."
-        )
+        msg = f"The first input for '{desc}' should be smaller or equal to the second."
+        raise ValueError(msg)
 
 
-def _validate_input_sum_smaller(limit, desc, *args) -> None:
+def _validate_input_sum_smaller(limit: float, desc: str, *args) -> None:  # noqa: ANN002
     if sum(args) > limit:
-        raise ValueError(
+        msg = (
             f"The sum of input values for '{desc}' should be less or equal to {limit}."
         )
+        raise ValueError(msg)
 
 
-def _validate_input_sum_larger(limit, desc, *args) -> None:
+def _validate_input_sum_larger(limit: float, desc: str, *args) -> None:  # noqa: ANN002
     if sum(args) < limit:
-        raise ValueError(
-            f"The sum of input values for '{desc}' should be larger/equal to {limit}."
-        )
+        msg = f"The sum of input values for '{desc}' should be larger/equal to {limit}."
+        raise ValueError(msg)
 
 
-def _validate_input_num_data(value: pd.DataFrame, desc) -> None:
+def _validate_input_num_data(value: pd.DataFrame, desc: str) -> None:
     if value.select_dtypes(include=["number"]).empty:
-        raise TypeError(
-            f"Input value for '{desc}' should contain at least one numerical column."
-        )
+        msg = f"Input value for '{desc}' should contain at least one numerical column."
+        raise TypeError(msg)
