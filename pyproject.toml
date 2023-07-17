@@ -19,7 +19,7 @@ scipy = "^1.1.0"
 seaborn = ">=0.11.2"
 
 [tool.poetry.dev-dependencies]
-black = "^23.3.0"
+black = "^23.7.0"
 ipykernel = "^6.24.0"
 mypy = "^1.4.1"
 pre-commit = "^3.3.3"
