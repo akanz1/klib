@@ -428,7 +428,7 @@ def dist_plot(
     rug_kws: dict[str, Any] | None = None,
     fill_kws: dict[str, Any] | None = None,
     font_kws: dict[str, Any] | None = None,
-) -> None | Any:
+) -> None | Any:  # noqa: ANN401
     """2D visualization of the distribution of non binary numerical features.
 
     Parameters
@@ -513,7 +513,6 @@ def dist_plot(
         )
         cols = cols[:20]
 
-    g = None
     for col in cols:
         col_data = data[col].dropna(axis=0)
         col_df = df[col].dropna(axis=0)
@@ -614,7 +613,8 @@ def dist_plot(
         )
         g.axes[0, 0].legend(loc="upper right")
 
-    return g.axes[0, 0]
+        return g.axes[0, 0]
+    return None
 
 
 def missingval_plot(  # noqa: C901, PLR0915

@@ -251,7 +251,7 @@ def _validate_input_int(value: int, desc: str) -> None:
         raise TypeError(msg)
 
 
-def _validate_input_range(value: int, desc: str, lower: int, upper: int) -> None:
+def _validate_input_range(value: float, desc: str, lower: float, upper: float) -> None:
     if value < lower or value > upper:
         msg = f"'{desc}' = {value} but should be {lower} <= '{desc}' <= {upper}."
         raise ValueError(msg)
