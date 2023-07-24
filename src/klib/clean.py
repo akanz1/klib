@@ -102,7 +102,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
     if dupl_idx := [i for i, x in enumerate(data.columns.duplicated()) if x]:
         dupl_before = data.columns[dupl_idx].tolist()
         data.columns = [
-            col if col not in data.columns[:i] else f"{col}_{str(i)}"
+            col if col not in data.columns[:i] else f"{col}_{i!s}"
             for i, col in enumerate(data.columns)
         ]
         print_statement = ""
@@ -179,9 +179,7 @@ def convert_datatypes(
         )
 
     data = _optimize_ints(data)
-    data = _optimize_floats(data)
-
-    return data
+    return _optimize_floats(data)
 
 
 def drop_missing(
@@ -340,7 +338,7 @@ def data_cleaning(
         data_cleaned = clean_column_names(data_cleaned)
 
     single_val_cols = data_cleaned.columns[
-        data_cleaned.nunique(dropna=False) == 1
+        data_cleaned.nunique(dropna=False) == 1  # noqa: PD101
     ].tolist()
     single_val_cols = [col for col in single_val_cols if col not in col_exclude]
     data_cleaned = data_cleaned.drop(columns=single_val_cols)
@@ -548,7 +546,7 @@ def pool_duplicate_subsets(
                 max_idx + 1,
             )
 
-            best_subset = data[list(list(best_subset)[0])]
+            best_subset = data[list(next(iter(best_subset)))]
             subset_cols = best_subset.columns.tolist()
 
             unique_subset = (
