@@ -587,11 +587,7 @@ def corr_interactive_plot(
     vmax = np.round(np.nanmax(corr) - 0.05, 2)
     vmin = np.round(np.nanmin(corr) + 0.05, 2)
 
-    if annot:
-        vtext = corr.round(2).fillna("")
-    else:
-        vtext = None
-
+    vtext = corr.round(2).fillna("") if annot else None
     # Specify kwargs for the heatmap
     kwargs = {
         "colorscale": cmap,
