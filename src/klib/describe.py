@@ -7,7 +7,6 @@ from __future__ import annotations
 
 from typing import Any
 from typing import Literal
-from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -430,9 +429,9 @@ def corr_plot(
 
 def corr_interactive_plot(
     data: pd.DataFrame,
-    split: Optional[Literal["pos", "neg", "high", "low"]] = None,
+    split: Literal["pos", "neg", "high", "low"] | None = None,
     threshold: float = 0,
-    target: Optional[pd.Series | str] = None,
+    target: pd.Series | str | None = None,
     method: Literal["pearson", "spearman", "kendall"] = "pearson",
     cmap: str = "BrBG",
     figsize: tuple[float, float] = (12, 10),
