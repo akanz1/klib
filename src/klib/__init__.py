@@ -17,6 +17,7 @@ from klib.clean import pool_duplicate_subsets
 from klib.describe import cat_plot
 from klib.describe import corr_mat
 from klib.describe import corr_plot
+from klib.describe import corr_interactive_plot
 from klib.describe import dist_plot
 from klib.describe import missingval_plot
 
@@ -30,6 +31,7 @@ __all__ = [
     "cat_plot",
     "corr_mat",
     "corr_plot",
+    "corr_interactive_plot",
     "dist_plot",
     "missingval_plot",
     "__version__",
