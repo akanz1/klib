@@ -77,6 +77,24 @@ klib.corr_plot(df, target='wine') # default representation of correlations with 
 <p align="center"><img src="https://raw.githubusercontent.com/akanz1/klib/main/examples/images/example_target_corr_plot.png" alt="Target Corr Plot Example" width="720" height="600"></p>
 
 ```python
+klib.corr_interactive_plot(df, split="neg").show()
+
+# The interactive plot has the same parameters as the corr_plot, but with additional Plotly heatmap graph object kwargs.
+klib.corr_interactive_plot(df, split="neg", zmax=0)
+```
+
+<p align="center"><img src="https://github.com/akanz1/klib/assets/124513922/27b79ece-dc22-410c-9816-fcc4cfc97edc"  alt="Interactive Corr Plot Simple Example" width="720" height="600"></p>
+
+<p align="center"><img src="https://github.com/akanz1/klib/assets/124513922/d986dc6c-84dc-4693-b276-6b4df7023e0f" alt="Interactive Corr Plot with zmax kwarg Example" width="720" height="600"></p>
+
+```python
+#Since corr_interactive_plot returns a Graph Object Figure, it supports the update_layout chain method.
+klib.corr_interactive_plot(wine, split="neg").update_layout(template="simple_white")
+```
+
+<p align="center"><img src="https://github.com/akanz1/klib/assets/124513922/fb7ac102-6daf-4e30-a24c-db168c7cf42c" alt="Interactive Corr Plot Chained Example" width="720" height="600"></p>
+
+```python
 klib.dist_plot(df) # default representation of a distribution plot, other settings include fill_range, histogram, ...
 ```
 
