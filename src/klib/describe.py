@@ -842,7 +842,7 @@ def dist_plot(
     return None
 
 
-def missingval_plot(  # noqa: C901, PLR0915
+def missingval_plot(  # noqa: PLR0915
     data: pd.DataFrame,
     cmap: str = "PuBuGn",
     figsize: tuple = (20, 20),
