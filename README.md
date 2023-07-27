@@ -41,6 +41,7 @@ df = pd.DataFrame(data)
 - klib.cat_plot(df) # returns a visualization of the number and frequency of categorical features
 - klib.corr_mat(df) # returns a color-encoded correlation matrix
 - klib.corr_plot(df) # returns a color-encoded heatmap, ideal for correlations
+- klib.corr_interactive_plot(df, split="neg").show() # returns an interactive correlation plot using plotly
 - klib.dist_plot(df) # returns a distribution plot for every numeric feature
 - klib.missingval_plot(df) # returns a figure containing information about missing values
 
