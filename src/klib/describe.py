@@ -614,7 +614,7 @@ def corr_interactive_plot(
         ),
     )
 
-    dpi = 96  # more or less arbitrary default value
+    dpi = None
     for monitor in get_monitors():
         if monitor.is_primary:
             if monitor.width_mm is None or monitor.height_mm is None:
@@ -623,12 +623,11 @@ def corr_interactive_plot(
             break
 
     if dpi is None:
-        try:
-            monitor = get_monitors()[0]
+        monitor = get_monitors()[0]
+        if monitor.width_mm is None or monitor.height_mm is None:
+            dpi = 96  # more or less arbitrary default value
+        else:
             dpi = monitor.width / (monitor.width_mm / 25.4)
-        except ValueError as exc:
-            msg = "Monitor doesn't exist"
-            raise LookupError(msg) from exc
 
     heatmap.update_layout(
         title=f"Feature-correlation ({method})",
