@@ -11,14 +11,13 @@ from typing import Literal
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import plotly.graph_objects as go
 import scipy
 import seaborn as sns
 from matplotlib import ticker
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.colors import to_rgb
 from matplotlib.gridspec import GridSpec  # noqa: TCH002
-
-import plotly.graph_objects as go
 from screeninfo import get_monitors
 
 from klib.utils import _corr_selector
@@ -32,11 +31,11 @@ from klib.utils import _validate_input_sum_larger
 
 __all__ = [
     "cat_plot",
+    "corr_interactive_plot",
     "corr_mat",
     "corr_plot",
-    "corr_interactive_plot",
     "dist_plot",
-    "missingval_plot"
+    "missingval_plot",
 ]
 
 
@@ -427,20 +426,19 @@ def corr_plot(
 
     return ax
 
+
 def corr_interactive_plot(
     data: pd.DataFrame,
     split: Literal["pos", "neg", "high", "low"] | None = None,
-    threshold: float = 0,
+    threshold: float = 0.0,
     target: pd.Series | str | None = None,
     method: Literal["pearson", "spearman", "kendall"] = "pearson",
     cmap: str = "BrBG",
     figsize: tuple[float, float] = (12, 10),
     annot: bool = True,
-    **kwargs,
+    **kwargs,  # noqa: ANN003
 ) -> go.Figure:
-    """
-    Two-dimensional visualization of the correlation between
-    feature-columns using Plotly's Heatmap.
+    """Interactive 2D visualization of the correlation between feature-columns.
 
     Parameters
     ----------
@@ -582,7 +580,7 @@ def corr_interactive_plot(
         np.fill_diagonal(corr.to_numpy(), np.nan)
         corr = corr.where(mask == 1)
     else:
-        corr = corr.iloc[::-1,:]
+        corr = corr.iloc[::-1, :]
 
     vmax = np.round(np.nanmax(corr) - 0.05, 2)
     vmin = np.round(np.nanmin(corr) + 0.05, 2)
@@ -613,23 +611,28 @@ def corr_interactive_plot(
             xgap=1,
             ygap=1,
             **kwargs,
-        )
+        ),
     )
 
+    dpi = 96  # more or less arbitrary default value
     for monitor in get_monitors():
         if monitor.is_primary:
+            if monitor.width_mm is None or monitor.height_mm is None:
+                continue
             dpi = monitor.width / (monitor.width_mm / 25.4)
+            break
 
     if dpi is None:
         try:
             monitor = get_monitors()[0]
             dpi = monitor.width / (monitor.width_mm / 25.4)
-        except Exception as exc:
-            raise LookupError("Monitor doesn't exist") from exc
+        except ValueError as exc:
+            msg = "Monitor doesn't exist"
+            raise LookupError(msg) from exc
 
     heatmap.update_layout(
         title=f"Feature-correlation ({method})",
-        title_font={"size":24},
+        title_font={"size": 24},
         title_x=0.5,
         autosize=True,
         width=figsize[0] * dpi,
