@@ -614,20 +614,22 @@ def corr_interactive_plot(
         ),
     )
 
-    dpi = None
-    for monitor in get_monitors():
-        if monitor.is_primary:
-            if monitor.width_mm is None or monitor.height_mm is None:
-                continue
-            dpi = monitor.width / (monitor.width_mm / 25.4)
-            break
+    try:
+        for monitor in get_monitors():
+            if monitor.is_primary:
+                if monitor.width_mm is None or monitor.height_mm is None:
+                    continue
+                dpi = monitor.width / (monitor.width_mm / 25.4)
+                break
 
-    if dpi is None:
-        monitor = get_monitors()[0]
-        if monitor.width_mm is None or monitor.height_mm is None:
-            dpi = 96  # more or less arbitrary default value
-        else:
-            dpi = monitor.width / (monitor.width_mm / 25.4)
+        if dpi is None:
+            monitor = get_monitors()[0]
+            if monitor.width_mm is None or monitor.height_mm is None:
+                dpi = 96  # more or less arbitrary default value
+            else:
+                dpi = monitor.width / (monitor.width_mm / 25.4)
+    except:
+        dpi = 96
 
     heatmap.update_layout(
         title=f"Feature-correlation ({method})",
