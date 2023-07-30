@@ -19,6 +19,7 @@ from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.colors import to_rgb
 from matplotlib.gridspec import GridSpec  # noqa: TCH002
 from screeninfo import get_monitors
+from screeninfo import ScreenInfoError
 
 from klib.utils import _corr_selector
 from klib.utils import _missing_vals
@@ -615,19 +616,22 @@ def corr_interactive_plot(
     )
 
     dpi = None
-    for monitor in get_monitors():
-        if monitor.is_primary:
-            if monitor.width_mm is None or monitor.height_mm is None:
-                continue
-            dpi = monitor.width / (monitor.width_mm / 25.4)
-            break
+    try:
+        for monitor in get_monitors():
+            if monitor.is_primary:
+                if monitor.width_mm is None or monitor.height_mm is None:
+                    continue
+                dpi = monitor.width / (monitor.width_mm / 25.4)
+                break
 
-    if dpi is None:
-        monitor = get_monitors()[0]
-        if monitor.width_mm is None or monitor.height_mm is None:
-            dpi = 96  # more or less arbitrary default value
-        else:
-            dpi = monitor.width / (monitor.width_mm / 25.4)
+        if dpi is None:
+            monitor = get_monitors()[0]
+            if monitor.width_mm is None or monitor.height_mm is None:
+                dpi = 96  # more or less arbitrary default value
+            else:
+                dpi = monitor.width / (monitor.width_mm / 25.4)
+    except ScreenInfoError:
+        dpi = 96
 
     heatmap.update_layout(
         title=f"Feature-correlation ({method})",

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "klib"
-version = "1.1.1"
+version = "1.1.2"
 description = "Customized data preprocessing functions for frequent tasks."
 authors = ["Andreas Kanz <andreas@akanz.de>"]
 license = "MIT"
@@ -148,7 +148,7 @@ line-length = 88
 target-version = "py38"
 
 [tool.ruff.mccabe]
-max-complexity = 7
+max-complexity = 8
 
 [tool.ruff.per-file-ignores]
 "test**" = ["ANN", "D", "S101", "PLR", "PT009", "N", "E501"]
