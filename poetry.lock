@@ -1432,13 +1432,13 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.3.1)", "pytest-
 
 [[package]]
 name = "plotly"
-version = "5.16.0"
+version = "5.16.1"
 description = "An open-source, interactive data visualization library for Python"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "plotly-5.16.0-py2.py3-none-any.whl", hash = "sha256:046ba0cd9f6b251780e0d93313016ec5e2cb69d9a68da818cd7110e6c77a4011"},
-    {file = "plotly-5.16.0.tar.gz", hash = "sha256:13dc052665dcb4d9eefd89847c0b144984e99aca5c8008f9885d2583b77d8b7d"},
+    {file = "plotly-5.16.1-py2.py3-none-any.whl", hash = "sha256:19cc34f339acd4e624177806c14df22f388f23fb70658b03aad959a0e650a0dc"},
+    {file = "plotly-5.16.1.tar.gz", hash = "sha256:295ac25edeb18c893abb71dcadcea075b78fd6fdf07cee4217a4e1009667925b"},
 ]
 
 [package.dependencies]
