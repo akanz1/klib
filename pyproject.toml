@@ -23,7 +23,7 @@ seaborn = ">=0.11.2"
 [tool.poetry.dev-dependencies]
 black = "^23.7.0"
 ipykernel = "^6.25.1"
-mypy = "^1.5.0"
+mypy = "^1.5.1"
 nbformat = "^5.9.2"
 pre-commit = "^3.3.3"
 pydocstyle = "^6.2.3"
