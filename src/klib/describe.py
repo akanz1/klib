@@ -934,7 +934,7 @@ def missingval_plot(  # noqa: PLR0915
         )
 
     ax1.set_frame_on(True)  # noqa: FBT003
-    for _, spine in ax1.spines.items():
+    for spine in ax1.spines.values():
         spine.set_visible(True)  # noqa: FBT003
         spine.set_color(spine_color)
     ax1.spines["top"].set_color(None)
@@ -950,7 +950,7 @@ def missingval_plot(  # noqa: PLR0915
         fontsize="12",
     )
     ax2.tick_params(length=1, colors="#111111")
-    for _, spine in ax2.spines.items():
+    for spine in ax2.spines.values():
         spine.set_visible(True)  # noqa: FBT003
         spine.set_color(spine_color)
 
@@ -998,7 +998,7 @@ def missingval_plot(  # noqa: PLR0915
 
     # ax4 - Scatter plot
     ax4.get_yaxis().set_visible(False)  # noqa: FBT003
-    for _, spine in ax4.spines.items():
+    for spine in ax4.spines.values():
         spine.set_color(spine_color)
     ax4.tick_params(axis="x", colors="#111111", length=1)
 

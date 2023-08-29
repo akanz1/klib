@@ -91,56 +91,7 @@ unfixable = [
     "SIM108",
 ]
 
-select = [
-    "A",
-    "ANN",
-    "ARG",
-    "B",
-    "BLE",
-    "C",
-    "C4",
-    "C90",
-    "COM",
-    "D",
-    "DJ",
-    "DTZ",
-    "E",
-    "EM",
-    "ERA",
-    "EXE",
-    "F",
-    "FBT",
-    "G",
-    "I",
-    "ICN",
-    "INP",
-    "ISC",
-    "N",
-    "NPY",
-    "PD",
-    "PGH",
-    "PIE",
-    "PL",
-    "PT",
-    "PTH",
-    "PYI",
-    "Q",
-    "RET",
-    "RSE",
-    "RUF",
-    "S",
-    "SIM",
-    "SLF",
-    "T",
-    "T10",
-    "T20",
-    "TCH",
-    "TID",
-    "TRY",
-    "UP",
-    "W",
-    "YTT",
-]
+select = ["ALL"]
 
 ignore = ["T201", "FBT001", "FBT002", "PLR0913", "D213", "D203"]
 
@@ -151,7 +102,7 @@ target-version = "py38"
 max-complexity = 8
 
 [tool.ruff.per-file-ignores]
-"test**" = ["ANN", "D", "S101", "PLR", "PT009", "N", "E501"]
-"**/scripts/**" = ["ANN", "D", "S101", "PLR", "PT009", "N", "E501"]
+"test**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501"]
+"**/scripts/**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501"]
 [tool.ruff.isort]
 force-single-line = true
