@@ -3,7 +3,6 @@ import unittest
 import numpy as np
 import pandas as pd
 import pytest
-
 from klib.utils import _corr_selector
 from klib.utils import _drop_duplicates
 from klib.utils import _missing_vals
@@ -232,7 +231,8 @@ class Test__validate_input(unittest.TestCase):
             _validate_input_range(-0.1, "actual", 0, 1)
 
         with pytest.raises(
-            ValueError, match="'actual' = 1.1 but should be 0 <= 'actual' <= 1."
+            ValueError,
+            match="'actual' = 1.1 but should be 0 <= 'actual' <= 1.",
         ):
             _validate_input_range(1.1, "actual", 0, 1)
 
@@ -286,7 +286,8 @@ class Test__validate_input(unittest.TestCase):
     def test__validate_input_num_data(self) -> None:
         with pytest.raises(TypeError):
             _validate_input_num_data(
-                pd.DataFrame({"col1": ["a", "b", "c"]}), "No description"
+                pd.DataFrame({"col1": ["a", "b", "c"]}),
+                "No description",
             )
 
         _validate_input_num_data(

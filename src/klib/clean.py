@@ -115,7 +115,9 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
             )
 
             if long_col_names := [
-                x for x in data.columns if len(x) > 25  # noqa: PLR2004
+                x
+                for x in data.columns
+                if len(x) > 25  # noqa: PLR2004
             ]:
                 print_statement += (
                     "Long column names detected (>25 characters). Consider renaming "

@@ -246,13 +246,13 @@ def corr_mat(
 
     _validate_input_num_data(data, "data")
 
-    if isinstance(target, (str, list, pd.Series, np.ndarray)):
+    if isinstance(target, str | list | pd.Series | np.ndarray):
         target_data = []
         if isinstance(target, str):
             target_data = data[target]
             data = data.drop(target, axis=1)
 
-        elif isinstance(target, (list, pd.Series, np.ndarray)):
+        elif isinstance(target, list | pd.Series | np.ndarray):
             target_data = pd.Series(target)
             target = target_data.name
 

@@ -29,7 +29,7 @@ pre-commit = "^3.5.0"
 pydocstyle = "^6.2.3"
 pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
-ruff = ">=0.0.286"
+ruff = ">=0.1.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -96,7 +96,7 @@ select = ["ALL"]
 ignore = ["T201", "FBT001", "FBT002", "PLR0913", "D213", "D203"]
 
 line-length = 88
-target-version = "py38"
+target-version = "py310"
 
 [tool.ruff.mccabe]
 max-complexity = 8
@@ -104,5 +104,8 @@ max-complexity = 8
 [tool.ruff.per-file-ignores]
 "test**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501"]
 "**/scripts/**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501"]
+
 [tool.ruff.isort]
 force-single-line = true
+order-by-type = false
+known-first-party = ["twoex", "tx"]
