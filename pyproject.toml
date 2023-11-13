@@ -11,12 +11,12 @@ include = [{ path = "tests", format = "sdist" }]
 
 [tool.poetry.dependencies]
 Jinja2 = "^3.0.3"
-matplotlib = "^3.0.3"
-numpy = "^1.16.3"
+matplotlib = "^3.4.3"
+numpy = "^1.21.6"
 pandas = ">=1.2,<3.0"
 plotly = "^5.2.2"
 python = ">=3.8.0,<4.0.0"
-scipy = "^1.1.0"
+scipy = "^1.7.3"
 screeninfo = "^0.8.1"
 seaborn = ">=0.11.2"
 
@@ -33,11 +33,6 @@ ruff = ">=0.1.5"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.isort]
-profile = "black"
-skip_gitignore = true
-force_single_line = true
 
 [tool.pydocstyle]
 match_dir = "[^(?!tests|\\.)].*"     # not tests and not a folder that starts with a dot
