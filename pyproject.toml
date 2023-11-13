@@ -89,7 +89,7 @@ unfixable = [
 
 select = ["ALL"]
 
-ignore = ["T201", "FBT001", "FBT002", "PLR0913", "D213", "D203"]
+ignore = ["T201", "FBT001", "FBT002", "PLR0913", "D213", "D203", "UP038"]
 
 line-length = 88
 target-version = "py310"
