@@ -40,7 +40,7 @@ __all__ = [
 ]
 
 
-def cat_plot(  # noqa: C901, PLR915
+def cat_plot(  # noqa: C901, PLR0915
     data: pd.DataFrame,
     figsize: tuple[float, float] = (18, 18),
     top: int = 3,
