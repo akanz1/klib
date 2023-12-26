@@ -40,7 +40,7 @@ __all__ = [
 ]
 
 
-def cat_plot(  # noqa: C901
+def cat_plot(  # noqa: C901, PLR915
     data: pd.DataFrame,
     figsize: tuple[float, float] = (18, 18),
     top: int = 3,
@@ -428,7 +428,7 @@ def corr_plot(
     return ax
 
 
-def corr_interactive_plot(  # noqa: C901, PLR0913
+def corr_interactive_plot(  # noqa: C901
     data: pd.DataFrame,
     split: Literal["pos", "neg", "high", "low"] | None = None,
     threshold: float = 0.0,
