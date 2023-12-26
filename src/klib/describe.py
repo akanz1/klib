@@ -428,7 +428,7 @@ def corr_plot(
     return ax
 
 
-def corr_interactive_plot(
+def corr_interactive_plot(  # noqa: C901, PLR0913
     data: pd.DataFrame,
     split: Literal["pos", "neg", "high", "low"] | None = None,
     threshold: float = 0.0,
