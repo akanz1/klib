@@ -428,7 +428,7 @@ def corr_plot(
     return ax
 
 
-def corr_interactive_plot(
+def corr_interactive_plot(  # noqa: C901
     data: pd.DataFrame,
     split: Literal["pos", "neg", "high", "low"] | None = None,
     threshold: float = 0.0,
@@ -591,6 +591,15 @@ def corr_interactive_plot(
 
     vtext = corr.round(2).fillna("") if annot else None
 
+    corr_columns = corr.columns
+    corr_index = corr.index
+
+    if isinstance(corr_columns, pd.MultiIndex):
+        corr_columns = ["-".join(col) for col in corr.columns]
+
+    if isinstance(corr_index, pd.MultiIndex):
+        corr_index = ["-".join(idx) for idx in corr.index]
+
     # Specify kwargs for the heatmap
     kwargs = {
         "colorscale": cmap,
@@ -599,8 +608,8 @@ def corr_interactive_plot(
         "text": vtext,
         "texttemplate": "%{text}",
         "textfont": {"size": 12},
-        "x": corr.columns,
-        "y": corr.index,
+        "x": corr_columns,
+        "y": corr_index,
         "z": corr,
         **kwargs,
     }
