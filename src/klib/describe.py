@@ -72,6 +72,7 @@ def cat_plot(  # noqa: C901, PLR0915
     -------
     Gridspec
         gs: Figure with array of Axes objects
+
     """
     # Validate Inputs
     _validate_input_int(top, "top")
@@ -147,8 +148,8 @@ def cat_plot(  # noqa: C901, PLR0915
         # Summary stats
         ax_bottom = fig.add_subplot(gs[1:2, count : count + 1])
         plt.subplots_adjust(hspace=0.075)
-        ax_bottom.get_yaxis().set_visible(False)  # noqa: FBT003
-        ax_bottom.get_xaxis().set_visible(False)  # noqa: FBT003
+        ax_bottom.get_yaxis().set_visible(False)
+        ax_bottom.get_xaxis().set_visible(False)
         ax_bottom.set(frame_on=False)
         ax_bottom.text(
             0,
@@ -233,6 +234,7 @@ def corr_mat(
     pd.DataFrame | pd.Styler
         If colored = True - corr: Pandas Styler object
         If colored = False - corr: Pandas DataFrame
+
     """
     # Validate Inputs
     _validate_input_range(threshold, "threshold", -1, 1)
@@ -358,6 +360,7 @@ def corr_plot(
     -------
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
+
     """
     # Validate Inputs
     _validate_input_range(threshold, "threshold", -1, 1)
@@ -558,6 +561,7 @@ def corr_interactive_plot(  # noqa: C901
     heatmap : plotly.graph_objs._figure.Figure
         A Plotly Figure object representing the heatmap visualization of
         feature correlations.
+
     """
     # Validate Inputs
     _validate_input_range(threshold, "threshold", -1, 1)
@@ -699,6 +703,7 @@ def dist_plot(
     -------
     ax: matplotlib Axes
         Returns the Axes object with the plot for further tweaking.
+
     """
     # Validate Inputs
     _validate_input_range(fill_range[0], "fill_range_lower", 0, 1)
@@ -884,6 +889,7 @@ def missingval_plot(  # noqa: PLR0915
     -------
     GridSpec
         gs: Figure with array of Axes objects
+
     """
     # Validate Inputs
     _validate_input_bool(sort, "sort")
@@ -921,7 +927,7 @@ def missingval_plot(  # noqa: PLR0915
     # ax1 - Barplot
     colors = plt.get_cmap(cmap)(mv_cols / np.max(mv_cols))  # color bars by height
     ax1.bar(range(len(mv_cols)), np.round((mv_cols_ratio) * 100, 2), color=colors)
-    ax1.get_xaxis().set_visible(False)  # noqa: FBT003
+    ax1.get_xaxis().set_visible(False)
     ax1.set(frame_on=False, xlim=(-0.5, len(mv_cols) - 0.5))
     ax1.set_ylim(0, np.max(mv_cols_ratio) * 100)
     ax1.grid(linestyle=":", linewidth=1)
@@ -942,9 +948,9 @@ def missingval_plot(  # noqa: PLR0915
             fontsize="11",
         )
 
-    ax1.set_frame_on(True)  # noqa: FBT003
+    ax1.set_frame_on(True)
     for spine in ax1.spines.values():
-        spine.set_visible(True)  # noqa: FBT003
+        spine.set_visible(True)
         spine.set_color(spine_color)
     ax1.spines["top"].set_color(None)
 
@@ -960,13 +966,13 @@ def missingval_plot(  # noqa: PLR0915
     )
     ax2.tick_params(length=1, colors="#111111")
     for spine in ax2.spines.values():
-        spine.set_visible(True)  # noqa: FBT003
+        spine.set_visible(True)
         spine.set_color(spine_color)
 
     # ax3 - Summary
     fontax3 = {"color": "#111111", "weight": "normal", "size": 14}
-    ax3.get_xaxis().set_visible(False)  # noqa: FBT003
-    ax3.get_yaxis().set_visible(False)  # noqa: FBT003
+    ax3.get_xaxis().set_visible(False)
+    ax3.get_yaxis().set_visible(False)
     ax3.set(frame_on=False)
 
     ax3.text(
@@ -1006,7 +1012,7 @@ def missingval_plot(  # noqa: PLR0915
     )
 
     # ax4 - Scatter plot
-    ax4.get_yaxis().set_visible(False)  # noqa: FBT003
+    ax4.get_yaxis().set_visible(False)
     for spine in ax4.spines.values():
         spine.set_color(spine_color)
     ax4.tick_params(axis="x", colors="#111111", length=1)
