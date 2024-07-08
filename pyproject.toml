@@ -21,7 +21,7 @@ screeninfo = "^0.8.1"
 seaborn = ">=0.11.2"
 
 [tool.poetry.dev-dependencies]
-ipykernel = "^6.29.4"
+ipykernel = "^6.29.5"
 mypy = "^1.10.1"
 nbformat = "^5.10.4"
 pre-commit = "^3.5.0"
