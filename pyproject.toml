@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "klib"
-version = "1.1.2"
-description = "Customized data preprocessing functions for frequent tasks."
+version = "1.2.0"
+description = "Common data preprocessing and visualisation functions."
 authors = ["Andreas Kanz <andreas@akanz.de>"]
 license = "MIT"
 readme = "README.md"
@@ -28,7 +28,7 @@ pre-commit = "^3.5.0"
 pydocstyle = "^6.2.3"
 pytest = "^8.3.1"
 pytest-cov = "^5.0.0"
-ruff = ">=0.1.5"
+ruff = ">=0.5.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -84,19 +84,27 @@ lint.unfixable = [
 
 lint.select = ["ALL"]
 
-lint.ignore = ["T201", "FBT001", "FBT002", "PLR0913", "D213", "D203", "UP038"]
+lint.ignore = [
+    "T201",
+    "FBT001",
+    "FBT002",
+    "PLR0913",
+    "D213",
+    "D203",
+    "UP038",
+    "PD901",
+]
 
-line-length = 88
+line-length = 100
 target-version = "py310"
 
 [tool.ruff.lint.mccabe]
 max-complexity = 8
 
 [tool.ruff.lint.per-file-ignores]
-"test**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501"]
+"test**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501", "N801"]
 "**/scripts/**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501"]
 
 [tool.ruff.lint.isort]
 force-single-line = true
 order-by-type = false
-known-first-party = ["twoex", "tx"]

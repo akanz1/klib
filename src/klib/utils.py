@@ -3,6 +3,7 @@
 :author: Andreas Kanz
 
 """
+
 from __future__ import annotations
 
 from typing import Literal
@@ -34,6 +35,7 @@ def _corr_selector(
     -------
     pd.DataFrame
         List or matrix of (filtered) correlations
+
     """
     if split == "pos":
         corr = corr.where((corr >= threshold) & (corr > 0))
@@ -102,6 +104,7 @@ def _diff_report(
     -------
     None
         Print statement highlighting the datasets or changes between the two datasets.
+
     """
     if show not in ["changes", "all"]:
         return
@@ -125,17 +128,15 @@ def _diff_report(
         )
 
     print(
-        f"Shape of cleaned data: {data_cleaned.shape} - "
-        f"Remaining NAs: {data_cl_mv_tot}\n\n",
+        f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}\n\n",
     )
     print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
     print(
-        f"     of which {len(dupl_rows)} duplicates. (Rows (first 150 shown): {dupl_rows[:150]})\n",  # noqa: E501
+        f"     of which {len(dupl_rows)} duplicates. (Rows (first 150 shown): {dupl_rows[:150]})\n",
     )
     print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
     print(
-        f"     of which {len(single_val_cols)} single valued."
-        f"     Columns: {single_val_cols}",
+        f"     of which {len(single_val_cols)} single valued.     Columns: {single_val_cols}",
     )
     print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
     mem_change = data_mem - data_cl_mem
@@ -170,6 +171,7 @@ def _drop_duplicates(data: pd.DataFrame) -> tuple[pd.DataFrame, list[str | int]]
     -------
     Tuple[pd.DataFrame, List]
         Deduplicated Pandas DataFrame and Index Object of rows dropped
+
     """
     data = pd.DataFrame(data).copy()
     dupl_rows = data[data.duplicated()].index.tolist()
@@ -192,6 +194,7 @@ def _memory_usage(data: pd.DataFrame, deep: bool = True) -> float:
     -------
     float
         Memory usage in megabytes
+
     """
     return round(data.memory_usage(index=True, deep=deep).sum() / (1024**2), 2)
 
@@ -222,6 +225,7 @@ def _missing_vals(data: pd.DataFrame) -> MVResult:
         mv_cols: float, number of missing values in each column
         mv_rows_ratio: float, ratio of missing values for each row
         mv_cols_ratio: float, ratio of missing values for each column
+
     """
     data = pd.DataFrame(data).copy()
     mv_total: int = data.isna().sum().sum()
@@ -265,9 +269,7 @@ def _validate_input_smaller(value1: int, value2: int, desc: str) -> None:
 
 def _validate_input_sum_smaller(limit: float, desc: str, *args) -> None:  # noqa: ANN002
     if sum(args) > limit:
-        msg = (
-            f"The sum of input values for '{desc}' should be less or equal to {limit}."
-        )
+        msg = f"The sum of input values for '{desc}' should be less or equal to {limit}."
         raise ValueError(msg)
 
 

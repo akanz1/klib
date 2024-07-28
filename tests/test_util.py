@@ -33,15 +33,9 @@ class Test__corr_selector(unittest.TestCase):
 
     def test__corr_selector_matrix(self):
         assert _corr_selector(self.df_data_corr.corr()).shape == (6, 6)
+        assert _corr_selector(self.df_data_corr.corr(), split="pos").isna().sum().sum() == 18
         assert (
-            _corr_selector(self.df_data_corr.corr(), split="pos").isna().sum().sum()
-            == 18
-        )
-        assert (
-            _corr_selector(self.df_data_corr.corr(), split="pos", threshold=0.5)
-            .isna()
-            .sum()
-            .sum()
+            _corr_selector(self.df_data_corr.corr(), split="pos", threshold=0.5).isna().sum().sum()
             == 26
         )
         assert (
@@ -59,20 +53,14 @@ class Test__corr_selector(unittest.TestCase):
             == 4
         )
         assert (
-            _corr_selector(self.df_data_corr.corr(), split="low", threshold=0.85)
-            .isna()
-            .sum()
-            .sum()
+            _corr_selector(self.df_data_corr.corr(), split="low", threshold=0.85).isna().sum().sum()
             == 6
         )
 
     def test__corr_selector_label(self):
         assert _corr_selector(self.df_data_corr.corrwith(self.target)).shape == (6,)
         assert (
-            _corr_selector(self.df_data_corr.corrwith(self.target), split="pos")
-            .isna()
-            .sum()
-            == 3
+            _corr_selector(self.df_data_corr.corrwith(self.target), split="pos").isna().sum() == 3
         )
         assert (
             _corr_selector(
