@@ -38,7 +38,7 @@ class Test_clean_column_names(unittest.TestCase):
         )
         cls.df_clean_column_names = pd.concat([cls.df1, cls.df2], axis=1)
 
-    def test_clean_column_names(self):
+    def test_clean_column_names(self) -> None:
         expected_results = [
             "asd_5_dollar_and_3_euro",
             "3_plus_3",
@@ -61,7 +61,7 @@ class Test_clean_column_names(unittest.TestCase):
                 == expected_results[i]
             )
 
-    def test_clean_column_names_prints(self):
+    def test_clean_column_names_prints(self) -> None:
         captured_output = io.StringIO()
         sys.stdout = captured_output
         clean_column_names(self.df_clean_column_names, hints=True)
@@ -73,7 +73,7 @@ class Test_clean_column_names(unittest.TestCase):
 
 class Test_drop_missing(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         cls.df_data_drop = pd.DataFrame(
             [
                 [np.nan, np.nan, np.nan, np.nan, np.nan],
@@ -86,7 +86,7 @@ class Test_drop_missing(unittest.TestCase):
             columns=["c1", "c2", "c3", "c4", "c5"],
         )
 
-    def test_drop_missing(self):
+    def test_drop_missing(self) -> None:
         assert drop_missing(self.df_data_drop).shape == (4, 4)
 
         # Drop further columns based on threshold
@@ -124,7 +124,7 @@ class Test_drop_missing(unittest.TestCase):
 
 class Test_data_cleaning(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         cls.df_data_cleaning = pd.DataFrame(
             [
                 [np.nan, np.nan, np.nan, np.nan, np.nan, 1],
@@ -137,7 +137,7 @@ class Test_data_cleaning(unittest.TestCase):
             columns=["c1", "c2", "c3", "c 4", "c5", "c6"],
         )
 
-    def test_data_cleaning(self):
+    def test_data_cleaning(self) -> None:
         assert data_cleaning(self.df_data_cleaning, show="all").shape == (5, 4)
         assert data_cleaning(self.df_data_cleaning, show=None).shape == (5, 4)
 
@@ -181,7 +181,7 @@ class Test_data_cleaning(unittest.TestCase):
 
 class Test_convert_dtypes(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         cls.df_data_convert = pd.DataFrame(
             [
                 [1, 7.0, "y", "x", pd.NA, "v"],
@@ -193,7 +193,7 @@ class Test_convert_dtypes(unittest.TestCase):
             ],
         )
 
-    def test_convert_dtypes(self):
+    def test_convert_dtypes(self) -> None:
         expected_results = [
             "int8",
             "float32",
@@ -270,7 +270,7 @@ class Test_convert_dtypes(unittest.TestCase):
 
 class Test_pool_duplicate_subsets(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         cls.df_data_subsets = pd.DataFrame(
             [
                 [1, 7, "d", "x", pd.NA, "v"],
@@ -283,7 +283,7 @@ class Test_pool_duplicate_subsets(unittest.TestCase):
             columns=["c1", "c2", "c3", "c4", "c5", "c6"],
         )
 
-    def test_pool_duplicate_subsets(self):
+    def test_pool_duplicate_subsets(self) -> None:
         assert pool_duplicate_subsets(self.df_data_subsets).shape == (6, 3)
         assert pool_duplicate_subsets(
             self.df_data_subsets,

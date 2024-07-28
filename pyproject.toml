@@ -102,7 +102,7 @@ target-version = "py310"
 max-complexity = 8
 
 [tool.ruff.lint.per-file-ignores]
-"test**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501"]
+"test**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501", "N801"]
 "**/scripts/**" = ["ANN", "D", "S101", "PLR", "PT009", "PT011", "N", "E501"]
 
 [tool.ruff.lint.isort]
