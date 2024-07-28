@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "klib"
-version = "1.1.2"
+version = "1.1.3"
 description = "Customized data preprocessing functions for frequent tasks."
 authors = ["Andreas Kanz <andreas@akanz.de>"]
 license = "MIT"
@@ -84,9 +84,18 @@ lint.unfixable = [
 
 lint.select = ["ALL"]
 
-lint.ignore = ["T201", "FBT001", "FBT002", "PLR0913", "D213", "D203", "UP038"]
+lint.ignore = [
+    "T201",
+    "FBT001",
+    "FBT002",
+    "PLR0913",
+    "D213",
+    "D203",
+    "UP038",
+    "PD901",
+]
 
-line-length = 88
+line-length = 100
 target-version = "py310"
 
 [tool.ruff.lint.mccabe]

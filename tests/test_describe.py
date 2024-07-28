@@ -93,8 +93,7 @@ class Test_corr_mat(unittest.TestCase):
     def test_output_shape(self):
         # Test for output dimensions
         assert (
-            corr_mat(self.data_corr_df).data.shape[0]
-            == corr_mat(self.data_corr_df).data.shape[1]
+            corr_mat(self.data_corr_df).data.shape[0] == corr_mat(self.data_corr_df).data.shape[1]
         )
         assert (
             corr_mat(self.data_corr_list).data.shape[0]

@@ -3,6 +3,7 @@
 :author: Andreas Kanz
 
 """
+
 from __future__ import annotations
 
 from typing import Any
@@ -199,6 +200,7 @@ def corr_mat(
     threshold: float = 0,
     target: pd.DataFrame | pd.Series | np.ndarray | str | None = None,
     method: Literal["pearson", "spearman", "kendall"] = "pearson",
+    *,
     colored: bool = True,
 ) -> pd.DataFrame | pd.Series:
     """Return a color-encoded correlation matrix.
@@ -282,6 +284,7 @@ def corr_plot(
     method: Literal["pearson", "spearman", "kendall"] = "pearson",
     cmap: str = "BrBG",
     figsize: tuple[float, float] = (12, 10),
+    *,
     annot: bool = True,
     dev: bool = False,
     **kwargs,  # noqa: ANN003
@@ -439,6 +442,7 @@ def corr_interactive_plot(  # noqa: C901
     method: Literal["pearson", "spearman", "kendall"] = "pearson",
     cmap: str = "BrBG",
     figsize: tuple[float, float] = (12, 10),
+    *,
     annot: bool = True,
     **kwargs,  # noqa: ANN003
 ) -> go.Figure:
@@ -713,18 +717,14 @@ def dist_plot(
 
     # Handle dictionary defaults
     kde_kws = (
-        {"alpha": 0.75, "linewidth": 1.5, "bw_adjust": 0.8}
-        if kde_kws is None
-        else kde_kws.copy()
+        {"alpha": 0.75, "linewidth": 1.5, "bw_adjust": 0.8} if kde_kws is None else kde_kws.copy()
     )
     rug_kws = (
         {"color": "#ff3333", "alpha": 0.15, "lw": 3, "height": 0.075}
         if rug_kws is None
         else rug_kws.copy()
     )
-    fill_kws = (
-        {"color": "#80d4ff", "alpha": 0.2} if fill_kws is None else fill_kws.copy()
-    )
+    fill_kws = {"color": "#80d4ff", "alpha": 0.2} if fill_kws is None else fill_kws.copy()
     font_kws = (
         {"color": "#111111", "weight": "normal", "size": 11}
         if font_kws is None
@@ -732,7 +732,7 @@ def dist_plot(
     )
 
     data = pd.DataFrame(data.copy()).dropna(axis=1, how="all")
-    df = data.copy()  # noqa: PD901
+    df = data.copy()
     data = data.loc[:, data.nunique() > 2]  # noqa: PLR2004
     if data.shape[0] > 10000:  # noqa: PLR2004
         data = data.sample(n=10000, random_state=408)
@@ -754,6 +754,9 @@ def dist_plot(
             "the first 20 numerical features. Override this by setting showall=True.",
         )
         cols = cols[:20]
+    if not cols:
+        print("No columns with numeric data were detected.")
+        return None
 
     for col in cols:
         col_data = data[col].dropna(axis=0)
@@ -808,7 +811,7 @@ def dist_plot(
             ymax=[np.interp(mean - std, x, y), np.interp(mean + std, x, y)],
             ls=":",
             color=".5",
-            label="\u03BC \u00B1 \u03C3",
+            label="\u03bc \u00b1 \u03c3",
         )
 
         g.axes[0, 0].set_ylim(0)
@@ -855,8 +858,7 @@ def dist_plot(
         )
         g.axes[0, 0].legend(loc="upper right")
 
-        return g.axes[0, 0]
-    return None
+    return g.axes[0, 0]
 
 
 def missingval_plot(  # noqa: PLR0915

@@ -2,6 +2,7 @@
 
 :author: Andreas Kanz
 """
+
 from __future__ import annotations
 
 import itertools
@@ -28,7 +29,7 @@ __all__ = [
 
 
 def _optimize_ints(data: pd.Series | pd.DataFrame) -> pd.DataFrame:
-    df = pd.DataFrame(data).copy()  # noqa: PD901
+    df = pd.DataFrame(data).copy()
     ints = df.select_dtypes(include=["int64"]).columns.tolist()
     df[ints] = df[ints].apply(pd.to_numeric, downcast="integer")
     return df
@@ -41,7 +42,7 @@ def _optimize_floats(data: pd.Series | pd.DataFrame) -> pd.DataFrame:
     return data
 
 
-def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
+def clean_column_names(data: pd.DataFrame, *, hints: bool = True) -> pd.DataFrame:
     """Clean the column names of the provided Pandas Dataframe.
 
     Optionally provides hints on duplicate and long column names.
@@ -58,6 +59,7 @@ def clean_column_names(data: pd.DataFrame, hints: bool = True) -> pd.DataFrame:
     -------
     pd.DataFrame
         Pandas DataFrame with cleaned column names
+
     """
     _validate_input_bool(hints, "hints")
 
@@ -157,6 +159,7 @@ def convert_datatypes(
     -------
     pd.DataFrame
         Pandas DataFrame with converted Datatypes
+
     """
     # Validate Inputs
     _validate_input_bool(category, "Category")
@@ -216,6 +219,7 @@ def drop_missing(
     Notes
     -----
     Columns are dropped first
+
     """
     # Validate Inputs
     _validate_input_range(drop_threshold_cols, "drop_threshold_cols", 0, 1)
@@ -316,6 +320,7 @@ def data_cleaning(
     -----
     The category dtype is not grouped in the summary, unless it contains exactly the \
     same categories.
+
     """
     if col_exclude is None:
         col_exclude = []
@@ -424,6 +429,7 @@ def mv_col_handling(
     optional:
     cols_mv: Columns with missing values included in the analysis
     drop_cols: List of dropped columns
+
     """
     # Validate Inputs
     _validate_input_range(mv_threshold, "mv_threshold", 0, 1)
@@ -434,9 +440,7 @@ def mv_col_handling(
     data_local = data.copy()
     mv_ratios = _missing_vals(data_local)["mv_cols_ratio"]
     cols_mv = mv_ratios[mv_ratios > mv_threshold].index.tolist()
-    data_local[cols_mv] = (
-        data_local[cols_mv].applymap(lambda x: x if pd.isna(x) else 1).fillna(0)
-    )
+    data_local[cols_mv] = data_local[cols_mv].applymap(lambda x: x if pd.isna(x) else 1).fillna(0)
 
     high_corr_features = []
     data_temp = data_local.copy()
@@ -450,9 +454,7 @@ def mv_col_handling(
     if target is None:
         data = data.drop(columns=high_corr_features)
     else:
-        corrs = corr_mat(data_local, target=target, colored=False).loc[
-            high_corr_features
-        ]
+        corrs = corr_mat(data_local, target=target, colored=False).loc[high_corr_features]
         drop_cols = corrs.loc[abs(corrs.iloc[:, 0]) < corr_thresh_target].index.tolist()
         data = data.drop(columns=drop_cols)
 
@@ -509,6 +511,7 @@ def pool_duplicate_subsets(
 
     optional:
     subset_cols: List of columns used as subset
+
     """
     # Input validation
     _validate_input_range(col_dupl_thresh, "col_dupl_thresh", 0, 1)
@@ -524,9 +527,7 @@ def pool_duplicate_subsets(
     for i in range(data.shape[1] + 1 - min_col_pool):
         # Consider only columns with lots of duplicates
         check = [
-            col
-            for col in data.columns
-            if data.duplicated(subset=col).mean() > col_dupl_thresh
+            col for col in data.columns if data.duplicated(subset=col).mean() > col_dupl_thresh
         ]
 
         # Identify all possible combinations for the current interation
@@ -552,9 +553,7 @@ def pool_duplicate_subsets(
             subset_cols = best_subset.columns.tolist()
 
             unique_subset = (
-                best_subset.drop_duplicates()
-                .reset_index()
-                .rename(columns={"index": "pooled_vars"})
+                best_subset.drop_duplicates().reset_index().rename(columns={"index": "pooled_vars"})
             )
             data = data.merge(unique_subset, how="left", on=subset_cols).drop(
                 columns=subset_cols,

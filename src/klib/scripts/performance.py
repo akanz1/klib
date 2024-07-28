@@ -2,6 +2,7 @@
 
 :author: Andreas Kanz
 """
+
 import functools
 from pathlib import Path
 from time import perf_counter

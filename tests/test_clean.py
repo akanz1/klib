@@ -54,10 +54,7 @@ class Test_clean_column_names(unittest.TestCase):
             "count_larger_equal_10",
         ]
         for i, _ in enumerate(expected_results):
-            assert (
-                clean_column_names(self.df_clean_column_names).columns[i]
-                == expected_results[i]
-            )
+            assert clean_column_names(self.df_clean_column_names).columns[i] == expected_results[i]
         for i, _ in enumerate(expected_results):
             assert (
                 clean_column_names(self.df_clean_column_names, hints=False).columns[i]
@@ -220,9 +217,7 @@ class Test_convert_dtypes(unittest.TestCase):
             "string",
         ]
         for i, _ in enumerate(expected_results):
-            assert (
-                convert_datatypes(self.df_data_convert).dtypes[i] == expected_results[i]
-            )
+            assert convert_datatypes(self.df_data_convert).dtypes[i] == expected_results[i]
 
         expected_results = [
             "int8",
@@ -300,9 +295,7 @@ class Test_pool_duplicate_subsets(unittest.TestCase):
             2,
         )
 
-        assert pool_duplicate_subsets(self.df_data_subsets, return_details=True)[
-            0
-        ].shape == (6, 3)
+        assert pool_duplicate_subsets(self.df_data_subsets, return_details=True)[0].shape == (6, 3)
         assert pool_duplicate_subsets(self.df_data_subsets, return_details=True)[1] == [
             "c1",
             "c2",
