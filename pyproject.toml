@@ -12,7 +12,7 @@ include = [{ path = "tests", format = "sdist" }]
 [tool.poetry.dependencies]
 Jinja2 = "^3.1.0"
 matplotlib = "^3.6.0"
-numpy = "^1.26.0"
+numpy = ">=1.26,<3.0"
 pandas = ">=1.4,<3.0"
 plotly = "^5.11.0"
 python = ">=3.9.0,<4.0.0"
