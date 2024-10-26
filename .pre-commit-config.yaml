@@ -1,17 +1,55 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
-      - id: check-yaml
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
+      - id: check-ast
+        description: Check whether files parse as valid python.
+      - id: check-builtin-literals
+      - id: check-added-large-files
+        description: Prevent giant files from being committed.
       - id: check-merge-conflict
+        description: Check for files that contain merge conflict strings.
       - id: check-toml
+        description: Attempts to load all TOML files to verify syntax.
       - id: debug-statements
+        description: Check for debugger imports and py37+ breakpoint() calls in python source.
+      - id: detect-private-key
+        description: Checks for the existence of private keys.
+      - id: check-yaml
+        language_version: python3.12
+      - id: check-json
+        language_version: python3.12
+      - id: trailing-whitespace
+        language_version: python3.12
+      - id: end-of-file-fixer
+        language_version: python3.12
+      - id: check-merge-conflict
+        language_version: python3.12
+      - id: check-executables-have-shebangs
+      - id: mixed-line-ending
+        language_version: python3.12
+      - id: debug-statements
+        language_version: python3.12
+      - id: name-tests-test
+        language_version: python3.12
+        args: ["--pytest-test-first"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.5
+    rev: v0.7.0
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix, --show-fixes]
       - id: ruff-format
         args: [--line-length=100]
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v3.1.0
+    hooks:
+      - id: add-trailing-comma
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.18.0
+    hooks:
+      - id: pyupgrade
+        args: [--py312-plus]
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.1
+    hooks:
+      - id: gitleaks
