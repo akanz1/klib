@@ -24,8 +24,6 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           version: "0.4.27"
-      - name: Run pre-commit
-        uses: pre-commit/action@v3.0.1
 
       - name: Install dependencies
         run: |
