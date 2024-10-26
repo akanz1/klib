@@ -20,14 +20,23 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Install uv
         uses: astral-sh/setup-uv@v3
         with:
           version: "0.4.27"
 
-      - name: Install dependencies
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
         run: |
-          make create-venv
+          uv venv --python ${{ matrix.python-version }}
+          .\.venv\Scripts\activate
+          uv sync --frozen --all-extras
+        shell: cmd
+
+      - name: Install dependencies (Unix)
+        if: runner.os != 'Windows'
+        run: make create-venv
 
       - name: Test with pytest and generate coverage report
         run: |
