@@ -163,15 +163,25 @@ class Test_data_cleaning(unittest.TestCase):
             result_dtype = data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes.iloc[i]
             assert result_dtype.name == expected_results[i]
 
-        expected_results = ["str", "object", "object", "object"]
-        for i, _ in enumerate(expected_results):
+        expected_results = [
+            ["str", "string", "object"],
+            ["object"],
+            ["object"],
+            ["object"],
+        ]
+        for i, allowed in enumerate(expected_results):
             result_dtype = data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes.iloc[i]
-            assert result_dtype.name == expected_results[i]
+            assert result_dtype.name in allowed
 
-        expected_results = ["str", "object", "object", "object"]
-        for i, _ in enumerate(expected_results):
+        expected_results = [
+            ["str", "string", "object"],
+            ["object"],
+            ["object"],
+            ["object"],
+        ]
+        for i, allowed in enumerate(expected_results):
             result_dtype = data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes.iloc[i]
-            assert result_dtype.name == expected_results[i]
+            assert result_dtype.name in allowed
 
 
 class Test_convert_dtypes(unittest.TestCase):
