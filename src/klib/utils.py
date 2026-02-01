@@ -130,18 +130,18 @@ def _diff_report(
     print(
         f"Shape of cleaned data: {data_cleaned.shape} - Remaining NAs: {data_cl_mv_tot}\n\n",
     )
-    print(f"Dropped rows: {data.shape[0]-data_cleaned.shape[0]}")
+    print(f"Dropped rows: {data.shape[0] - data_cleaned.shape[0]}")
     print(
         f"     of which {len(dupl_rows)} duplicates. (Rows (first 150 shown): {dupl_rows[:150]})\n",
     )
-    print(f"Dropped columns: {data.shape[1]-data_cleaned.shape[1]}")
+    print(f"Dropped columns: {data.shape[1] - data_cleaned.shape[1]}")
     print(
         f"     of which {len(single_val_cols)} single valued.     Columns: {single_val_cols}",
     )
-    print(f"Dropped missing values: {data_mv_tot-data_cl_mv_tot}")
+    print(f"Dropped missing values: {data_mv_tot - data_cl_mv_tot}")
     mem_change = data_mem - data_cl_mem
     mem_perc = round(100 * mem_change / data_mem, 2)
-    print(f"Reduced memory by at least: {round(mem_change,3)} MB (-{mem_perc}%)\n")
+    print(f"Reduced memory by at least: {round(mem_change, 3)} MB (-{mem_perc}%)\n")
 
 
 def _print_cleaning_details(

@@ -16,25 +16,25 @@ repos:
       - id: detect-private-key
         description: Checks for the existence of private keys.
       - id: check-yaml
-        language_version: python3.12
+        language_version: python3.13
       - id: check-json
-        language_version: python3.12
+        language_version: python3.13
       - id: trailing-whitespace
-        language_version: python3.12
+        language_version: python3.13
       - id: end-of-file-fixer
-        language_version: python3.12
+        language_version: python3.13
       - id: check-merge-conflict
-        language_version: python3.12
+        language_version: python3.13
       - id: check-executables-have-shebangs
       - id: mixed-line-ending
-        language_version: python3.12
+        language_version: python3.13
       - id: debug-statements
-        language_version: python3.12
+        language_version: python3.13
       - id: name-tests-test
-        language_version: python3.12
+        language_version: python3.13
         args: ["--pytest-test-first"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.7.0
+    rev: v0.9.2
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix, --show-fixes]
@@ -45,11 +45,11 @@ repos:
     hooks:
       - id: add-trailing-comma
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.18.0
+    rev: v3.19.1
     hooks:
       - id: pyupgrade
-        args: [--py312-plus]
+        args: [--py313-plus]
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.21.1
+    rev: v8.22.1
     hooks:
       - id: gitleaks

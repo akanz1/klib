@@ -1,4 +1,4 @@
-PYTHON_VERSION = 3.12
+PYTHON_VERSION = 3.13
 
 .PHONY: lock-dependencies
 lock-dependencies:  ## Lock dependencies based on pyproject.toml

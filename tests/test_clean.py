@@ -158,26 +158,20 @@ class Test_data_cleaning(unittest.TestCase):
             drop_duplicates=False,
         ).columns.tolist() == ["c2", "c3", "c 4", "c5"]
 
-        expected_results = ["string", "float32", "O", "O"]
+        expected_results = ["string", "float32", "object", "object"]
         for i, _ in enumerate(expected_results):
-            assert (
-                data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes[i]
-                == expected_results[i]
-            )
+            result_dtype = data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes.iloc[i]
+            assert result_dtype.name == expected_results[i]
 
-        expected_results = ["O", "O", "O", "O"]
+        expected_results = ["str", "object", "object", "object"]
         for i, _ in enumerate(expected_results):
-            assert (
-                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes[i]
-                == expected_results[i]
-            )
+            result_dtype = data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes.iloc[i]
+            assert result_dtype.name == expected_results[i]
 
-        expected_results = ["O", "O", "O", "O"]
+        expected_results = ["str", "object", "object", "object"]
         for i, _ in enumerate(expected_results):
-            assert (
-                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes[i]
-                == expected_results[i]
-            )
+            result_dtype = data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes.iloc[i]
+            assert result_dtype.name == expected_results[i]
 
 
 class Test_convert_dtypes(unittest.TestCase):
@@ -204,10 +198,8 @@ class Test_convert_dtypes(unittest.TestCase):
             "category",
         ]
         for i, _ in enumerate(expected_results):
-            assert (
-                convert_datatypes(self.df_data_convert, cat_threshold=0.4).dtypes[i]
-                == expected_results[i]
-            )
+            result_dtype = convert_datatypes(self.df_data_convert, cat_threshold=0.4).dtypes.iloc[i]
+            assert result_dtype.name == expected_results[i]
 
         expected_results = [
             "int8",
@@ -218,7 +210,8 @@ class Test_convert_dtypes(unittest.TestCase):
             "string",
         ]
         for i, _ in enumerate(expected_results):
-            assert convert_datatypes(self.df_data_convert).dtypes[i] == expected_results[i]
+            result_dtype = convert_datatypes(self.df_data_convert).dtypes.iloc[i]
+            assert result_dtype.name == expected_results[i]
 
         expected_results = [
             "int8",
@@ -229,14 +222,12 @@ class Test_convert_dtypes(unittest.TestCase):
             "category",
         ]
         for i, _ in enumerate(expected_results):
-            assert (
-                convert_datatypes(
-                    self.df_data_convert,
-                    cat_threshold=0.5,
-                    cat_exclude=[4],
-                ).dtypes[i]
-                == expected_results[i]
-            )
+            result_dtype = convert_datatypes(
+                self.df_data_convert,
+                cat_threshold=0.5,
+                cat_exclude=[4],
+            ).dtypes.iloc[i]
+            assert result_dtype.name == expected_results[i]
 
         expected_results = [
             "int8",
@@ -247,26 +238,22 @@ class Test_convert_dtypes(unittest.TestCase):
             "category",
         ]
         for i, _ in enumerate(expected_results):
-            assert (
-                convert_datatypes(
-                    self.df_data_convert,
-                    cat_threshold=0.95,
-                    cat_exclude=[2, 4],
-                ).dtypes[i]
-                == expected_results[i]
-            )
+            result_dtype = convert_datatypes(
+                self.df_data_convert,
+                cat_threshold=0.95,
+                cat_exclude=[2, 4],
+            ).dtypes.iloc[i]
+            assert result_dtype.name == expected_results[i]
 
         expected_results = ["int8", "float32", "string", "string", "object", "string"]
         for i, _ in enumerate(expected_results):
-            assert (
-                convert_datatypes(
-                    self.df_data_convert,
-                    category=False,
-                    cat_threshold=0.95,
-                    cat_exclude=[2, 4],
-                ).dtypes[i]
-                == expected_results[i]
-            )
+            result_dtype = convert_datatypes(
+                self.df_data_convert,
+                category=False,
+                cat_threshold=0.95,
+                cat_exclude=[2, 4],
+            ).dtypes.iloc[i]
+            assert result_dtype.name == expected_results[i]
 
 
 class Test_pool_duplicate_subsets(unittest.TestCase):

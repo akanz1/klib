@@ -5,7 +5,7 @@ description = "Common data preprocessing and visualisation functions."
 authors = [{ name = "Andreas Kanz", email = "andreas@akanz.de" }]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -14,25 +14,25 @@ classifiers = [
 
 dependencies = [
     "Jinja2 >= 3.1.0",
-    "matplotlib >= 3.6.0",
-    "numpy >= 1.26.0",
-    "pandas >=1.4,<3.0",
-    "plotly >= 5.11.0",
-    "scipy >= 1.10.0",
+    "matplotlib >= 3.9.0",
+    "numpy >= 2.0.0",
+    "pandas >=1.4,<4.0",
+    "plotly >= 5.24.0",
+    "scipy >= 1.14.0",
     "screeninfo >= 0.8.1",
-    "seaborn >=0.12.0",
+    "seaborn >=0.13.0",
 ]
 
 [dependency-groups]
 dev = [
     "ipykernel >=6.29.5",
-    "mypy >=1.11.2",
+    "mypy >=1.13.0",
     "nbformat >=5.10.4",
     "pre-commit >=3.8.0",
     "pydocstyle >=6.2.3",
-    "pytest >=8.3.3",
+    "pytest >=8.3.0",
     "pytest-cov >=5.0.0",
-    "ruff >=0.5.5",
+    "ruff >=0.8.0",
 ]
 
 [build-system]
@@ -82,7 +82,7 @@ exclude_also = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py312"
+target-version = "py313"
 fix = true
 
 lint.select = ["ALL"]
@@ -96,7 +96,6 @@ lint.unfixable = [
     "ERA001",
     "F841",
     "PT001",
-    "PT004",
     "PT022",
     "PT023",
     "RUF100",

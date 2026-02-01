@@ -18,7 +18,7 @@ import seaborn as sns
 from matplotlib import ticker
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.colors import to_rgb
-from matplotlib.gridspec import GridSpec  # noqa: TCH002
+from matplotlib.gridspec import GridSpec  # noqa: TC002
 from screeninfo import get_monitors
 from screeninfo import ScreenInfoError
 
@@ -156,8 +156,8 @@ def cat_plot(  # noqa: C901, PLR0915
             0,
             0,
             f"Unique values: {n_unique}\n\n"
-            f"Top {lim_top}: {sum_top} ({sum_top/data.shape[0]*100:.1f}%)\n"
-            f"Bot {lim_bot}: {sum_bot} ({sum_bot/data.shape[0]*100:.1f}%)",
+            f"Top {lim_top}: {sum_top} ({sum_top / data.shape[0] * 100:.1f}%)\n"
+            f"Bot {lim_bot}: {sum_bot} ({sum_bot / data.shape[0] * 100:.1f}%)",
             transform=ax_bottom.transAxes,
             color="#111111",
             fontsize=11,
@@ -272,7 +272,7 @@ def corr_mat(
     corr = _corr_selector(corr, split=split, threshold=threshold)
 
     if colored:
-        return corr.style.applymap(color_negative_red).format("{:.2f}", na_rep="-")
+        return corr.style.map(color_negative_red).format("{:.2f}", na_rep="-")
     return corr
 
 
@@ -782,7 +782,7 @@ def dist_plot(
                 (x >= np.quantile(col_df, fill_range[0]))
                 & (x <= np.quantile(col_df, fill_range[1]))
             ),
-            label=f"{fill_range[0]*100:.1f}% - {fill_range[1]*100:.1f}%",
+            label=f"{fill_range[0] * 100:.1f}% - {fill_range[1] * 100:.1f}%",
             **fill_kws,
         )
 
@@ -980,35 +980,35 @@ def missingval_plot(  # noqa: PLR0915
     ax3.text(
         0.025,
         0.875,
-        f"Total: {np.round(total_datapoints/1000,1)}K",
+        f"Total: {np.round(total_datapoints / 1000, 1)}K",
         transform=ax3.transAxes,
         fontdict=fontax3,
     )
     ax3.text(
         0.025,
         0.675,
-        f"Missing: {np.round(mv_total/1000,1)}K",
+        f"Missing: {np.round(mv_total / 1000, 1)}K",
         transform=ax3.transAxes,
         fontdict=fontax3,
     )
     ax3.text(
         0.025,
         0.475,
-        f"Relative: {np.round(mv_total/total_datapoints*100,1)}%",
+        f"Relative: {np.round(mv_total / total_datapoints * 100, 1)}%",
         transform=ax3.transAxes,
         fontdict=fontax3,
     )
     ax3.text(
         0.025,
         0.275,
-        f"Max-col: {np.round(mv_cols.max()/data.shape[0]*100)}%",
+        f"Max-col: {np.round(mv_cols.max() / data.shape[0] * 100)}%",
         transform=ax3.transAxes,
         fontdict=fontax3,
     )
     ax3.text(
         0.025,
         0.075,
-        f"Max-row: {np.round(mv_rows.max()/data.shape[1]*100)}%",
+        f"Max-row: {np.round(mv_rows.max() / data.shape[1] * 100)}%",
         transform=ax3.transAxes,
         fontdict=fontax3,
     )

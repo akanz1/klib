@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
         platform: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.platform }}
@@ -24,7 +24,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
-          version: "0.4.27"
+          version: "latest"
 
       - name: Install dependencies (Windows)
         if: runner.os == 'Windows'

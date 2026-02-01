@@ -147,8 +147,8 @@ def convert_datatypes(
     data : pd.DataFrame
         2D dataset that can be coerced into Pandas DataFrame
     category : bool, optional
-        Change dtypes of columns with dtype "object" to "category". Set threshold \
-        using cat_threshold or exclude columns using cat_exclude, by default True
+        Change dtypes of columns with dtype "object" or "string" to "category". Set \
+        threshold using cat_threshold or exclude columns using cat_exclude, by default True
     cat_threshold : float, optional
         Ratio of unique values below which categories are inferred and column dtype is \
         changed to categorical, by default 0.05
@@ -168,20 +168,30 @@ def convert_datatypes(
     cat_exclude = [] if cat_exclude is None else cat_exclude.copy()
 
     data = pd.DataFrame(data).copy()
-    for col in data.columns:
-        unique_vals_ratio = data[col].nunique(dropna=False) / data.shape[0]
-        if (
-            category
-            and unique_vals_ratio < cat_threshold
-            and col not in cat_exclude
-            and data[col].dtype == "object"
-        ):
-            data[col] = data[col].astype("category")
 
+    # First pass: convert dtypes to get StringDtype, etc.
+    for col in data.columns:
         data[col] = data[col].convert_dtypes(
             convert_integer=False,
             convert_floating=False,
         )
+
+    # Second pass: check for categorical conversion on string/object columns
+    for col in data.columns:
+        unique_vals_ratio = data[col].nunique(dropna=False) / data.shape[0]
+        # Check for both object and string dtypes (pandas 3.0 uses StringDtype)
+        is_string_like = (
+            data[col].dtype == "object"
+            or data[col].dtype.name == "string"
+            or str(data[col].dtype).startswith("string")
+        )
+        if (
+            category
+            and unique_vals_ratio < cat_threshold
+            and col not in cat_exclude
+            and is_string_like
+        ):
+            data[col] = data[col].astype("category")
 
     data = _optimize_ints(data)
     return _optimize_floats(data)
@@ -440,7 +450,7 @@ def mv_col_handling(
     data_local = data.copy()
     mv_ratios = _missing_vals(data_local)["mv_cols_ratio"]
     cols_mv = mv_ratios[mv_ratios > mv_threshold].index.tolist()
-    data_local[cols_mv] = data_local[cols_mv].applymap(lambda x: x if pd.isna(x) else 1).fillna(0)
+    data_local[cols_mv] = data_local[cols_mv].map(lambda x: x if pd.isna(x) else 1).fillna(0)
 
     high_corr_features = []
     data_temp = data_local.copy()
