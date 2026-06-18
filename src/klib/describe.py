@@ -89,7 +89,7 @@ def cat_plot(  # noqa: C901, PLR0915
         return None
 
     for col in data.columns:
-        if data[col].dtype.name in ("category", "string"):
+        if data[col].dtype.name in ("category", "str", "string"):
             data[col] = data[col].astype("object")
 
     fig = plt.figure(figsize=figsize)
@@ -592,7 +592,7 @@ def corr_interactive_plot(  # noqa: C901
 
     if target is None:
         mask = np.triu(np.ones_like(corr, dtype=bool))
-        np.fill_diagonal(corr.to_numpy(), np.nan)
+        corr = corr.mask(np.eye(len(corr), dtype=bool))
         corr = corr.where(mask == 1)
     else:
         corr = corr.iloc[::-1, :]

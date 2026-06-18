@@ -369,6 +369,11 @@ def data_cleaning(
             cat_threshold=cat_threshold,
             cat_exclude=cat_exclude,
         )
+    else:
+        string_cols = [
+            col for col in data_cleaned.columns if data_cleaned[col].dtype.name in ("str", "string")
+        ]
+        data_cleaned[string_cols] = data_cleaned[string_cols].astype("object")
 
     _diff_report(
         data,

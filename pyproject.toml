@@ -1,6 +1,6 @@
 [project]
 name = "klib"
-version = "1.4.0"
+version = "1.4.1"
 description = "Common data preprocessing and visualisation functions."
 authors = [{ name = "Andreas Kanz", email = "andreas@akanz.de" }]
 license = "MIT"
