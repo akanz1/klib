@@ -144,6 +144,18 @@ class Test_plots(unittest.TestCase):
 
         assert corr_plot(data, figsize=(4, 4)) is not None
 
+    def test_corr_plot_uses_existing_ax(self):
+        data = pd.DataFrame(
+            {
+                "a": [1, 2, 3, 4, 5],
+                "b": [2, 4, 6, 8, 10],
+                "c": [5, 4, 3, 2, 1],
+            },
+        )
+        _, ax = plt.subplots()
+
+        assert corr_plot(data, ax=ax) is ax
+
     def test_corr_interactive_plot_smoke(self):
         data = pd.DataFrame(
             {
@@ -159,6 +171,19 @@ class Test_plots(unittest.TestCase):
         data = pd.DataFrame({"a": np.arange(30), "b": np.arange(30) ** 2})
 
         assert dist_plot(data, size=2) is not None
+
+    def test_dist_plot_uses_existing_ax(self):
+        data = pd.Series(np.arange(30), name="a")
+        _, ax = plt.subplots()
+
+        assert dist_plot(data, ax=ax) is ax
+
+    def test_dist_plot_existing_ax_requires_single_column(self):
+        data = pd.DataFrame({"a": np.arange(30), "b": np.arange(30) ** 2})
+        _, ax = plt.subplots()
+
+        with self.assertRaises(ValueError):
+            dist_plot(data, ax=ax)
 
     def test_missingval_plot_smoke(self):
         data = pd.DataFrame({"a": [1, np.nan, 3], "b": [np.nan, 2, 3]})

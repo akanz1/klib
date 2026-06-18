@@ -293,6 +293,7 @@ def corr_plot(
     *,
     annot: bool = True,
     dev: bool = False,
+    ax: plt.Axes | None = None,
     **kwargs,  # noqa: ANN003
 ) -> plt.Axes:
     """2D visualization of the correlation between feature-columns excluding NA values.
@@ -340,6 +341,8 @@ def corr_plot(
     dev : bool, optional
         Display figure settings in the plot by setting dev = True. If False, the \
         settings are not displayed, by default False
+    ax : matplotlib Axes, optional
+        Existing Axes object to draw into, by default None.
 
     kwargs : optional
         Additional elements to control the visualization of the plot, e.g.:
@@ -395,7 +398,10 @@ def corr_plot(
     vmax = np.round(np.nanmax(corr.where(~mask)) - 0.05, 2)
     vmin = np.round(np.nanmin(corr.where(~mask)) + 0.05, 2)
 
-    fig, ax = plt.subplots(figsize=figsize)
+    if ax is None:
+        fig, ax = plt.subplots(figsize=figsize)
+    else:
+        fig = ax.figure
 
     # Specify kwargs for the heatmap
     kwargs = {
@@ -407,6 +413,7 @@ def corr_plot(
         "linewidths": 0.5,
         "annot_kws": {"size": 10},
         "cbar_kws": {"shrink": 0.95, "aspect": 30},
+        "ax": ax,
         **kwargs,
     }
 
@@ -679,6 +686,7 @@ def dist_plot(
     rug_kws: dict[str, Any] | None = None,
     fill_kws: dict[str, Any] | None = None,
     font_kws: dict[str, Any] | None = None,
+    ax: plt.Axes | None = None,
 ) -> None | Any:  # noqa: ANN401
     """2D visualization of the distribution of non binary numerical features.
 
@@ -708,6 +716,8 @@ def dist_plot(
     font_kws : dict[str, Any], optional
         Keyword arguments to control the font, by default {"color":  "#111111", \
         "weight": "normal", "size": 11}
+    ax : matplotlib Axes, optional
+        Existing Axes object to draw a single numeric column into, by default None.
 
     Returns
     -------
@@ -763,25 +773,34 @@ def dist_plot(
     if not cols:
         print("No columns with numeric data were detected.")
         return None
+    if ax is not None and len(cols) != 1:
+        msg = "When ax is provided, dist_plot requires exactly one numeric non-binary column."
+        raise ValueError(msg)
 
     for col in cols:
         col_data = data[col].dropna(axis=0)
         col_df = df[col].dropna(axis=0)
 
-        g = sns.displot(
-            col_data,
-            kind="kde",
-            rug=True,
-            height=size,
-            aspect=5,
-            legend=False,
-            rug_kws=rug_kws,
-            **kde_kws,
-        )
+        if ax is None:
+            g = sns.displot(
+                col_data,
+                kind="kde",
+                rug=True,
+                height=size,
+                aspect=5,
+                legend=False,
+                rug_kws=rug_kws,
+                **kde_kws,
+            )
+            plot_ax = g.axes[0, 0]
+        else:
+            sns.kdeplot(col_data, ax=ax, **kde_kws)
+            sns.rugplot(col_data, ax=ax, **rug_kws)
+            plot_ax = ax
 
         # Vertical lines and fill
-        x, y = g.axes[0, 0].lines[0].get_xydata().T
-        g.axes[0, 0].fill_between(
+        x, y = plot_ax.lines[0].get_xydata().T
+        plot_ax.fill_between(
             x,
             y,
             where=(
@@ -794,7 +813,7 @@ def dist_plot(
 
         mean = np.mean(col_df)
         std = scipy.stats.tstd(col_df)
-        g.axes[0, 0].vlines(
+        plot_ax.vlines(
             x=mean,
             ymin=0,
             ymax=np.interp(mean, x, y),
@@ -803,7 +822,7 @@ def dist_plot(
             lw=2,
             label="mean",
         )
-        g.axes[0, 0].vlines(
+        plot_ax.vlines(
             x=np.median(col_df),
             ymin=0,
             ymax=np.interp(np.median(col_df), x, y),
@@ -811,7 +830,7 @@ def dist_plot(
             color=".3",
             label="median",
         )
-        g.axes[0, 0].vlines(
+        plot_ax.vlines(
             x=[mean - std, mean + std],
             ymin=0,
             ymax=[np.interp(mean - std, x, y), np.interp(mean + std, x, y)],
@@ -820,51 +839,51 @@ def dist_plot(
             label="\u03bc \u00b1 \u03c3",
         )
 
-        g.axes[0, 0].set_ylim(0)
-        g.axes[0, 0].set_xlim(
-            g.axes[0, 0].get_xlim()[0] - g.axes[0, 0].get_xlim()[1] * 0.05,
-            g.axes[0, 0].get_xlim()[1] * 1.03,
+        plot_ax.set_ylim(0)
+        plot_ax.set_xlim(
+            plot_ax.get_xlim()[0] - plot_ax.get_xlim()[1] * 0.05,
+            plot_ax.get_xlim()[1] * 1.03,
         )
 
         # Annotations and legend
-        g.axes[0, 0].text(
+        plot_ax.text(
             0.005,
             0.9,
             f"Mean: {mean:.2f}",
             fontdict=font_kws,
-            transform=g.axes[0, 0].transAxes,
+            transform=plot_ax.transAxes,
         )
-        g.axes[0, 0].text(
+        plot_ax.text(
             0.005,
             0.7,
             f"Std. dev: {std:.2f}",
             fontdict=font_kws,
-            transform=g.axes[0, 0].transAxes,
+            transform=plot_ax.transAxes,
         )
-        g.axes[0, 0].text(
+        plot_ax.text(
             0.005,
             0.5,
             f"Skew: {scipy.stats.skew(col_df):.2f}",
             fontdict=font_kws,
-            transform=g.axes[0, 0].transAxes,
+            transform=plot_ax.transAxes,
         )
-        g.axes[0, 0].text(
+        plot_ax.text(
             0.005,
             0.3,
             f"Kurtosis: {scipy.stats.kurtosis(col_df):.2f}",  # Excess Kurtosis
             fontdict=font_kws,
-            transform=g.axes[0, 0].transAxes,
+            transform=plot_ax.transAxes,
         )
-        g.axes[0, 0].text(
+        plot_ax.text(
             0.005,
             0.1,
             f"Count: {len(col_df)}",
             fontdict=font_kws,
-            transform=g.axes[0, 0].transAxes,
+            transform=plot_ax.transAxes,
         )
-        g.axes[0, 0].legend(loc="upper right")
+        plot_ax.legend(loc="upper right")
 
-    return g.axes[0, 0]
+    return plot_ax
 
 
 def missingval_plot(  # noqa: PLR0915
