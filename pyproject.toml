@@ -113,8 +113,7 @@ lint.ignore = [
     "PLR0913",
     "D213",
     "D203",
-    "UP038",
-    "PD901",
+    "RUF043",
 ]
 
 extend-exclude = ["examples"]

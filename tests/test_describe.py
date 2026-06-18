@@ -5,6 +5,7 @@ import unittest
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pytest
 
 from klib.describe import cat_plot
 from klib.describe import corr_interactive_plot
@@ -99,8 +100,13 @@ class Test_corr_mat(unittest.TestCase):
 
     def test_output_shape(self):
         # Test for output dimensions
-        assert corr_mat(self.data_corr_df).data.shape[0] == corr_mat(self.data_corr_df).data.shape[1]
-        assert corr_mat(self.data_corr_list).data.shape[0] == corr_mat(self.data_corr_list).data.shape[1]
+        assert (
+            corr_mat(self.data_corr_df).data.shape[0] == corr_mat(self.data_corr_df).data.shape[1]
+        )
+        assert (
+            corr_mat(self.data_corr_list).data.shape[0]
+            == corr_mat(self.data_corr_list).data.shape[1]
+        )
         assert corr_mat(self.data_corr_df, target="Col1", colored=False).shape == (3, 1)
         assert corr_mat(
             self.data_corr_df,
@@ -182,7 +188,7 @@ class Test_plots(unittest.TestCase):
         data = pd.DataFrame({"a": np.arange(30), "b": np.arange(30) ** 2})
         _, ax = plt.subplots()
 
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             dist_plot(data, ax=ax)
 
     def test_missingval_plot_smoke(self):

@@ -40,12 +40,14 @@ def _corr_selector(
     if split == "pos":
         corr = corr.where((corr >= threshold) & (corr > 0))
         print(
-            'Displaying positive correlations. Specify a positive "threshold" to limit the results further.',
+            'Displaying positive correlations. Specify a positive "threshold" to '
+            "limit the results further.",
         )
     elif split == "neg":
         corr = corr.where((corr <= threshold) & (corr < 0))
         print(
-            'Displaying negative correlations. Specify a negative "threshold" to limit the results further.',
+            'Displaying negative correlations. Specify a negative "threshold" to '
+            "limit the results further.",
         )
     elif split == "high":
         threshold = 0.3 if threshold <= 0 else threshold

@@ -676,7 +676,7 @@ def corr_interactive_plot(  # noqa: C901
     return heatmap
 
 
-def dist_plot(
+def dist_plot(  # noqa: PLR0915
     data: pd.DataFrame,
     mean_color: str = "orange",
     size: int = 3,
