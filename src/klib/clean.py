@@ -107,13 +107,11 @@ def clean_column_names(data: pd.DataFrame, *, hints: bool = True) -> pd.DataFram
             col if col not in data.columns[:i] else f"{col}_{i!s}"
             for i, col in enumerate(data.columns)
         ]
-        print_statement = ""
         if hints:
-            # add string to print statement
             print_statement = (
                 f"Duplicate column names detected! Columns with index {dupl_idx} and "
                 f"names {dupl_before} have been renamed to "
-                f"{data.columns[dupl_idx].tolist()}.",
+                f"{data.columns[dupl_idx].tolist()}."
             )
 
             if long_col_names := [
@@ -122,8 +120,8 @@ def clean_column_names(data: pd.DataFrame, *, hints: bool = True) -> pd.DataFram
                 if len(x) > 25  # noqa: PLR2004
             ]:
                 print_statement += (
-                    "Long column names detected (>25 characters). Consider renaming "
-                    f"the following columns {long_col_names}.",
+                    " Long column names detected (>25 characters). Consider renaming "
+                    f"the following columns {long_col_names}."
                 )
 
             print(print_statement)
@@ -450,7 +448,7 @@ def mv_col_handling(
     data_local = data.copy()
     mv_ratios = _missing_vals(data_local)["mv_cols_ratio"]
     cols_mv = mv_ratios[mv_ratios > mv_threshold].index.tolist()
-    data_local[cols_mv] = data_local[cols_mv].map(lambda x: x if pd.isna(x) else 1).fillna(0)
+    data_local[cols_mv] = data_local[cols_mv].notna().astype(int)
 
     high_corr_features = []
     data_temp = data_local.copy()

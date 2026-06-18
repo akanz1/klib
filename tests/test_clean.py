@@ -68,7 +68,7 @@ class Test_clean_column_names(unittest.TestCase):
         clean_column_names(self.df_clean_column_names, hints=True)
         sys.stdout = sys.__stdout__
         assert captured_output.getvalue() == (
-            "(\"Duplicate column names detected! Columns with index [7, 8] and names ['dupli', 'also'] have been renamed to ['dupli_7', 'also_8'].\", \"Long column names detected (>25 characters). Consider renaming the following columns ['ae_some_plus_plus_dollar_percent_name', 'verylong_column_namesare_hardto_read'].\")\n"
+            "Duplicate column names detected! Columns with index [7, 8] and names ['dupli', 'also'] have been renamed to ['dupli_7', 'also_8']. Long column names detected (>25 characters). Consider renaming the following columns ['ae_some_plus_plus_dollar_percent_name', 'verylong_column_namesare_hardto_read'].\n"
         )
 
 
@@ -160,28 +160,24 @@ class Test_data_cleaning(unittest.TestCase):
 
         expected_results = ["string", "float32", "object", "object"]
         for i, _ in enumerate(expected_results):
-            result_dtype = data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes.iloc[i]
-            assert result_dtype.name == expected_results[i]
+            assert (
+                data_cleaning(self.df_data_cleaning, convert_dtypes=True).dtypes.iloc[i]
+                == expected_results[i]
+            )
 
-        expected_results = [
-            ["str", "string", "object"],
-            ["object"],
-            ["object"],
-            ["object"],
-        ]
-        for i, allowed in enumerate(expected_results):
-            result_dtype = data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes.iloc[i]
-            assert result_dtype.name in allowed
+        expected_results = ["O", "O", "O", "O"]
+        for i, _ in enumerate(expected_results):
+            assert (
+                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes.iloc[i]
+                == expected_results[i]
+            )
 
-        expected_results = [
-            ["str", "string", "object"],
-            ["object"],
-            ["object"],
-            ["object"],
-        ]
-        for i, allowed in enumerate(expected_results):
-            result_dtype = data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes.iloc[i]
-            assert result_dtype.name in allowed
+        expected_results = ["O", "O", "O", "O"]
+        for i, _ in enumerate(expected_results):
+            assert (
+                data_cleaning(self.df_data_cleaning, convert_dtypes=False).dtypes.iloc[i]
+                == expected_results[i]
+            )
 
 
 class Test_convert_dtypes(unittest.TestCase):
@@ -208,8 +204,10 @@ class Test_convert_dtypes(unittest.TestCase):
             "category",
         ]
         for i, _ in enumerate(expected_results):
-            result_dtype = convert_datatypes(self.df_data_convert, cat_threshold=0.4).dtypes.iloc[i]
-            assert result_dtype.name == expected_results[i]
+            assert (
+                convert_datatypes(self.df_data_convert, cat_threshold=0.4).dtypes[i]
+                == expected_results[i]
+            )
 
         expected_results = [
             "int8",

@@ -2,10 +2,16 @@ from __future__ import annotations
 
 import unittest
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from klib.describe import cat_plot
+from klib.describe import corr_interactive_plot
 from klib.describe import corr_mat
+from klib.describe import corr_plot
+from klib.describe import dist_plot
+from klib.describe import missingval_plot
 
 
 class Test_corr_mat(unittest.TestCase):
@@ -93,13 +99,8 @@ class Test_corr_mat(unittest.TestCase):
 
     def test_output_shape(self):
         # Test for output dimensions
-        assert (
-            corr_mat(self.data_corr_df).data.shape[0] == corr_mat(self.data_corr_df).data.shape[1]
-        )
-        assert (
-            corr_mat(self.data_corr_list).data.shape[0]
-            == corr_mat(self.data_corr_list).data.shape[1]
-        )
+        assert corr_mat(self.data_corr_df).data.shape[0] == corr_mat(self.data_corr_df).data.shape[1]
+        assert corr_mat(self.data_corr_list).data.shape[0] == corr_mat(self.data_corr_list).data.shape[1]
         assert corr_mat(self.data_corr_df, target="Col1", colored=False).shape == (3, 1)
         assert corr_mat(
             self.data_corr_df,
@@ -116,3 +117,50 @@ class Test_corr_mat(unittest.TestCase):
             target=self.data_corr_target_list,
             colored=False,
         ).shape == (4, 1)
+
+
+class Test_plots(unittest.TestCase):
+    def tearDown(self):
+        plt.close("all")
+
+    def test_cat_plot_smoke(self):
+        data = pd.DataFrame(
+            {
+                "cat1": ["a", "b", "a", "c", "a", "b"],
+                "cat2": ["x", "x", "y", "z", "z", "z"],
+            },
+        )
+
+        assert cat_plot(data, figsize=(4, 4)) is not None
+
+    def test_corr_plot_smoke(self):
+        data = pd.DataFrame(
+            {
+                "a": [1, 2, 3, 4, 5],
+                "b": [2, 4, 6, 8, 10],
+                "c": [5, 4, 3, 2, 1],
+            },
+        )
+
+        assert corr_plot(data, figsize=(4, 4)) is not None
+
+    def test_corr_interactive_plot_smoke(self):
+        data = pd.DataFrame(
+            {
+                "a": [1, 2, 3, 4, 5],
+                "b": [2, 4, 6, 8, 10],
+                "c": [5, 4, 3, 2, 1],
+            },
+        )
+
+        assert corr_interactive_plot(data, figsize=(4, 4)) is not None
+
+    def test_dist_plot_smoke(self):
+        data = pd.DataFrame({"a": np.arange(30), "b": np.arange(30) ** 2})
+
+        assert dist_plot(data, size=2) is not None
+
+    def test_missingval_plot_smoke(self):
+        data = pd.DataFrame({"a": [1, np.nan, 3], "b": [np.nan, 2, 3]})
+
+        assert missingval_plot(data, figsize=(4, 4)) is not None

@@ -65,7 +65,7 @@ branch = true
 data_file = "tests/.coverage"
 
 [tool.coverage.report]
-fail_skip_covered = true
+skip_covered = true
 exclude_also = [
     "if self.debug:",
     "if settings.DEBUG",

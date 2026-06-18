@@ -272,7 +272,13 @@ def corr_mat(
     corr = _corr_selector(corr, split=split, threshold=threshold)
 
     if colored:
-        return corr.style.map(color_negative_red).format("{:.2f}", na_rep="-")
+        styler = corr.style
+        styler = (
+            styler.map(color_negative_red)
+            if hasattr(styler, "map")
+            else styler.applymap(color_negative_red)
+        )
+        return styler.format("{:.2f}", na_rep="-")
     return corr
 
 

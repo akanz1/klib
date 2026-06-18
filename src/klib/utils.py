@@ -40,14 +40,12 @@ def _corr_selector(
     if split == "pos":
         corr = corr.where((corr >= threshold) & (corr > 0))
         print(
-            'Displaying positive correlations. Specify a positive "threshold" to '
-            "limit the results further.",
+            'Displaying positive correlations. Specify a positive "threshold" to limit the results further.',
         )
     elif split == "neg":
         corr = corr.where((corr <= threshold) & (corr < 0))
         print(
-            'Displaying negative correlations. Specify a negative "threshold" to '
-            "limit the results further.",
+            'Displaying negative correlations. Specify a negative "threshold" to limit the results further.',
         )
     elif split == "high":
         threshold = 0.3 if threshold <= 0 else threshold
@@ -140,7 +138,7 @@ def _diff_report(
     )
     print(f"Dropped missing values: {data_mv_tot - data_cl_mv_tot}")
     mem_change = data_mem - data_cl_mem
-    mem_perc = round(100 * mem_change / data_mem, 2)
+    mem_perc = round(100 * mem_change / data_mem, 2) if data_mem else 0
     print(f"Reduced memory by at least: {round(mem_change, 3)} MB (-{mem_perc}%)\n")
 
 
