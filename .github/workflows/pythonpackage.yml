@@ -48,7 +48,7 @@ jobs:
           uv run pytest
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
 
   publish:
     needs: build
