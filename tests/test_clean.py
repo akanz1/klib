@@ -263,6 +263,19 @@ class Test_convert_dtypes(unittest.TestCase):
             ).dtypes.iloc[i]
             assert result_dtype.name == expected_results[i]
 
+    def test_convert_dtypes_object_numbers_with_na(self) -> None:
+        data = pd.DataFrame(
+            {
+                "ints": pd.Series([1, 2, pd.NA], dtype=object),
+                "floats": pd.Series([1.5, 2.5, pd.NA], dtype=object),
+                "bools": pd.Series([True, False, pd.NA], dtype=object),
+            },
+        )
+        result = convert_datatypes(data, category=False)
+        assert result["ints"].dtype.name == "object"
+        assert result["floats"].dtype.name == "object"
+        assert result["bools"].dtype.name == "boolean"
+
 
 class Test_pool_duplicate_subsets(unittest.TestCase):
     @classmethod

@@ -170,13 +170,14 @@ def convert_datatypes(
     data = pd.DataFrame(data).copy()
 
     # First pass: convert dtypes to get StringDtype, etc. Numeric columns keep their
-    # NumPy dtypes (the convert_integer/convert_floating keywords are deprecated).
+    # dtypes, as with the deprecated convert_integer/convert_floating=False keywords.
     for col in data.columns:
         series = data[col].infer_objects()
-        if is_numeric_dtype(series) and not is_bool_dtype(series):
+        converted = series.convert_dtypes()
+        if is_numeric_dtype(converted) and not is_bool_dtype(converted):
             data[col] = series
         else:
-            data[col] = series.convert_dtypes()
+            data[col] = converted
 
     # Second pass: check for categorical conversion on string/object columns
     for col in data.columns:
