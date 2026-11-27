@@ -610,7 +610,7 @@ def corr_interactive_plot(  # noqa: C901
     vmax = -vmin if split == "neg" else vmax
     vmin = -vmax if split == "pos" else vmin
 
-    vtext = corr.round(2).fillna("") if annot else None
+    vtext = corr.round(2).astype(object).fillna("") if annot else None
 
     corr_columns = corr.columns
     corr_index = corr.index
@@ -687,7 +687,7 @@ def dist_plot(  # noqa: PLR0915
     fill_kws: dict[str, Any] | None = None,
     font_kws: dict[str, Any] | None = None,
     ax: plt.Axes | None = None,
-) -> None | Any:  # noqa: ANN401
+) -> Any | None:  # noqa: ANN401
     """2D visualization of the distribution of non binary numerical features.
 
     Parameters
