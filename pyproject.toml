@@ -1,32 +1,35 @@
 [project]
 name = "klib"
-version = "1.4.1"
+version = "1.5.0"
 description = "Common data preprocessing and visualisation functions."
-authors = [{ name = "Andreas Kanz", email = "andreas@akanz.de" }]
+authors = [{ name = "Andreas Kanz" }]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
-    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.15",
     "Operating System :: OS Independent",
 ]
 
 dependencies = [
-    "Jinja2 >= 3.1.0",
+    "Jinja2 >= 3.1.2",
     "matplotlib >= 3.9.0",
     "numpy >= 2.0.0",
-    "pandas >=1.4,<4.0",
+    "pandas >=2.2.2,<4.0",
     "plotly >= 5.24.0",
     "scipy >= 1.14.0",
     "screeninfo >= 0.8.1",
     "seaborn >=0.13.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/akanz1/klib"
+Issues = "https://github.com/akanz1/klib/issues"
 
 [dependency-groups]
 dev = [
@@ -43,6 +46,9 @@ dev = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/klib", "tests", "README.md", "LICENSE"]
 
 [tool.pydocstyle]
 match_dir = "[^(?!tests|\\.)].*"     # not tests and not a folder that starts with a dot
@@ -87,7 +93,7 @@ exclude_also = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py314"
+target-version = "py311"
 fix = true
 
 lint.select = ["ALL"]
@@ -114,6 +120,8 @@ lint.ignore = [
     "D213",
     "D203",
     "RUF043",
+    "CPY001",
+    "PLR0917",
 ]
 
 extend-exclude = ["examples"]

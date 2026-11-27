@@ -263,6 +263,25 @@ class Test_convert_dtypes(unittest.TestCase):
             ).dtypes.iloc[i]
             assert result_dtype.name == expected_results[i]
 
+    def test_convert_dtypes_object_numbers_with_na(self) -> None:
+        data = pd.DataFrame(
+            {
+                "ints": pd.Series([1, 2, pd.NA], dtype=object),
+                "floats": pd.Series([1.5, 2.5, pd.NA], dtype=object),
+                "bools": pd.Series([True, False, pd.NA], dtype=object),
+                "big_ints": pd.Series([2**63, 2**53 + 1, pd.NA], dtype=object),
+                "complex": pd.Series([1 + 2j, 3 + 4j, np.nan]),
+            },
+        )
+        result = convert_datatypes(data, category=False)
+        assert result["ints"].dtype.name == "object"
+        assert result["floats"].dtype.name == "object"
+        assert result["bools"].dtype.name == "boolean"
+        assert result["big_ints"].dtype.name == "object"
+        assert result["big_ints"].iloc[:2].tolist() == [2**63, 2**53 + 1]
+        assert result["big_ints"].isna().tolist() == [False, False, True]
+        assert result["complex"].dtype.name == "complex128"
+
 
 class Test_pool_duplicate_subsets(unittest.TestCase):
     @classmethod

@@ -11,6 +11,8 @@ from typing import Literal
 
 import numpy as np
 import pandas as pd
+from pandas.api.types import is_bool_dtype
+from pandas.api.types import is_numeric_dtype
 
 from klib.describe import corr_mat
 from klib.utils import _diff_report
@@ -137,8 +139,8 @@ def convert_datatypes(
 ) -> pd.DataFrame:
     """Convert columns to best possible dtypes using dtypes supporting pd.NA.
 
-    Temporarily not converting to integers due to an issue in pandas. This is expected \
-        to be fixed in pandas 1.1. See https://github.com/pandas-dev/pandas/issues/33803
+    Numeric columns keep their NumPy dtypes; other columns are converted to nullable \
+        dtypes such as "string" or "boolean".
 
     Parameters
     ----------
@@ -167,12 +169,21 @@ def convert_datatypes(
 
     data = pd.DataFrame(data).copy()
 
-    # First pass: convert dtypes to get StringDtype, etc.
+    # First pass: convert dtypes to get StringDtype, etc. Numeric columns keep their
+    # dtypes, as with the deprecated convert_integer/convert_floating=False keywords.
     for col in data.columns:
-        data[col] = data[col].convert_dtypes(
-            convert_integer=False,
-            convert_floating=False,
-        )
+        series = data[col].infer_objects()
+        if is_numeric_dtype(series) and not is_bool_dtype(series):
+            data[col] = series
+            continue
+        try:
+            converted = series.convert_dtypes()
+        except OverflowError:  # pandas < 3 cannot fit ints beyond the int64 range
+            converted = series
+        if is_numeric_dtype(converted) and not is_bool_dtype(converted):
+            data[col] = series
+        else:
+            data[col] = converted
 
     # Second pass: check for categorical conversion on string/object columns
     for col in data.columns:
