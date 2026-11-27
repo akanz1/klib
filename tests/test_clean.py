@@ -270,6 +270,7 @@ class Test_convert_dtypes(unittest.TestCase):
                 "floats": pd.Series([1.5, 2.5, pd.NA], dtype=object),
                 "bools": pd.Series([True, False, pd.NA], dtype=object),
                 "big_ints": pd.Series([2**63, 2**53 + 1, pd.NA], dtype=object),
+                "complex": pd.Series([1 + 2j, 3 + 4j, np.nan]),
             },
         )
         result = convert_datatypes(data, category=False)
@@ -279,6 +280,7 @@ class Test_convert_dtypes(unittest.TestCase):
         assert result["big_ints"].dtype.name == "object"
         assert result["big_ints"].iloc[:2].tolist() == [2**63, 2**53 + 1]
         assert result["big_ints"].isna().tolist() == [False, False, True]
+        assert result["complex"].dtype.name == "complex128"
 
 
 class Test_pool_duplicate_subsets(unittest.TestCase):
