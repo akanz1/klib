@@ -269,12 +269,16 @@ class Test_convert_dtypes(unittest.TestCase):
                 "ints": pd.Series([1, 2, pd.NA], dtype=object),
                 "floats": pd.Series([1.5, 2.5, pd.NA], dtype=object),
                 "bools": pd.Series([True, False, pd.NA], dtype=object),
+                "big_ints": pd.Series([2**63, 2**53 + 1, pd.NA], dtype=object),
             },
         )
         result = convert_datatypes(data, category=False)
         assert result["ints"].dtype.name == "object"
         assert result["floats"].dtype.name == "object"
         assert result["bools"].dtype.name == "boolean"
+        assert result["big_ints"].dtype.name == "object"
+        assert result["big_ints"].iloc[:2].tolist() == [2**63, 2**53 + 1]
+        assert result["big_ints"].isna().tolist() == [False, False, True]
 
 
 class Test_pool_duplicate_subsets(unittest.TestCase):

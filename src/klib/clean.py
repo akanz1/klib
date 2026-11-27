@@ -173,7 +173,10 @@ def convert_datatypes(
     # dtypes, as with the deprecated convert_integer/convert_floating=False keywords.
     for col in data.columns:
         series = data[col].infer_objects()
-        converted = series.convert_dtypes()
+        try:
+            converted = series.convert_dtypes()
+        except OverflowError:  # pandas < 3 cannot fit ints beyond the int64 range
+            converted = series
         if is_numeric_dtype(converted) and not is_bool_dtype(converted):
             data[col] = series
         else:
